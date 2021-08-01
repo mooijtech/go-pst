@@ -83,6 +83,7 @@ The source code of go-pst will reference this implementation.
 | Offset        | Size          | Description   |
 | ------------- | ------------- | ------------- |
 | 224           | 8             | The node b-tree file offset. |
+| 240           | 8             | The block b-tree file offset. |
 | 513           | 1             | Encryption type. See [Encryption Types](#encryption-types). |
 
 ### The 32-bit header data
@@ -90,6 +91,7 @@ The source code of go-pst will reference this implementation.
 | Offset        | Size          | Description   |
 | ------------- | ------------- | ------------- |
 | 188           | 4             | The node b-tree file offset. |
+| 196           | 4             | The block b-tree file offset. |
 | 461           | 1             | Encryption type. See [Encryption Types](#encryption-types). |
 
 ### Encryption Types
