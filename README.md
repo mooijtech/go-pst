@@ -58,8 +58,9 @@ The file header common to both the 64-bit and 32-bit PFF format consists of 24 b
 
 | Offset        | Size          | Value                         | Description   |
 | ------------- | ------------- | -------------                 | ------------- |
-| 0             | 4             | "\x21\x42\x44\x4e" (**!BDN**) | The signature (magic identifier).
-| 8             | 2             |                               | The content type (client signature). See [Content types](#content-types).
+| 0             | 4             | "\x21\x42\x44\x4e" (**!BDN**) | The signature (magic identifier). |
+| 8             | 2             |                               | The content type (client signature). See [Content Types](#content-types). |
+| 10            | 2             |                               | The data version (NDB version). NDB is short for node database. See [Format Types](#format-types). |
 
 ### Content Types
 
@@ -68,6 +69,16 @@ The file header common to both the 64-bit and 32-bit PFF format consists of 24 b
 | "\x53\x4d" (**SM**) | Used for PST files |
 | "\x53\x4d" (**SO**) | Used for OST files |
 | "\x41\x42" (**AB**) | Used for PAB files |
+
+### Format Types
+
+| Value               | Description        |
+| -------------       | -------------      |
+| 14                  | 32-bit ANSI format |
+| 15                  | 32-bit ANSI format |
+| 21                  | 64-bit Unicode format (by Visual Recovery) |
+| 23                  | 64-bit Unicode format |
+| 36                  | 64-bit Unicode format with 4k |
 
 ## License
 
