@@ -42,7 +42,7 @@ The PFF (Personal Folder File) and OFF (Offline Folder File) format is used to s
 
 ## Datasets
 
-This library is tested on the following datasets.
+This library is tested on the following datasets:
 
 - [enron.pst](https://github.com/mooijtech/go-pst/blob/master/data/enron.pst)
 - [32-bit.pst](https://github.com/mooijtech/go-pst/blob/master/data/32-bit.pst)
@@ -51,6 +51,14 @@ This library is tested on the following datasets.
 
 This implementation is based on the [references](#references).<br/>
 The source code of go-pst will reference this implementation.
+
+### File Header
+
+The file header common to both the 64-bit and 32-bit PFF format consists of 24 bytes and consists of:
+
+| Offset        | Size          | Value                     | Description   |
+| ------------- | ------------- | -------------             | ------------- |
+| 0             | 4             | "\x21\x42\x44\x4e" (**!BDN**) | The signature (magic identifier)
 
 ## License
 
