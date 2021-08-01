@@ -54,8 +54,6 @@ The source code of go-pst will reference this implementation.
 
 ### File Header
 
-The file header common to both the 64-bit and 32-bit PFF format consists of 24 bytes and consists of:
-
 | Offset        | Size          | Value                         | Description   |
 | ------------- | ------------- | -------------                 | ------------- |
 | 0             | 4             | "\x21\x42\x44\x4e" (**!BDN**) | The signature (magic identifier). |
@@ -79,6 +77,26 @@ The file header common to both the 64-bit and 32-bit PFF format consists of 24 b
 | 21                  | 64-bit Unicode format (by Visual Recovery) |
 | 23                  | 64-bit Unicode format |
 | 36                  | 64-bit Unicode format with 4k |
+
+### The 64-bit header data
+
+| Offset        | Size          | Description   |
+| ------------- | ------------- | ------------- |
+| 513           | 1             | Encryption type. See [Encryption Types](#encryption-types). |
+
+### The 32-bit header data
+
+| Offset        | Size          | Description   |
+| ------------- | ------------- | ------------- |
+| 461           | 1             | Encryption type. See [Encryption Types](#encryption-types). |
+
+### Encryption Types
+
+| Value        | Identifier          | Description   |
+| -------------| -------------       | ------------- |
+| 0x00         | NDB_CRYPT_NONE      | No encryption. |
+| 0x01         | NDB_CRYPT_PERMUTE   | Compressible encryption. |
+| 0x02         | NDB_CRYPT_CYCLIC    | High encryption. |
 
 ## License
 
