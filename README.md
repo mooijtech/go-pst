@@ -56,9 +56,18 @@ The source code of go-pst will reference this implementation.
 
 The file header common to both the 64-bit and 32-bit PFF format consists of 24 bytes and consists of:
 
-| Offset        | Size          | Value                     | Description   |
-| ------------- | ------------- | -------------             | ------------- |
-| 0             | 4             | "\x21\x42\x44\x4e" (**!BDN**) | The signature (magic identifier)
+| Offset        | Size          | Value                         | Description   |
+| ------------- | ------------- | -------------                 | ------------- |
+| 0             | 4             | "\x21\x42\x44\x4e" (**!BDN**) | The signature (magic identifier).
+| 8             | 2             |                               | The content type (client signature). See [Content types](#content-types).
+
+### Content Types
+
+| Value               | Description        |
+| -------------       | -------------      |
+| "\x53\x4d" (**SM**) | Used for PST files |
+| "\x53\x4d" (**SO**) | Used for OST files |
+| "\x41\x42" (**AB**) | Used for PAB files |
 
 ## License
 
