@@ -6,6 +6,7 @@ package pst
 import (
 	"bufio"
 	"bytes"
+	"encoding/binary"
 	"errors"
 	"os"
 )
@@ -86,5 +87,38 @@ func (pstFile *File) GetContentType() ([]byte, error) {
 		return ContentTypePAB, nil
 	} else {
 		return nil, errors.New("unsupported content type")
+	}
+}
+
+// Constants defining the format types.
+// References "Format Types".
+const (
+	FormatTypeANSI = "ANSI"
+	FormatTypeUnicode = "Unicode"
+	FormatTypeUnicode4k = "Unicode4k"
+)
+
+// GetFormatType returns the format type.
+// References "File Header", "Format Types".
+func (pstFile *File) GetFormatType() (string, error) {
+	formatType, err := pstFile.Read(2, 10)
+
+	if err != nil {
+		return "", err
+	}
+
+	switch binary.LittleEndian.Uint16(formatType) {
+	case 14:
+		return FormatTypeANSI, nil
+	case 15:
+		return FormatTypeANSI, nil
+	case 21:
+		return FormatTypeUnicode, nil
+	case 23:
+		return FormatTypeUnicode, nil
+	case 36:
+		return FormatTypeUnicode4k, nil
+	default:
+		return "", errors.New("unsupported format type")
 	}
 }

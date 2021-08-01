@@ -32,4 +32,13 @@ func main() {
 	}
 
 	log.Infof("Content type: %s", contentType)
+
+	formatType, err := pstFile.GetFormatType()
+
+	if err != nil {
+		log.Errorf("Failed to get format type: %s", err)
+		return
+	}
+
+	log.Infof("Format type: %s", formatType)
 }
