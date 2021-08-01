@@ -6,6 +6,7 @@ package pst
 import (
 	"bufio"
 	"bytes"
+	"errors"
 	"os"
 )
 
@@ -58,4 +59,32 @@ func (pstFile *File) IsValidSignature() (bool, error) {
 	}
 
 	return bytes.Equal(signature, []byte("!BDN")), nil
+}
+
+// Constants defining the content types.
+// References "Content Types".
+var (
+	ContentTypePST = []byte("SM")
+	ContentTypeOST = []byte("SO")
+	ContentTypePAB = []byte("AB")
+)
+
+// GetContentType returns if the file is a PST, OST or PAB file.
+// References "File Header", "Content Types".
+func (pstFile *File) GetContentType() ([]byte, error) {
+	contentType, err := pstFile.Read(2, 8)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if bytes.Equal(contentType, ContentTypePST) {
+		return ContentTypePST, nil
+	} else if bytes.Equal(contentType, ContentTypeOST) {
+		return ContentTypeOST, nil
+	} else if bytes.Equal(contentType, ContentTypePAB) {
+		return ContentTypePAB, nil
+	} else {
+		return nil, errors.New("unsupported content type")
+	}
 }

@@ -23,4 +23,13 @@ func main() {
 		log.Errorf("Invalid file signature.")
 		return
 	}
+
+	contentType, err := pstFile.GetContentType()
+
+	if err != nil {
+		log.Errorf("Failed to get content type: %s", err)
+		return
+	}
+
+	log.Infof("Content type: %s", contentType)
 }
