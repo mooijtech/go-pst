@@ -50,4 +50,13 @@ func main() {
 	}
 
 	log.Infof("Encryption type: %s", encryptionType)
+
+	nodeBTreeOffset, err := pstFile.GetNodeBTreeOffset(formatType)
+
+	if err != nil {
+		log.Errorf("Failed to get node b-tree offset: %s", err)
+		return
+	}
+
+	log.Infof("Node b-tree offset: %d", nodeBTreeOffset)
 }
