@@ -11,4 +11,16 @@ func main() {
 	pstFile := pst.New("data/enron.pst")
 
 	log.Infof("Parsing file: %s", pstFile.Filepath)
+
+	isValidSignature, err := pstFile.IsValidSignature()
+
+	if err != nil {
+		log.Errorf("Failed to read signature: %s", err)
+		return
+	}
+
+	if !isValidSignature {
+		log.Errorf("Invalid file signature.")
+		return
+	}
 }

@@ -5,6 +5,7 @@ package pst
 
 import (
 	"bufio"
+	"bytes"
 	"os"
 )
 
@@ -45,4 +46,16 @@ func (pstFile *File) Read(outputBufferSize int, offset int) ([]byte, error) {
 	}
 
 	return outputBuffer, nil
+}
+
+// IsValidSignature returns true is the file matches the PFF format signature.
+// References "File Header".
+func (pstFile *File) IsValidSignature() (bool, error) {
+	signature, err := pstFile.Read(4, 0)
+
+	if err != nil {
+		return false, err
+	}
+
+	return bytes.Equal(signature, []byte("!BDN")), nil
 }
