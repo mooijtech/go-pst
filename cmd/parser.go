@@ -41,4 +41,13 @@ func main() {
 	}
 
 	log.Infof("Format type: %s", formatType)
+
+	encryptionType, err := pstFile.GetEncryptionType(formatType)
+
+	if err != nil {
+		log.Errorf("Failed to get encryption type: %s", err)
+		return
+	}
+
+	log.Infof("Encryption type: %s", encryptionType)
 }

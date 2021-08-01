@@ -122,3 +122,48 @@ func (pstFile *File) GetFormatType() (string, error) {
 		return "", errors.New("unsupported format type")
 	}
 }
+
+// Constants defining the encryption types.
+// References "Encryption Types".
+const (
+	EncryptionTypeNone = "None"
+	EncryptionTypePermute = "Permute"
+	EncryptionTypeCyclic = "Cyclic"
+)
+
+// GetEncryptionType returns the encryption type.
+// References "The 64-bit header data", "The 32-bit header data", "Encryption Types".
+func (pstFile *File) GetEncryptionType(formatType string) (string, error) {
+	var encryptionTypeOffset int
+
+	switch formatType {
+	case FormatTypeUnicode:
+		encryptionTypeOffset = 513
+		break
+	case FormatTypeUnicode4k:
+		encryptionTypeOffset = 513
+		break
+	case FormatTypeANSI:
+		encryptionTypeOffset = 461
+		break
+	default:
+		return "", errors.New("unsupported format type")
+	}
+
+	encryptionType, err := pstFile.Read(1, encryptionTypeOffset)
+
+	if err != nil {
+		return "", err
+	}
+
+	switch binary.LittleEndian.Uint16([]byte{encryptionType[0], 0}) {
+	case 0:
+		return EncryptionTypeNone, nil
+	case 1:
+		return EncryptionTypePermute, nil
+	case 2:
+		return EncryptionTypeCyclic, nil
+	default:
+		return "", errors.New("unsupported encryption type")
+	}
+}
