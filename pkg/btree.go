@@ -130,3 +130,31 @@ func (pstFile *File) GetBTreeEntryCount(btreeOffset int, formatType string) (int
 		return -1, errors.New("unsupported format type")
 	}
 }
+
+// GetBTreeEntrySize returns the size of an entry in the b-tree.
+// References "The node and block b-tree".
+func (pstFile *File) GetBTreeEntrySize(btreeOffset int, formatType string) (int, error) {
+	var entrySizeOffset int
+
+	switch formatType {
+	case FormatTypeUnicode:
+		entrySizeOffset = btreeOffset + 490
+		break
+	case FormatTypeUnicode4k:
+		entrySizeOffset = btreeOffset + 4060
+		break
+	case FormatTypeANSI:
+		entrySizeOffset = btreeOffset + 498
+		break
+	default:
+		return -1, errors.New("unsupported format type")
+	}
+
+	entrySize, err := pstFile.Read(1, entrySizeOffset)
+
+	if err != nil {
+		return -1, err
+	}
+
+	return int(binary.LittleEndian.Uint16([]byte{entrySize[0], 0})), nil
+}

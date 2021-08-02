@@ -72,4 +72,13 @@ func main() {
 	}
 
 	log.Infof("Node b-tree entry count: %d", btreeEntryCount)
+
+	btreeEntrySize, err := pstFile.GetBTreeEntrySize(nodeBTreeOffset, formatType)
+
+	if err != nil {
+		log.Infof("Failed to get node b-tree entry size: %s", err)
+		return
+	}
+
+	log.Infof("Node b-tree entry size: %d", btreeEntrySize)
 }
