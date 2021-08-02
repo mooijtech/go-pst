@@ -102,6 +102,29 @@ The source code of go-pst will reference this implementation.
 | 0x01         | NDB_CRYPT_PERMUTE   | Compressible encryption. |
 | 0x02         | NDB_CRYPT_CYCLIC    | High encryption. |
 
+## The node and block b-tree
+
+The following offsets start from the (node/block) b-tree offset.
+
+### 64-bit
+
+| Offset        | Size          | Description   |
+| ------------- | ------------- | ------------- |
+| 488           |  1            | The number of entries. |
+
+### 64-bit 4k
+
+| Offset        | Size          | Description   |
+| ------------- | ------------- | ------------- |
+| 4056           |  2            | The number of entries. |
+
+### 32-bit
+
+| Offset        | Size          | Description   |
+| ------------- | ------------- | ------------- |
+| 496           |  1            | The number of entries. |
+
+
 ## License
 
 [MIT](https://github.com/mooijtech/go-pst/blob/master/LICENSE.txt)
