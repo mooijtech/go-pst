@@ -110,6 +110,7 @@ The following offsets start from the (node/block) b-tree offset.
 
 | Offset        | Size          | Description   |
 | ------------- | ------------- | ------------- |
+| 0             |  488            | B-tree node entries (number of entries x entry size). |
 | 488           |  1            | The number of entries. |
 | 490           |  1            | The size of an entry. |
 | 491           |  1            | B-tree node level. A zero value represents a leaf node. A value greater than zero represents a branch node, with the highest level representing the root. |
@@ -118,6 +119,7 @@ The following offsets start from the (node/block) b-tree offset.
 
 | Offset        | Size          | Description   |
 | ------------- | ------------- | ------------- |
+| 0             |  4056            | B-tree node entries (number of entries x entry size). |
 | 4056           |  2            | The number of entries. |
 | 4060           |  1            | The size of an entry. |
 | 4061           |  1            | B-tree node level. A zero value represents a leaf node. A value greater than zero represents a branch node, with the highest level representing the root. |
@@ -126,9 +128,56 @@ The following offsets start from the (node/block) b-tree offset.
 
 | Offset        | Size          | Description   |
 | ------------- | ------------- | ------------- |
+| 0             |  496            | B-tree node entries (number of entries x entry size). |
 | 496           |  1            | The number of entries. |
 | 498           |  1            | The size of an entry. |
 | 499           |  1            | B-tree node level. A zero value represents a leaf node. A value greater than zero represents a branch node, with the highest level representing the root. |
+
+### The b-tree entries
+
+#### The 64-bit block b-tree branch node entry
+
+| Offset        | Size          | Description   |
+| ------------- | ------------- | ------------- |
+| 0             |  8            | The identifier of the first child node. 32-bit integer. |
+| 16            |  8            | The file offset. |
+
+#### The 64-bit block b-tree leaf node entry
+
+| Offset        | Size          | Description   |
+| ------------- | ------------- | ------------- |
+| 0             |  8            | The identifier. 32-bit integer. |
+| 8             |  8            | The file offset. |
+
+#### The 64-bit node b-tree leaf node entry
+
+| Offset        | Size          | Description   |
+| ------------- | ------------- | ------------- |
+| 0             |  8            | The identifier. 32-bit integer. |
+| 8             |  8            | The node identifier of the data. Searchable in the block b-tree. |
+| 16            |  8            | The node identifier of the local descriptors. Searchable in the block b-tree. |
+
+#### The 32-bit block b-tree branch node entry
+
+| Offset        | Size          | Description   |
+| ------------- | ------------- | ------------- |
+| 0             |  4            | The identifier of the first child node. 32-bit integer. |
+| 8             |  4            | The file offset. |
+
+#### The 32-bit block b-tree leaf node entry
+
+| Offset        | Size          | Description   |
+| ------------- | ------------- | ------------- |
+| 0             |  4            | The identifier. 32-bit integer. |
+| 4             |  4            | The file offset. |
+
+#### The 32-bit node b-tree leaf node entry
+
+| Offset        | Size          | Description   |
+| ------------- | ------------- | ------------- |
+| 0             |  4            | The identifier. 32-bit integer. |
+| 4             |  4            | The node identifier of the data. Searchable in the block b-tree. |
+| 8             |  4            | The node identifier of the local descriptors. Searchable in the block b-tree. |
 
 ## Contact
 
