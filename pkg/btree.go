@@ -186,3 +186,63 @@ func (pstFile *File) GetBTreeNodeLevel(btreeNodeOffset int, formatType string) (
 
 	return int(binary.LittleEndian.Uint16([]byte{level[0], 0})), nil
 }
+
+// BTreeNodeEntry represents an entry in a b-tree node.
+type BTreeNodeEntry struct {
+	Data []byte
+}
+
+// NewBTreeNodeEntry is a constructor for creating node entries.
+func NewBTreeNodeEntry(data []byte) BTreeNodeEntry {
+	return BTreeNodeEntry {
+		Data: data,
+	}
+}
+
+// GetBTreeNodeEntries returns the entries in the b-tree node.
+// References "The node and block b-tree".
+func (pstFile *File) GetBTreeNodeEntries(btreeNodeOffset int, formatType string) ([]BTreeNodeEntry, error) {
+	var entriesBufferSize int
+
+	switch formatType {
+	case FormatTypeUnicode:
+		entriesBufferSize = 488
+		break
+	case FormatTypeUnicode4k:
+		entriesBufferSize = 4056
+		break
+	case FormatTypeANSI:
+		entriesBufferSize = 496
+		break
+	default:
+		return nil, errors.New("unsupported format type")
+	}
+
+	entries, err := pstFile.Read(entriesBufferSize, btreeNodeOffset)
+
+	if err != nil {
+		return nil, err
+	}
+
+	entryCount, err := pstFile.GetBTreeNodeEntryCount(btreeNodeOffset, formatType)
+
+	if err != nil {
+		return nil, err
+	}
+
+	entrySize, err := pstFile.GetBTreeNodeEntrySize(btreeNodeOffset, formatType)
+
+	if err != nil {
+		return nil, err
+	}
+
+	nodeEntries := make([]BTreeNodeEntry, entryCount)
+
+	for i := 0; i < entryCount; i++ {
+		entry := entries[(i * entrySize):(i * entrySize) + entrySize]
+
+		nodeEntries[i] = NewBTreeNodeEntry(entry)
+	}
+
+	return nodeEntries, nil
+}

@@ -89,4 +89,13 @@ func main() {
 	}
 
 	log.Infof("Node b-tree level: %d", btreeNodeLevel)
+
+	btreeNodeEntries, err := pstFile.GetBTreeNodeEntries(nodeBTreeOffset, formatType)
+
+	if err != nil {
+		log.Errorf("Failed to get node b-tree entries: %s", err)
+		return
+	}
+
+	log.Infof("Node b-tree entries: %d", len(btreeNodeEntries))
 }
