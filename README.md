@@ -112,6 +112,7 @@ The following offsets start from the (node/block) b-tree offset.
 | ------------- | ------------- | ------------- |
 | 488           |  1            | The number of entries. |
 | 490           |  1            | The size of an entry. |
+| 491           |  1            | B-tree node level. A zero value represents a leaf node. A value greater than zero represents a branch node, with the highest level representing the root. |
 
 ### 64-bit 4k
 
@@ -119,6 +120,7 @@ The following offsets start from the (node/block) b-tree offset.
 | ------------- | ------------- | ------------- |
 | 4056           |  2            | The number of entries. |
 | 4060           |  1            | The size of an entry. |
+| 4061           |  1            | B-tree node level. A zero value represents a leaf node. A value greater than zero represents a branch node, with the highest level representing the root. |
 
 ### 32-bit
 
@@ -126,7 +128,14 @@ The following offsets start from the (node/block) b-tree offset.
 | ------------- | ------------- | ------------- |
 | 496           |  1            | The number of entries. |
 | 498           |  1            | The size of an entry. |
+| 499           |  1            | B-tree node level. A zero value represents a leaf node. A value greater than zero represents a branch node, with the highest level representing the root. |
 
+## Contact
+
+Feel free to contact me if you have any questions.<br/>
+**Name**: Marten Mooij<br/>
+**Email**: info@mooijtech.com<br/>
+**Phone**: +31 6 30 53 47 67
 
 ## License
 
