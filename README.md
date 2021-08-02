@@ -111,18 +111,21 @@ The following offsets start from the (node/block) b-tree offset.
 | Offset        | Size          | Description   |
 | ------------- | ------------- | ------------- |
 | 488           |  1            | The number of entries. |
+| 490           |  1            | The size of an entry. |
 
 ### 64-bit 4k
 
 | Offset        | Size          | Description   |
 | ------------- | ------------- | ------------- |
 | 4056           |  2            | The number of entries. |
+| 4060           |  1            | The size of an entry. |
 
 ### 32-bit
 
 | Offset        | Size          | Description   |
 | ------------- | ------------- | ------------- |
 | 496           |  1            | The number of entries. |
+| 498           |  1            | The size of an entry. |
 
 
 ## License
