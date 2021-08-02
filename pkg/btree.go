@@ -90,23 +90,23 @@ func (pstFile *File) GetBlockBTreeOffset(formatType string) (int, error) {
 	}
 }
 
-// GetBTreeEntryCount returns the amount of entries in the b-tree.
+// GetBTreeNodeEntryCount returns the amount of entries in the b-tree.
 // References "The node and block b-tree".
-func (pstFile *File) GetBTreeEntryCount(btreeOffset int, formatType string) (int, error) {
+func (pstFile *File) GetBTreeNodeEntryCount(btreeNodeOffset int, formatType string) (int, error) {
 	var entryCountOffset int
 	var entryCountBufferSize int
 
 	switch formatType {
 	case FormatTypeUnicode:
-		entryCountOffset = btreeOffset + 488
+		entryCountOffset = btreeNodeOffset + 488
 		entryCountBufferSize = 1
 		break
 	case FormatTypeUnicode4k:
-		entryCountOffset = btreeOffset + 4056
+		entryCountOffset = btreeNodeOffset + 4056
 		entryCountBufferSize = 2
 		break
 	case FormatTypeANSI:
-		entryCountOffset = btreeOffset + 496
+		entryCountOffset = btreeNodeOffset + 496
 		entryCountBufferSize = 1
 		break
 	default:
@@ -131,20 +131,20 @@ func (pstFile *File) GetBTreeEntryCount(btreeOffset int, formatType string) (int
 	}
 }
 
-// GetBTreeEntrySize returns the size of an entry in the b-tree.
+// GetBTreeNodeEntrySize returns the size of an entry in the b-tree.
 // References "The node and block b-tree".
-func (pstFile *File) GetBTreeEntrySize(btreeOffset int, formatType string) (int, error) {
+func (pstFile *File) GetBTreeNodeEntrySize(btreeNodeOffset int, formatType string) (int, error) {
 	var entrySizeOffset int
 
 	switch formatType {
 	case FormatTypeUnicode:
-		entrySizeOffset = btreeOffset + 490
+		entrySizeOffset = btreeNodeOffset + 490
 		break
 	case FormatTypeUnicode4k:
-		entrySizeOffset = btreeOffset + 4060
+		entrySizeOffset = btreeNodeOffset + 4060
 		break
 	case FormatTypeANSI:
-		entrySizeOffset = btreeOffset + 498
+		entrySizeOffset = btreeNodeOffset + 498
 		break
 	default:
 		return -1, errors.New("unsupported format type")
@@ -157,4 +157,32 @@ func (pstFile *File) GetBTreeEntrySize(btreeOffset int, formatType string) (int,
 	}
 
 	return int(binary.LittleEndian.Uint16([]byte{entrySize[0], 0})), nil
+}
+
+// GetBTreeNodeLevel returns the level of the b-tree node.
+// References "The node and block b-tree".
+func (pstFile *File) GetBTreeNodeLevel(btreeNodeOffset int, formatType string) (int, error) {
+	var levelOffset int
+
+	switch formatType {
+	case FormatTypeUnicode:
+		levelOffset = 491
+		break
+	case FormatTypeUnicode4k:
+		levelOffset = 4061
+		break
+	case FormatTypeANSI:
+		levelOffset = 499
+		break
+	default:
+		return -1, errors.New("unsupported format type")
+	}
+
+	level, err := pstFile.Read(1, levelOffset)
+
+	if err != nil {
+		return -1, err
+	}
+
+	return int(binary.LittleEndian.Uint16([]byte{level[0], 0})), nil
 }

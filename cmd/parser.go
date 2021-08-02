@@ -64,21 +64,29 @@ func main() {
 
 	log.Infof("Block b-tree offset: %d", blockBTreeOffset)
 
-	btreeEntryCount, err := pstFile.GetBTreeEntryCount(nodeBTreeOffset, formatType)
+	btreeNodeEntryCount, err := pstFile.GetBTreeNodeEntryCount(nodeBTreeOffset, formatType)
 
 	if err != nil {
 		log.Errorf("Failed to get b-tree entry count: %s", err)
 		return
 	}
 
-	log.Infof("Node b-tree entry count: %d", btreeEntryCount)
+	log.Infof("Node b-tree entry count: %d", btreeNodeEntryCount)
 
-	btreeEntrySize, err := pstFile.GetBTreeEntrySize(nodeBTreeOffset, formatType)
+	btreeNodeEntrySize, err := pstFile.GetBTreeNodeEntrySize(nodeBTreeOffset, formatType)
 
 	if err != nil {
 		log.Infof("Failed to get node b-tree entry size: %s", err)
 		return
 	}
 
-	log.Infof("Node b-tree entry size: %d", btreeEntrySize)
+	log.Infof("Node b-tree entry size: %d", btreeNodeEntrySize)
+
+	btreeNodeLevel, err := pstFile.GetBTreeNodeLevel(nodeBTreeOffset, formatType)
+
+	if err != nil {
+		log.Errorf("Failed to get node b-tree level: %s", btreeNodeLevel)
+	}
+
+	log.Infof("Node b-tree level: %d", btreeNodeLevel)
 }
