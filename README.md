@@ -30,8 +30,8 @@ The PFF (Personal Folder File) and OFF (Offline Folder File) format is used to s
 
 ### Documentation
 
-- [Personal Folder File (PFF) file format specification](https://github.com/mooijtech/go-pst/blob/main/docs/PFF.pdf)
-- [Outlook Personal Folders (.pst) File Format](https://github.com/mooijtech/go-pst/blob/main/docs/MS-PST.pdf)
+- [Personal Folder File (PFF) file format specification](https://github.com/mooijtech/go-pst/blob/master/docs/PFF.pdf)
+- [Outlook Personal Folders (.pst) File Format](https://github.com/mooijtech/go-pst/blob/master/docs/MS-PST.pdf)
 
 ### Libraries
 
@@ -139,21 +139,21 @@ The following offsets start from the (node/block) b-tree offset.
 
 | Offset        | Size          | Description   |
 | ------------- | ------------- | ------------- |
-| 0             |  8            | The identifier of the first child node. 32-bit integer. |
+| 0             |  8            | [The identifier](#identifier) of the first child node. 32-bit integer. |
 | 16            |  8            | The file offset. |
 
 #### The 64-bit block b-tree leaf node entry
 
 | Offset        | Size          | Description   |
 | ------------- | ------------- | ------------- |
-| 0             |  8            | The identifier. 32-bit integer. |
+| 0             |  8            | [The identifier](#identifier). 32-bit integer. |
 | 8             |  8            | The file offset. |
 
 #### The 64-bit node b-tree leaf node entry
 
 | Offset        | Size          | Description   |
 | ------------- | ------------- | ------------- |
-| 0             |  8            | The identifier. 32-bit integer. |
+| 0             |  8            | [The identifier.](#identifier) 32-bit integer. |
 | 8             |  8            | The node identifier of the data. Searchable in the block b-tree. |
 | 16            |  8            | The node identifier of the local descriptors. Searchable in the block b-tree. |
 
@@ -161,23 +161,62 @@ The following offsets start from the (node/block) b-tree offset.
 
 | Offset        | Size          | Description   |
 | ------------- | ------------- | ------------- |
-| 0             |  4            | The identifier of the first child node. 32-bit integer. |
+| 0             |  4            | [The identifier](#identifier) of the first child node. 32-bit integer. |
 | 8             |  4            | The file offset. |
 
 #### The 32-bit block b-tree leaf node entry
 
 | Offset        | Size          | Description   |
 | ------------- | ------------- | ------------- |
-| 0             |  4            | The identifier. 32-bit integer. |
+| 0             |  4            | [The identifier](#identifier). 32-bit integer. |
 | 4             |  4            | The file offset. |
 
 #### The 32-bit node b-tree leaf node entry
 
 | Offset        | Size          | Description   |
 | ------------- | ------------- | ------------- |
-| 0             |  4            | The identifier. 32-bit integer. |
+| 0             |  4            | [The identifier](#identifier). 32-bit integer. |
 | 4             |  4            | The node identifier of the data. Searchable in the block b-tree. |
 | 8             |  4            | The node identifier of the local descriptors. Searchable in the block b-tree. |
+
+### Identifier
+
+The 32-bit integer (identifier) can be used to search for b-tree nodes.
+
+| Offset        | Size          | Description   |
+| ------------- | ------------- | ------------- |
+| 0             |  5 bits       | [The identifier type](#identifier-types). |
+
+#### Identifier types
+
+| Value         | Identifier          | Description   |
+| ------------- | ------------- | ------------- |
+| 0          |  HID       | Table value (or heap node) |
+| 1          |  INTERNAL       | Internal node |
+| 2          |  NORMAL_FOLDER       | Folder item |
+| 3          |  SEARCH_FOLDER       | Search folder item |
+| 4          |  NORMAL_MESSAGE       | Message item |
+| 5          |  ATTACHMENT       | Attachment item |
+| 6          |  SEARCH_UPDATE_QUEUE       | Queue of changed search folder items |
+| 7          |  SEARCH_CRITERIA_OBJECT       | Search folder criteria |
+| 8          |  ASSOCIATED_MESSAGE       | Associated contents item |
+| 10          |  CONTENTS_TABLE_INDEX       | Unknown |
+| 11          |  RECEIVE_FOLDER_TABLE       | Inbox item (or received folder table) |
+| 12          |  OUTGOING_QUEUE_TABLE       | Outbox item (or outgoing queue table) |
+| 13          |  HIERARCHY_TABLE       | Sub folders item (or hierarchy table) |
+| 14          |  CONTENTS_TABLE       | Sub messages items (or contents table) |
+| 15          |  ASSOCIATED_CONTENTS_TABLE       | Sub associated contents item (or associated contents table) |
+| 16          |  SEARCH_CONTENTS_TABLE       | Search contents table |
+| 17          |  ATTACHMENT_TABLE       | Attachments item |
+| 18          |  RECIPIENT_TABLE       | Recipients items |
+| 19          |  SEARCH_TABLE_INDEX       | Unknown |
+| 20          |         | Unknown |
+| 21          |         | Unknown |
+| 22          |         | Unknown |
+| 23          |         | Unknown |
+| 24          |         | Unknown |
+| 31          |  LTP       | Local descriptor value |
+
 
 ## Contact
 
