@@ -99,12 +99,12 @@ func main() {
 
 	log.Infof("Node b-tree entries: %d", len(btreeNodeEntries))
 
-	nameToIDNode, err := pstFile.FindBTreeNode(nodeBTreeOffset, 97, formatType)
+	rootFolderNode, err := pstFile.FindBTreeNode(nodeBTreeOffset, 290, formatType)
 
 	if err != nil {
 		log.Infof("Failed to find name to ID node: %s", err)
 		return
 	}
 
-	log.Infof("Name To ID node: %b", nameToIDNode.Data)
+	log.Infof("Root folder node: %b", rootFolderNode.Data)
 }

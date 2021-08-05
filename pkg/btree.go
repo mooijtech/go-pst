@@ -248,6 +248,7 @@ func (pstFile *File) GetBTreeNodeEntries(btreeNodeOffset int, formatType string)
 }
 
 // GetIdentifier returns the identifier of this b-tree node entry.
+// References "The b-tree entries".
 func (btreeNodeEntry *BTreeNodeEntry) GetIdentifier(formatType string) (int, error) {
 	var identifierBufferSize int
 
@@ -266,6 +267,47 @@ func (btreeNodeEntry *BTreeNodeEntry) GetIdentifier(formatType string) (int, err
 	}
 
 	return int(binary.LittleEndian.Uint32(btreeNodeEntry.Data[:identifierBufferSize])), nil
+}
+
+// Constants defining the identifier types.
+// References "Identifier types".
+const (
+	IdentifierTypeHID = 0
+	IdentifierTypeInternal = 1
+	IdentifierTypeNormalFolder = 2
+	IdentifierTypeSearchFolder = 3
+	IdentifierTypeNormalMessage = 4
+	IdentifierTypeAttachment = 5
+	IdentifierTypeSearchUpdateQueue = 6
+	IdentifierTypeSearchCriteriaObject = 7
+	IdentifierTypeAssociatedMessage = 8
+	IdentifierTypeContentsTableIndex = 10
+	IdentifierTypeReceiveFolderTable = 11
+	IdentifierTypeOutgoingQueueTable = 12
+	IdentifierTypeHierarchyTable = 13
+	IdentifierTypeContentsTable = 14
+	IdentifierTypeAssociatedContentsTable = 15
+	IdentifierTypeSearchContentsTable = 16
+	IdentifierTypeAttachmentTable = 17
+	IdentifierTypeRecipientTable = 18
+	IdentifierTypeSearchTableIndex = 19
+	IdentifierTypeLTP = 31
+)
+
+// GetIdentifierType returns the b-tree node entry identifier type.
+// References "The b-tree entries", "Identifier".
+func (btreeNodeEntry *BTreeNodeEntry) GetIdentifierType(formatType string) (int, error) {
+	nodeEntryIdentifier, err := btreeNodeEntry.GetIdentifier(formatType)
+
+	if err != nil {
+		return -1, err
+	}
+
+	// Bit masking:
+	// Use bitwise ANDing in order to extract a subset of the bits in the value.
+	// 11111 (binary) = 0x1F (hex), which with bitwise ANDing extracts the first 5 bits.
+	// See: https://www.rapidtables.com/convert/number/binary-to-hex.html
+	return nodeEntryIdentifier & 0x1F, nil
 }
 
 // GetFileOffset returns the file offset for this b-tree branch or leaf node.
@@ -363,7 +405,7 @@ func (pstFile *File) FindBTreeNode(btreeNodeOffset int, identifier int, formatTy
 			}
 
 			recursiveNodeEntryIdentifier, err := recursiveNodeEntry.GetIdentifier(formatType)
-			
+
 			if err != nil {
 				return BTreeNodeEntry{}, err
 			}
