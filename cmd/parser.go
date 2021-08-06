@@ -3,8 +3,8 @@
 package main
 
 import (
+	pst "github.com/mooijtech/go-pst/pkg"
 	log "github.com/sirupsen/logrus"
-	pst "pst/pkg"
 )
 
 func main() {
@@ -134,4 +134,13 @@ func main() {
 	}
 
 	log.Infof("Root folder node data node offset: %d", rootFolderNodeDataNodeOffset)
+
+	rootFolderNodeDataNodeSize, err := rootFolderNodeDataNode.GetSize(formatType)
+
+	if err != nil {
+		log.Errorf("Failed to get root folder node data node size: %s", err)
+		return
+	}
+
+	log.Infof("Root folder node data node size: %d", rootFolderNodeDataNodeSize)
 }
