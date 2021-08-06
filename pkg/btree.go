@@ -362,6 +362,41 @@ func (btreeNodeEntry *BTreeNodeEntry) GetFileOffset(isBranchNode bool, formatTyp
 	}
 }
 
+// GetDataIdentifier returns the node identifier of the data (in the node b-tree).
+// References "The b-tree entries".
+func (btreeNodeEntry *BTreeNodeEntry) GetDataIdentifier(formatType string) (int, error) {
+	var dataOffset int
+	var dataBufferSize int
+
+	switch formatType {
+	case FormatTypeUnicode:
+		dataOffset = 8
+		dataBufferSize = 8
+		break
+	case FormatTypeUnicode4k:
+		dataOffset = 8
+		dataBufferSize = 8
+		break
+	case FormatTypeANSI:
+		dataOffset = 4
+		dataBufferSize = 4
+		break
+	default:
+		return -1, errors.New("unsupported format type")
+	}
+
+	switch formatType {
+	case FormatTypeUnicode:
+		return int(binary.LittleEndian.Uint64(btreeNodeEntry.Data[dataOffset:(dataOffset + dataBufferSize)])), nil
+	case FormatTypeUnicode4k:
+		return int(binary.LittleEndian.Uint64(btreeNodeEntry.Data[dataOffset:(dataOffset + dataBufferSize)])), nil
+	case FormatTypeANSI:
+		return int(binary.LittleEndian.Uint32(btreeNodeEntry.Data[dataOffset:(dataOffset + dataBufferSize)])), nil
+	default:
+		return -1, errors.New("unsupported format type")
+	}
+}
+
 // FindBTreeNode walks the b-tree and finds the node with the given identifier.
 func (pstFile *File) FindBTreeNode(btreeNodeOffset int, identifier int, formatType string) (BTreeNodeEntry, error) {
 	nodeEntries, err := pstFile.GetBTreeNodeEntries(btreeNodeOffset, formatType)

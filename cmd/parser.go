@@ -102,9 +102,18 @@ func main() {
 	rootFolderNode, err := pstFile.FindBTreeNode(nodeBTreeOffset, 290, formatType)
 
 	if err != nil {
-		log.Infof("Failed to find name to ID node: %s", err)
+		log.Infof("Failed to find root folder node: %s", err)
 		return
 	}
 
 	log.Infof("Root folder node: %b", rootFolderNode.Data)
+
+	rootFolderNodeDataIdentifier, err := rootFolderNode.GetDataIdentifier(formatType)
+
+	if err != nil {
+		log.Errorf("Failed to get root folder node data identifier: %s", err)
+		return
+	}
+
+	log.Infof("Root folder node data identifier: %d", rootFolderNodeDataIdentifier)
 }
