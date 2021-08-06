@@ -397,6 +397,32 @@ func (btreeNodeEntry *BTreeNodeEntry) GetDataIdentifier(formatType string) (int,
 	}
 }
 
+// GetSize returns the size of the data in the block b-tree leaf node entry.
+// References "The b-tree entries".
+func (btreeNodeEntry *BTreeNodeEntry) GetSize(formatType string) (int, error) {
+	var nodeSizeOffset int
+	var nodeSizeBufferSize int
+
+	switch formatType {
+	case FormatTypeUnicode:
+		nodeSizeOffset = 16
+		nodeSizeBufferSize = 2
+		break
+	case FormatTypeUnicode4k:
+		nodeSizeOffset = 16
+		nodeSizeBufferSize = 2
+		break
+	case FormatTypeANSI:
+		nodeSizeOffset = 8
+		nodeSizeBufferSize = 2
+		break
+	default:
+		return -1, errors.New("unsupported format type")
+	}
+
+	return int(binary.LittleEndian.Uint16(btreeNodeEntry.Data[nodeSizeOffset:(nodeSizeOffset + nodeSizeBufferSize)])), nil
+}
+
 // FindBTreeNode walks the b-tree and finds the node with the given identifier.
 func (pstFile *File) FindBTreeNode(btreeNodeOffset int, identifier int, formatType string) (BTreeNodeEntry, error) {
 	nodeEntries, err := pstFile.GetBTreeNodeEntries(btreeNodeOffset, formatType)
