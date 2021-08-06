@@ -24,6 +24,8 @@
 
 ## Introduction
 
+**go-pst** is a library for reading PST files (written in Go/Golang).
+
 The PFF (Personal Folder File) and OFF (Offline Folder File) format is used to store Microsoft Outlook e-mails, appointments and contacts. The PST (Personal Storage Table), OST (Offline Storage Table) and PAB (Personal Address Book) file format consist of the PFF format.
 
 ## References
@@ -148,6 +150,7 @@ The following offsets start from the (node/block) b-tree offset.
 | ------------- | ------------- | ------------- |
 | 0             |  8            | [The identifier](#identifier). 32-bit integer. |
 | 8             |  8            | The file offset. |
+| 16            |  2            | The size. |
 
 #### The 64-bit node b-tree leaf node entry
 
@@ -170,6 +173,7 @@ The following offsets start from the (node/block) b-tree offset.
 | ------------- | ------------- | ------------- |
 | 0             |  4            | [The identifier](#identifier). 32-bit integer. |
 | 4             |  4            | The file offset. |
+| 8             |  2            | The size. |
 
 #### The 32-bit node b-tree leaf node entry
 
