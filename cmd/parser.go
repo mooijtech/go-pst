@@ -116,4 +116,22 @@ func main() {
 	}
 
 	log.Infof("Root folder node data identifier: %d", rootFolderNodeDataIdentifier)
+
+	rootFolderNodeDataNode, err := pstFile.FindBTreeNode(blockBTreeOffset, rootFolderNodeDataIdentifier, formatType)
+
+	if err != nil {
+		log.Errorf("Failed to get root folder node data node: %s", err)
+		return
+	}
+
+	log.Infof("Root folder node data node: %b", rootFolderNodeDataNode.Data)
+
+	rootFolderNodeDataNodeOffset, err := rootFolderNodeDataNode.GetFileOffset(false, formatType)
+
+	if err != nil {
+		log.Errorf("Failed to get root folder node data node offset: %s", err)
+		return
+	}
+
+	log.Infof("Root folder node data node offset: %d", rootFolderNodeDataNodeOffset)
 }

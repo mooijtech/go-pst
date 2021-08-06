@@ -313,22 +313,22 @@ func (btreeNodeEntry *BTreeNodeEntry) GetIdentifierType(formatType string) (int,
 // GetFileOffset returns the file offset for this b-tree branch or leaf node.
 // References "The b-tree entries".
 func (btreeNodeEntry *BTreeNodeEntry) GetFileOffset(isBranchNode bool, formatType string) (int, error) {
-	var nodeOffsetBufferSize int
 	var nodeOffsetOffset int
+	var nodeOffsetBufferSize int
 
 	if isBranchNode {
 		switch formatType {
 		case FormatTypeUnicode:
-			nodeOffsetBufferSize = 8
 			nodeOffsetOffset = 16
+			nodeOffsetBufferSize = 8
 			break
 		case FormatTypeUnicode4k:
-			nodeOffsetBufferSize = 8
 			nodeOffsetOffset = 16
+			nodeOffsetBufferSize = 8
 			break
 		case FormatTypeANSI:
-			nodeOffsetBufferSize = 4
 			nodeOffsetOffset = 8
+			nodeOffsetBufferSize = 4
 			break
 		default:
 			return -1, errors.New("unsupported format type")
@@ -336,15 +336,15 @@ func (btreeNodeEntry *BTreeNodeEntry) GetFileOffset(isBranchNode bool, formatTyp
 	} else {
 		switch formatType {
 		case FormatTypeUnicode:
+			nodeOffsetOffset = 8
 			nodeOffsetBufferSize = 8
-			nodeOffsetOffset = 16
 			break
 		case FormatTypeUnicode4k:
+			nodeOffsetOffset = 8
 			nodeOffsetBufferSize = 8
-			nodeOffsetOffset = 16
 		case FormatTypeANSI:
-			nodeOffsetBufferSize = 4
 			nodeOffsetOffset = 4
+			nodeOffsetBufferSize = 4
 		default:
 			return -1, errors.New("unsupported format type")
 		}
