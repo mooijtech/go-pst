@@ -104,11 +104,11 @@ The source code of go-pst will reference this implementation.
 | 0x01         | NDB_CRYPT_PERMUTE   | Compressible encryption. |
 | 0x02         | NDB_CRYPT_CYCLIC    | High encryption. |
 
-## The node and block b-tree
+### The node and block b-tree
 
 The following offsets start from the (node/block) b-tree offset.
 
-### 64-bit
+#### 64-bit
 
 | Offset        | Size          | Description   |
 | ------------- | ------------- | ------------- |
@@ -117,7 +117,7 @@ The following offsets start from the (node/block) b-tree offset.
 | 490           |  1            | The size of an entry. |
 | 491           |  1            | B-tree node level. A zero value represents a leaf node. A value greater than zero represents a branch node, with the highest level representing the root. |
 
-### 64-bit 4k
+#### 64-bit 4k
 
 | Offset        | Size          | Description   |
 | ------------- | ------------- | ------------- |
@@ -126,7 +126,7 @@ The following offsets start from the (node/block) b-tree offset.
 | 4060           |  1            | The size of an entry. |
 | 4061           |  1            | B-tree node level. A zero value represents a leaf node. A value greater than zero represents a branch node, with the highest level representing the root. |
 
-### 32-bit
+#### 32-bit
 
 | Offset        | Size          | Description   |
 | ------------- | ------------- | ------------- |
@@ -221,6 +221,13 @@ The 32-bit integer (identifier) can be used to search for b-tree nodes.
 | 24          |         | Unknown |
 | 31          |  LTP       | Local descriptor value |
 
+### The table
+
+If the encryption type was set in the file header, the entire table is encrypted.
+
+#### Compressible encryption
+
+Compressible encryption is a simple [byte-substitution cipher](https://github.com/rjohnsondev/java-libpst/blob/develop/src/main/java/com/pff/PSTObject.java#L843) with a fixed [substitution table](https://github.com/rjohnsondev/java-libpst/blob/develop/src/main/java/com/pff/PSTObject.java#L725).
 
 ## Contact
 
