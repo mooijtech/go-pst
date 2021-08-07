@@ -143,4 +143,13 @@ func main() {
 	}
 
 	log.Infof("Root folder node data node size: %d", rootFolderNodeDataNodeSize)
+
+	rootFolderNodeDataNodeTable, err := pstFile.DecryptTable(rootFolderNodeDataNode, formatType)
+
+	if err != nil {
+		log.Errorf("Failed to decrypt table: %s", err)
+		return
+	}
+
+	log.Infof("Table signature: %x", rootFolderNodeDataNodeTable[2:3])
 }
