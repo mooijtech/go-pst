@@ -151,5 +151,5 @@ func main() {
 		return
 	}
 
-	log.Infof("Table signature: %x", rootFolderNodeDataNodeTable[2:3])
+	log.Infof("Table type: %d", pstFile.GetTableType(rootFolderNodeDataNodeTable))
 }

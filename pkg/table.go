@@ -3,6 +3,10 @@
 // Copyright (C) 2021 Marten Mooij (https://www.mooijtech.com/)
 package pst
 
+import (
+	"encoding/binary"
+)
+
 // DecryptTable decrypts the table using compressible encryption.
 // References "Compressible encryption".
 func (pstFile *File) DecryptTable(btreeNodeEntry BTreeNodeEntry, formatType string) ([]byte, error) {
@@ -48,4 +52,9 @@ func (pstFile *File) DecryptTable(btreeNodeEntry BTreeNodeEntry, formatType stri
 	}
 
 	return nodeEntryTable, nil
+}
+
+// GetTableType returns the table type.
+func (pstFile *File) GetTableType(table []byte) int {
+	return int(binary.LittleEndian.Uint16([]byte{table[3], 0}))
 }
