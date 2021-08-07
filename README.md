@@ -229,6 +229,27 @@ If the encryption type was set in the file header, the entire table is encrypted
 
 Compressible encryption is a simple [byte-substitution cipher](https://github.com/rjohnsondev/java-libpst/blob/develop/src/main/java/com/pff/PSTObject.java#L843) with a fixed [substitution table](https://github.com/rjohnsondev/java-libpst/blob/develop/src/main/java/com/pff/PSTObject.java#L725).
 
+#### Table block header
+
+| Offset         | Size          | Value   | Description   | 
+| ------------- | ------------- | ------------- | ------------- |
+| 3          |  1       |  | [The table type](#table-types). |
+
+##### Table types
+
+| Table type    | Description   | Features   |
+| ------------- | ------------- | ------------- |
+| 108             |  6c table            | Has a b5 table header. |
+| 124             |  7c table            | Has a b5 table header. |
+| 140             |  8c table            | Has a b5 table header |
+| 156             |  9c table            | Has a b5 table header. |
+| 165             |  a5 table            |  |
+| 172             |  ac table            | Has a b5 table header. |
+| 181             |  b5 table header     | B-Tree on Heap |
+| 188             |  bc table            | Has a b5 table header. |
+| 204             |  cc table            | Unknown |
+
+
 ## Contact
 
 Feel free to contact me if you have any questions.<br/>
