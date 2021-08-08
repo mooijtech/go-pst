@@ -142,7 +142,7 @@ The following offsets start from the (node/block) b-tree offset.
 | Offset        | Size          | Description   |
 | ------------- | ------------- | ------------- |
 | 0             |  8            | [The identifier](#identifier) of the first child node. 32-bit integer. |
-| 16            |  8            | The file offset, points to a block b-tree leaf node entry. |
+| 16            |  8            | The file offset, points to a block b-tree branch or leaf node entry. |
 
 #### The 64-bit block b-tree leaf node entry
 
@@ -165,7 +165,7 @@ The following offsets start from the (node/block) b-tree offset.
 | Offset        | Size          | Description   |
 | ------------- | ------------- | ------------- |
 | 0             |  4            | [The identifier](#identifier) of the first child node. 32-bit integer. |
-| 8             |  4            | The file offset, points to a block b-tree leaf node entry. |
+| 8             |  4            | The file offset, points to a block b-tree branch or leaf node entry. |
 
 #### The 32-bit block b-tree leaf node entry
 
@@ -233,7 +233,7 @@ Compressible encryption is a simple [byte-substitution cipher](https://github.co
 
 | Offset        | Size          | Value         | Description   | 
 | ------------- | ------------- | ------------- | ------------- |
-| 2             |  1            |               | Block signature; MUST be set to 0xEC to indicate a Heap-on-Node. |
+| 2             |  1            |               | Block signature; MUST be set to 0xEC (236) to indicate a Heap-on-Node. |
 | 3             |  1            |               | [The table type](#table-types). |
 | 4             |  4            |               | HID User Root. |
 
