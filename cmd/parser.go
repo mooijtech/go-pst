@@ -144,12 +144,16 @@ func main() {
 
 	log.Infof("Root folder node data node size: %d", rootFolderNodeDataNodeSize)
 
-	rootFolderNodeDataNodeTable, err := pstFile.DecryptTable(rootFolderNodeDataNode, formatType)
+	rootFolderNodeDataNodeHeapOnNode, err := pstFile.DecryptHeapOnNode(rootFolderNodeDataNode, formatType)
 
 	if err != nil {
 		log.Errorf("Failed to decrypt table: %s", err)
 		return
 	}
 
-	log.Infof("Table type: %d", pstFile.GetTableType(rootFolderNodeDataNodeTable))
+	log.Infof("Table type: %d", pstFile.GetTableType(rootFolderNodeDataNodeHeapOnNode))
+
+	// Root folder node data node:
+	// - Is a BC table.
+	// - Has a b5 table header.
 }

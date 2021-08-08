@@ -7,9 +7,9 @@ import (
 	"encoding/binary"
 )
 
-// DecryptTable decrypts the table using compressible encryption.
+// DecryptHeapOnNode decrypts the Heap-on-Node using compressible encryption.
 // References "Compressible encryption".
-func (pstFile *File) DecryptTable(btreeNodeEntry BTreeNodeEntry, formatType string) ([]byte, error) {
+func (pstFile *File) DecryptHeapOnNode(btreeNodeEntry BTreeNodeEntry, formatType string) ([]byte, error) {
 	nodeEntryTableOffset, err := btreeNodeEntry.GetFileOffset(false, formatType)
 
 	if err != nil {
@@ -55,6 +55,7 @@ func (pstFile *File) DecryptTable(btreeNodeEntry BTreeNodeEntry, formatType stri
 }
 
 // GetTableType returns the table type.
+// References "Heap-on-Node header", "Table types".
 func (pstFile *File) GetTableType(table []byte) int {
 	return int(binary.LittleEndian.Uint16([]byte{table[3], 0}))
 }
