@@ -142,46 +142,46 @@ The following offsets start from the (node/block) b-tree offset.
 | Offset        | Size          | Description   |
 | ------------- | ------------- | ------------- |
 | 0             |  8            | [The identifier](#identifier) of the first child node. 32-bit integer. |
-| 16            |  8            | The file offset. |
+| 16            |  8            | The file offset, points to a block b-tree leaf node entry. |
 
 #### The 64-bit block b-tree leaf node entry
 
 | Offset        | Size          | Description   |
 | ------------- | ------------- | ------------- |
 | 0             |  8            | [The identifier](#identifier). 32-bit integer. |
-| 8             |  8            | The file offset. |
-| 16            |  2            | The size. |
+| 8             |  8            | The file offset, points to a [Heap-on-Node](#heap-on-node). |
+| 16            |  2            | The size of the [Heap-on-Node](#heap-on-node). |
 
 #### The 64-bit node b-tree leaf node entry
 
 | Offset        | Size          | Description   |
 | ------------- | ------------- | ------------- |
 | 0             |  8            | [The identifier.](#identifier) 32-bit integer. |
-| 8             |  8            | The node identifier of the data. Searchable in the block b-tree. |
-| 16            |  8            | The node identifier of the local descriptors. Searchable in the block b-tree. |
+| 8             |  8            | The node identifier of the data. This node identifier is found in the block b-tree. |
+| 16            |  8            | The node identifier of the local descriptors. This node identifier is found in the block b-tree. |
 
 #### The 32-bit block b-tree branch node entry
 
 | Offset        | Size          | Description   |
 | ------------- | ------------- | ------------- |
 | 0             |  4            | [The identifier](#identifier) of the first child node. 32-bit integer. |
-| 8             |  4            | The file offset. |
+| 8             |  4            | The file offset, points to a block b-tree leaf node entry. |
 
 #### The 32-bit block b-tree leaf node entry
 
 | Offset        | Size          | Description   |
 | ------------- | ------------- | ------------- |
 | 0             |  4            | [The identifier](#identifier). 32-bit integer. |
-| 4             |  4            | The file offset. |
-| 8             |  2            | The size. |
+| 4             |  4            | The file offset, points to a [Heap-on-Node](#heap-on-node). |
+| 8             |  2            | The size of the [Heap-on-Node](#heap-on-node). |
 
 #### The 32-bit node b-tree leaf node entry
 
 | Offset        | Size          | Description   |
 | ------------- | ------------- | ------------- |
 | 0             |  4            | [The identifier](#identifier). 32-bit integer. |
-| 4             |  4            | The node identifier of the data. Searchable in the block b-tree. |
-| 8             |  4            | The node identifier of the local descriptors. Searchable in the block b-tree. |
+| 4             |  4            | The node identifier of the data. This node identifier is found in the block b-tree. |
+| 8             |  4            | The node identifier of the local descriptors. This node identifier is found in the block b-tree. |
 
 ### Identifier
 
@@ -221,21 +221,23 @@ The 32-bit integer (identifier) can be used to search for b-tree nodes.
 | 24          |         | Unknown |
 | 31          |  LTP       | Local descriptor value |
 
-### The table
+### Heap-on-Node
 
-If the encryption type was set in the file header, the entire table is encrypted.
+If the encryption type was set in the file header, the entire Heap-on-Node is encrypted.
 
 #### Compressible encryption
 
 Compressible encryption is a simple [byte-substitution cipher](https://github.com/rjohnsondev/java-libpst/blob/develop/src/main/java/com/pff/PSTObject.java#L843) with a fixed [substitution table](https://github.com/rjohnsondev/java-libpst/blob/develop/src/main/java/com/pff/PSTObject.java#L725).
 
-#### Table block header
+#### Heap-on-Node header
 
-| Offset         | Size          | Value   | Description   | 
+| Offset        | Size          | Value         | Description   | 
 | ------------- | ------------- | ------------- | ------------- |
-| 3          |  1       |  | [The table type](#table-types). |
+| 2             |  1            |               | Block signature; MUST be set to 0xEC to indicate a Heap-on-Node. |
+| 3             |  1            |               | [The table type](#table-types). |
+| 4             |  4            |               | HID User Root. |
 
-##### Table types
+#### Table types
 
 | Table type    | Description   | Features   |
 | ------------- | ------------- | ------------- |
@@ -248,7 +250,6 @@ Compressible encryption is a simple [byte-substitution cipher](https://github.co
 | 181             |  b5 table header     | B-Tree on Heap |
 | 188             |  bc table            | Has a b5 table header. |
 | 204             |  cc table            | Unknown |
-
 
 ## Contact
 
