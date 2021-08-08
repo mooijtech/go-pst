@@ -10,19 +10,19 @@ import (
 // DecryptHeapOnNode decrypts the Heap-on-Node using compressible encryption.
 // References "Compressible encryption".
 func (pstFile *File) DecryptHeapOnNode(btreeNodeEntry BTreeNodeEntry, formatType string) ([]byte, error) {
-	nodeEntryTableOffset, err := btreeNodeEntry.GetFileOffset(false, formatType)
+	nodeEntryHeapOnNodeOffset, err := btreeNodeEntry.GetFileOffset(false, formatType)
 
 	if err != nil {
 		return nil, err
 	}
 
-	nodeEntryTableSize, err := btreeNodeEntry.GetSize(formatType)
+	nodeEntryHeapOnNodeSize, err := btreeNodeEntry.GetSize(formatType)
 
 	if err != nil {
 		return nil, err
 	}
 
-	nodeEntryTable, err := pstFile.Read(nodeEntryTableSize, nodeEntryTableOffset)
+	nodeEntryHeapOnNode, err := pstFile.Read(nodeEntryHeapOnNodeSize, nodeEntryHeapOnNodeOffset)
 
 	if err != nil {
 		return nil, err
@@ -46,16 +46,22 @@ func (pstFile *File) DecryptHeapOnNode(btreeNodeEntry BTreeNodeEntry, formatType
 		0xa2, 0x8a, 0xd4, 0xe1, 0x11, 0xd0, 0x08, 0x8b, 0x2a, 0xf2, 0xed, 0x9a, 0x64, 0x3f, 0xc1, 0x6c, 0xf9, 0xec,
 	}
 
-	for i := 0; i < len(nodeEntryTable); i++ {
-		temp := nodeEntryTable[i] & 0xff
-		nodeEntryTable[i] = byte(compressibleEncryption[temp])
+	for i := 0; i < len(nodeEntryHeapOnNode); i++ {
+		temp := nodeEntryHeapOnNode[i] & 0xff
+		nodeEntryHeapOnNode[i] = byte(compressibleEncryption[temp])
 	}
 
-	return nodeEntryTable, nil
+	return nodeEntryHeapOnNode, nil
 }
 
-// GetTableType returns the table type.
+// IsValidHeapOnNodeSignature returns true if the signature of the block matches 0xEC (236).
+// References "Heap-on-Node header".
+func (pstFile *File) IsValidHeapOnNodeSignature(heapOnNode []byte) bool {
+	return binary.LittleEndian.Uint16([]byte{heapOnNode[2], 0}) == 236
+}
+
+// GetHeapOnNodeTableType returns the table type.
 // References "Heap-on-Node header", "Table types".
-func (pstFile *File) GetTableType(table []byte) int {
-	return int(binary.LittleEndian.Uint16([]byte{table[3], 0}))
+func (pstFile *File) GetHeapOnNodeTableType(heapOnNode []byte) int {
+	return int(binary.LittleEndian.Uint16([]byte{heapOnNode[3], 0}))
 }

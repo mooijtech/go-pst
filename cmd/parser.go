@@ -151,7 +151,8 @@ func main() {
 		return
 	}
 
-	log.Infof("Table type: %d", pstFile.GetTableType(rootFolderNodeDataNodeHeapOnNode))
+	log.Infof("Has valid block signature: %t", pstFile.IsValidHeapOnNodeSignature(rootFolderNodeDataNodeHeapOnNode))
+	log.Infof("Table type: %d", pstFile.GetHeapOnNodeTableType(rootFolderNodeDataNodeHeapOnNode))
 
 	// Root folder node data node:
 	// - Is a BC table.
