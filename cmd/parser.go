@@ -157,4 +157,10 @@ func main() {
 	// Root folder node data node:
 	// - Is a BC table.
 	// - Has a b5 table header.
+	err = pstFile.GetRootFolder(formatType)
+
+	if err != nil {
+		log.Errorf("Failed to get root folder: %s", err)
+		return
+	}
 }

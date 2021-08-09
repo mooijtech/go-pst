@@ -8,6 +8,7 @@ import (
 	"bytes"
 	"encoding/binary"
 	"errors"
+	log "github.com/sirupsen/logrus"
 	"os"
 )
 
@@ -166,4 +167,49 @@ func (pstFile *File) GetEncryptionType(formatType string) (string, error) {
 	default:
 		return "", errors.New("unsupported encryption type")
 	}
+}
+
+// GetRootFolder returns the root folder of the PST file.
+func (pstFile *File) GetRootFolder(formatType string) error {
+	rootFolderIdentifier := 290
+
+	nodeBTreeOffset, err := pstFile.GetNodeBTreeOffset(formatType)
+
+	if err != nil {
+		return err
+	}
+
+	rootFolderNode, err := pstFile.FindBTreeNode(nodeBTreeOffset, rootFolderIdentifier, formatType)
+
+	if err != nil {
+		return err
+	}
+
+	rootFolderNodeDataIdentifier, err := rootFolderNode.GetDataIdentifier(formatType)
+
+	if err != nil {
+		return err
+	}
+
+	blockBTreeOffset, err := pstFile.GetBlockBTreeOffset(formatType)
+
+	if err != nil {
+		return err
+	}
+
+	rootFolderNodeDataNode, err := pstFile.FindBTreeNode(blockBTreeOffset, rootFolderNodeDataIdentifier, formatType)
+
+	if err != nil {
+		return err
+	}
+
+	log.Infof("Root folder node data node: %b", rootFolderNodeDataNode.Data)
+
+	err = pstFile.ReadHeapOnNode(rootFolderNodeDataNode, formatType)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

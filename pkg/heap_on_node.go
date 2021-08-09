@@ -5,6 +5,8 @@ package pst
 
 import (
 	"encoding/binary"
+	"errors"
+	log "github.com/sirupsen/logrus"
 )
 
 // DecryptHeapOnNode decrypts the Heap-on-Node using compressible encryption.
@@ -64,4 +66,38 @@ func (pstFile *File) IsValidHeapOnNodeSignature(heapOnNode []byte) bool {
 // References "Heap-on-Node header", "Table types".
 func (pstFile *File) GetHeapOnNodeTableType(heapOnNode []byte) int {
 	return int(binary.LittleEndian.Uint16([]byte{heapOnNode[3], 0}))
+}
+
+func (pstFile *File) ReadHeapOnNode(btreeNodeEntry BTreeNodeEntry, formatType string) error {
+	nodeEntryBlocks, err := pstFile.ReadHeapOnNodeBlocks(btreeNodeEntry, formatType)
+
+	if err != nil {
+		return err
+	}
+
+	log.Infof("Node entry blocks: %b", nodeEntryBlocks)
+
+	return nil
+}
+
+func (pstFile *File) ReadHeapOnNodeBlocks(btreeNodeEntry BTreeNodeEntry, formatType string) ([][]byte, error) {
+	nodeEntryIdentifierType, err := btreeNodeEntry.GetIdentifierType(formatType)
+
+	if err != nil {
+		return nil, err
+	}
+
+	var nodeEntryBlocks [][]byte
+
+	log.Infof("Node entry identifier type: %d", nodeEntryIdentifierType)
+
+	if nodeEntryIdentifierType == IdentifierTypeInternal {
+		// TODO - XBlock and XXBlock
+		return nil, errors.New("not implemented yet")
+	} else {
+		// TODO - Key for cyclic algorithm is the low 32 bits of the node identifier.
+		nodeEntryBlocks = append(nodeEntryBlocks, btreeNodeEntry.Data)
+
+		return nodeEntryBlocks, nil
+	}
 }
