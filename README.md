@@ -231,7 +231,7 @@ Compressible encryption is a simple [byte-substitution cipher](https://github.co
 
 #### Heap-on-Node header
 
-If the [node identifier](#identifier-types) is not internal (node identifier type 1), the Heap-on-Node starts with the Heap-on-Node header.
+The first block contains the Heap-on-Node header.
 
 | Offset        | Size          | Value         | Description   | 
 | ------------- | ------------- | ------------- | ------------- |
@@ -252,10 +252,6 @@ If the [node identifier](#identifier-types) is not internal (node identifier typ
 | 181             |  b5 table header     | B-Tree on Heap |
 | 188             |  bc table            | Has a b5 table header. |
 | 204             |  cc table            | Unknown |
-
-#### Heap-on-Node blocks
-
-If the [node identifier](#identifier-types) is internal (node identifier type 1), the Heap-on-Node does not start with the [Heap-on-Node header](#heap-on-node-header) but with the XBlock and XXBlock structure.
 
 ## Contact
 
