@@ -203,9 +203,15 @@ func (pstFile *File) GetRootFolder(formatType string) error {
 		return err
 	}
 
-	log.Infof("Root folder node data node: %b", rootFolderNodeDataNode.Data)
+	rootFolderNodeDataNodeHeapOnNode, err := pstFile.GetHeapOnNode(rootFolderNodeDataNode, formatType)
 
-	err = pstFile.ReadHeapOnNode(rootFolderNodeDataNode, formatType)
+	if err != nil {
+		return err
+	}
+
+	heapOnNodeBlocks, err := pstFile.GetHeapOnNodeBlocks(rootFolderNodeDataNodeHeapOnNode, formatType)
+
+	log.Infof("Heap-on-Node blocks: %b", heapOnNodeBlocks)
 
 	if err != nil {
 		return err

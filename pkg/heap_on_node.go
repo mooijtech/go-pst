@@ -9,25 +9,25 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-// DecryptHeapOnNode decrypts the Heap-on-Node using compressible encryption.
+// GetHeapOnNode decrypts the Heap-on-Node using compressible encryption.
 // References "Compressible encryption".
-func (pstFile *File) DecryptHeapOnNode(btreeNodeEntry BTreeNodeEntry, formatType string) ([]byte, error) {
+func (pstFile *File) GetHeapOnNode(btreeNodeEntry BTreeNodeEntry, formatType string) (BTreeNodeEntry, error) {
 	nodeEntryHeapOnNodeOffset, err := btreeNodeEntry.GetFileOffset(false, formatType)
 
 	if err != nil {
-		return nil, err
+		return BTreeNodeEntry{}, err
 	}
 
 	nodeEntryHeapOnNodeSize, err := btreeNodeEntry.GetSize(formatType)
 
 	if err != nil {
-		return nil, err
+		return BTreeNodeEntry{}, err
 	}
 
 	nodeEntryHeapOnNode, err := pstFile.Read(nodeEntryHeapOnNodeSize, nodeEntryHeapOnNodeOffset)
 
 	if err != nil {
-		return nil, err
+		return BTreeNodeEntry{}, err
 	}
 
 	compressibleEncryption := []int {
@@ -53,41 +53,57 @@ func (pstFile *File) DecryptHeapOnNode(btreeNodeEntry BTreeNodeEntry, formatType
 		nodeEntryHeapOnNode[i] = byte(compressibleEncryption[temp])
 	}
 
-	return nodeEntryHeapOnNode, nil
+	return NewBTreeNodeEntry(nodeEntryHeapOnNode), nil
 }
 
 // IsValidHeapOnNodeSignature returns true if the signature of the block matches 0xEC (236).
 // References "Heap-on-Node header".
-func (pstFile *File) IsValidHeapOnNodeSignature(heapOnNode []byte) bool {
-	return binary.LittleEndian.Uint16([]byte{heapOnNode[2], 0}) == 236
+func (btreeNodeEntry *BTreeNodeEntry) IsValidHeapOnNodeSignature() bool {
+	return binary.LittleEndian.Uint16([]byte{btreeNodeEntry.Data[2], 0}) == 236
 }
 
 // GetHeapOnNodeTableType returns the table type.
 // References "Heap-on-Node header", "Table types".
-func (pstFile *File) GetHeapOnNodeTableType(heapOnNode []byte) int {
-	return int(binary.LittleEndian.Uint16([]byte{heapOnNode[3], 0}))
+func (btreeNodeEntry *BTreeNodeEntry) GetHeapOnNodeTableType() int {
+	return int(binary.LittleEndian.Uint16([]byte{btreeNodeEntry.Data[3], 0}))
 }
 
-func (pstFile *File) ReadHeapOnNode(btreeNodeEntry BTreeNodeEntry, formatType string) error {
-	nodeEntryBlocks, err := pstFile.ReadHeapOnNodeBlocks(btreeNodeEntry, formatType)
+// GetHeapOnNodeHIDUserRoot returns the HID user root.
+// References "Heap-on-Node header".
+func (btreeNodeEntry *BTreeNodeEntry) GetHeapOnNodeHIDUserRoot() int {
+	return int(binary.LittleEndian.Uint16(btreeNodeEntry.Data[4:8]))
+}
 
-	if err != nil {
-		return err
+// HeapOnNodeBlock represents a Heap-on-Node block.
+// References "Heap-on-Node".
+type HeapOnNodeBlock struct {
+	BlockIndex int
+	Buffer []byte
+}
+
+// NewHeapOnNodeBlock is a constructor for creating Heap-on-Node blocks.
+func NewHeapOnNodeBlock(blockIndex int, buffer []byte) HeapOnNodeBlock {
+	return HeapOnNodeBlock {
+		BlockIndex: blockIndex,
+		Buffer: buffer,
+	}
+}
+
+// GetHeapOnNodeBlocks reads the heap on node blocks.
+// References "Heap-on-Node"
+func (pstFile *File) GetHeapOnNodeBlocks(btreeNodeEntryHeapOnNode BTreeNodeEntry, formatType string) ([]HeapOnNodeBlock, error) {
+	if !btreeNodeEntryHeapOnNode.IsValidHeapOnNodeSignature() {
+		// The Heap-on-Node was probably not decrypted via GetHeapOnNode.
+		return nil, errors.New("invalid heap-on-node signature")
 	}
 
-	log.Infof("Node entry blocks: %b", nodeEntryBlocks)
+	var nodeEntryBlocks [][]byte
 
-	return nil
-}
-
-func (pstFile *File) ReadHeapOnNodeBlocks(btreeNodeEntry BTreeNodeEntry, formatType string) ([][]byte, error) {
-	nodeEntryIdentifierType, err := btreeNodeEntry.GetIdentifierType(formatType)
+	nodeEntryIdentifierType, err := btreeNodeEntryHeapOnNode.GetIdentifierType(formatType)
 
 	if err != nil {
 		return nil, err
 	}
-
-	var nodeEntryBlocks [][]byte
 
 	log.Infof("Node entry identifier type: %d", nodeEntryIdentifierType)
 
@@ -96,8 +112,23 @@ func (pstFile *File) ReadHeapOnNodeBlocks(btreeNodeEntry BTreeNodeEntry, formatT
 		return nil, errors.New("not implemented yet")
 	} else {
 		// TODO - Key for cyclic algorithm is the low 32 bits of the node identifier.
-		nodeEntryBlocks = append(nodeEntryBlocks, btreeNodeEntry.Data)
-
-		return nodeEntryBlocks, nil
+		nodeEntryBlocks = append(nodeEntryBlocks, btreeNodeEntryHeapOnNode.Data)
 	}
+
+	var blocks []HeapOnNodeBlock
+
+	for i, nodeEntryBlock := range nodeEntryBlocks {
+		if i == 0 {
+			// The first block contains the Heap-on-Node header.
+			blocks = append(blocks, NewHeapOnNodeBlock(i, nodeEntryBlock))
+		} else if i == 8 || i >= 138 && (i - 8) / 128 == 0 {
+			// Blocks 8, 136, then every 128th contains the Heap-on-Node bitmap header
+			blocks = append(blocks, NewHeapOnNodeBlock(i, nodeEntryBlock))
+		} else {
+			// All other blocks contain the Heap-on-Node page header
+			blocks = append(blocks, NewHeapOnNodeBlock(i, nodeEntryBlock))
+		}
+	}
+
+	return blocks, nil
 }
