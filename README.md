@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <a href="https://github.com/mooijtech/go-pst"><img src="https://i.imgur.com/LIicreP.png" alt="go-pst" width="320"></a>
+  <a href="https://github.com/mooijtech/go-pst"><img src="https://i.imgur.com/LIicreP.png" alt="go-pst" width="280"></a>
   <br>
   go-pst
   <br>
@@ -235,6 +235,7 @@ The first block contains the Heap-on-Node header.
 
 | Offset        | Size          | Value         | Description   | 
 | ------------- | ------------- | ------------- | ------------- |
+| 0             |  2            |               | The offset to the Heap-on-Node page map record |
 | 2             |  1            |               | Block signature; MUST be set to 0xEC (236) to indicate a Heap-on-Node. |
 | 3             |  1            |               | [The table type](#table-types). |
 | 4             |  4            |               | HID User Root. |
