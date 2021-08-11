@@ -6,7 +6,6 @@ package pst
 import (
 	"encoding/binary"
 	"errors"
-	log "github.com/sirupsen/logrus"
 )
 
 // GetHeapOnNode decrypts the Heap-on-Node using compressible encryption.
@@ -74,6 +73,24 @@ func (btreeNodeEntry *BTreeNodeEntry) GetHeapOnNodeHIDUserRoot() int {
 	return int(binary.LittleEndian.Uint16(btreeNodeEntry.Data[4:8]))
 }
 
+// GetHeapOnNodeHIDUserRootType MUST be set to 0 (IdentifierTypeHID) to indicate a valid HID.
+func (btreeNodeEntry *BTreeNodeEntry) GetHeapOnNodeHIDUserRootType() int {
+	return btreeNodeEntry.GetHeapOnNodeHIDUserRoot() & 0x1F
+}
+
+func (btreeNodeEntry *BTreeNodeEntry) GetHeapOnNodeHIDUserRootIndex() int {
+	return btreeNodeEntry.GetHeapOnNodeHIDUserRoot() >> 5
+}
+
+// GetHeapOnNodeHIDUserRootBlockIndex returns in which block (the index) the Heap-on-Node item resides.
+func (btreeNodeEntry *BTreeNodeEntry) GetHeapOnNodeHIDUserRootBlockIndex() int {
+	return btreeNodeEntry.GetHeapOnNodeHIDUserRoot() >> 16
+}
+
+func (btreeNodeEntry *BTreeNodeEntry) GetHeapOnNodePageMap() int {
+	return int(binary.LittleEndian.Uint16(btreeNodeEntry.Data[:2]))
+}
+
 // HeapOnNodeBlock represents a Heap-on-Node block.
 // References "Heap-on-Node".
 type HeapOnNodeBlock struct {
@@ -104,8 +121,6 @@ func (pstFile *File) GetHeapOnNodeBlocks(btreeNodeEntryHeapOnNode BTreeNodeEntry
 	if err != nil {
 		return nil, err
 	}
-
-	log.Infof("Node entry identifier type: %d", nodeEntryIdentifierType)
 
 	if nodeEntryIdentifierType == IdentifierTypeInternal {
 		// TODO - XBlock and XXBlock
