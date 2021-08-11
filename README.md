@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <a href="https://github.com/mooijtech/go-pst"><img src="https://i.imgur.com/PwKwBRa.png" alt="go-pst" width="320"></a>
+  <a href="https://github.com/mooijtech/go-pst"><img src="https://i.imgur.com/LIicreP.png" alt="go-pst" width="320"></a>
   <br>
   go-pst
   <br>
