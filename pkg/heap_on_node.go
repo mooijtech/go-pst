@@ -91,6 +91,12 @@ func (btreeNodeEntry *BTreeNodeEntry) GetHeapOnNodePageMap() int {
 	return int(binary.LittleEndian.Uint16(btreeNodeEntry.Data[:2]))
 }
 
+func (btreeNodeEntry *BTreeNodeEntry) GetHeapOnNodePageMapAllocationCount() int {
+	pageMapOffset := btreeNodeEntry.GetHeapOnNodePageMap()
+
+	return int(binary.LittleEndian.Uint16(btreeNodeEntry.Data[pageMapOffset:pageMapOffset + 2]))
+}
+
 // HeapOnNodeBlock represents a Heap-on-Node block.
 // References "Heap-on-Node".
 type HeapOnNodeBlock struct {

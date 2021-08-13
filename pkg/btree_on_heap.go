@@ -6,52 +6,69 @@ package pst
 import (
 	"encoding/binary"
 	"errors"
-	log "github.com/sirupsen/logrus"
 )
 
-type BTreeOnHeapHeader struct {
-	StartOffset int
-	EndOffset int
-
-
-}
-
-// GetBTreeOnHeapHeader returns the btree on heap header.
-// TODO - Document this better.
-// Based on https://github.com/rjohnsondev/java-libpst/blob/develop/src/main/java/com/pff/PSTTable.java#L206
-func (pstFile *File) GetBTreeOnHeapHeader(btreeNodeEntryHeapOnNode BTreeNodeEntry, formatType string) error {
-	// All tables should have a BTree-on-Heap header at NID 0x20
-	nid := 0x20
-
-	whichBlock := nid >> 16
+// GetHeapOnNodeAllocationTableOffset returns the offset from the allocation table of the given HID.
+func (pstFile *File) GetHeapOnNodeAllocationTableOffset(hid int, btreeNodeEntryHeapOnNode BTreeNodeEntry, formatType string) (int, error) {
+	hidBlockIndex := hid >> 16
 
 	nodeEntryBlocks, err := pstFile.GetHeapOnNodeBlocks(btreeNodeEntryHeapOnNode, formatType)
 
 	if err != nil {
-		return err
+		return -1, err
 	}
 
-	if whichBlock > len(nodeEntryBlocks) {
-		return errors.New("block doesn't exist")
+	if hidBlockIndex > len(nodeEntryBlocks) {
+		return -1, errors.New("block doesn't exist")
 	}
 
-	index := (nid & 0xFFFF) >> 5
+	hidIndex := (hid & 0xFFFF) >> 5
 
 	heapOnNodePageMap := btreeNodeEntryHeapOnNode.GetHeapOnNodePageMap()
+	// The allocation table starts at byte offset 4 from the page map.
+	// Every 2 bytes in the allocation table is the offset of the item.
+	heapOnNodePageMap += (2 * hidIndex) + 2
 
-	//allocationCount := binary.LittleEndian.Uint16(btreeNodeEntryHeapOnNode.Data[heapOnNodePageMap:heapOnNodePageMap + 2])
-	//
-	//log.Infof("Allocation count: %d", allocationCount)
+	return int(binary.LittleEndian.Uint16(btreeNodeEntryHeapOnNode.Data[heapOnNodePageMap:heapOnNodePageMap + 2])), nil
+}
 
-	heapOnNodePageMap += (2 * index) + 2
+// BTreeOnHeapHeader represents the b-tree on heap header.
+type BTreeOnHeapHeader struct {
+	TableType int
+	RecordKeySize int
+	RecordValueSize int
+	RecordLevels int
+	HIDRoot int
+}
 
-	start := binary.LittleEndian.Uint16(btreeNodeEntryHeapOnNode.Data[heapOnNodePageMap:heapOnNodePageMap + 2])
-	end := binary.LittleEndian.Uint16(btreeNodeEntryHeapOnNode.Data[heapOnNodePageMap + 2:heapOnNodePageMap + 2 + 2])
+// NewBTreeOnHeapHeader is a constructor for creating b-tree on heap headers.
+func NewBTreeOnHeapHeader(tableTable int, recordKeySize int, recordValueSize int, recordLevels int, hidRoot int) BTreeOnHeapHeader {
+	return BTreeOnHeapHeader {
+		TableType: tableTable,
+		RecordKeySize: recordKeySize,
+		RecordValueSize: recordValueSize,
+		RecordLevels: recordLevels,
+		HIDRoot: hidRoot,
+	}
+}
 
-	log.Infof("Start: %d", start)
-	log.Infof("End: %d", end)
+// GetBTreeOnHeapHeader returns the btree on heap header.
+func (pstFile *File) GetBTreeOnHeapHeader(btreeNodeEntryHeapOnNode BTreeNodeEntry, formatType string) (BTreeOnHeapHeader, error) {
+	// All tables should have a BTree-on-Heap header at HID 0x20.
+	hid := 0x20
 
-	// TODO - Use the start offset to parse the table.
+	btreeOnHeapHeaderOffset, err := pstFile.GetHeapOnNodeAllocationTableOffset(hid, btreeNodeEntryHeapOnNode, formatType)
 
-	return nil
+	if err != nil {
+		return BTreeOnHeapHeader{}, err
+	}
+
+	// Parse the b-tree on heap header.
+	btreeOnHeapTableType := int(binary.LittleEndian.Uint16([]byte{btreeNodeEntryHeapOnNode.Data[btreeOnHeapHeaderOffset], 0}))
+	btreeOnHeapRecordKeySize := int(binary.LittleEndian.Uint16([]byte{btreeNodeEntryHeapOnNode.Data[btreeOnHeapHeaderOffset + 1], 0}))
+	btreeOnHeapRecordValueSize := int(binary.LittleEndian.Uint16([]byte{btreeNodeEntryHeapOnNode.Data[btreeOnHeapHeaderOffset + 2], 0}))
+	btreeOnHeapRecordLevels := int(binary.LittleEndian.Uint16([]byte{btreeNodeEntryHeapOnNode.Data[btreeOnHeapHeaderOffset + 3], 0}))
+	btreeOnHeapHIDRoot := int(binary.LittleEndian.Uint16(btreeNodeEntryHeapOnNode.Data[btreeOnHeapHeaderOffset + 4:btreeOnHeapHeaderOffset + 8]))
+
+	return NewBTreeOnHeapHeader(btreeOnHeapTableType, btreeOnHeapRecordKeySize, btreeOnHeapRecordValueSize, btreeOnHeapRecordLevels, btreeOnHeapHIDRoot), nil
 }

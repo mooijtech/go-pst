@@ -8,6 +8,7 @@ import (
 	"bytes"
 	"encoding/binary"
 	"errors"
+	log "github.com/sirupsen/logrus"
 	"os"
 )
 
@@ -213,11 +214,13 @@ func (pstFile *File) GetRootFolder(formatType string) error {
 		return errors.New("invalid table type for the root folder")
 	}
 
-	err = pstFile.GetBTreeOnHeapHeader(rootFolderNodeDataNodeHeapOnNode, formatType)
+	btreeOnHeapHeader, err := pstFile.GetBTreeOnHeapHeader(rootFolderNodeDataNodeHeapOnNode, formatType)
 
 	if err != nil {
 		return err
 	}
+
+	log.Infof("B-tree on heap header: %s", btreeOnHeapHeader)
 
 	return nil
 }
