@@ -223,22 +223,54 @@ The 32-bit integer (identifier) can be used to search for b-tree nodes.
 
 ### Heap-on-Node
 
-If the encryption type was set in the file header, the entire Heap-on-Node is encrypted.
+If the encryption type was set in the file header, **the entire Heap-on-Node is encrypted**.
 
 #### Compressible encryption
 
 Compressible encryption is a simple [byte-substitution cipher](https://github.com/rjohnsondev/java-libpst/blob/develop/src/main/java/com/pff/PSTObject.java#L843) with a fixed [substitution table](https://github.com/rjohnsondev/java-libpst/blob/develop/src/main/java/com/pff/PSTObject.java#L725).
 
+#### Heap-on-Node HID
+
+| Offset        | Size          | Description   | 
+| ------------- | ------------- | ------------- |
+| 0             |  5 bits       | HID Type; MUST be set to 0 (IdentifierTypeHID) to indicate a valid HID. |
+| 0.5           |  11 bits      | HID index. The index value that identifies an item allocated in the [allocation table](#heap-on-node-page-map). |
+| 2.0           |  16 bits      | This number indicates the index of the data block in which this heap item resides.  |
+
 #### Heap-on-Node header
 
 The first block contains the Heap-on-Node header.
 
-| Offset        | Size          | Value         | Description   | 
-| ------------- | ------------- | ------------- | ------------- |
-| 0             |  2            |               | The offset to the Heap-on-Node page map record |
-| 2             |  1            |               | Block signature; MUST be set to 0xEC (236) to indicate a Heap-on-Node. |
-| 3             |  1            |               | [The table type](#table-types). |
-| 4             |  4            |               | HID User Root. |
+| Offset        | Size          | Description   | 
+| ------------- | ------------- | ------------- |
+| 0             |  2            | The offset to the [Heap-on-Node page map](#heap-on-node-page-map). |
+| 2             |  1            | Block signature; MUST be set to 0xEC (236) to indicate a Heap-on-Node. |
+| 3             |  1            | [The table type](#table-types). |
+| 4             |  4            | [HID](#heap-on-node-hid) User Root. |
+
+#### Heap-on-Node bitmap header
+
+Blocks 8, 136, then every 128th contains the Heap-on-Node bitmap header (``i == 8 || i >= 138 && (i - 8) / 128 == 0``).
+
+| Offset        | Size          | Description   | 
+| ------------- | ------------- | ------------- |
+| 0             |  2            | The offset to the [Heap-on-Node page map](#heap-on-node-page-map) (starting at the Heap-on-Node page header). |
+
+
+#### Heap-on-Node page header
+
+This is only used when multiple Heap-on-Node blocks are present.
+
+| Offset        | Size          | Description   | 
+| ------------- | ------------- | ------------- |
+| 0             |  2            | The offset to the [Heap-on-Node page map](#heap-on-node-page-map) (starting at the Heap-on-Node page header). |
+
+#### Heap-on-Node page map
+
+| Offset        | Size          | Description   | 
+| ------------- | ------------- | ------------- |
+| 0             |  2            | Allocation count. |
+| 4             |  variable     | Allocation table. This contains Allocation count + 1 entries. Each entry is an int (16 bit) value that is the byte offset to the beginning of the allocation. The start of this offset can be retrieved by using ``page map offset + (2 * hidIndex) + 2`` (page map offset plus the start of the allocation table, at the HID index offset). An extra entry exists at the Allocation count +1 position to mark the offset of the next available slot. |
 
 #### Table types
 
