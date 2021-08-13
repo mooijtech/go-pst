@@ -8,18 +8,24 @@ import (
 	"errors"
 )
 
-// GetHeapOnNodeAllocationTableOffset returns the offset from the allocation table of the given HID.
-func (pstFile *File) GetHeapOnNodeAllocationTableOffset(hid int, btreeNodeEntryHeapOnNode BTreeNodeEntry, formatType string) (int, error) {
+// AllocationTableOffsets represent the start and end offset of a Heap-on-Node item.
+type AllocationTableOffsets struct {
+	StartOffset int
+	EndOffset int
+}
+
+// GetHeapOnNodeAllocationTableOffsets returns the offsets from the allocation table of the given HID.
+func (pstFile *File) GetHeapOnNodeAllocationTableOffsets(hid int, btreeNodeEntryHeapOnNode BTreeNodeEntry, formatType string) (AllocationTableOffsets, error) {
 	hidBlockIndex := hid >> 16
 
 	nodeEntryBlocks, err := pstFile.GetHeapOnNodeBlocks(btreeNodeEntryHeapOnNode, formatType)
 
 	if err != nil {
-		return -1, err
+		return AllocationTableOffsets{}, err
 	}
 
 	if hidBlockIndex > len(nodeEntryBlocks) {
-		return -1, errors.New("block doesn't exist")
+		return AllocationTableOffsets{}, errors.New("block doesn't exist")
 	}
 
 	hidIndex := (hid & 0xFFFF) >> 5
@@ -29,7 +35,13 @@ func (pstFile *File) GetHeapOnNodeAllocationTableOffset(hid int, btreeNodeEntryH
 	// Every 2 bytes in the allocation table is the offset of the item.
 	heapOnNodePageMap += (2 * hidIndex) + 2
 
-	return int(binary.LittleEndian.Uint16(btreeNodeEntryHeapOnNode.Data[heapOnNodePageMap:heapOnNodePageMap + 2])), nil
+	startOffset := int(binary.LittleEndian.Uint16(btreeNodeEntryHeapOnNode.Data[heapOnNodePageMap:heapOnNodePageMap + 2]))
+	endOffset := int(binary.LittleEndian.Uint16(btreeNodeEntryHeapOnNode.Data[heapOnNodePageMap + 2:heapOnNodePageMap + 4]))
+
+	return AllocationTableOffsets {
+		StartOffset: startOffset,
+		EndOffset: endOffset,
+	}, nil
 }
 
 // BTreeOnHeapHeader represents the b-tree on heap header.
@@ -41,27 +53,18 @@ type BTreeOnHeapHeader struct {
 	HIDRoot int
 }
 
-// NewBTreeOnHeapHeader is a constructor for creating b-tree on heap headers.
-func NewBTreeOnHeapHeader(tableTable int, recordKeySize int, recordValueSize int, recordLevels int, hidRoot int) BTreeOnHeapHeader {
-	return BTreeOnHeapHeader {
-		TableType: tableTable,
-		RecordKeySize: recordKeySize,
-		RecordValueSize: recordValueSize,
-		RecordLevels: recordLevels,
-		HIDRoot: hidRoot,
-	}
-}
-
 // GetBTreeOnHeapHeader returns the btree on heap header.
 func (pstFile *File) GetBTreeOnHeapHeader(btreeNodeEntryHeapOnNode BTreeNodeEntry, formatType string) (BTreeOnHeapHeader, error) {
 	// All tables should have a BTree-on-Heap header at HID 0x20.
 	hid := 0x20
 
-	btreeOnHeapHeaderOffset, err := pstFile.GetHeapOnNodeAllocationTableOffset(hid, btreeNodeEntryHeapOnNode, formatType)
+	allocationTableOffsets, err := pstFile.GetHeapOnNodeAllocationTableOffsets(hid, btreeNodeEntryHeapOnNode, formatType)
 
 	if err != nil {
 		return BTreeOnHeapHeader{}, err
 	}
+
+	btreeOnHeapHeaderOffset := allocationTableOffsets.StartOffset
 
 	// Parse the b-tree on heap header.
 	btreeOnHeapTableType := int(binary.LittleEndian.Uint16([]byte{btreeNodeEntryHeapOnNode.Data[btreeOnHeapHeaderOffset], 0}))
@@ -70,5 +73,11 @@ func (pstFile *File) GetBTreeOnHeapHeader(btreeNodeEntryHeapOnNode BTreeNodeEntr
 	btreeOnHeapRecordLevels := int(binary.LittleEndian.Uint16([]byte{btreeNodeEntryHeapOnNode.Data[btreeOnHeapHeaderOffset + 3], 0}))
 	btreeOnHeapHIDRoot := int(binary.LittleEndian.Uint16(btreeNodeEntryHeapOnNode.Data[btreeOnHeapHeaderOffset + 4:btreeOnHeapHeaderOffset + 8]))
 
-	return NewBTreeOnHeapHeader(btreeOnHeapTableType, btreeOnHeapRecordKeySize, btreeOnHeapRecordValueSize, btreeOnHeapRecordLevels, btreeOnHeapHIDRoot), nil
+	return BTreeOnHeapHeader {
+		TableType: btreeOnHeapTableType,
+		RecordKeySize: btreeOnHeapRecordKeySize,
+		RecordValueSize: btreeOnHeapRecordValueSize,
+		RecordLevels: btreeOnHeapRecordLevels,
+		HIDRoot: btreeOnHeapHIDRoot,
+	}, nil
 }
