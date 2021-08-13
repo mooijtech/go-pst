@@ -41,6 +41,7 @@ The PFF (Personal Folder File) and OFF (Offline Folder File) format is used to s
 - [libpff](https://github.com/libyal/libpff)
 - [XstReader](https://github.com/Dijji/XstReader)
 - [pstreader](https://github.com/Jmcleodfoss/pstreader)
+- [PANhunt](https://github.com/Dionach/PANhunt/blob/master/pst.py)
 
 ## Datasets
 
