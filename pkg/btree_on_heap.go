@@ -47,9 +47,9 @@ func (pstFile *File) GetHeapOnNodeAllocationTableOffsets(hid int, btreeNodeEntry
 // BTreeOnHeapHeader represents the b-tree on heap header.
 type BTreeOnHeapHeader struct {
 	TableType int
-	RecordKeySize int
-	RecordValueSize int
-	RecordLevels int
+	KeySize int
+	ValueSize int
+	Levels int
 	HIDRoot int
 }
 
@@ -68,16 +68,16 @@ func (pstFile *File) GetBTreeOnHeapHeader(btreeNodeEntryHeapOnNode BTreeNodeEntr
 
 	// Parse the b-tree on heap header.
 	btreeOnHeapTableType := int(binary.LittleEndian.Uint16([]byte{btreeNodeEntryHeapOnNode.Data[btreeOnHeapHeaderOffset], 0}))
-	btreeOnHeapRecordKeySize := int(binary.LittleEndian.Uint16([]byte{btreeNodeEntryHeapOnNode.Data[btreeOnHeapHeaderOffset + 1], 0}))
-	btreeOnHeapRecordValueSize := int(binary.LittleEndian.Uint16([]byte{btreeNodeEntryHeapOnNode.Data[btreeOnHeapHeaderOffset + 2], 0}))
-	btreeOnHeapRecordLevels := int(binary.LittleEndian.Uint16([]byte{btreeNodeEntryHeapOnNode.Data[btreeOnHeapHeaderOffset + 3], 0}))
+	btreeOnHeapKeySize := int(binary.LittleEndian.Uint16([]byte{btreeNodeEntryHeapOnNode.Data[btreeOnHeapHeaderOffset + 1], 0}))
+	btreeOnHeapValueSize := int(binary.LittleEndian.Uint16([]byte{btreeNodeEntryHeapOnNode.Data[btreeOnHeapHeaderOffset + 2], 0}))
+	btreeOnHeapLevels := int(binary.LittleEndian.Uint16([]byte{btreeNodeEntryHeapOnNode.Data[btreeOnHeapHeaderOffset + 3], 0}))
 	btreeOnHeapHIDRoot := int(binary.LittleEndian.Uint16(btreeNodeEntryHeapOnNode.Data[btreeOnHeapHeaderOffset + 4:btreeOnHeapHeaderOffset + 8]))
 
 	return BTreeOnHeapHeader {
 		TableType: btreeOnHeapTableType,
-		RecordKeySize: btreeOnHeapRecordKeySize,
-		RecordValueSize: btreeOnHeapRecordValueSize,
-		RecordLevels: btreeOnHeapRecordLevels,
+		KeySize: btreeOnHeapKeySize,
+		ValueSize: btreeOnHeapValueSize,
+		Levels: btreeOnHeapLevels,
 		HIDRoot: btreeOnHeapHIDRoot,
 	}, nil
 }
