@@ -284,8 +284,71 @@ This is only used when multiple Heap-on-Node blocks are present.
 | 165             |  a5 table            |  |
 | 172             |  ac table            | Has a b5 table header. |
 | 181             |  b5 table header     | B-Tree on Heap |
-| 188             |  bc table            | Has a b5 table header. |
+| 188             |  bc table            | Property Context (PC/BTH). Has a b5 table header. |
 | 204             |  cc table            | Unknown |
+
+### B-Tree-on-Heap
+
+#### B-Tree-on-Heap header
+
+All tables should have a BTree-on-Heap header at [HID](#heap-on-node-hid) **0x20** (the start offset to the BTree-on-Heap header is in the [allocation table](#heap-on-node-page-map)).
+This is the HID User Root from the [Heap-on-Node header](#heap-on-node-header).
+
+| Offset        | Size          | Description   | 
+| ------------- | ------------- | ------------- |
+| 0             |  1            | Table type. MUST be 188. |
+| 1             |  1            | Size of the BTree Key value. MUST be 2, 4, 8 or 16. |
+| 2             |  1            | Size of the data value. MUST be greater than zero and less than or equal to 32. |
+| 3             |  1            | Index depth. |
+| 4             |  4            | [HID](#heap-on-node-hid) root. Points to the B-Tree-on-Heap entries (offset can be found in the [allocation table](#heap-on-node-page-map)). |
+
+### Property Context
+
+The property context starts at the [HID root](#b-tree-on-heap-header) of the B-Tree-on-Heap header.
+
+#### Property Context B-Tree-on-Heap Record
+
+| Offset        | Size          | Description   | 
+| ------------- | ------------- | ------------- |
+| 0             |  2            | Property ID.  |
+| 2             |  2            | [Property type](#property-types).  |
+
+#### Property types
+
+| Type        | Value    | 
+| ------------- | ------------- |
+| Integer16 | 2 |
+| Integer32 | 3 |
+| Floating32 | 4 |
+| Floating64 | 5 |
+| Currency | 6 |
+| FloatingTime | 7 |
+| ErrorCode | 10 |
+| Boolean | 11 |
+| Integer64 | 20 |
+| String | 31 |
+| String8 | 30 |
+| Time | 64 |
+| GUID | 72 |
+| ServerID | 251 |
+| Restriction | 253 |
+| RuleAction | 254 |
+| Binary | 258 |
+| MultipleInteger16 | 4098 |
+| MultipleInteger32 | 4099 |
+| MultipleFloating32 | 4100 |
+| MultipleFloating64 | 4101 |
+| MultipleCurrency | 4102 |
+| MultipleFloatingTime | 4103 |
+| MultipleInteger64 | 4116 |
+| MultipleString | 4127 |
+| MultipleString8 | 4126 |
+| MultipleTime | 4160 |
+| MultipleGUID | 4168 |
+| MultipleBinary | 4354 |
+| Unspecified | 0 |
+| Null | 1 |
+| Object | 13 |
 
 ## Contact
 
