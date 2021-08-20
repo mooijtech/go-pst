@@ -441,7 +441,6 @@ func (pstFile *File) FindBTreeNode(btreeNodeOffset int, identifier int, formatTy
 
 	if nodeLevel > 0 {
 		// Branch node entries.
-
 		for i := 0; i < len(nodeEntries); i++ {
 			nodeEntry := nodeEntries[i]
 

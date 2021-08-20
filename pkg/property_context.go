@@ -6,10 +6,10 @@ package pst
 import (
 	"encoding/binary"
 	"errors"
-	log "github.com/sirupsen/logrus"
 )
 
 // Constants defining the property types.
+// References "Property types".
 const (
 	PropertyTypeInteger16 = 2
 	PropertyTypeInteger32 = 3
@@ -46,43 +46,69 @@ const (
 )
 
 // PropertyContextItem represents an item within the property context.
+// References "Property Context B-Tree-on-Heap Record".
 type PropertyContextItem struct {
 	Index int
-	EntryType int
-	EntryValueType int
-	EntryValueReference int
+	PropertyID int
+	PropertyType int
+	ReferenceHNID int
 }
 
 // GetPropertyContext returns the property context (BC Table).
-func (pstFile *File) GetPropertyContext(btreeNodeEntryHeapOnNode BTreeNodeEntry, formatType string) error {
+// References "Property Context".
+func (pstFile *File) GetPropertyContext(btreeNodeEntryHeapOnNode BTreeNodeEntry, formatType string) ([]PropertyContextItem, error) {
 	if btreeNodeEntryHeapOnNode.GetHeapOnNodeTableType() != 188 {
 		// Must be Property Context.
-		return errors.New("invalid table type for property context")
+		return nil, errors.New("invalid table type for property context")
 	}
 
 	btreeOnHeapHeader, err := pstFile.GetBTreeOnHeapHeader(btreeNodeEntryHeapOnNode, formatType)
 
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	allocationTableOffsets, err := pstFile.GetHeapOnNodeAllocationTableOffsets(btreeOnHeapHeader.HIDRoot, btreeNodeEntryHeapOnNode, formatType)
 
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	keyTable := btreeNodeEntryHeapOnNode.Data[allocationTableOffsets.StartOffset:allocationTableOffsets.EndOffset]
 	keyCount := len(keyTable) / (btreeOnHeapHeader.KeySize + btreeOnHeapHeader.ValueSize)
 
+	var propertyContextItems []PropertyContextItem
 	offset := 0
 
 	for i := 0; i < keyCount; i++ {
-		log.Infof("Entry type: %d", binary.LittleEndian.Uint16(keyTable[offset:offset + 2]))
-		log.Infof("Entry value type: %d", binary.LittleEndian.Uint16(keyTable[offset + 2:offset + 4]))
+		propertyID := int(binary.LittleEndian.Uint16(keyTable[offset:offset + 2]))
+		propertyType := int(binary.LittleEndian.Uint16(keyTable[offset + 2:offset + 4]))
+		referenceHNID := int(binary.LittleEndian.Uint16(keyTable[offset + 4:offset + 8]))
+
+		propertyContextItems = append(propertyContextItems, PropertyContextItem {
+			Index: i,
+			PropertyID: propertyID,
+			PropertyType: propertyType,
+			ReferenceHNID: referenceHNID,
+		})
 
 		offset = offset + 8
 	}
 
-	return nil
+	return propertyContextItems, nil
+}
+
+// GetPropertyContextItem returns the property context item from the property ID.
+// References GetPropertyContext.
+func (pstFile *File) GetPropertyContextItem(propertyContext []PropertyContextItem, propertyID int) PropertyContextItem {
+	var propertyContextItem PropertyContextItem
+
+	for _, item := range propertyContext {
+		if item.PropertyID == propertyID {
+			propertyContextItem = item
+			break
+		}
+	}
+
+	return propertyContextItem
 }

@@ -55,10 +55,8 @@ type BTreeOnHeapHeader struct {
 
 // GetBTreeOnHeapHeader returns the btree on heap header.
 func (pstFile *File) GetBTreeOnHeapHeader(btreeNodeEntryHeapOnNode BTreeNodeEntry, formatType string) (BTreeOnHeapHeader, error) {
-	// All tables should have a BTree-on-Heap header at HID 0x20.
-	hid := 0x20
-
-	allocationTableOffsets, err := pstFile.GetHeapOnNodeAllocationTableOffsets(hid, btreeNodeEntryHeapOnNode, formatType)
+	// All tables should have a BTree-on-Heap header at HID 0x20 (HID User Root from the Heap-on-Node header).
+	allocationTableOffsets, err := pstFile.GetHeapOnNodeAllocationTableOffsets(btreeNodeEntryHeapOnNode.GetHeapOnNodeHIDUserRoot(), btreeNodeEntryHeapOnNode, formatType)
 
 	if err != nil {
 		return BTreeOnHeapHeader{}, err
