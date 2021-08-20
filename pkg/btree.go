@@ -292,6 +292,8 @@ const (
 	IdentifierTypeRecipientTable = 18
 	IdentifierTypeSearchTableIndex = 19
 	IdentifierTypeLTP = 31
+
+	IdentifierTypeRootFolder = 290
 )
 
 // GetIdentifierType returns the b-tree node entry identifier type.
@@ -439,6 +441,7 @@ func (pstFile *File) FindBTreeNode(btreeNodeOffset int, identifier int, formatTy
 
 	if nodeLevel > 0 {
 		// Branch node entries.
+
 		for i := 0; i < len(nodeEntries); i++ {
 			nodeEntry := nodeEntries[i]
 
@@ -462,7 +465,9 @@ func (pstFile *File) FindBTreeNode(btreeNodeOffset int, identifier int, formatTy
 			recursiveNodeEntry, err := pstFile.FindBTreeNode(recursiveNodeOffset, identifier, formatType)
 
 			if err != nil {
-				return BTreeNodeEntry{}, err
+				// There may be other entries left, so continue.
+				// I made the mistake of returning here and was wondering why some identifiers weren't being found.
+				continue
 			}
 
 			recursiveNodeEntryIdentifier, err := recursiveNodeEntry.GetIdentifier(formatType)
@@ -474,7 +479,6 @@ func (pstFile *File) FindBTreeNode(btreeNodeOffset int, identifier int, formatTy
 			if recursiveNodeEntryIdentifier == identifier {
 				return recursiveNodeEntry, nil
 			}
-
 		}
 	} else {
 		// Leaf node entries
