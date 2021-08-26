@@ -18,7 +18,7 @@ type AllocationTableOffsets struct {
 func (pstFile *File) GetHeapOnNodeAllocationTableOffsets(hid int, btreeNodeEntryHeapOnNode BTreeNodeEntry, formatType string) (AllocationTableOffsets, error) {
 	hidBlockIndex := hid >> 16
 
-	nodeEntryBlocks, err := pstFile.GetHeapOnNodeBlocks(btreeNodeEntryHeapOnNode, formatType)
+	nodeEntryBlocks, err := btreeNodeEntryHeapOnNode.GetBlocks(formatType)
 
 	if err != nil {
 		return AllocationTableOffsets{}, err
@@ -30,7 +30,7 @@ func (pstFile *File) GetHeapOnNodeAllocationTableOffsets(hid int, btreeNodeEntry
 
 	hidIndex := (hid & 0xFFFF) >> 5
 
-	heapOnNodePageMap := btreeNodeEntryHeapOnNode.GetHeapOnNodePageMap()
+	heapOnNodePageMap := btreeNodeEntryHeapOnNode.GetPageMap()
 	// The allocation table starts at byte offset 4 from the page map.
 	// Every 2 bytes in the allocation table is the offset of the item.
 	heapOnNodePageMap += (2 * hidIndex) + 2
@@ -56,7 +56,7 @@ type BTreeOnHeapHeader struct {
 // GetBTreeOnHeapHeader returns the btree on heap header.
 func (pstFile *File) GetBTreeOnHeapHeader(btreeNodeEntryHeapOnNode BTreeNodeEntry, formatType string) (BTreeOnHeapHeader, error) {
 	// All tables should have a BTree-on-Heap header at HID 0x20 (HID User Root from the Heap-on-Node header).
-	allocationTableOffsets, err := pstFile.GetHeapOnNodeAllocationTableOffsets(btreeNodeEntryHeapOnNode.GetHeapOnNodeHIDUserRoot(), btreeNodeEntryHeapOnNode, formatType)
+	allocationTableOffsets, err := pstFile.GetHeapOnNodeAllocationTableOffsets(btreeNodeEntryHeapOnNode.GetHIDUserRoot(), btreeNodeEntryHeapOnNode, formatType)
 
 	if err != nil {
 		return BTreeOnHeapHeader{}, err

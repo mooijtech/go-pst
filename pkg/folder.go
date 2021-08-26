@@ -54,8 +54,6 @@ func (pstFile *File) GetRootFolder(formatType string) error {
 	// Get sub-folders.
 	subFoldersIdentifier := IdentifierTypeRootFolder + 11
 
-	log.Infof("IT'S: %d", subFoldersIdentifier)
-
 	subFoldersNode, err := pstFile.FindBTreeNode(nodeBTreeOffset, subFoldersIdentifier, formatType)
 
 	if err != nil {
@@ -63,8 +61,6 @@ func (pstFile *File) GetRootFolder(formatType string) error {
 	}
 
 	subFoldersDataIdentifier, err := subFoldersNode.GetDataIdentifier(formatType)
-
-	log.Infof("DATA IDENTIFIER!: %d", subFoldersDataIdentifier)
 
 	if err != nil {
 		return err
@@ -76,7 +72,19 @@ func (pstFile *File) GetRootFolder(formatType string) error {
 		return err
 	}
 
-	log.Infof("GOT IT: %b", subFoldersDataNode.Data)
+	log.Infof("Sub folders data node: %b", subFoldersDataNode)
+
+	subFoldersDataNodeHeapOnNode, err := pstFile.GetHeapOnNode(subFoldersDataNode, formatType)
+
+	if err != nil {
+		return err
+	}
+
+	err = pstFile.GetTableContext(subFoldersDataNodeHeapOnNode, formatType)
+
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

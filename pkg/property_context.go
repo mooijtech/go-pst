@@ -57,7 +57,7 @@ type PropertyContextItem struct {
 // GetPropertyContext returns the property context (BC Table).
 // References "Property Context".
 func (pstFile *File) GetPropertyContext(btreeNodeEntryHeapOnNode BTreeNodeEntry, formatType string) ([]PropertyContextItem, error) {
-	if btreeNodeEntryHeapOnNode.GetHeapOnNodeTableType() != 188 {
+	if btreeNodeEntryHeapOnNode.GetTableType() != 188 {
 		// Must be Property Context.
 		return nil, errors.New("invalid table type for property context")
 	}

@@ -151,8 +151,8 @@ func main() {
 		return
 	}
 
-	log.Infof("Has valid block signature: %t", rootFolderNodeDataNodeHeapOnNode.IsValidHeapOnNodeSignature())
-	log.Infof("Table type: %d", rootFolderNodeDataNodeHeapOnNode.GetHeapOnNodeTableType())
+	log.Infof("Has valid block signature: %t", rootFolderNodeDataNodeHeapOnNode.IsValidSignature())
+	log.Infof("Table type: %d", rootFolderNodeDataNodeHeapOnNode.GetTableType())
 
 	// Root folder node data node:
 	// - Is a BC table.
