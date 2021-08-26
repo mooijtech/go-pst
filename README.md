@@ -221,6 +221,7 @@ The 32-bit integer (identifier) can be used to search for b-tree nodes.
 | 23          |         | Unknown |
 | 24          |         | Unknown |
 | 31          |  LTP       | Local descriptor value |
+| 290          |  ROOT_FOLDER       | The root folder. |
 
 ### Heap-on-Node
 
@@ -278,13 +279,13 @@ This is only used when multiple Heap-on-Node blocks are present.
 | Table type    | Description   | Features   |
 | ------------- | ------------- | ------------- |
 | 108             |  6c table            | Has a b5 table header. |
-| 124             |  7c table            | Has a b5 table header. |
+| 124             |  7c table            | Table Context. Has a b5 table header. |
 | 140             |  8c table            | Has a b5 table header |
 | 156             |  9c table            | Has a b5 table header. |
 | 165             |  a5 table            |  |
 | 172             |  ac table            | Has a b5 table header. |
 | 181             |  b5 table header     | B-Tree on Heap |
-| 188             |  bc table            | Property Context (PC/BTH). Has a b5 table header. |
+| 188             |  bc table            | Property Context. Has a b5 table header. |
 | 204             |  cc table            | Unknown |
 
 ### B-Tree-on-Heap
@@ -312,6 +313,7 @@ The property context starts at the [HID root](#b-tree-on-heap-header) of the B-T
 | ------------- | ------------- | ------------- |
 | 0             |  2            | Property ID.  |
 | 2             |  2            | [Property type](#property-types).  |
+| 4             |  4            | Reference HNID (HID or NID). In the event where the Reference HNID contains an HID or NID, the actual data is stored in the corresponding heap or subnode entry, respectively.  |
 
 #### Property types
 
@@ -349,6 +351,34 @@ The property context starts at the [HID root](#b-tree-on-heap-header) of the B-T
 | Unspecified | 0 |
 | Null | 1 |
 | Object | 13 |
+
+### The root folder
+
+The [identifier](#identifier-types) 290 refers to the root folder.
+
+### Sub-Folders
+
+A folder [identifier](#identifier-types) + 11 refers to the related sub folders (for example, for the root folder this is 290 + 11 = 301).
+
+The related sub folders consists of the Table Context (7c table).
+
+### Table Context
+
+The table context has a B-Tree-on-Heap.
+
+The table context starts at the [HID User Root](#heap-on-node-header) of the Heap-on-Node.
+
+#### Table Context Info
+
+| Offset        | Size          | Description   | 
+| ------------- | ------------- | ------------- |
+| 0             |  1            | [Table context signature](#table-types). MUST be 124.  |
+| 1             |  1            | Column count (number of columns in the table context).  |
+| 14            |  4            | HNID to the Row Matrix (the actual table data).  |
+| 22            |  variable     | [Column Descriptors](#table-context-column-descriptor). |
+
+
+#### Table Context Column Descriptor
 
 ## Contact
 
