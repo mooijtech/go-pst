@@ -294,6 +294,7 @@ const (
 	IdentifierTypeLTP = 31
 
 	IdentifierTypeRootFolder = 290
+	IdentifierTypeMessageStore = 33
 )
 
 // GetIdentifierType returns the b-tree node entry identifier type.

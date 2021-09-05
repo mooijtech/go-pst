@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	pstFile := pst.New("data/enron.pst")
+	pstFile := pst.New("data/support.pst")
 
 	log.Infof("Parsing file: %s", pstFile.Filepath)
 
@@ -154,9 +154,6 @@ func main() {
 	log.Infof("Has valid block signature: %t", rootFolderNodeDataNodeHeapOnNode.IsValidSignature())
 	log.Infof("Table type: %d", rootFolderNodeDataNodeHeapOnNode.GetTableType())
 
-	// Root folder node data node:
-	// - Is a BC table.
-	// - Has a b5 table header.
 	err = pstFile.GetRootFolder(formatType)
 
 	if err != nil {

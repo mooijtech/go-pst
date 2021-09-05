@@ -80,7 +80,7 @@ func (pstFile *File) GetRootFolder(formatType string) error {
 		return err
 	}
 
-	err = pstFile.GetTableContext(subFoldersDataNodeHeapOnNode, formatType)
+	err = pstFile.GetTableContext(subFoldersDataNodeHeapOnNode, formatType, 0, 3)
 
 	if err != nil {
 		return err
