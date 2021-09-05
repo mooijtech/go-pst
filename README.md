@@ -53,7 +53,7 @@ This library is tested on the following datasets:
   - [DFRWS 2009 Rodeo](http://old.dfrws.org/2009/rodeo.shtml)
 - [support.pst](https://github.com/mooijtech/go-pst/blob/master/data/support.pst), [a.dipasquale.pst](https://github.com/mooijtech/go-pst/blob/master/data/a.dipasquale.pst)
   - [Hacking Team](https://en.wikipedia.org/wiki/Hacking_Team)
-  - 50GB worth of PST files from Hacking Team is available via [this torrent magnet link](magnet:?xt=urn:btih:51603bff88e0a1b3bad3962614978929c9d26955&dn=Hacked%20Team&tr=udp%3A%2F%2Fcoppersurfer.tk%3A6969%2Fannounce&tr=udp%3A%2F%2F9.rarbg.me%3A2710%2Fannounce&tr=http%3A%2F%2Fmgtracker.org%3A2710%2Fannounce&tr=http%3A%2F%2Fbt.careland.com.cn%3A6969%2Fannounce&tr=udp%3A%2F%2Fopen.demonii.com%3A1337&tr=udp%3A%2F%2Fexodus.desync.com%3A6969&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.pomf.se&tr=udp%3A%2F%2Ftracker.blackunicorn.xyz%3A6969) (see the folders mail, mail2, mail3)
+  - 50GB worth of PST files from Hacking Team is available via this torrent magnet link: ```magnet:?xt=urn:btih:51603bff88e0a1b3bad3962614978929c9d26955&dn=Hacked%20Team&tr=udp%3A%2F%2Fcoppersurfer.tk%3A6969%2Fannounce&tr=udp%3A%2F%2F9.rarbg.me%3A2710%2Fannounce&tr=http%3A%2F%2Fmgtracker.org%3A2710%2Fannounce&tr=http%3A%2F%2Fbt.careland.com.cn%3A6969%2Fannounce&tr=udp%3A%2F%2Fopen.demonii.com%3A1337&tr=udp%3A%2F%2Fexodus.desync.com%3A6969&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.pomf.se&tr=udp%3A%2F%2Ftracker.blackunicorn.xyz%3A6969``` (see the folders mail, mail2, mail3)
 
 ## Implementation
 
