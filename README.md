@@ -48,7 +48,12 @@ The PFF (Personal Folder File) and OFF (Offline Folder File) format is used to s
 This library is tested on the following datasets:
 
 - [enron.pst](https://github.com/mooijtech/go-pst/blob/master/data/enron.pst)
+  - [Enron Corporation](https://en.wikipedia.org/wiki/Enron)
 - [32-bit.pst](https://github.com/mooijtech/go-pst/blob/master/data/32-bit.pst)
+  - [DFRWS 2009 Rodeo](http://old.dfrws.org/2009/rodeo.shtml)
+- [support.pst](https://github.com/mooijtech/go-pst/blob/master/data/support.pst), [a.dipasquale.pst](https://github.com/mooijtech/go-pst/blob/master/data/a.dipasquale.pst)
+  - [Hacking Team](https://en.wikipedia.org/wiki/Hacking_Team)
+  - 50GB worth of PST files from Hacking Team is available via [this torrent magnet link](magnet:?xt=urn:btih:51603bff88e0a1b3bad3962614978929c9d26955&dn=Hacked%20Team&tr=udp%3A%2F%2Fcoppersurfer.tk%3A6969%2Fannounce&tr=udp%3A%2F%2F9.rarbg.me%3A2710%2Fannounce&tr=http%3A%2F%2Fmgtracker.org%3A2710%2Fannounce&tr=http%3A%2F%2Fbt.careland.com.cn%3A6969%2Fannounce&tr=udp%3A%2F%2Fopen.demonii.com%3A1337&tr=udp%3A%2F%2Fexodus.desync.com%3A6969&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.pomf.se&tr=udp%3A%2F%2Ftracker.blackunicorn.xyz%3A6969) (see the folders mail, mail2, mail3)
 
 ## Implementation
 
@@ -222,6 +227,7 @@ The 32-bit integer (identifier) can be used to search for b-tree nodes.
 | 24          |         | Unknown |
 | 31          |  LTP       | Local descriptor value |
 | 290          |  ROOT_FOLDER       | The root folder. |
+| 33          |  MESSAGE_STORE       | Message store. |
 
 ### Heap-on-Node
 
@@ -374,11 +380,58 @@ The table context starts at the [HID User Root](#heap-on-node-header) of the Hea
 | ------------- | ------------- | ------------- |
 | 0             |  1            | [Table context signature](#table-types). MUST be 124.  |
 | 1             |  1            | Column count (number of columns in the table context).  |
+| 6             |  2            | TCI_1b. Used to get the start offset to the [Cell Existence Block](#cell-existence-block).  |
+| 8             |  2            | Row size.  |
 | 14            |  4            | HNID to the Row Matrix (the actual table data).  |
 | 22            |  variable     | [Column Descriptors](#table-context-column-descriptor). |
 
-
 #### Table Context Column Descriptor
+
+| Offset        | Size          | Description   | 
+| ------------- | ------------- | ------------- |
+| 0             |  2            | [Property Type](#property-types).   |
+| 2             |  2            | Property ID.  |
+| 4             |  2            | Data offset (from the beginning of the Row Matrix).  |
+| 6             |  1            | Data size.  |
+| 7             |  1            | Cell Existence Bitmap Index. See [Cell Existence Block](#cell-existence-block).  |
+
+
+#### Blocks
+
+Block sizes:
+- Unicode: 8192
+- Unicode4k: 65536
+- ANSI: 8192
+
+Block trailer sizes:
+- Unicode: 16
+- Unicode4k: 16
+- ANSI: 12
+
+#### Number of records
+
+**Number of blocks**: Size of the table context / ([block size](#blocks) - [block trailer size](#blocks)). 
+The size of the table context is retrieved by the [allocation table](#heap-on-node-page-map).
+
+**Rows per block**: ([block size](#blocks) - [block trailer size](#blocks)) / [row size](#table-context)
+
+**Row count**: (number of blocks * rows per block) + ((table row matrix size % (block size - block trailer size)) / row size)
+
+**Current row start offset**: (((startAtRow + currentRowIteration) / rowsPerBlock) * (blockSize - blockTrailerSize)) + (((startAtRow + currentRowIteration) % rowsPerBlock) * rowSize)
+
+##### Cell Existence Block
+
+Checks if a column exists.
+
+**Cell existence block size**: math.Ceil([columnCount](#table-context-info) / 8)
+
+**Cell existence block**: ```tableRowMatrix[currentRowStartOffset + tci1b:currentRowStartOffset + tci1b + cellExistenceBlockSize]```
+
+**Cell existence block exists**: ```cellExistenceBlock[column.CellExistenceBitmapIndex / 8] & (0x01 << (7 - (column.CellExistenceBitmapIndex % 8))) == 0```
+
+##### Table Context Item
+
+If the [column data size](#table-context-column-descriptor) is 4, the first 4 bytes contain a HNID which points to data in the Heap-on-Node, these offsets are in the [allocation table](#heap-on-node-page-map).
 
 ## Contact
 
