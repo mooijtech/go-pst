@@ -345,9 +345,11 @@ func (btreeNodeEntryHeapOnNode *BTreeNodeEntry) GetFileOffset(isBranchNode bool,
 		case FormatTypeUnicode4k:
 			nodeOffsetOffset = 8
 			nodeOffsetBufferSize = 8
+			break
 		case FormatTypeANSI:
 			nodeOffsetOffset = 4
 			nodeOffsetBufferSize = 4
+			break
 		default:
 			return -1, errors.New("unsupported format type")
 		}

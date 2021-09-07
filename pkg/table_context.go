@@ -6,8 +6,6 @@ package pst
 import (
 	"encoding/binary"
 	"errors"
-	"fmt"
-	log "github.com/sirupsen/logrus"
 	"math"
 )
 
@@ -24,33 +22,36 @@ type ColumnDescriptor struct {
 // NewColumnDescriptor is a constructor for creating column descriptors.
 func NewColumnDescriptor(tableContext []byte, columnStartOffset int) ColumnDescriptor {
 	return ColumnDescriptor {
-		PropertyType: int(binary.LittleEndian.Uint16(tableContext[columnStartOffset:columnStartOffset + 2])),
-		PropertyID: int(binary.LittleEndian.Uint16(tableContext[columnStartOffset + 2:columnStartOffset + 4])),
-		DataOffset: int(binary.LittleEndian.Uint16(tableContext[columnStartOffset + 4:columnStartOffset + 6])),
-		DataSize: int(binary.LittleEndian.Uint16([]byte{tableContext[columnStartOffset + 6], 0})),
+		PropertyType:             int(binary.LittleEndian.Uint16(tableContext[columnStartOffset:columnStartOffset + 2])),
+		PropertyID:               int(binary.LittleEndian.Uint16(tableContext[columnStartOffset + 2:columnStartOffset + 4])),
+		DataOffset:               int(binary.LittleEndian.Uint16(tableContext[columnStartOffset + 4:columnStartOffset + 6])),
+		DataSize:                 int(binary.LittleEndian.Uint16([]byte{tableContext[columnStartOffset + 6], 0})),
 		CellExistenceBitmapIndex: int(binary.LittleEndian.Uint16([]byte{tableContext[columnStartOffset + 7], 0})),
 	}
 }
 
 // TableContextItem represents an item within the table context.
 type TableContextItem struct {
-	Index int
 	PropertyType int
 	PropertyID int
+	ReferenceHNID int
+	IsExternalValueReference bool
+	Data []byte
 }
 
 // GetTableContext returns the table context.
+// The number of rows to return may be -1 to return all rows.
 // References "Table Context".
-func (pstFile *File) GetTableContext(btreeNodeEntryHeapOnNode BTreeNodeEntry, formatType string, startAtRow int, numberOfRowsToReturn int) error {
+func (pstFile *File) GetTableContext(btreeNodeEntryHeapOnNode BTreeNodeEntry, formatType string, startAtRow int, numberOfRowsToReturn int) ([]TableContextItem, error) {
 	if btreeNodeEntryHeapOnNode.GetTableType() != 124 {
 		// Must be Table Context.
-		return errors.New("invalid table type, must be table context")
+		return nil, errors.New("invalid table type, must be table context")
 	}
 
 	tableContextOffsets, err := pstFile.GetHeapOnNodeAllocationTableOffsets(btreeNodeEntryHeapOnNode.GetHIDUserRoot(), btreeNodeEntryHeapOnNode, formatType)
 
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	tableContext := btreeNodeEntryHeapOnNode.Data[tableContextOffsets.StartOffset:tableContextOffsets.EndOffset]
@@ -58,13 +59,13 @@ func (pstFile *File) GetTableContext(btreeNodeEntryHeapOnNode BTreeNodeEntry, fo
 	tableContextSignature := int(binary.LittleEndian.Uint16([]byte{tableContext[0], 0}))
 
 	if tableContextSignature != 124 {
-		return errors.New("invalid table context signature")
+		return nil, errors.New("invalid table context signature")
 	}
 
 	tableColumnCount := int(binary.LittleEndian.Uint16([]byte{tableContext[1], 0}))
 
 	if tableColumnCount < 1 {
-		return errors.New("there are no columns in this table context")
+		return nil, errors.New("there are no columns in this table context")
 	}
 
 	// TCI_1b is the start offset to the column which holds the 1-byte values.
@@ -77,13 +78,10 @@ func (pstFile *File) GetTableContext(btreeNodeEntryHeapOnNode BTreeNodeEntry, fo
 	tableRowMatrixOffsets, err := pstFile.GetHeapOnNodeAllocationTableOffsets(tableRowMatrixHNID, btreeNodeEntryHeapOnNode, formatType)
 
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	tableRowMatrix := btreeNodeEntryHeapOnNode.Data[tableRowMatrixOffsets.StartOffset:tableRowMatrixOffsets.EndOffset]
-
-	log.Infof("Table row matrix HNID: %d", tableRowMatrixHNID)
-	log.Infof("Table row matrix: %d", len(tableRowMatrix))
 
 	// Get the columns descriptors.
 	tableColumnDescriptors := make([]ColumnDescriptor, tableColumnCount)
@@ -99,13 +97,13 @@ func (pstFile *File) GetTableContext(btreeNodeEntryHeapOnNode BTreeNodeEntry, fo
 	blockSize, err := pstFile.GetBlockSize(formatType)
 
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	blockTrailerSize, err := pstFile.GetBlockTrailerSize(formatType)
 
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	blockCount := len(tableContext) / (blockSize - blockTrailerSize)
@@ -113,47 +111,72 @@ func (pstFile *File) GetTableContext(btreeNodeEntryHeapOnNode BTreeNodeEntry, fo
 	rowCount := (blockCount * rowsPerBlock) + ((len(tableRowMatrix) % (blockSize - blockTrailerSize)) / rowSize)
 	cellExistenceBlockSize := int(math.Ceil(float64(tableColumnCount) / 8))
 
-	log.Infof("Row count: %d", rowCount)
+	if startAtRow == -1 {
+		numberOfRowsToReturn = rowCount
+		startAtRow = 0
+	}
 
 	var currentRowStartOffset int
+	var tableContextItems []TableContextItem
 
 	for i := 0; i < numberOfRowsToReturn; i++ {
 		currentRowStartOffset = (((startAtRow + i) / rowsPerBlock) * (blockSize - blockTrailerSize)) + (((startAtRow + i) % rowsPerBlock) * rowSize)
 
 		cellExistenceBlock := tableRowMatrix[currentRowStartOffset + tci1b:currentRowStartOffset + tci1b + cellExistenceBlockSize]
 
-		for i := 0; i < tableColumnCount; i++ {
-			column := tableColumnDescriptors[i]
+		for x := 0; x < tableColumnCount; x++ {
+			column := tableColumnDescriptors[x]
 
-			// Check if this column exists.
-			if cellExistenceBlock[column.CellExistenceBitmapIndex / 8] & (0x01 << (7 - (column.CellExistenceBitmapIndex % 8))) == 0 {
+			// TODO - Something seems to be wrong here?
+			// TODO - In java-libpst it skips different columns.
+			if cellExistenceBlock[column.CellExistenceBitmapIndex / 8] & (1 << (7 - (column.CellExistenceBitmapIndex % 8))) == 0 {
 				continue
 			}
 
+			var tableContextItem TableContextItem
+
+			tableContextItem.PropertyID = column.PropertyID
+			tableContextItem.PropertyType = column.PropertyType
+
 			switch column.DataSize {
+			case 1:
+				// 1 byte data
+				tableContextItem.ReferenceHNID = int(binary.LittleEndian.Uint16([]byte{tableRowMatrix[currentRowStartOffset + column.DataOffset + 1], 0}))
+
+				tableContextItem.IsExternalValueReference = true
+				break
+			case 2:
+				// 2 byte data
+				tableContextItem.ReferenceHNID = int(binary.LittleEndian.Uint16(tableRowMatrix[currentRowStartOffset + column.DataOffset:currentRowStartOffset + column.DataOffset + 2]))
+
+				tableContextItem.IsExternalValueReference = true
+				break
+			case 8:
+				// 8 byte data
+				tableContextItem.Data = tableRowMatrix[currentRowStartOffset + column.DataOffset:currentRowStartOffset + column.DataOffset + 8]
+				break
 			default:
-				// Four bytes data
-				referenceHNID := int(binary.LittleEndian.Uint32(tableRowMatrix[currentRowStartOffset + column.DataOffset:currentRowStartOffset + column.DataOffset + 4]))
+				// 4 byte data
+				tableContextItem.ReferenceHNID = int(binary.LittleEndian.Uint16(tableRowMatrix[currentRowStartOffset + column.DataOffset:currentRowStartOffset + column.DataOffset + 4]))
 
 				if column.PropertyType == PropertyTypeInteger32 || column.PropertyType == PropertyTypeFloating32 {
 					// 32-bit data
+					tableContextItem.IsExternalValueReference = true
+					break
 				}
 
-				dataOffsets, err := pstFile.GetHeapOnNodeAllocationTableOffsets(referenceHNID, btreeNodeEntryHeapOnNode, formatType)
+				dataOffsets, err := pstFile.GetHeapOnNodeAllocationTableOffsets(tableContextItem.ReferenceHNID, btreeNodeEntryHeapOnNode, formatType)
 
 				if err != nil {
-					return err
+					return nil, err
 				}
 
-				if fmt.Sprintf("%x", column.PropertyID) == "3001" {
-					data := btreeNodeEntryHeapOnNode.Data[dataOffsets.StartOffset:dataOffsets.EndOffset]
-
-					log.Infof("Root folder display name: %s", string(data))
-				}
+				tableContextItem.Data = btreeNodeEntryHeapOnNode.Data[dataOffsets.StartOffset:dataOffsets.EndOffset]
 			}
 
+			tableContextItems = append(tableContextItems, tableContextItem)
 		}
 	}
 
-	return nil
+	return tableContextItems, nil
 }
