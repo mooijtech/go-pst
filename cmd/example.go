@@ -66,6 +66,7 @@ func main() {
 	}
 }
 
+// GetSubFolders is a recursive function which retrieves all sub-folders for the specified folder.
 func GetSubFolders(pstFile pst.File, folder pst.Folder, formatType string) error {
 	subFolders, err := pstFile.GetSubFolders(folder, formatType)
 
@@ -74,7 +75,11 @@ func GetSubFolders(pstFile pst.File, folder pst.Folder, formatType string) error
 	}
 
 	for _, subFolder := range subFolders {
-		return GetSubFolders(pstFile, subFolder, formatType)
+		err := GetSubFolders(pstFile, subFolder, formatType)
+
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil

@@ -42,7 +42,7 @@ type TableContextItem struct {
 // GetTableContext returns the table context.
 // The number of rows to return may be -1 to return all rows.
 // References "Table Context".
-func (pstFile *File) GetTableContext(btreeNodeEntryHeapOnNode BTreeNodeEntry, formatType string, startAtRow int, numberOfRowsToReturn int) ([]TableContextItem, error) {
+func (pstFile *File) GetTableContext(btreeNodeEntryHeapOnNode BTreeNodeEntry, formatType string, startAtRow int, numberOfRowsToReturn int) ([][]TableContextItem, error) {
 	if btreeNodeEntryHeapOnNode.GetTableType() != 124 {
 		// Must be Table Context.
 		return nil, errors.New("invalid table type, must be table context")
@@ -111,13 +111,13 @@ func (pstFile *File) GetTableContext(btreeNodeEntryHeapOnNode BTreeNodeEntry, fo
 	rowCount := (blockCount * rowsPerBlock) + ((len(tableRowMatrix) % (blockSize - blockTrailerSize)) / rowSize)
 	cellExistenceBlockSize := int(math.Ceil(float64(tableColumnCount) / 8))
 
-	if startAtRow == -1 {
+	if startAtRow == -1 || numberOfRowsToReturn == -1 {
 		numberOfRowsToReturn = rowCount
 		startAtRow = 0
 	}
 
 	var currentRowStartOffset int
-	var tableContextItems []TableContextItem
+	tableContextItems := make([][]TableContextItem, numberOfRowsToReturn)
 
 	for i := 0; i < numberOfRowsToReturn; i++ {
 		currentRowStartOffset = (((startAtRow + i) / rowsPerBlock) * (blockSize - blockTrailerSize)) + (((startAtRow + i) % rowsPerBlock) * rowSize)
@@ -127,8 +127,6 @@ func (pstFile *File) GetTableContext(btreeNodeEntryHeapOnNode BTreeNodeEntry, fo
 		for x := 0; x < tableColumnCount; x++ {
 			column := tableColumnDescriptors[x]
 
-			// TODO - Something seems to be wrong here?
-			// TODO - In java-libpst it skips different columns.
 			if cellExistenceBlock[column.CellExistenceBitmapIndex / 8] & (1 << (7 - (column.CellExistenceBitmapIndex % 8))) == 0 {
 				continue
 			}
@@ -141,7 +139,7 @@ func (pstFile *File) GetTableContext(btreeNodeEntryHeapOnNode BTreeNodeEntry, fo
 			switch column.DataSize {
 			case 1:
 				// 1 byte data
-				tableContextItem.ReferenceHNID = int(binary.LittleEndian.Uint16([]byte{tableRowMatrix[currentRowStartOffset + column.DataOffset + 1], 0}))
+				tableContextItem.ReferenceHNID = int(binary.LittleEndian.Uint16([]byte{tableRowMatrix[currentRowStartOffset + column.DataOffset], 0}))
 
 				tableContextItem.IsExternalValueReference = true
 				break
@@ -157,7 +155,7 @@ func (pstFile *File) GetTableContext(btreeNodeEntryHeapOnNode BTreeNodeEntry, fo
 				break
 			default:
 				// 4 byte data
-				tableContextItem.ReferenceHNID = int(binary.LittleEndian.Uint16(tableRowMatrix[currentRowStartOffset + column.DataOffset:currentRowStartOffset + column.DataOffset + 4]))
+				tableContextItem.ReferenceHNID = int(binary.LittleEndian.Uint32(tableRowMatrix[currentRowStartOffset + column.DataOffset:currentRowStartOffset + column.DataOffset + 4]))
 
 				if column.PropertyType == PropertyTypeInteger32 || column.PropertyType == PropertyTypeFloating32 {
 					// 32-bit data
@@ -174,7 +172,7 @@ func (pstFile *File) GetTableContext(btreeNodeEntryHeapOnNode BTreeNodeEntry, fo
 				tableContextItem.Data = btreeNodeEntryHeapOnNode.Data[dataOffsets.StartOffset:dataOffsets.EndOffset]
 			}
 
-			tableContextItems = append(tableContextItems, tableContextItem)
+			tableContextItems[i] = append(tableContextItems[i], tableContextItem)
 		}
 	}
 
