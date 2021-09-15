@@ -30,6 +30,8 @@ The PFF (Personal Folder File) and OFF (Offline Folder File) format is used to s
 
 ## References
 
+Special thanks to James McLeod for helping me with some debugging.
+
 ### Documentation
 
 - [Personal Folder File (PFF) file format specification](https://github.com/mooijtech/go-pst/blob/master/docs/PFF.pdf)
@@ -53,7 +55,109 @@ This library is tested on the following datasets:
   - [DFRWS 2009 Rodeo](http://old.dfrws.org/2009/rodeo.shtml)
 - [support.pst](https://github.com/mooijtech/go-pst/blob/master/data/support.pst), [a.dipasquale.pst](https://github.com/mooijtech/go-pst/blob/master/data/a.dipasquale.pst)
   - [Hacking Team](https://en.wikipedia.org/wiki/Hacking_Team)
-  - 50GB worth of PST files from Hacking Team is available via this torrent magnet link: ```magnet:?xt=urn:btih:51603bff88e0a1b3bad3962614978929c9d26955&dn=Hacked%20Team&tr=udp%3A%2F%2Fcoppersurfer.tk%3A6969%2Fannounce&tr=udp%3A%2F%2F9.rarbg.me%3A2710%2Fannounce&tr=http%3A%2F%2Fmgtracker.org%3A2710%2Fannounce&tr=http%3A%2F%2Fbt.careland.com.cn%3A6969%2Fannounce&tr=udp%3A%2F%2Fopen.demonii.com%3A1337&tr=udp%3A%2F%2Fexodus.desync.com%3A6969&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.pomf.se&tr=udp%3A%2F%2Ftracker.blackunicorn.xyz%3A6969``` (see the folders mail, mail2, mail3)
+  - 50GB worth of PST files from Hacking Team is available via this torrent magnet link (see the folders mail, mail2, mail3): 
+    ```
+    magnet:?xt=urn:btih:51603bff88e0a1b3bad3962614978929c9d26955&dn=Hacked%20Team&tr=udp%3A%2F%2Fcoppersurfer.tk%3A6969%2Fannounce&tr=udp%3A%2F%2F9.rarbg.me%3A2710%2Fannounce&tr=http%3A%2F%2Fmgtracker.org%3A2710%2Fannounce&tr=http%3A%2F%2Fbt.careland.com.cn%3A6969%2Fannounce&tr=udp%3A%2F%2Fopen.demonii.com%3A1337&tr=udp%3A%2F%2Fexodus.desync.com%3A6969&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.pomf.se&tr=udp%3A%2F%2Ftracker.blackunicorn.xyz%3A6969
+    ```
+
+## Usage
+
+**This is an example, the go-pst library does not work fully yet.**
+
+```go
+package main
+
+import (
+  pst "github.com/mooijtech/go-pst/pkg"
+  log "github.com/sirupsen/logrus"
+)
+
+func main() {
+  pstFile := pst.New("data/enron.pst")
+
+  log.Infof("Parsing file: %s", pstFile.Filepath)
+
+  isValidSignature, err := pstFile.IsValidSignature()
+
+  if err != nil {
+    log.Errorf("Failed to read signature: %s", err)
+    return
+  }
+
+  if !isValidSignature {
+    log.Errorf("Invalid file signature.")
+    return
+  }
+
+  contentType, err := pstFile.GetContentType()
+
+  if err != nil {
+    log.Errorf("Failed to get content type: %s", err)
+    return
+  }
+
+  log.Infof("Content type: %s", contentType)
+
+  formatType, err := pstFile.GetFormatType()
+
+  if err != nil {
+    log.Errorf("Failed to get format type: %s", err)
+    return
+  }
+
+  log.Infof("Format type: %s", formatType)
+
+  encryptionType, err := pstFile.GetEncryptionType(formatType)
+
+  if err != nil {
+    log.Errorf("Failed to get encryption type: %s", err)
+    return
+  }
+
+  log.Infof("Encryption type: %s", encryptionType)
+
+  rootFolder, err := pstFile.GetRootFolder(formatType)
+
+  if err != nil {
+    log.Errorf("Failed to get root folder: %s", err)
+    return
+  }
+
+  err = GetSubFolders(pstFile, rootFolder, formatType)
+
+  if err != nil {
+    log.Errorf("Failed to get sub-folders: %s", err)
+    return
+  }
+}
+
+// GetSubFolders is a recursive function which retrieves all sub-folders for the specified folder.
+func GetSubFolders(pstFile pst.File, folder pst.Folder, formatType string) error {
+  subFolders, err := pstFile.GetSubFolders(folder, formatType)
+
+  if err != nil {
+    return err
+  }
+
+  for _, subFolder := range subFolders {
+    log.Infof("Parsing sub-folder: %s", subFolder.DisplayName)
+
+    err := pstFile.GetMessages(subFolder, formatType)
+
+    if err != nil {
+      return err
+    }
+
+    err = GetSubFolders(pstFile, subFolder, formatType)
+
+    if err != nil {
+      return err
+    }
+  }
+
+  return nil
+}
+```
 
 ## Implementation
 
@@ -427,11 +531,11 @@ Checks if a column exists.
 
 **Cell existence block**: ```tableRowMatrix[currentRowStartOffset + tci1b:currentRowStartOffset + tci1b + cellExistenceBlockSize]```
 
-**Cell existence block exists**: ```cellExistenceBlock[column.CellExistenceBitmapIndex / 8] & (0x01 << (7 - (column.CellExistenceBitmapIndex % 8))) == 0```
+**Cell existence block exists**: ```cellExistenceBlock[column.CellExistenceBitmapIndex / 8] & (1 << (7 - (column.CellExistenceBitmapIndex % 8))) != 0```
 
 ##### Table Context Item
 
-If the [column data size](#table-context-column-descriptor) is 4, the first 4 bytes contain a HNID which points to data in the Heap-on-Node, these offsets are in the [allocation table](#heap-on-node-page-map).
+If the [column data size](#table-context-column-descriptor) is 1, 2 or 4, the bytes contain a HNID which points to data in the Heap-on-Node, these offsets are in the [allocation table](#heap-on-node-page-map).
 
 ## Contact
 
