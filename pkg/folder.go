@@ -3,15 +3,13 @@
 // Copyright (C) 2021 Marten Mooij (https://www.mooijtech.com/)
 package pst
 
-import (
-	log "github.com/sirupsen/logrus"
-)
-
 // Folder represents a folder.
 type Folder struct {
 	Identifier      int
+	DisplayName     string
+	HasSubFolders   bool
+	MessageCount int
 	PropertyContext []PropertyContextItem
-	TableContext    []TableContextItem
 }
 
 // GetRootFolder returns the root folder of the PST file.
@@ -60,6 +58,8 @@ func (pstFile *File) GetRootFolder(formatType string) (Folder, error) {
 
 	return Folder{
 		Identifier:      IdentifierTypeRootFolder,
+		DisplayName:     "ROOT_FOLDER",
+		HasSubFolders:   true,
 		PropertyContext: propertyContextItems,
 	}, nil
 }
@@ -104,7 +104,7 @@ func (pstFile *File) GetSubFolderTableContext(folder Folder, formatType string) 
 		return nil, err
 	}
 
-	tableContext, err := pstFile.GetTableContext(subFoldersDataNodeHeapOnNode, formatType, -1, -1)
+	tableContext, err := pstFile.GetTableContext(subFoldersDataNodeHeapOnNode, formatType, -1, -1, -1)
 
 	if err != nil {
 		return nil, err
@@ -115,6 +115,16 @@ func (pstFile *File) GetSubFolderTableContext(folder Folder, formatType string) 
 
 // GetSubFolders returns the sub folders of this folder.
 func (pstFile *File) GetSubFolders(folder Folder, formatType string) ([]Folder, error) {
+	if !folder.HasSubFolders {
+		// This is supposed to be a sub-folder but
+		// if there are actually no sub-folders this references a folder that doesn't exist.
+		// This caused an issue where the table context was not found (because the folder doesn't exist).
+		// References go-pst issue #1.
+		// java-libpst doesn't perform this check so I assumed "26610" always indicated there is a sub-folder.
+		// Special thanks to James McLeod (https://github.com/Jmcleodfoss/pstreader) for telling me to check if there are actually sub-folders.
+		return []Folder{}, nil
+	}
+
 	tableContext, err := pstFile.GetSubFolderTableContext(folder, formatType)
 
 	if err != nil {
@@ -124,77 +134,19 @@ func (pstFile *File) GetSubFolders(folder Folder, formatType string) ([]Folder, 
 	var subFolders []Folder
 
 	for _, tableContextRows := range tableContext {
-		hasSubFolders := false
+		var subFolder Folder
 
 		for _, tableContextColumn := range tableContextRows {
 			if tableContextColumn.PropertyID == 12289 {
-				log.Infof("Display name: %s", string(tableContextColumn.Data))
+				subFolder.DisplayName = string(tableContextColumn.Data)
 			} else if tableContextColumn.PropertyID == 13834 {
-				hasSubFolders = tableContextColumn.ReferenceHNID == 1
+				subFolder.HasSubFolders = tableContextColumn.ReferenceHNID == 1
 			} else if tableContextColumn.PropertyID == 26610 {
-				if !hasSubFolders {
-					// This is supposed to be a sub-folder but
-					// if there are actually no sub-folders this references a folder that doesn't exist.
-					// This caused an issue where the table context was not found (because the folder doesn't exist).
-					// References go-pst issue #1.
-					// java-libpst doesn't perform this check so I assumed "26610" always indicated there is a sub-folder.
-					// Special thanks to James McLeod (https://github.com/Jmcleodfoss/pstreader) for telling me to check if there are actually sub-folders.
-					continue
-				}
+				subFolder.Identifier = tableContextColumn.ReferenceHNID
 
-				identifierType := tableContextColumn.ReferenceHNID & 0x1F
-
-				if identifierType == IdentifierTypeNormalFolder || identifierType == IdentifierTypeSearchFolder {
-					// Find the data node from the reference HNID.
-					nodeBTreeOffset, err := pstFile.GetNodeBTreeOffset(formatType)
-
-					if err != nil {
-						return nil, err
-					}
-
-					node, err := pstFile.FindBTreeNode(nodeBTreeOffset, tableContextColumn.ReferenceHNID, formatType)
-
-					if err != nil {
-						return nil, err
-					}
-
-					dataIdentifier, err := node.GetDataIdentifier(formatType)
-
-					if err != nil {
-						return nil, err
-					}
-
-					blockBTreeOffset, err := pstFile.GetBlockBTreeOffset(formatType)
-
-					if err != nil {
-						return nil, err
-					}
-
-					dataNode, err := pstFile.FindBTreeNode(blockBTreeOffset, dataIdentifier, formatType)
-
-					if err != nil {
-						return nil, err
-					}
-
-					heapOnNode, err := pstFile.GetHeapOnNode(dataNode, formatType)
-
-					if err != nil {
-						return nil, err
-					}
-
-					propertyContext, err := pstFile.GetPropertyContext(heapOnNode, formatType)
-
-					if err != nil {
-						return nil, err
-					}
-
-					subFolders = append(subFolders, Folder{
-						Identifier:      tableContextColumn.ReferenceHNID,
-						PropertyContext: propertyContext,
-					})
-				} else {
-					log.Infof("It's a message!")
-				}
+				subFolders = append(subFolders, subFolder)
+			} else if tableContextColumn.PropertyID == 13826 {
+				subFolder.MessageCount = tableContextColumn.ReferenceHNID
 			}
 		}
 	}

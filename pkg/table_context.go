@@ -42,7 +42,7 @@ type TableContextItem struct {
 // GetTableContext returns the table context.
 // The number of rows to return may be -1 to return all rows.
 // References "Table Context".
-func (pstFile *File) GetTableContext(btreeNodeEntryHeapOnNode BTreeNodeEntry, formatType string, startAtRow int, numberOfRowsToReturn int) ([][]TableContextItem, error) {
+func (pstFile *File) GetTableContext(btreeNodeEntryHeapOnNode BTreeNodeEntry, formatType string, startAtRow int, numberOfRowsToReturn int, columnToGet int) ([][]TableContextItem, error) {
 	if btreeNodeEntryHeapOnNode.GetTableType() != 124 {
 		// Must be Table Context.
 		return nil, errors.New("invalid table type, must be table context")
@@ -73,7 +73,7 @@ func (pstFile *File) GetTableContext(btreeNodeEntryHeapOnNode BTreeNodeEntry, fo
 
 	rowSize := int(binary.LittleEndian.Uint16(tableContext[8:10]))
 
-	tableRowMatrixHNID := int(binary.LittleEndian.Uint16(tableContext[14:18]))
+	tableRowMatrixHNID := int(binary.LittleEndian.Uint32(tableContext[14:18]))
 
 	tableRowMatrixOffsets, err := pstFile.GetHeapOnNodeAllocationTableOffsets(tableRowMatrixHNID, btreeNodeEntryHeapOnNode, formatType)
 
@@ -87,9 +87,14 @@ func (pstFile *File) GetTableContext(btreeNodeEntryHeapOnNode BTreeNodeEntry, fo
 	tableColumnDescriptors := make([]ColumnDescriptor, tableColumnCount)
 
 	offset := 22 // The column descriptors start at offset 22.
+	var columnToGetIndex int
 
 	for i := 0; i < tableColumnCount; i++ {
 		tableColumnDescriptors[i] = NewColumnDescriptor(tableContext, offset)
+
+		if tableColumnDescriptors[i].PropertyID == columnToGet {
+			columnToGetIndex = i
+		}
 
 		offset = offset + 8 // Each column descriptor is 8 bytes in size.
 	}
@@ -124,10 +129,17 @@ func (pstFile *File) GetTableContext(btreeNodeEntryHeapOnNode BTreeNodeEntry, fo
 
 		cellExistenceBlock := tableRowMatrix[currentRowStartOffset + tci1b:currentRowStartOffset + tci1b + cellExistenceBlockSize]
 
-		for x := 0; x < tableColumnCount; x++ {
+		x := 0
+
+		if columnToGet > -1 {
+			x = columnToGetIndex
+		}
+
+		for x < tableColumnCount {
 			column := tableColumnDescriptors[x]
 
 			if cellExistenceBlock[column.CellExistenceBitmapIndex / 8] & (1 << (7 - (column.CellExistenceBitmapIndex % 8))) == 0 {
+				x += 1
 				continue
 			}
 
@@ -173,6 +185,7 @@ func (pstFile *File) GetTableContext(btreeNodeEntryHeapOnNode BTreeNodeEntry, fo
 			}
 
 			tableContextItems[i] = append(tableContextItems[i], tableContextItem)
+			x += 1
 		}
 	}
 

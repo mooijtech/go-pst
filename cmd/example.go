@@ -75,7 +75,15 @@ func GetSubFolders(pstFile pst.File, folder pst.Folder, formatType string) error
 	}
 
 	for _, subFolder := range subFolders {
-		err := GetSubFolders(pstFile, subFolder, formatType)
+		log.Infof("Parsing sub-folder: %s", subFolder.DisplayName)
+
+		err := pstFile.GetMessages(subFolder, formatType)
+
+		if err != nil {
+				return err
+			}
+
+		err = GetSubFolders(pstFile, subFolder, formatType)
 
 		if err != nil {
 			return err

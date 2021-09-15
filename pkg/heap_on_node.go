@@ -74,7 +74,7 @@ func (btreeNodeEntryHeapOnNode *BTreeNodeEntry) GetTableType() int {
 // GetHIDUserRoot returns the HID user root.
 // References "Heap-on-Node header".
 func (btreeNodeEntryHeapOnNode *BTreeNodeEntry) GetHIDUserRoot() int {
-	return int(binary.LittleEndian.Uint16(btreeNodeEntryHeapOnNode.Data[4:8]))
+	return int(binary.LittleEndian.Uint32(btreeNodeEntryHeapOnNode.Data[4:8]))
 }
 
 // GetPageMap returns the Heap-on-Node Page Map.
