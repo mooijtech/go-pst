@@ -249,7 +249,7 @@ func (pstFile *File) GetBTreeNodeEntries(btreeNodeOffset int, formatType string)
 
 // GetIdentifier returns the identifier of this b-tree node entry.
 // References "The b-tree entries".
-func (btreeNodeEntryHeapOnNode *BTreeNodeEntry) GetIdentifier(formatType string) (int, error) {
+func (btreeNodeEntry *BTreeNodeEntry) GetIdentifier(formatType string) (int, error) {
 	var identifierBufferSize int
 
 	switch formatType {
@@ -266,7 +266,7 @@ func (btreeNodeEntryHeapOnNode *BTreeNodeEntry) GetIdentifier(formatType string)
 		return -1, errors.New("unsupported format type")
 	}
 
-	return int(binary.LittleEndian.Uint32(btreeNodeEntryHeapOnNode.Data[:identifierBufferSize])), nil
+	return int(binary.LittleEndian.Uint32(btreeNodeEntry.Data[:identifierBufferSize])), nil
 }
 
 // Constants defining the identifier types.
@@ -299,8 +299,8 @@ const (
 
 // GetIdentifierType returns the b-tree node entry identifier type.
 // References "The b-tree entries", "Identifier".
-func (btreeNodeEntryHeapOnNode *BTreeNodeEntry) GetIdentifierType(formatType string) (int, error) {
-	nodeEntryIdentifier, err := btreeNodeEntryHeapOnNode.GetIdentifier(formatType)
+func (btreeNodeEntry *BTreeNodeEntry) GetIdentifierType(formatType string) (int, error) {
+	nodeEntryIdentifier, err := btreeNodeEntry.GetIdentifier(formatType)
 
 	if err != nil {
 		return -1, err
@@ -315,7 +315,7 @@ func (btreeNodeEntryHeapOnNode *BTreeNodeEntry) GetIdentifierType(formatType str
 
 // GetFileOffset returns the file offset for this b-tree branch or leaf node.
 // References "The b-tree entries".
-func (btreeNodeEntryHeapOnNode *BTreeNodeEntry) GetFileOffset(isBranchNode bool, formatType string) (int, error) {
+func (btreeNodeEntry *BTreeNodeEntry) GetFileOffset(isBranchNode bool, formatType string) (int, error) {
 	var nodeOffsetOffset int
 	var nodeOffsetBufferSize int
 
@@ -357,11 +357,11 @@ func (btreeNodeEntryHeapOnNode *BTreeNodeEntry) GetFileOffset(isBranchNode bool,
 
 	switch formatType {
 	case FormatTypeUnicode:
-		return int(binary.LittleEndian.Uint64(btreeNodeEntryHeapOnNode.Data[nodeOffsetOffset:(nodeOffsetOffset + nodeOffsetBufferSize)])), nil
+		return int(binary.LittleEndian.Uint64(btreeNodeEntry.Data[nodeOffsetOffset:(nodeOffsetOffset + nodeOffsetBufferSize)])), nil
 	case FormatTypeUnicode4k:
-		return int(binary.LittleEndian.Uint64(btreeNodeEntryHeapOnNode.Data[nodeOffsetOffset:(nodeOffsetOffset + nodeOffsetBufferSize)])), nil
+		return int(binary.LittleEndian.Uint64(btreeNodeEntry.Data[nodeOffsetOffset:(nodeOffsetOffset + nodeOffsetBufferSize)])), nil
 	case FormatTypeANSI:
-		return int(binary.LittleEndian.Uint32(btreeNodeEntryHeapOnNode.Data[nodeOffsetOffset:(nodeOffsetOffset + nodeOffsetBufferSize)])), nil
+		return int(binary.LittleEndian.Uint32(btreeNodeEntry.Data[nodeOffsetOffset:(nodeOffsetOffset + nodeOffsetBufferSize)])), nil
 	default:
 		return -1, errors.New("unsupported format type")
 	}
@@ -369,7 +369,7 @@ func (btreeNodeEntryHeapOnNode *BTreeNodeEntry) GetFileOffset(isBranchNode bool,
 
 // GetDataIdentifier returns the node identifier of the data (in the node b-tree).
 // References "The b-tree entries".
-func (btreeNodeEntryHeapOnNode *BTreeNodeEntry) GetDataIdentifier(formatType string) (int, error) {
+func (btreeNodeEntry *BTreeNodeEntry) GetDataIdentifier(formatType string) (int, error) {
 	var dataOffset int
 	var dataBufferSize int
 
@@ -392,11 +392,43 @@ func (btreeNodeEntryHeapOnNode *BTreeNodeEntry) GetDataIdentifier(formatType str
 
 	switch formatType {
 	case FormatTypeUnicode:
-		return int(binary.LittleEndian.Uint64(btreeNodeEntryHeapOnNode.Data[dataOffset:(dataOffset + dataBufferSize)])), nil
+		return int(binary.LittleEndian.Uint64(btreeNodeEntry.Data[dataOffset:(dataOffset + dataBufferSize)])), nil
 	case FormatTypeUnicode4k:
-		return int(binary.LittleEndian.Uint64(btreeNodeEntryHeapOnNode.Data[dataOffset:(dataOffset + dataBufferSize)])), nil
+		return int(binary.LittleEndian.Uint64(btreeNodeEntry.Data[dataOffset:(dataOffset + dataBufferSize)])), nil
 	case FormatTypeANSI:
-		return int(binary.LittleEndian.Uint32(btreeNodeEntryHeapOnNode.Data[dataOffset:(dataOffset + dataBufferSize)])), nil
+		return int(binary.LittleEndian.Uint32(btreeNodeEntry.Data[dataOffset:(dataOffset + dataBufferSize)])), nil
+	default:
+		return -1, errors.New("unsupported format type")
+	}
+}
+
+// GetLocalDescriptorsIdentifier returns the identifier to the local descriptors in the block b-tree.
+func (btreeNodeEntry *BTreeNodeEntry) GetLocalDescriptorsIdentifier(formatType string) (int, error) {
+	var localDescriptorsOffset int
+	var localDescriptorsBufferSize int
+
+	switch formatType {
+	case FormatTypeUnicode:
+		localDescriptorsOffset = 16
+		localDescriptorsBufferSize = 8
+		break
+	case FormatTypeUnicode4k:
+		localDescriptorsOffset = 16
+		localDescriptorsBufferSize = 8
+	case FormatTypeANSI:
+		localDescriptorsOffset = 8
+		localDescriptorsBufferSize = 4
+	default:
+		return -1, errors.New("unsupported format type")
+	}
+
+	switch formatType {
+	case FormatTypeUnicode:
+		return int(binary.LittleEndian.Uint64(btreeNodeEntry.Data[localDescriptorsOffset:localDescriptorsOffset + localDescriptorsBufferSize])), nil
+	case FormatTypeUnicode4k:
+		return int(binary.LittleEndian.Uint64(btreeNodeEntry.Data[localDescriptorsOffset:localDescriptorsOffset + localDescriptorsBufferSize])), nil
+	case FormatTypeANSI:
+		return int(binary.LittleEndian.Uint32(btreeNodeEntry.Data[localDescriptorsOffset:localDescriptorsOffset + localDescriptorsBufferSize])), nil
 	default:
 		return -1, errors.New("unsupported format type")
 	}
@@ -404,7 +436,7 @@ func (btreeNodeEntryHeapOnNode *BTreeNodeEntry) GetDataIdentifier(formatType str
 
 // GetSize returns the size of the data in the block b-tree leaf node entry.
 // References "The b-tree entries".
-func (btreeNodeEntryHeapOnNode *BTreeNodeEntry) GetSize(formatType string) (int, error) {
+func (btreeNodeEntry *BTreeNodeEntry) GetSize(formatType string) (int, error) {
 	var nodeSizeOffset int
 	var nodeSizeBufferSize int
 
@@ -425,7 +457,7 @@ func (btreeNodeEntryHeapOnNode *BTreeNodeEntry) GetSize(formatType string) (int,
 		return -1, errors.New("unsupported format type")
 	}
 
-	return int(binary.LittleEndian.Uint16(btreeNodeEntryHeapOnNode.Data[nodeSizeOffset:(nodeSizeOffset + nodeSizeBufferSize)])), nil
+	return int(binary.LittleEndian.Uint16(btreeNodeEntry.Data[nodeSizeOffset:(nodeSizeOffset + nodeSizeBufferSize)])), nil
 }
 
 // FindBTreeNode walks the b-tree and finds the node with the given identifier.

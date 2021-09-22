@@ -61,26 +61,26 @@ func (pstFile *File) GetHeapOnNode(btreeNodeEntry BTreeNodeEntry, formatType str
 
 // IsValidSignature returns true if the signature of the block matches 0xEC (236).
 // References "Heap-on-Node header".
-func (btreeNodeEntryHeapOnNode *BTreeNodeEntry) IsValidSignature() bool {
-	return binary.LittleEndian.Uint16([]byte{btreeNodeEntryHeapOnNode.Data[2], 0}) == 236
+func (btreeNodeEntry *BTreeNodeEntry) IsValidSignature() bool {
+	return binary.LittleEndian.Uint16([]byte{btreeNodeEntry.Data[2], 0}) == 236
 }
 
 // GetTableType returns the table type.
 // References "Heap-on-Node header", "Table types".
-func (btreeNodeEntryHeapOnNode *BTreeNodeEntry) GetTableType() int {
-	return int(binary.LittleEndian.Uint16([]byte{btreeNodeEntryHeapOnNode.Data[3], 0}))
+func (btreeNodeEntry *BTreeNodeEntry) GetTableType() int {
+	return int(binary.LittleEndian.Uint16([]byte{btreeNodeEntry.Data[3], 0}))
 }
 
 // GetHIDUserRoot returns the HID user root.
 // References "Heap-on-Node header".
-func (btreeNodeEntryHeapOnNode *BTreeNodeEntry) GetHIDUserRoot() int {
-	return int(binary.LittleEndian.Uint32(btreeNodeEntryHeapOnNode.Data[4:8]))
+func (btreeNodeEntry *BTreeNodeEntry) GetHIDUserRoot() int {
+	return int(binary.LittleEndian.Uint32(btreeNodeEntry.Data[4:8]))
 }
 
 // GetPageMap returns the Heap-on-Node Page Map.
 // References "Heap-on-Node page map".
-func (btreeNodeEntryHeapOnNode *BTreeNodeEntry) GetPageMap() int {
-	return int(binary.LittleEndian.Uint16(btreeNodeEntryHeapOnNode.Data[:2]))
+func (btreeNodeEntry *BTreeNodeEntry) GetPageMap() int {
+	return int(binary.LittleEndian.Uint16(btreeNodeEntry.Data[:2]))
 }
 
 // HeapOnNodeBlock represents a Heap-on-Node block.
@@ -100,15 +100,15 @@ func NewHeapOnNodeBlock(blockIndex int, buffer []byte) HeapOnNodeBlock {
 
 // GetBlocks reads the heap on node blocks.
 // References "Heap-on-Node"
-func (btreeNodeEntryHeapOnNode *BTreeNodeEntry) GetBlocks(formatType string) ([]HeapOnNodeBlock, error) {
-	if !btreeNodeEntryHeapOnNode.IsValidSignature() {
+func (btreeNodeEntry *BTreeNodeEntry) GetBlocks(formatType string) ([]HeapOnNodeBlock, error) {
+	if !btreeNodeEntry.IsValidSignature() {
 		// The Heap-on-Node was probably not decrypted via GetHeapOnNode.
 		return nil, errors.New("invalid heap-on-node signature")
 	}
 
 	var nodeEntryBlocks [][]byte
 
-	nodeEntryIdentifierType, err := btreeNodeEntryHeapOnNode.GetIdentifierType(formatType)
+	nodeEntryIdentifierType, err := btreeNodeEntry.GetIdentifierType(formatType)
 
 	if err != nil {
 		return nil, err
@@ -119,7 +119,7 @@ func (btreeNodeEntryHeapOnNode *BTreeNodeEntry) GetBlocks(formatType string) ([]
 		return nil, errors.New("not implemented yet")
 	} else {
 		// TODO - Key for cyclic algorithm is the low 32 bits of the node identifier.
-		nodeEntryBlocks = append(nodeEntryBlocks, btreeNodeEntryHeapOnNode.Data)
+		nodeEntryBlocks = append(nodeEntryBlocks, btreeNodeEntry.Data)
 	}
 
 	var blocks []HeapOnNodeBlock

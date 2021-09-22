@@ -56,19 +56,19 @@ type PropertyContextItem struct {
 
 // GetPropertyContext returns the property context (BC Table).
 // References "Property Context".
-func (pstFile *File) GetPropertyContext(btreeNodeEntryHeapOnNode BTreeNodeEntry, formatType string) ([]PropertyContextItem, error) {
+func (pstFile *File) GetPropertyContext(btreeNodeEntryHeapOnNode BTreeNodeEntry, localDescriptors []LocalDescriptor, formatType string) ([]PropertyContextItem, error) {
 	if btreeNodeEntryHeapOnNode.GetTableType() != 188 {
 		// Must be Property Context.
 		return nil, errors.New("invalid table type for property context")
 	}
 
-	btreeOnHeapHeader, err := pstFile.GetBTreeOnHeapHeader(btreeNodeEntryHeapOnNode, formatType)
+	btreeOnHeapHeader, err := pstFile.GetBTreeOnHeapHeader(btreeNodeEntryHeapOnNode, localDescriptors, formatType)
 
 	if err != nil {
 		return nil, err
 	}
 
-	allocationTableOffsets, err := pstFile.GetHeapOnNodeAllocationTableOffsets(btreeOnHeapHeader.HIDRoot, btreeNodeEntryHeapOnNode, formatType)
+	allocationTableOffsets, err := pstFile.GetHeapOnNodeAllocationTableOffsets(btreeOnHeapHeader.HIDRoot, btreeNodeEntryHeapOnNode, localDescriptors, formatType)
 
 	if err != nil {
 		return nil, err

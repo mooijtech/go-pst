@@ -24,6 +24,12 @@ func (pstFile *File) GetMessageTableContext(folder Folder, formatType string) ([
 		return nil, err
 	}
 
+	localDescriptors, err := pstFile.GetLocalDescriptors(emailsNode, formatType)
+
+	if err != nil {
+		return nil, err
+	}
+
 	blockBTreeOffset, err := pstFile.GetBlockBTreeOffset(formatType)
 
 	if err != nil {
@@ -42,7 +48,7 @@ func (pstFile *File) GetMessageTableContext(folder Folder, formatType string) ([
 		return nil, err
 	}
 
-	tableContext, err := pstFile.GetTableContext(emailsHeapOnNode, formatType, 0, 1, 26610)
+	tableContext, err := pstFile.GetTableContext(emailsHeapOnNode, localDescriptors, formatType, 0, 1, 26610)
 
 	if err != nil {
 		return nil, err
@@ -69,7 +75,11 @@ func (pstFile *File) GetMessages(folder Folder, formatType string) error {
 		return err
 	}
 
-	log.Infof("Message table context: %s", messageTableContext)
+	for _, messageTableContextRow := range messageTableContext {
+		for _, messageTableContextColumn := range messageTableContextRow {
+			log.Infof("Property ID: %d", messageTableContextColumn.PropertyID)
+		}
+	}
 
 	return nil
 }

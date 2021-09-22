@@ -42,13 +42,13 @@ type TableContextItem struct {
 // GetTableContext returns the table context.
 // The number of rows to return may be -1 to return all rows.
 // References "Table Context".
-func (pstFile *File) GetTableContext(btreeNodeEntryHeapOnNode BTreeNodeEntry, formatType string, startAtRow int, numberOfRowsToReturn int, columnToGet int) ([][]TableContextItem, error) {
+func (pstFile *File) GetTableContext(btreeNodeEntryHeapOnNode BTreeNodeEntry, localDescriptors []LocalDescriptor, formatType string, startAtRow int, numberOfRowsToReturn int, columnToGet int) ([][]TableContextItem, error) {
 	if btreeNodeEntryHeapOnNode.GetTableType() != 124 {
 		// Must be Table Context.
 		return nil, errors.New("invalid table type, must be table context")
 	}
 
-	tableContextOffsets, err := pstFile.GetHeapOnNodeAllocationTableOffsets(btreeNodeEntryHeapOnNode.GetHIDUserRoot(), btreeNodeEntryHeapOnNode, formatType)
+	tableContextOffsets, err := pstFile.GetHeapOnNodeAllocationTableOffsets(btreeNodeEntryHeapOnNode.GetHIDUserRoot(), btreeNodeEntryHeapOnNode, localDescriptors, formatType)
 
 	if err != nil {
 		return nil, err
@@ -75,7 +75,7 @@ func (pstFile *File) GetTableContext(btreeNodeEntryHeapOnNode BTreeNodeEntry, fo
 
 	tableRowMatrixHNID := int(binary.LittleEndian.Uint32(tableContext[14:18]))
 
-	tableRowMatrixOffsets, err := pstFile.GetHeapOnNodeAllocationTableOffsets(tableRowMatrixHNID, btreeNodeEntryHeapOnNode, formatType)
+	tableRowMatrixOffsets, err := pstFile.GetHeapOnNodeAllocationTableOffsets(tableRowMatrixHNID, btreeNodeEntryHeapOnNode, localDescriptors, formatType)
 
 	if err != nil {
 		return nil, err
@@ -175,7 +175,12 @@ func (pstFile *File) GetTableContext(btreeNodeEntryHeapOnNode BTreeNodeEntry, fo
 					break
 				}
 
-				dataOffsets, err := pstFile.GetHeapOnNodeAllocationTableOffsets(tableContextItem.ReferenceHNID, btreeNodeEntryHeapOnNode, formatType)
+				if (tableContextItem.ReferenceHNID & 0x1F) != 0 {
+					tableContextItem.IsExternalValueReference = true
+					break
+				}
+
+				dataOffsets, err := pstFile.GetHeapOnNodeAllocationTableOffsets(tableContextItem.ReferenceHNID, btreeNodeEntryHeapOnNode, localDescriptors, formatType)
 
 				if err != nil {
 					return nil, err

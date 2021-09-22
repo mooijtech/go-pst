@@ -50,7 +50,7 @@ func (pstFile *File) GetRootFolder(formatType string) (Folder, error) {
 		return Folder{}, err
 	}
 
-	propertyContextItems, err := pstFile.GetPropertyContext(rootFolderNodeDataNodeHeapOnNode, formatType)
+	propertyContextItems, err := pstFile.GetPropertyContext(rootFolderNodeDataNodeHeapOnNode, []LocalDescriptor{}, formatType)
 
 	if err != nil {
 		return Folder{}, err
@@ -104,7 +104,7 @@ func (pstFile *File) GetSubFolderTableContext(folder Folder, formatType string) 
 		return nil, err
 	}
 
-	tableContext, err := pstFile.GetTableContext(subFoldersDataNodeHeapOnNode, formatType, -1, -1, -1)
+	tableContext, err := pstFile.GetTableContext(subFoldersDataNodeHeapOnNode, []LocalDescriptor{}, formatType, -1, -1, -1)
 
 	if err != nil {
 		return nil, err

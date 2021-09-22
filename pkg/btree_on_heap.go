@@ -15,7 +15,41 @@ type AllocationTableOffsets struct {
 }
 
 // GetHeapOnNodeAllocationTableOffsets returns the offsets from the allocation table of the given HID.
-func (pstFile *File) GetHeapOnNodeAllocationTableOffsets(hid int, btreeNodeEntryHeapOnNode BTreeNodeEntry, formatType string) (AllocationTableOffsets, error) {
+func (pstFile *File) GetHeapOnNodeAllocationTableOffsets(hid int, btreeNodeEntryHeapOnNode BTreeNodeEntry, localDescriptors []LocalDescriptor, formatType string) (AllocationTableOffsets, error) {
+	if len(localDescriptors) > 0 {
+		localDescriptor, err := pstFile.FindLocalDescriptor(localDescriptors, hid)
+
+		if err == nil {
+			// Found the local descriptor for this identifier.
+			blockBTreeOffset, err := pstFile.GetBlockBTreeOffset(formatType)
+
+			if err != nil {
+				return AllocationTableOffsets{}, err
+			}
+
+			localDescriptorNode, err := pstFile.FindBTreeNode(blockBTreeOffset, localDescriptor.DataIdentifier, formatType)
+
+			if err != nil {
+				return AllocationTableOffsets{}, err
+			}
+
+			localDescriptorNodeSize, err := localDescriptorNode.GetSize(formatType)
+
+			if err != nil {
+				return AllocationTableOffsets{}, err
+			}
+
+			return AllocationTableOffsets {
+				StartOffset: 0,
+				EndOffset: localDescriptorNodeSize,
+			}, nil
+		}
+	}
+
+	if (hid & 0x1F) != 0 {
+		return AllocationTableOffsets{}, nil
+	}
+
 	hidBlockIndex := hid >> 16
 
 	nodeEntryBlocks, err := btreeNodeEntryHeapOnNode.GetBlocks(formatType)
@@ -54,9 +88,9 @@ type BTreeOnHeapHeader struct {
 }
 
 // GetBTreeOnHeapHeader returns the btree on heap header.
-func (pstFile *File) GetBTreeOnHeapHeader(btreeNodeEntryHeapOnNode BTreeNodeEntry, formatType string) (BTreeOnHeapHeader, error) {
+func (pstFile *File) GetBTreeOnHeapHeader(btreeNodeEntryHeapOnNode BTreeNodeEntry, localDescriptors []LocalDescriptor, formatType string) (BTreeOnHeapHeader, error) {
 	// All tables should have a BTree-on-Heap header at HID 0x20 (HID User Root from the Heap-on-Node header).
-	allocationTableOffsets, err := pstFile.GetHeapOnNodeAllocationTableOffsets(btreeNodeEntryHeapOnNode.GetHIDUserRoot(), btreeNodeEntryHeapOnNode, formatType)
+	allocationTableOffsets, err := pstFile.GetHeapOnNodeAllocationTableOffsets(btreeNodeEntryHeapOnNode.GetHIDUserRoot(), btreeNodeEntryHeapOnNode, localDescriptors, formatType)
 
 	if err != nil {
 		return BTreeOnHeapHeader{}, err
