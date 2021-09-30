@@ -133,10 +133,10 @@ func (pstFile *File) GetSubFolders(folder Folder, formatType string) ([]Folder, 
 
 	var subFolders []Folder
 
-	for _, tableContextRows := range tableContext {
+	for _, tableContextRow := range tableContext {
 		var subFolder Folder
 
-		for _, tableContextColumn := range tableContextRows {
+		for _, tableContextColumn := range tableContextRow {
 			if tableContextColumn.PropertyID == 12289 {
 				subFolder.DisplayName = string(tableContextColumn.Data)
 			} else if tableContextColumn.PropertyID == 13834 {

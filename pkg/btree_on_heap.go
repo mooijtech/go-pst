@@ -17,27 +17,42 @@ type AllocationTableOffsets struct {
 // GetHeapOnNodeAllocationTableOffsets returns the offsets from the allocation table of the given HID.
 func (pstFile *File) GetHeapOnNodeAllocationTableOffsets(hid int, btreeNodeEntryHeapOnNode BTreeNodeEntry, localDescriptors []LocalDescriptor, formatType string) (AllocationTableOffsets, error) {
 	if len(localDescriptors) > 0 {
-		localDescriptor, err := pstFile.FindLocalDescriptor(localDescriptors, hid)
+		localDescriptor, err := pstFile.FindLocalDescriptor(localDescriptors, hid, formatType)
 
 		if err == nil {
 			// Found the local descriptor for this identifier.
+			localDescriptorDataIdentifier, err := localDescriptor.GetDataIdentifier(formatType)
+
+			if err != nil {
+				return AllocationTableOffsets{}, err
+			}
+
 			blockBTreeOffset, err := pstFile.GetBlockBTreeOffset(formatType)
 
 			if err != nil {
 				return AllocationTableOffsets{}, err
 			}
 
-			localDescriptorNode, err := pstFile.FindBTreeNode(blockBTreeOffset, localDescriptor.DataIdentifier, formatType)
+			localDescriptorNode, err := pstFile.FindBTreeNode(blockBTreeOffset, localDescriptorDataIdentifier, formatType)
 
 			if err != nil {
 				return AllocationTableOffsets{}, err
 			}
+
+			//localDescriptorOffset, err := localDescriptorNode.GetFileOffset(false, formatType)
+			//
+			//if err != nil {
+			//	return AllocationTableOffsets{}, err
+			//}
 
 			localDescriptorNodeSize, err := localDescriptorNode.GetSize(formatType)
 
 			if err != nil {
 				return AllocationTableOffsets{}, err
 			}
+
+			// TODO - Implement a "node input stream" and return a new input stream with this data.
+			//localDescriptorNodeData, err := pstFile.Read(localDescriptorNodeSize, localDescriptorOffset)
 
 			return AllocationTableOffsets {
 				StartOffset: 0,

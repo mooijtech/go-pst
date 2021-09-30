@@ -80,7 +80,7 @@ func (pstFile *File) GetTableContext(btreeNodeEntryHeapOnNode BTreeNodeEntry, lo
 	if err != nil {
 		return nil, err
 	}
-
+	
 	tableRowMatrix := btreeNodeEntryHeapOnNode.Data[tableRowMatrixOffsets.StartOffset:tableRowMatrixOffsets.EndOffset]
 
 	// Get the columns descriptors.
