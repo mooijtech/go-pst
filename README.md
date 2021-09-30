@@ -30,12 +30,12 @@ The PFF (Personal Folder File) and OFF (Offline Folder File) format is used to s
 
 ## References
 
-Special thanks to James McLeod for helping me with some debugging.
+Special thanks to [James McLeod](https://github.com/Jmcleodfoss/) for helping me with some debugging.
 
 ### Documentation
 
-- [Personal Folder File (PFF) file format specification](https://github.com/mooijtech/go-pst/blob/master/docs/PFF.pdf)
 - [Outlook Personal Folders (.pst) File Format](https://github.com/mooijtech/go-pst/blob/master/docs/MS-PST.pdf)
+- [Personal Folder File (PFF) file format specification](https://github.com/mooijtech/go-pst/blob/master/docs/PFF.pdf)
 
 ### Libraries
 
@@ -260,7 +260,7 @@ The following offsets start from the (node/block) b-tree offset.
 | ------------- | ------------- | ------------- |
 | 0             |  8            | [The identifier](#identifier). 32-bit integer. |
 | 8             |  8            | The file offset, points to a [Heap-on-Node](#heap-on-node). |
-| 16            |  2            | The size of the [Heap-on-Node](#heap-on-node). |
+| 16            |  2            | The size of the [Heap-on-Node](#heap-on-node) (or the [local descriptors](#local-descriptors)). |
 
 #### The 64-bit node b-tree leaf node entry
 
@@ -268,7 +268,7 @@ The following offsets start from the (node/block) b-tree offset.
 | ------------- | ------------- | ------------- |
 | 0             |  8            | [The identifier.](#identifier) 32-bit integer. |
 | 8             |  8            | The node identifier of the data. This node identifier is found in the block b-tree. |
-| 16            |  8            | The node identifier of the local descriptors. This node identifier is found in the block b-tree. |
+| 16            |  8            | The node identifier of the [local descriptors](#local-descriptors). This node identifier is found in the block b-tree. |
 
 #### The 32-bit block b-tree branch node entry
 
@@ -283,7 +283,7 @@ The following offsets start from the (node/block) b-tree offset.
 | ------------- | ------------- | ------------- |
 | 0             |  4            | [The identifier](#identifier). 32-bit integer. |
 | 4             |  4            | The file offset, points to a [Heap-on-Node](#heap-on-node). |
-| 8             |  2            | The size of the [Heap-on-Node](#heap-on-node). |
+| 8             |  2            | The size of the [Heap-on-Node](#heap-on-node) (or the [local descriptors](#local-descriptors)). |
 
 #### The 32-bit node b-tree leaf node entry
 
@@ -291,7 +291,7 @@ The following offsets start from the (node/block) b-tree offset.
 | ------------- | ------------- | ------------- |
 | 0             |  4            | [The identifier](#identifier). 32-bit integer. |
 | 4             |  4            | The node identifier of the data. This node identifier is found in the block b-tree. |
-| 8             |  4            | The node identifier of the local descriptors. This node identifier is found in the block b-tree. |
+| 8             |  4            | The node identifier of the [local descriptors](#local-descriptors). This node identifier is found in the block b-tree. |
 
 ### Identifier
 
@@ -536,6 +536,54 @@ Checks if a column exists.
 ##### Table Context Item
 
 If the [column data size](#table-context-column-descriptor) is 1, 2 or 4, the bytes contain a HNID which points to data in the Heap-on-Node, these offsets are in the [allocation table](#heap-on-node-page-map).
+
+### Local Descriptors
+
+The local descriptors identifier and size is in the [b-tree entries](#the-b-tree-entries).
+
+The Heap-on-Node HNID (in the allocation table) may point to a local descriptor which contains it's data in the block b-tree (using the data identifier).
+
+Local descriptor entry size:
+- **64-bit and 64-bit-with-4k**: 24
+- **32-bit**: 12
+
+#### The 64-bit local descriptors
+
+The 64-bit-with-4k local descriptors are the same format as the 64-bit local descriptors.
+
+| Offset        | Size          | Value             | Description | 
+| ------------- | ------------- | ----------------  | ----------- |
+| 0             |  1            | 2                 | The signature. |
+| 1             |  1            |                   | Node level (0 for leaf nodes). |
+| 2             |  2            |                   | The number of entries. |
+| 8             |  (number of entries * entry size) | | The entries. |
+
+#### The 64-bit local descriptors leaf node
+
+| Offset        | Size          | Description | 
+| ------------- | ------------- | ----------- |
+| 0             |  8            | The [identifier](#identifier) (HNID). |
+| 8             |  8            | The data [identifier](#identifier). Searchable in the block b-tree. |
+| 16            |  8            | The local descriptor [identifier](#identifier). |
+
+#### The 32-bit local descriptors
+
+| Offset        | Size          | Value             | Description | 
+| ------------- | ------------- | ----------------  | ----------- |
+| 0             |  1            | 2                 | The signature. |
+| 1             |  1            |                   | Node level (0 for leaf nodes). |
+| 2             |  2            |                   | The number of entries. |
+| 4             |  (number of entries * entry size) | | The entries. |
+
+#### The 32-bit local descriptors leaf node
+
+| Offset        | Size          | Description | 
+| ------------- | ------------- | ----------- |
+| 0             |  4            | The [identifier](#identifier) (HNID). |
+| 4             |  4            | The data [identifier](#identifier). Searchable in the block b-tree. |
+| 8             |  4            | The local descriptor [identifier](#identifier). |
+
+
 
 ## Contact
 
