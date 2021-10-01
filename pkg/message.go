@@ -48,7 +48,7 @@ func (pstFile *File) GetMessageTableContext(folder Folder, formatType string) ([
 		return nil, err
 	}
 
-	tableContext, err := pstFile.GetTableContext(emailsHeapOnNode, localDescriptors, formatType, 0, 1, 26610)
+	tableContext, err := pstFile.GetTableContext(emailsHeapOnNode, localDescriptors, formatType, 0, -1, 26610)
 
 	if err != nil {
 		return nil, err

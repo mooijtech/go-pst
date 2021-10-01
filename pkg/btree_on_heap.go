@@ -10,6 +10,7 @@ import (
 
 // AllocationTableOffsets represent the start and end offset of a Heap-on-Node item.
 type AllocationTableOffsets struct {
+	Data []byte
 	StartOffset int
 	EndOffset int
 }
@@ -39,11 +40,11 @@ func (pstFile *File) GetHeapOnNodeAllocationTableOffsets(hid int, btreeNodeEntry
 				return AllocationTableOffsets{}, err
 			}
 
-			//localDescriptorOffset, err := localDescriptorNode.GetFileOffset(false, formatType)
-			//
-			//if err != nil {
-			//	return AllocationTableOffsets{}, err
-			//}
+			localDescriptorOffset, err := localDescriptorNode.GetFileOffset(false, formatType)
+
+			if err != nil {
+				return AllocationTableOffsets{}, err
+			}
 
 			localDescriptorNodeSize, err := localDescriptorNode.GetSize(formatType)
 
@@ -52,9 +53,10 @@ func (pstFile *File) GetHeapOnNodeAllocationTableOffsets(hid int, btreeNodeEntry
 			}
 
 			// TODO - Implement a "node input stream" and return a new input stream with this data.
-			//localDescriptorNodeData, err := pstFile.Read(localDescriptorNodeSize, localDescriptorOffset)
+			localDescriptorNodeData, err := pstFile.Read(localDescriptorNodeSize, localDescriptorOffset)
 
 			return AllocationTableOffsets {
+				Data: DecodeCompressibleEncryption(localDescriptorNodeData),
 				StartOffset: 0,
 				EndOffset: localDescriptorNodeSize,
 			}, nil
