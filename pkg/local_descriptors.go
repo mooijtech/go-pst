@@ -32,16 +32,7 @@ func (localDescriptor *LocalDescriptor) GetIdentifier(formatType string) (int, e
 		return -1, errors.New("unsupported format type")
 	}
 
-	switch formatType {
-	case FormatTypeUnicode:
-		return int(binary.LittleEndian.Uint64(localDescriptor.Data[:identifierBufferSize])), nil
-	case FormatTypeUnicode4k:
-		return int(binary.LittleEndian.Uint64(localDescriptor.Data[:identifierBufferSize])), nil
-	case FormatTypeANSI:
-		return int(binary.LittleEndian.Uint32(localDescriptor.Data[:identifierBufferSize])), nil
-	default:
-		return -1, errors.New("unsupported format type")
-	}
+	return int(binary.LittleEndian.Uint32(localDescriptor.Data[:identifierBufferSize])), nil
 }
 
 // GetDataIdentifier returns the data identifier of the local descriptor.
@@ -67,16 +58,7 @@ func (localDescriptor *LocalDescriptor) GetDataIdentifier(formatType string) (in
 		return -1, errors.New("unsupported format type")
 	}
 
-	switch formatType {
-	case FormatTypeUnicode:
-		return int(binary.LittleEndian.Uint64(localDescriptor.Data[identifierOffset:identifierOffset + identifierBufferSize])), nil
-	case FormatTypeUnicode4k:
-		return int(binary.LittleEndian.Uint64(localDescriptor.Data[identifierOffset:identifierOffset + identifierBufferSize])), nil
-	case FormatTypeANSI:
-		return int(binary.LittleEndian.Uint32(localDescriptor.Data[identifierOffset:identifierOffset + identifierBufferSize])), nil
-	default:
-		return -1, errors.New("unsupported format type")
-	}
+	return int(binary.LittleEndian.Uint32(localDescriptor.Data[identifierOffset:identifierOffset + identifierBufferSize])), nil
 }
 
 // GetLocalDescriptorsIdentifier returns the local descriptors identifier of the local descriptor.
@@ -102,16 +84,7 @@ func (localDescriptor *LocalDescriptor) GetLocalDescriptorsIdentifier(formatType
 		return -1, errors.New("unsupported format type")
 	}
 
-	switch formatType {
-	case FormatTypeUnicode:
-		return int(binary.LittleEndian.Uint64(localDescriptor.Data[identifierOffset:identifierOffset + identifierBufferSize])), nil
-	case FormatTypeUnicode4k:
-		return int(binary.LittleEndian.Uint64(localDescriptor.Data[identifierOffset:identifierOffset + identifierBufferSize])), nil
-	case FormatTypeANSI:
-		return int(binary.LittleEndian.Uint32(localDescriptor.Data[identifierOffset:identifierOffset + identifierBufferSize])), nil
-	default:
-		return -1, errors.New("unsupported format type")
-	}
+	return int(binary.LittleEndian.Uint32(localDescriptor.Data[identifierOffset:identifierOffset + identifierBufferSize])), nil
 }
 
 // GetLocalDescriptors returns the local descriptors of the b-tree node entry.
@@ -150,12 +123,6 @@ func (pstFile *File) GetLocalDescriptors(btreeNodeEntry BTreeNodeEntry, formatTy
 	if binary.LittleEndian.Uint16([]byte{signature[0], 0}) != 2 {
 		return nil, errors.New("invalid local descriptors signature")
 	}
-
-	//localDescriptorsSize, err := localDescriptorsNode.GetSize(formatType)
-	//
-	//if err != nil {
-	//	return nil, err
-	//}
 
 	localDescriptorsLevel, err := pstFile.Read(1, localDescriptorsOffset + 1)
 
