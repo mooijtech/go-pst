@@ -14,31 +14,7 @@ type Folder struct {
 
 // GetRootFolder returns the root folder of the PST file.
 func (pstFile *File) GetRootFolder(formatType string) (Folder, error) {
-	nodeBTreeOffset, err := pstFile.GetNodeBTreeOffset(formatType)
-
-	if err != nil {
-		return Folder{}, err
-	}
-
-	rootFolderNode, err := pstFile.FindBTreeNode(nodeBTreeOffset, IdentifierTypeRootFolder, formatType)
-
-	if err != nil {
-		return Folder{}, err
-	}
-
-	rootFolderNodeDataIdentifier, err := rootFolderNode.GetDataIdentifier(formatType)
-
-	if err != nil {
-		return Folder{}, err
-	}
-
-	blockBTreeOffset, err := pstFile.GetBlockBTreeOffset(formatType)
-
-	if err != nil {
-		return Folder{}, err
-	}
-
-	rootFolderDataNode, err := pstFile.FindBTreeNode(blockBTreeOffset, rootFolderNodeDataIdentifier, formatType)
+	rootFolderDataNode, err := pstFile.GetDataBTreeNode(IdentifierTypeRootFolder, formatType)
 
 	if err != nil {
 		return Folder{}, err
@@ -66,33 +42,9 @@ func (pstFile *File) GetRootFolder(formatType string) (Folder, error) {
 
 // GetSubFolderTableContext returns the table context for the sub-folders of this folder.
 func (pstFile *File) GetSubFolderTableContext(folder Folder, formatType string) ([][]TableContextItem, error) {
-	nodeBTreeOffset, err := pstFile.GetNodeBTreeOffset(formatType)
-
-	if err != nil {
-		return nil, err
-	}
-
 	subFoldersIdentifier := folder.Identifier + 11 // +11 returns the identifier of the sub-folders.
 
-	subFoldersNode, err := pstFile.FindBTreeNode(nodeBTreeOffset, subFoldersIdentifier, formatType)
-
-	if err != nil {
-		return nil, err
-	}
-
-	subFoldersDataIdentifier, err := subFoldersNode.GetDataIdentifier(formatType)
-
-	if err != nil {
-		return nil, err
-	}
-
-	blockBTreeOffset, err := pstFile.GetBlockBTreeOffset(formatType)
-
-	if err != nil {
-		return nil, err
-	}
-
-	subFoldersDataNode, err := pstFile.FindBTreeNode(blockBTreeOffset, subFoldersDataIdentifier, formatType)
+	subFoldersDataNode, err := pstFile.GetDataBTreeNode(subFoldersIdentifier, formatType)
 
 	if err != nil {
 		return nil, err

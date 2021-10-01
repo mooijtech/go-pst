@@ -28,25 +28,19 @@ func (pstFile *File) GetHeapOnNodeAllocationTableOffsets(hid int, btreeNodeEntry
 				return AllocationTableOffsets{}, err
 			}
 
-			blockBTreeOffset, err := pstFile.GetBlockBTreeOffset(formatType)
+			localDescriptorDataNode, err := pstFile.GetBlockBTreeNode(localDescriptorDataIdentifier, formatType)
 
 			if err != nil {
 				return AllocationTableOffsets{}, err
 			}
 
-			localDescriptorNode, err := pstFile.FindBTreeNode(blockBTreeOffset, localDescriptorDataIdentifier, formatType)
+			localDescriptorOffset, err := localDescriptorDataNode.GetFileOffset(false, formatType)
 
 			if err != nil {
 				return AllocationTableOffsets{}, err
 			}
 
-			localDescriptorOffset, err := localDescriptorNode.GetFileOffset(false, formatType)
-
-			if err != nil {
-				return AllocationTableOffsets{}, err
-			}
-
-			localDescriptorNodeSize, err := localDescriptorNode.GetSize(formatType)
+			localDescriptorNodeSize, err := localDescriptorDataNode.GetSize(formatType)
 
 			if err != nil {
 				return AllocationTableOffsets{}, err

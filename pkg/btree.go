@@ -533,3 +533,60 @@ func (pstFile *File) FindBTreeNode(btreeNodeOffset int, identifier int, formatTy
 
 	return BTreeNodeEntry{}, errors.New("failed to find b-tree node")
 }
+
+// GetNodeBTreeNode returns the node in the node b-tree with the given identifier.
+func (pstFile *File) GetNodeBTreeNode(identifier int, formatType string) (BTreeNodeEntry, error) {
+	nodeBTreeOffset, err := pstFile.GetNodeBTreeOffset(formatType)
+
+	if err != nil {
+		return BTreeNodeEntry{}, err
+	}
+
+	node, err := pstFile.FindBTreeNode(nodeBTreeOffset, identifier, formatType)
+
+	if err != nil {
+		return BTreeNodeEntry{}, err
+	}
+
+	return node, nil
+}
+
+// GetBlockBTreeNode returns the node in the block b-tree with the given identifier.
+func (pstFile *File) GetBlockBTreeNode(identifier int, formatType string) (BTreeNodeEntry, error) {
+	blockBTreeOffset, err := pstFile.GetBlockBTreeOffset(formatType)
+
+	if err != nil {
+		return BTreeNodeEntry{}, err
+	}
+
+	node, err := pstFile.FindBTreeNode(blockBTreeOffset, identifier, formatType)
+
+	if err != nil {
+		return BTreeNodeEntry{}, err
+	}
+
+	return node, nil
+}
+
+// GetDataBTreeNode searches the identifier in the node b-tree, then searches the data identifier in the block b-tree.
+func (pstFile *File) GetDataBTreeNode(identifier int, formatType string) (BTreeNodeEntry, error) {
+	node, err := pstFile.GetNodeBTreeNode(identifier, formatType)
+
+	if err != nil {
+		return BTreeNodeEntry{}, err
+	}
+
+	dataIdentifier, err := node.GetDataIdentifier(formatType)
+
+	if err != nil {
+		return BTreeNodeEntry{}, err
+	}
+
+	dataNode, err := pstFile.GetBlockBTreeNode(dataIdentifier, formatType)
+
+	if err != nil {
+		return BTreeNodeEntry{}, err
+	}
+
+	return dataNode, nil
+}

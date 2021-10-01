@@ -6,19 +6,7 @@ import log "github.com/sirupsen/logrus"
 func (pstFile *File) GetMessageTableContext(folder Folder, formatType string) ([][]TableContextItem, error) {
 	emailsIdentifier := folder.Identifier + 12
 
-	nodeBTreeOffset, err := pstFile.GetNodeBTreeOffset(formatType)
-
-	if err != nil {
-		return nil, err
-	}
-
-	emailsNode, err := pstFile.FindBTreeNode(nodeBTreeOffset, emailsIdentifier, formatType)
-
-	if err != nil {
-		return nil, err
-	}
-
-	emailsDataIdentifier, err := emailsNode.GetDataIdentifier(formatType)
+	emailsNode, err := pstFile.GetNodeBTreeNode(emailsIdentifier, formatType)
 
 	if err != nil {
 		return nil, err
@@ -30,13 +18,7 @@ func (pstFile *File) GetMessageTableContext(folder Folder, formatType string) ([
 		return nil, err
 	}
 
-	blockBTreeOffset, err := pstFile.GetBlockBTreeOffset(formatType)
-
-	if err != nil {
-		return nil, err
-	}
-
-	emailsDataNode, err := pstFile.FindBTreeNode(blockBTreeOffset, emailsDataIdentifier, formatType)
+	emailsDataNode, err := pstFile.GetDataBTreeNode(emailsIdentifier, formatType)
 
 	if err != nil {
 		return nil, err
@@ -77,7 +59,9 @@ func (pstFile *File) GetMessages(folder Folder, formatType string) error {
 
 	for _, messageTableContextRow := range messageTableContext {
 		for _, messageTableContextColumn := range messageTableContextRow {
-			log.Infof("Property ID: %d", messageTableContextColumn.PropertyID)
+			if messageTableContextColumn.PropertyID == 26610 {
+				log.Infof("Processing message: %d", messageTableContextColumn.ReferenceHNID)
+			}
 		}
 	}
 
