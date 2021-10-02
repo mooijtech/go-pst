@@ -13,20 +13,20 @@ type Folder struct {
 }
 
 // GetRootFolder returns the root folder of the PST file.
-func (pstFile *File) GetRootFolder(formatType string) (Folder, error) {
+func (pstFile *File) GetRootFolder(formatType string, encryptionType string) (Folder, error) {
 	rootFolderDataNode, err := pstFile.GetDataBTreeNode(IdentifierTypeRootFolder, formatType)
 
 	if err != nil {
 		return Folder{}, err
 	}
 
-	rootFolderNodeDataNodeHeapOnNode, err := pstFile.GetHeapOnNode(rootFolderDataNode, formatType)
+	rootFolderNodeDataNodeHeapOnNode, err := pstFile.NewHeapOnNodeFromNode(rootFolderDataNode, formatType, encryptionType)
 
 	if err != nil {
 		return Folder{}, err
 	}
 
-	propertyContextItems, err := pstFile.GetPropertyContext(rootFolderNodeDataNodeHeapOnNode, []LocalDescriptor{}, formatType)
+	propertyContextItems, err := pstFile.GetPropertyContext(rootFolderNodeDataNodeHeapOnNode, []LocalDescriptor{}, formatType, encryptionType)
 
 	if err != nil {
 		return Folder{}, err
@@ -41,7 +41,7 @@ func (pstFile *File) GetRootFolder(formatType string) (Folder, error) {
 }
 
 // GetSubFolderTableContext returns the table context for the sub-folders of this folder.
-func (pstFile *File) GetSubFolderTableContext(folder Folder, formatType string) ([][]TableContextItem, error) {
+func (pstFile *File) GetSubFolderTableContext(folder Folder, formatType string, encryptionType string) ([][]TableContextItem, error) {
 	subFoldersIdentifier := folder.Identifier + 11 // +11 returns the identifier of the sub-folders.
 
 	subFoldersDataNode, err := pstFile.GetDataBTreeNode(subFoldersIdentifier, formatType)
@@ -50,13 +50,13 @@ func (pstFile *File) GetSubFolderTableContext(folder Folder, formatType string) 
 		return nil, err
 	}
 
-	subFoldersDataNodeHeapOnNode, err := pstFile.GetHeapOnNode(subFoldersDataNode, formatType)
+	subFoldersDataNodeHeapOnNode, err := pstFile.NewHeapOnNodeFromNode(subFoldersDataNode, formatType, encryptionType)
 
 	if err != nil {
 		return nil, err
 	}
 
-	tableContext, err := pstFile.GetTableContext(subFoldersDataNodeHeapOnNode, []LocalDescriptor{}, formatType, -1, -1, -1)
+	tableContext, err := pstFile.GetTableContext(subFoldersDataNodeHeapOnNode, []LocalDescriptor{}, formatType, encryptionType, -1, -1, -1)
 
 	if err != nil {
 		return nil, err
@@ -66,7 +66,7 @@ func (pstFile *File) GetSubFolderTableContext(folder Folder, formatType string) 
 }
 
 // GetSubFolders returns the sub folders of this folder.
-func (pstFile *File) GetSubFolders(folder Folder, formatType string) ([]Folder, error) {
+func (pstFile *File) GetSubFolders(folder Folder, formatType string, encryptionType string) ([]Folder, error) {
 	if !folder.HasSubFolders {
 		// This is supposed to be a sub-folder but
 		// if there are actually no sub-folders this references a folder that doesn't exist.
@@ -77,7 +77,7 @@ func (pstFile *File) GetSubFolders(folder Folder, formatType string) ([]Folder, 
 		return []Folder{}, nil
 	}
 
-	tableContext, err := pstFile.GetSubFolderTableContext(folder, formatType)
+	tableContext, err := pstFile.GetSubFolderTableContext(folder, formatType, encryptionType)
 
 	if err != nil {
 		return nil, err

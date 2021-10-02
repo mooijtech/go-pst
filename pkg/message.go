@@ -3,7 +3,7 @@ package pst
 import log "github.com/sirupsen/logrus"
 
 // GetMessageTableContext returns the message table context of this folder.
-func (pstFile *File) GetMessageTableContext(folder Folder, formatType string) ([][]TableContextItem, error) {
+func (pstFile *File) GetMessageTableContext(folder Folder, formatType string, encryptionType string) ([][]TableContextItem, error) {
 	emailsIdentifier := folder.Identifier + 12
 
 	emailsNode, err := pstFile.GetNodeBTreeNode(emailsIdentifier, formatType)
@@ -24,13 +24,13 @@ func (pstFile *File) GetMessageTableContext(folder Folder, formatType string) ([
 		return nil, err
 	}
 
-	emailsHeapOnNode, err := pstFile.GetHeapOnNode(emailsDataNode, formatType)
+	emailsHeapOnNode, err := pstFile.NewHeapOnNodeFromNode(emailsDataNode, formatType, encryptionType)
 
 	if err != nil {
 		return nil, err
 	}
 
-	tableContext, err := pstFile.GetTableContext(emailsHeapOnNode, localDescriptors, formatType, 0, -1, 26610)
+	tableContext, err := pstFile.GetTableContext(emailsHeapOnNode, localDescriptors, formatType, encryptionType, 0, -1, 26610)
 
 	if err != nil {
 		return nil, err
@@ -40,7 +40,7 @@ func (pstFile *File) GetMessageTableContext(folder Folder, formatType string) ([
 }
 
 // GetMessages returns an array of messages from the message table context.
-func (pstFile *File) GetMessages(folder Folder, formatType string) error {
+func (pstFile *File) GetMessages(folder Folder, formatType string, encryptionType string) error {
 	if folder.MessageCount == 0 {
 		return nil
 	}
@@ -51,7 +51,7 @@ func (pstFile *File) GetMessages(folder Folder, formatType string) error {
 		return nil
 	}
 
-	messageTableContext, err := pstFile.GetMessageTableContext(folder, formatType)
+	messageTableContext, err := pstFile.GetMessageTableContext(folder, formatType, encryptionType)
 
 	if err != nil {
 		return err

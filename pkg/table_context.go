@@ -4,7 +4,6 @@
 package pst
 
 import (
-	"encoding/binary"
 	"errors"
 	"math"
 )
@@ -20,14 +19,44 @@ type ColumnDescriptor struct {
 }
 
 // NewColumnDescriptor is a constructor for creating column descriptors.
-func NewColumnDescriptor(tableContext []byte, columnStartOffset int) ColumnDescriptor {
-	return ColumnDescriptor {
-		PropertyType:             int(binary.LittleEndian.Uint16(tableContext[columnStartOffset:columnStartOffset + 2])),
-		PropertyID:               int(binary.LittleEndian.Uint16(tableContext[columnStartOffset + 2:columnStartOffset + 4])),
-		DataOffset:               int(binary.LittleEndian.Uint16(tableContext[columnStartOffset + 4:columnStartOffset + 6])),
-		DataSize:                 int(binary.LittleEndian.Uint16([]byte{tableContext[columnStartOffset + 6], 0})),
-		CellExistenceBitmapIndex: int(binary.LittleEndian.Uint16([]byte{tableContext[columnStartOffset + 7], 0})),
+func NewColumnDescriptor(tableContextNodeInputStream NodeInputStream, columnStartOffset int) (ColumnDescriptor, error) {
+	propertyType, err := tableContextNodeInputStream.SeekAndReadUint16(2, columnStartOffset)
+
+	if err != nil {
+		return ColumnDescriptor{}, err
 	}
+
+	propertyID, err := tableContextNodeInputStream.SeekAndReadUint16(2, columnStartOffset + 2)
+
+	if err != nil {
+		return ColumnDescriptor{}, err
+	}
+
+	dataOffset, err := tableContextNodeInputStream.SeekAndReadUint16(2, columnStartOffset + 4)
+
+	if err != nil {
+		return ColumnDescriptor{}, err
+	}
+
+	dataSize, err := tableContextNodeInputStream.SeekAndReadUint16(1, columnStartOffset + 6)
+
+	if err != nil {
+		return ColumnDescriptor{}, err
+	}
+
+	cellExistenceBitmapIndex, err := tableContextNodeInputStream.SeekAndReadUint16(1, columnStartOffset + 7)
+
+	if err != nil {
+		return ColumnDescriptor{}, err
+	}
+
+	return ColumnDescriptor {
+		PropertyType: propertyType,
+		PropertyID: propertyID,
+		DataOffset: dataOffset,
+		DataSize: dataSize,
+		CellExistenceBitmapIndex: cellExistenceBitmapIndex,
+	}, nil
 }
 
 // TableContextItem represents an item within the table context.
@@ -42,50 +71,74 @@ type TableContextItem struct {
 // GetTableContext returns the table context.
 // The number of rows to return may be -1 to return all rows.
 // References "Table Context".
-func (pstFile *File) GetTableContext(btreeNodeEntryHeapOnNode BTreeNodeEntry, localDescriptors []LocalDescriptor, formatType string, startAtRow int, numberOfRowsToReturn int, columnToGet int) ([][]TableContextItem, error) {
-	if btreeNodeEntryHeapOnNode.GetTableType() != 124 {
-		// Must be Table Context.
-		return nil, errors.New("invalid table type, must be table context")
-	}
-
-	tableContextOffsets, err := pstFile.GetHeapOnNodeAllocationTableOffsets(btreeNodeEntryHeapOnNode.GetHIDUserRoot(), btreeNodeEntryHeapOnNode, localDescriptors, formatType)
+func (pstFile *File) GetTableContext(heapOnNode HeapOnNode, localDescriptors []LocalDescriptor, formatType string, encryptionType string, startAtRow int, numberOfRowsToReturn int, columnToGet int) ([][]TableContextItem, error) {
+	tableType, err := heapOnNode.GetTableType()
 
 	if err != nil {
 		return nil, err
 	}
 
-	tableContext := btreeNodeEntryHeapOnNode.Data[tableContextOffsets.StartOffset:tableContextOffsets.EndOffset]
+	if tableType != 124 {
+		// Must be Table Context.
+		return nil, errors.New("invalid table type, must be table context")
+	}
 
-	tableContextSignature := int(binary.LittleEndian.Uint16([]byte{tableContext[0], 0}))
+	hidUserRoot, err := heapOnNode.GetHIDUserRoot()
+
+	if err != nil {
+		return nil, err
+	}
+
+	tableContextNodeInputStream, err := pstFile.GetAllocationTableNodeInputStream(hidUserRoot, heapOnNode, localDescriptors, formatType, encryptionType)
+
+	if err != nil {
+		return nil, err
+	}
+
+	tableContextSignature, err := tableContextNodeInputStream.SeekAndReadUint16(1, 0)
+
+	if err != nil {
+		return nil, err
+	}
 
 	if tableContextSignature != 124 {
 		return nil, errors.New("invalid table context signature")
 	}
 
-	tableColumnCount := int(binary.LittleEndian.Uint16([]byte{tableContext[1], 0}))
+	tableColumnCount, err := tableContextNodeInputStream.SeekAndReadUint16(1, 1)
+
+	if err != nil {
+		return nil, err
+	}
 
 	if tableColumnCount < 1 {
 		return nil, errors.New("there are no columns in this table context")
 	}
 
 	// TCI_1b is the start offset to the column which holds the 1-byte values.
-	tci1b := int(binary.LittleEndian.Uint16(tableContext[6:8]))
-
-	rowSize := int(binary.LittleEndian.Uint16(tableContext[8:10]))
-
-	tableRowMatrixHNID := int(binary.LittleEndian.Uint32(tableContext[14:18]))
-
-	tableRowMatrixOffsets, err := pstFile.GetHeapOnNodeAllocationTableOffsets(tableRowMatrixHNID, btreeNodeEntryHeapOnNode, localDescriptors, formatType)
+	tci1b, err := tableContextNodeInputStream.SeekAndReadUint16(2, 6)
 
 	if err != nil {
 		return nil, err
 	}
 
-	if len(tableRowMatrixOffsets.Data) > 0 {
-		btreeNodeEntryHeapOnNode.Data = tableRowMatrixOffsets.Data
+	rowSize, err := tableContextNodeInputStream.SeekAndReadUint16(2, 8)
+
+	if err != nil {
+		return nil, err
 	}
 
-	tableRowMatrix := btreeNodeEntryHeapOnNode.Data[tableRowMatrixOffsets.StartOffset:tableRowMatrixOffsets.EndOffset]
+	tableRowMatrixHNID, err := tableContextNodeInputStream.SeekAndReadUint32(4, 14)
+
+	if err != nil {
+		return nil, err
+	}
+
+	tableRowMatrixNodeInputStream, err := pstFile.GetAllocationTableNodeInputStream(tableRowMatrixHNID, heapOnNode, localDescriptors, formatType, encryptionType)
+
+	if err != nil {
+		return nil, err
+	}
 
 	// Get the columns descriptors.
 	tableColumnDescriptors := make([]ColumnDescriptor, tableColumnCount)
@@ -94,9 +147,15 @@ func (pstFile *File) GetTableContext(btreeNodeEntryHeapOnNode BTreeNodeEntry, lo
 	var columnToGetIndex int
 
 	for i := 0; i < tableColumnCount; i++ {
-		tableColumnDescriptors[i] = NewColumnDescriptor(tableContext, offset)
+		columnDescriptor, err := NewColumnDescriptor(tableContextNodeInputStream, offset)
 
-		if tableColumnDescriptors[i].PropertyID == columnToGet {
+		if err != nil {
+			return nil, err
+		}
+
+		tableColumnDescriptors[i] = columnDescriptor
+
+		if columnDescriptor.PropertyID == columnToGet {
 			columnToGetIndex = i
 		}
 
@@ -115,9 +174,9 @@ func (pstFile *File) GetTableContext(btreeNodeEntryHeapOnNode BTreeNodeEntry, lo
 		return nil, err
 	}
 
-	blockCount := len(tableContext) / (blockSize - blockTrailerSize)
+	blockCount := tableContextNodeInputStream.Size / (blockSize - blockTrailerSize)
 	rowsPerBlock := (blockSize - blockTrailerSize) / rowSize
-	rowCount := (blockCount * rowsPerBlock) + ((len(tableRowMatrix) % (blockSize - blockTrailerSize)) / rowSize)
+	rowCount := (blockCount * rowsPerBlock) + ((tableRowMatrixNodeInputStream.Size % (blockSize - blockTrailerSize)) / rowSize)
 	cellExistenceBlockSize := int(math.Ceil(float64(tableColumnCount) / 8))
 
 	if startAtRow == -1 || numberOfRowsToReturn == -1 {
@@ -131,7 +190,11 @@ func (pstFile *File) GetTableContext(btreeNodeEntryHeapOnNode BTreeNodeEntry, lo
 	for i := 0; i < numberOfRowsToReturn; i++ {
 		currentRowStartOffset = (((startAtRow + i) / rowsPerBlock) * (blockSize - blockTrailerSize)) + (((startAtRow + i) % rowsPerBlock) * rowSize)
 
-		cellExistenceBlock := tableRowMatrix[currentRowStartOffset + tci1b:currentRowStartOffset + tci1b + cellExistenceBlockSize]
+		cellExistenceBlock, err := tableRowMatrixNodeInputStream.Read(cellExistenceBlockSize, currentRowStartOffset + tci1b)
+
+		if err != nil {
+			return nil, err
+		}
 
 		x := 0
 
@@ -155,23 +218,45 @@ func (pstFile *File) GetTableContext(btreeNodeEntryHeapOnNode BTreeNodeEntry, lo
 			switch column.DataSize {
 			case 1:
 				// 1 byte data
-				tableContextItem.ReferenceHNID = int(binary.LittleEndian.Uint16([]byte{tableRowMatrix[currentRowStartOffset + column.DataOffset], 0}))
+				referenceHNID, err := tableRowMatrixNodeInputStream.SeekAndReadUint16(1, currentRowStartOffset + column.DataOffset)
 
+				if err != nil {
+					return nil, err
+				}
+
+				tableContextItem.ReferenceHNID = referenceHNID
 				tableContextItem.IsExternalValueReference = true
 				break
 			case 2:
 				// 2 byte data
-				tableContextItem.ReferenceHNID = int(binary.LittleEndian.Uint16(tableRowMatrix[currentRowStartOffset + column.DataOffset:currentRowStartOffset + column.DataOffset + 2]))
+				referenceHNID, err := tableRowMatrixNodeInputStream.SeekAndReadUint16(2, currentRowStartOffset + column.DataOffset)
 
+				if err != nil {
+					return nil, err
+				}
+
+				tableContextItem.ReferenceHNID = referenceHNID
 				tableContextItem.IsExternalValueReference = true
 				break
 			case 8:
 				// 8 byte data
-				tableContextItem.Data = tableRowMatrix[currentRowStartOffset + column.DataOffset:currentRowStartOffset + column.DataOffset + 8]
+				data, err := tableRowMatrixNodeInputStream.Read(8, currentRowStartOffset + column.DataOffset)
+
+				if err != nil {
+					return nil, err
+				}
+
+				tableContextItem.Data = data
 				break
 			default:
 				// 4 byte data
-				tableContextItem.ReferenceHNID = int(binary.LittleEndian.Uint32(tableRowMatrix[currentRowStartOffset + column.DataOffset:currentRowStartOffset + column.DataOffset + 4]))
+				referenceHNID, err := tableRowMatrixNodeInputStream.SeekAndReadUint32(4, currentRowStartOffset + column.DataOffset)
+
+				if err != nil {
+					return nil, err
+				}
+
+				tableContextItem.ReferenceHNID = referenceHNID
 
 				if column.PropertyType == PropertyTypeInteger32 || column.PropertyType == PropertyTypeFloating32 {
 					// 32-bit data
@@ -179,18 +264,20 @@ func (pstFile *File) GetTableContext(btreeNodeEntryHeapOnNode BTreeNodeEntry, lo
 					break
 				}
 
-				if (tableContextItem.ReferenceHNID & 0x1F) != 0 {
+				if (referenceHNID & 0x1F) != 0 {
 					tableContextItem.IsExternalValueReference = true
 					break
 				}
 
-				dataOffsets, err := pstFile.GetHeapOnNodeAllocationTableOffsets(tableContextItem.ReferenceHNID, btreeNodeEntryHeapOnNode, localDescriptors, formatType)
+				tableContextItemNodeInputStream, err := pstFile.GetAllocationTableNodeInputStream(tableContextItem.ReferenceHNID, heapOnNode, localDescriptors, formatType, encryptionType)
 
 				if err != nil {
 					return nil, err
 				}
 
-				tableContextItem.Data = btreeNodeEntryHeapOnNode.Data[dataOffsets.StartOffset:dataOffsets.EndOffset]
+				tableContextItemData, err := tableContextItemNodeInputStream.Read(tableContextItemNodeInputStream.Size, 0)
+
+				tableContextItem.Data = tableContextItemData
 			}
 
 			tableContextItems[i] = append(tableContextItems[i], tableContextItem)

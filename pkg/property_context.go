@@ -4,7 +4,6 @@
 package pst
 
 import (
-	"encoding/binary"
 	"errors"
 )
 
@@ -56,34 +55,53 @@ type PropertyContextItem struct {
 
 // GetPropertyContext returns the property context (BC Table).
 // References "Property Context".
-func (pstFile *File) GetPropertyContext(btreeNodeEntryHeapOnNode BTreeNodeEntry, localDescriptors []LocalDescriptor, formatType string) ([]PropertyContextItem, error) {
-	if btreeNodeEntryHeapOnNode.GetTableType() != 188 {
+func (pstFile *File) GetPropertyContext(heapOnNode HeapOnNode, localDescriptors []LocalDescriptor, formatType string, encryptionType string) ([]PropertyContextItem, error) {
+	tableType, err := heapOnNode.GetTableType()
+
+	if err != nil {
+		return nil, err
+	}
+
+	if tableType != 188 {
 		// Must be Property Context.
 		return nil, errors.New("invalid table type for property context")
 	}
 
-	btreeOnHeapHeader, err := pstFile.GetBTreeOnHeapHeader(btreeNodeEntryHeapOnNode, localDescriptors, formatType)
+	btreeOnHeapHeader, err := pstFile.GetBTreeOnHeapHeader(heapOnNode, localDescriptors, formatType, encryptionType)
 
 	if err != nil {
 		return nil, err
 	}
 
-	allocationTableOffsets, err := pstFile.GetHeapOnNodeAllocationTableOffsets(btreeOnHeapHeader.HIDRoot, btreeNodeEntryHeapOnNode, localDescriptors, formatType)
+	keyTableNodeInputStream, err := pstFile.GetAllocationTableNodeInputStream(btreeOnHeapHeader.HIDRoot, heapOnNode, localDescriptors, formatType, encryptionType)
 
 	if err != nil {
 		return nil, err
 	}
 
-	keyTable := btreeNodeEntryHeapOnNode.Data[allocationTableOffsets.StartOffset:allocationTableOffsets.EndOffset]
-	keyCount := len(keyTable) / (btreeOnHeapHeader.KeySize + btreeOnHeapHeader.ValueSize)
+	keyCount := keyTableNodeInputStream.Size / (btreeOnHeapHeader.KeySize + btreeOnHeapHeader.ValueSize)
 
 	var propertyContextItems []PropertyContextItem
 	offset := 0
 
 	for i := 0; i < keyCount; i++ {
-		propertyID := int(binary.LittleEndian.Uint16(keyTable[offset:offset + 2]))
-		propertyType := int(binary.LittleEndian.Uint16(keyTable[offset + 2:offset + 4]))
-		referenceHNID := int(binary.LittleEndian.Uint16(keyTable[offset + 4:offset + 8]))
+		propertyID, err := keyTableNodeInputStream.SeekAndReadUint16(2, offset)
+
+		if err != nil {
+			return nil, err
+		}
+
+		propertyType, err := keyTableNodeInputStream.SeekAndReadUint16(2, offset + 2)
+
+		if err != nil {
+			return nil, err
+		}
+
+		referenceHNID, err := keyTableNodeInputStream.SeekAndReadUint32(4, offset + 4)
+
+		if err != nil {
+			return nil, err
+		}
 
 		propertyContextItems = append(propertyContextItems, PropertyContextItem {
 			Index: i,

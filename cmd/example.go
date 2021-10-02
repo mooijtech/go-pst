@@ -51,14 +51,14 @@ func main() {
 
 	log.Infof("Encryption type: %s", encryptionType)
 
-	rootFolder, err := pstFile.GetRootFolder(formatType)
+	rootFolder, err := pstFile.GetRootFolder(formatType, encryptionType)
 
 	if err != nil {
 		log.Errorf("Failed to get root folder: %s", err)
 		return
 	}
 
-	err = GetSubFolders(pstFile, rootFolder, formatType)
+	err = GetSubFolders(pstFile, rootFolder, formatType, encryptionType)
 
 	if err != nil {
 		log.Errorf("Failed to get sub-folders: %s", err)
@@ -67,8 +67,8 @@ func main() {
 }
 
 // GetSubFolders is a recursive function which retrieves all sub-folders for the specified folder.
-func GetSubFolders(pstFile pst.File, folder pst.Folder, formatType string) error {
-	subFolders, err := pstFile.GetSubFolders(folder, formatType)
+func GetSubFolders(pstFile pst.File, folder pst.Folder, formatType string, encryptionType string) error {
+	subFolders, err := pstFile.GetSubFolders(folder, formatType, encryptionType)
 
 	if err != nil {
 		return err
@@ -77,13 +77,13 @@ func GetSubFolders(pstFile pst.File, folder pst.Folder, formatType string) error
 	for _, subFolder := range subFolders {
 		log.Infof("Parsing sub-folder: %s", subFolder.DisplayName)
 
-		err := pstFile.GetMessages(subFolder, formatType)
+		err := pstFile.GetMessages(subFolder, formatType, encryptionType)
 
 		if err != nil {
 				return err
 			}
 
-		err = GetSubFolders(pstFile, subFolder, formatType)
+		err = GetSubFolders(pstFile, subFolder, formatType, encryptionType)
 
 		if err != nil {
 			return err
