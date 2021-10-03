@@ -116,17 +116,14 @@ func (pstFile *File) GetPropertyContext(heapOnNode HeapOnNode, localDescriptors 
 	return propertyContextItems, nil
 }
 
-// GetPropertyContextItem returns the property context item from the property ID.
+// FindPropertyContextItem returns the property context item from the property ID.
 // References GetPropertyContext.
-func (pstFile *File) GetPropertyContextItem(propertyContext []PropertyContextItem, propertyID int) PropertyContextItem {
-	var propertyContextItem PropertyContextItem
-
+func (pstFile *File) FindPropertyContextItem(propertyContext []PropertyContextItem, propertyID int) (PropertyContextItem, error) {
 	for _, item := range propertyContext {
 		if item.PropertyID == propertyID {
-			propertyContextItem = item
-			break
+			return item, nil
 		}
 	}
 
-	return propertyContextItem
+	return PropertyContextItem{}, errors.New("failed to find property context item")
 }

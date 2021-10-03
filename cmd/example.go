@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	pstFile := pst.New("data/enron.pst")
+	pstFile := pst.New("data/32-bit.pst")
 
 	log.Infof("Parsing file: %s", pstFile.Filepath)
 

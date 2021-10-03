@@ -23,7 +23,7 @@ func (pstFile *File) NewHeapOnNodeFromNode(btreeNodeEntry BTreeNodeEntry, format
 		return HeapOnNode{}, err
 	}
 
-	// TODO - Pass a flag for is this is an internal identifier: if identifier & 0x02 != 0
+	// TODO - Pass a flag for is this is an internal (has blocks): if identifier & 0x02 != 0
 
 	nodeInputStream := NodeInputStream{
 		File:           pstFile,
@@ -152,11 +152,4 @@ func (heapOnNode *HeapOnNode) GetPageMap() (int, error) {
 	}
 
 	return pageMap, nil
-}
-
-// HeapOnNodeBlock represents a Heap-on-Node block.
-// References "Heap-on-Node".
-type HeapOnNodeBlock struct {
-	BlockIndex int
-	Data       []byte
 }

@@ -539,6 +539,8 @@ If the [column data size](#table-context-column-descriptor) is 1, 2 or 4, the by
 
 The local descriptors identifier and size is in the [b-tree entries](#the-b-tree-entries).
 
+If the local descriptors' identifier is 0, there are no local descriptors.
+
 The Heap-on-Node HNID (in the allocation table) may point to a local descriptor which contains it's data in the block b-tree (using the data identifier).
 
 Local descriptor entry size:
