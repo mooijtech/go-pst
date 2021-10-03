@@ -10,15 +10,15 @@ import (
 
 // NodeInputStream represents a node input stream for a Heap-on-Node.
 type NodeInputStream struct {
-	File *File
+	File           *File
 	EncryptionType string
-	FileOffset int
-	Size int
+	FileOffset     int
+	Size           int
 }
 
 // Read reads from the node input stream.
 func (nodeInputStream *NodeInputStream) Read(outputBufferSize int, offset int) ([]byte, error) {
-	outputBuffer, err := nodeInputStream.File.Read(outputBufferSize, nodeInputStream.FileOffset + offset)
+	outputBuffer, err := nodeInputStream.File.Read(outputBufferSize, nodeInputStream.FileOffset+offset)
 
 	if err != nil {
 		return nil, err

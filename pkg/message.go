@@ -1,7 +1,5 @@
 package pst
 
-import log "github.com/sirupsen/logrus"
-
 // GetMessageTableContext returns the message table context of this folder.
 func (pstFile *File) GetMessageTableContext(folder Folder, formatType string, encryptionType string) ([][]TableContextItem, error) {
 	emailsIdentifier := folder.Identifier + 12
@@ -60,7 +58,7 @@ func (pstFile *File) GetMessages(folder Folder, formatType string, encryptionTyp
 	for _, messageTableContextRow := range messageTableContext {
 		for _, messageTableContextColumn := range messageTableContextRow {
 			if messageTableContextColumn.PropertyID == 26610 {
-				log.Infof("Processing message: %d", messageTableContextColumn.ReferenceHNID)
+				//log.Infof("Processing message: %d", messageTableContextColumn.ReferenceHNID)
 			}
 		}
 	}

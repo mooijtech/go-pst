@@ -11,10 +11,10 @@ import (
 // ColumnDescriptor represents a column in the Table Context.
 // References "Table Context", "Table Context Column Descriptor".
 type ColumnDescriptor struct {
-	PropertyType int
-	PropertyID int
-	DataOffset int
-	DataSize int
+	PropertyType             int
+	PropertyID               int
+	DataOffset               int
+	DataSize                 int
 	CellExistenceBitmapIndex int
 }
 
@@ -26,46 +26,46 @@ func NewColumnDescriptor(tableContextNodeInputStream NodeInputStream, columnStar
 		return ColumnDescriptor{}, err
 	}
 
-	propertyID, err := tableContextNodeInputStream.SeekAndReadUint16(2, columnStartOffset + 2)
+	propertyID, err := tableContextNodeInputStream.SeekAndReadUint16(2, columnStartOffset+2)
 
 	if err != nil {
 		return ColumnDescriptor{}, err
 	}
 
-	dataOffset, err := tableContextNodeInputStream.SeekAndReadUint16(2, columnStartOffset + 4)
+	dataOffset, err := tableContextNodeInputStream.SeekAndReadUint16(2, columnStartOffset+4)
 
 	if err != nil {
 		return ColumnDescriptor{}, err
 	}
 
-	dataSize, err := tableContextNodeInputStream.SeekAndReadUint16(1, columnStartOffset + 6)
+	dataSize, err := tableContextNodeInputStream.SeekAndReadUint16(1, columnStartOffset+6)
 
 	if err != nil {
 		return ColumnDescriptor{}, err
 	}
 
-	cellExistenceBitmapIndex, err := tableContextNodeInputStream.SeekAndReadUint16(1, columnStartOffset + 7)
+	cellExistenceBitmapIndex, err := tableContextNodeInputStream.SeekAndReadUint16(1, columnStartOffset+7)
 
 	if err != nil {
 		return ColumnDescriptor{}, err
 	}
 
-	return ColumnDescriptor {
-		PropertyType: propertyType,
-		PropertyID: propertyID,
-		DataOffset: dataOffset,
-		DataSize: dataSize,
+	return ColumnDescriptor{
+		PropertyType:             propertyType,
+		PropertyID:               propertyID,
+		DataOffset:               dataOffset,
+		DataSize:                 dataSize,
 		CellExistenceBitmapIndex: cellExistenceBitmapIndex,
 	}, nil
 }
 
 // TableContextItem represents an item within the table context.
 type TableContextItem struct {
-	PropertyType int
-	PropertyID int
-	ReferenceHNID int
+	PropertyType             int
+	PropertyID               int
+	ReferenceHNID            int
 	IsExternalValueReference bool
-	Data []byte
+	Data                     []byte
 }
 
 // GetTableContext returns the table context.
@@ -190,7 +190,7 @@ func (pstFile *File) GetTableContext(heapOnNode HeapOnNode, localDescriptors []L
 	for i := 0; i < numberOfRowsToReturn; i++ {
 		currentRowStartOffset = (((startAtRow + i) / rowsPerBlock) * (blockSize - blockTrailerSize)) + (((startAtRow + i) % rowsPerBlock) * rowSize)
 
-		cellExistenceBlock, err := tableRowMatrixNodeInputStream.Read(cellExistenceBlockSize, currentRowStartOffset + tci1b)
+		cellExistenceBlock, err := tableRowMatrixNodeInputStream.Read(cellExistenceBlockSize, currentRowStartOffset+tci1b)
 
 		if err != nil {
 			return nil, err
@@ -205,7 +205,7 @@ func (pstFile *File) GetTableContext(heapOnNode HeapOnNode, localDescriptors []L
 		for x < tableColumnCount {
 			column := tableColumnDescriptors[x]
 
-			if cellExistenceBlock[column.CellExistenceBitmapIndex / 8] & (1 << (7 - (column.CellExistenceBitmapIndex % 8))) == 0 {
+			if cellExistenceBlock[column.CellExistenceBitmapIndex/8]&(1<<(7-(column.CellExistenceBitmapIndex%8))) == 0 {
 				x += 1
 				continue
 			}
@@ -218,7 +218,7 @@ func (pstFile *File) GetTableContext(heapOnNode HeapOnNode, localDescriptors []L
 			switch column.DataSize {
 			case 1:
 				// 1 byte data
-				referenceHNID, err := tableRowMatrixNodeInputStream.SeekAndReadUint16(1, currentRowStartOffset + column.DataOffset)
+				referenceHNID, err := tableRowMatrixNodeInputStream.SeekAndReadUint16(1, currentRowStartOffset+column.DataOffset)
 
 				if err != nil {
 					return nil, err
@@ -229,7 +229,7 @@ func (pstFile *File) GetTableContext(heapOnNode HeapOnNode, localDescriptors []L
 				break
 			case 2:
 				// 2 byte data
-				referenceHNID, err := tableRowMatrixNodeInputStream.SeekAndReadUint16(2, currentRowStartOffset + column.DataOffset)
+				referenceHNID, err := tableRowMatrixNodeInputStream.SeekAndReadUint16(2, currentRowStartOffset+column.DataOffset)
 
 				if err != nil {
 					return nil, err
@@ -240,7 +240,7 @@ func (pstFile *File) GetTableContext(heapOnNode HeapOnNode, localDescriptors []L
 				break
 			case 8:
 				// 8 byte data
-				data, err := tableRowMatrixNodeInputStream.Read(8, currentRowStartOffset + column.DataOffset)
+				data, err := tableRowMatrixNodeInputStream.Read(8, currentRowStartOffset+column.DataOffset)
 
 				if err != nil {
 					return nil, err
@@ -250,7 +250,7 @@ func (pstFile *File) GetTableContext(heapOnNode HeapOnNode, localDescriptors []L
 				break
 			default:
 				// 4 byte data
-				referenceHNID, err := tableRowMatrixNodeInputStream.SeekAndReadUint32(4, currentRowStartOffset + column.DataOffset)
+				referenceHNID, err := tableRowMatrixNodeInputStream.SeekAndReadUint32(4, currentRowStartOffset+column.DataOffset)
 
 				if err != nil {
 					return nil, err

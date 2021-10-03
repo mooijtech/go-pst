@@ -9,9 +9,9 @@ import (
 
 // AllocationTableOffsets represent the start and end offset of a Heap-on-Node item.
 type AllocationTableOffsets struct {
-	Data []byte
+	Data        []byte
 	StartOffset int
-	EndOffset int
+	EndOffset   int
 }
 
 // GetAllocationTableNodeInputStream returns the offsets from the allocation table of the given HID.
@@ -59,23 +59,23 @@ func (pstFile *File) GetAllocationTableNodeInputStream(hid int, heapOnNode HeapO
 		return NodeInputStream{}, err
 	}
 
-	endOffset, err := heapOnNode.NodeInputStream.SeekAndReadUint16(2, heapOnNodePageMap + 2)
+	endOffset, err := heapOnNode.NodeInputStream.SeekAndReadUint16(2, heapOnNodePageMap+2)
 
-	return NodeInputStream {
-		File: pstFile,
+	return NodeInputStream{
+		File:           pstFile,
 		EncryptionType: encryptionType,
-		FileOffset: heapOnNode.NodeInputStream.FileOffset + startOffset,
-		Size: endOffset - startOffset,
+		FileOffset:     heapOnNode.NodeInputStream.FileOffset + startOffset,
+		Size:           endOffset - startOffset,
 	}, nil
 }
 
 // BTreeOnHeapHeader represents the b-tree on heap header.
 type BTreeOnHeapHeader struct {
 	TableType int
-	KeySize int
+	KeySize   int
 	ValueSize int
-	Levels int
-	HIDRoot int
+	Levels    int
+	HIDRoot   int
 }
 
 // GetBTreeOnHeapHeader returns the btree on heap header.
@@ -123,11 +123,11 @@ func (pstFile *File) GetBTreeOnHeapHeader(heapOnNode HeapOnNode, localDescriptor
 		return BTreeOnHeapHeader{}, err
 	}
 
-	return BTreeOnHeapHeader {
+	return BTreeOnHeapHeader{
 		TableType: btreeOnHeapTableType,
-		KeySize: btreeOnHeapKeySize,
+		KeySize:   btreeOnHeapKeySize,
 		ValueSize: btreeOnHeapValueSize,
-		Levels: btreeOnHeapLevels,
-		HIDRoot: btreeOnHeapHIDRoot,
+		Levels:    btreeOnHeapLevels,
+		HIDRoot:   btreeOnHeapHIDRoot,
 	}, nil
 }

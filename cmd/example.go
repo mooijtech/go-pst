@@ -80,8 +80,8 @@ func GetSubFolders(pstFile pst.File, folder pst.Folder, formatType string, encry
 		err := pstFile.GetMessages(subFolder, formatType, encryptionType)
 
 		if err != nil {
-				return err
-			}
+			return err
+		}
 
 		err = GetSubFolders(pstFile, subFolder, formatType, encryptionType)
 

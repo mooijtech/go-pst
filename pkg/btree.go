@@ -194,7 +194,7 @@ type BTreeNodeEntry struct {
 
 // NewBTreeNodeEntry is a constructor for creating node entries.
 func NewBTreeNodeEntry(data []byte) BTreeNodeEntry {
-	return BTreeNodeEntry {
+	return BTreeNodeEntry{
 		Data: data,
 	}
 }
@@ -239,7 +239,7 @@ func (pstFile *File) GetBTreeNodeEntries(btreeNodeOffset int, formatType string)
 	entries := make([]BTreeNodeEntry, nodeEntryCount)
 
 	for i := 0; i < nodeEntryCount; i++ {
-		nodeEntry := nodeEntries[(i * nodeEntrySize):(i * nodeEntrySize) + nodeEntrySize]
+		nodeEntry := nodeEntries[(i * nodeEntrySize) : (i*nodeEntrySize)+nodeEntrySize]
 
 		entries[i] = NewBTreeNodeEntry(nodeEntry)
 	}
@@ -272,28 +272,28 @@ func (btreeNodeEntry *BTreeNodeEntry) GetIdentifier(formatType string) (int, err
 // Constants defining the identifier types.
 // References "Identifier types".
 const (
-	IdentifierTypeHID = 0
-	IdentifierTypeInternal = 1
-	IdentifierTypeNormalFolder = 2
-	IdentifierTypeSearchFolder = 3
-	IdentifierTypeNormalMessage = 4
-	IdentifierTypeAttachment = 5
-	IdentifierTypeSearchUpdateQueue = 6
-	IdentifierTypeSearchCriteriaObject = 7
-	IdentifierTypeAssociatedMessage = 8
-	IdentifierTypeContentsTableIndex = 10
-	IdentifierTypeReceiveFolderTable = 11
-	IdentifierTypeOutgoingQueueTable = 12
-	IdentifierTypeHierarchyTable = 13
-	IdentifierTypeContentsTable = 14
+	IdentifierTypeHID                     = 0
+	IdentifierTypeInternal                = 1
+	IdentifierTypeNormalFolder            = 2
+	IdentifierTypeSearchFolder            = 3
+	IdentifierTypeNormalMessage           = 4
+	IdentifierTypeAttachment              = 5
+	IdentifierTypeSearchUpdateQueue       = 6
+	IdentifierTypeSearchCriteriaObject    = 7
+	IdentifierTypeAssociatedMessage       = 8
+	IdentifierTypeContentsTableIndex      = 10
+	IdentifierTypeReceiveFolderTable      = 11
+	IdentifierTypeOutgoingQueueTable      = 12
+	IdentifierTypeHierarchyTable          = 13
+	IdentifierTypeContentsTable           = 14
 	IdentifierTypeAssociatedContentsTable = 15
-	IdentifierTypeSearchContentsTable = 16
-	IdentifierTypeAttachmentTable = 17
-	IdentifierTypeRecipientTable = 18
-	IdentifierTypeSearchTableIndex = 19
-	IdentifierTypeLTP = 31
+	IdentifierTypeSearchContentsTable     = 16
+	IdentifierTypeAttachmentTable         = 17
+	IdentifierTypeRecipientTable          = 18
+	IdentifierTypeSearchTableIndex        = 19
+	IdentifierTypeLTP                     = 31
 
-	IdentifierTypeRootFolder = 290
+	IdentifierTypeRootFolder   = 290
 	IdentifierTypeMessageStore = 33
 )
 
@@ -424,11 +424,11 @@ func (btreeNodeEntry *BTreeNodeEntry) GetLocalDescriptorsIdentifier(formatType s
 
 	switch formatType {
 	case FormatTypeUnicode:
-		return int(binary.LittleEndian.Uint64(btreeNodeEntry.Data[localDescriptorsOffset:localDescriptorsOffset + localDescriptorsBufferSize])), nil
+		return int(binary.LittleEndian.Uint64(btreeNodeEntry.Data[localDescriptorsOffset : localDescriptorsOffset+localDescriptorsBufferSize])), nil
 	case FormatTypeUnicode4k:
-		return int(binary.LittleEndian.Uint64(btreeNodeEntry.Data[localDescriptorsOffset:localDescriptorsOffset + localDescriptorsBufferSize])), nil
+		return int(binary.LittleEndian.Uint64(btreeNodeEntry.Data[localDescriptorsOffset : localDescriptorsOffset+localDescriptorsBufferSize])), nil
 	case FormatTypeANSI:
-		return int(binary.LittleEndian.Uint32(btreeNodeEntry.Data[localDescriptorsOffset:localDescriptorsOffset + localDescriptorsBufferSize])), nil
+		return int(binary.LittleEndian.Uint32(btreeNodeEntry.Data[localDescriptorsOffset : localDescriptorsOffset+localDescriptorsBufferSize])), nil
 	default:
 		return -1, errors.New("unsupported format type")
 	}

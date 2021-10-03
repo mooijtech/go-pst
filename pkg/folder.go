@@ -8,7 +8,7 @@ type Folder struct {
 	Identifier      int
 	DisplayName     string
 	HasSubFolders   bool
-	MessageCount int
+	MessageCount    int
 	PropertyContext []PropertyContextItem
 }
 

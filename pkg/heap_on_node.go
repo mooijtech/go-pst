@@ -5,7 +5,7 @@ package pst
 
 // HeapOnNode represents a Heap-on-Node.
 type HeapOnNode struct {
-	BTreeNodeEntry BTreeNodeEntry
+	BTreeNodeEntry  BTreeNodeEntry
 	NodeInputStream NodeInputStream
 }
 
@@ -23,15 +23,17 @@ func (pstFile *File) NewHeapOnNodeFromNode(btreeNodeEntry BTreeNodeEntry, format
 		return HeapOnNode{}, err
 	}
 
-	nodeInputStream := NodeInputStream {
-		File: pstFile,
+	// TODO - Pass a flag for is this is an internal identifier: if identifier & 0x02 != 0
+
+	nodeInputStream := NodeInputStream{
+		File:           pstFile,
 		EncryptionType: encryptionType,
-		FileOffset: nodeEntryHeapOnNodeOffset,
-		Size: nodeEntryHeapOnNodeSize,
+		FileOffset:     nodeEntryHeapOnNodeOffset,
+		Size:           nodeEntryHeapOnNodeSize,
 	}
 
-	return HeapOnNode {
-		BTreeNodeEntry: btreeNodeEntry,
+	return HeapOnNode{
+		BTreeNodeEntry:  btreeNodeEntry,
 		NodeInputStream: nodeInputStream,
 	}, nil
 }
@@ -62,15 +64,15 @@ func (pstFile *File) NewHeapOnNodeFromLocalDescriptor(localDescriptor LocalDescr
 		return HeapOnNode{}, err
 	}
 
-	nodeInputStream := NodeInputStream {
-		File: pstFile,
+	nodeInputStream := NodeInputStream{
+		File:           pstFile,
 		EncryptionType: encryptionType,
-		FileOffset: localDescriptorDataOffset,
-		Size: localDescriptorDataSize,
+		FileOffset:     localDescriptorDataOffset,
+		Size:           localDescriptorDataSize,
 	}
 
-	return HeapOnNode {
-		BTreeNodeEntry: localDescriptorDataNode,
+	return HeapOnNode{
+		BTreeNodeEntry:  localDescriptorDataNode,
 		NodeInputStream: nodeInputStream,
 	}, nil
 }
@@ -78,7 +80,7 @@ func (pstFile *File) NewHeapOnNodeFromLocalDescriptor(localDescriptor LocalDescr
 // DecodeCompressibleEncryption decodes the Heap-on-Node using compressible encryption.
 // References "Compressible encryption".
 func DecodeCompressibleEncryption(data []byte) []byte {
-	compressibleEncryption := []int {
+	compressibleEncryption := []int{
 		0x47, 0xf1, 0xb4, 0xe6, 0x0b, 0x6a, 0x72, 0x48, 0x85, 0x4e, 0x9e, 0xeb, 0xe2, 0xf8, 0x94, 0x53, 0xe0,
 		0xbb, 0xa0, 0x02, 0xe8, 0x5a, 0x09, 0xab, 0xdb, 0xe3, 0xba, 0xc6, 0x7c, 0xc3, 0x10, 0xdd, 0x39, 0x05,
 		0x96, 0x30, 0xf5, 0x37, 0x60, 0x82, 0x8c, 0xc9, 0x13, 0x4a, 0x6b, 0x1d, 0xf3, 0xfb, 0x8f, 0x26, 0x97,
@@ -156,5 +158,5 @@ func (heapOnNode *HeapOnNode) GetPageMap() (int, error) {
 // References "Heap-on-Node".
 type HeapOnNodeBlock struct {
 	BlockIndex int
-	Data []byte
+	Data       []byte
 }

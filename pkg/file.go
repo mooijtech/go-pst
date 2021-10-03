@@ -18,7 +18,7 @@ type File struct {
 
 // New is a constructor for creating PST files.
 func New(filePath string) File {
-	return File {
+	return File{
 		Filepath: filePath,
 	}
 }
@@ -93,8 +93,8 @@ func (pstFile *File) GetContentType() ([]byte, error) {
 // Constants defining the format types.
 // References "Format Types".
 const (
-	FormatTypeANSI = "ANSI"
-	FormatTypeUnicode = "Unicode"
+	FormatTypeANSI      = "ANSI"
+	FormatTypeUnicode   = "Unicode"
 	FormatTypeUnicode4k = "Unicode4k"
 )
 
@@ -126,9 +126,9 @@ func (pstFile *File) GetFormatType() (string, error) {
 // Constants defining the encryption types.
 // References "Encryption Types".
 const (
-	EncryptionTypeNone = "None"
+	EncryptionTypeNone    = "None"
 	EncryptionTypePermute = "Permute"
-	EncryptionTypeCyclic = "Cyclic"
+	EncryptionTypeCyclic  = "Cyclic"
 )
 
 // GetEncryptionType returns the encryption type.

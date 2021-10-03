@@ -10,46 +10,46 @@ import (
 // Constants defining the property types.
 // References "Property types".
 const (
-	PropertyTypeInteger16 = 2
-	PropertyTypeInteger32 = 3
-	PropertyTypeFloating32 = 4
-	PropertyTypeFloating64 = 5
-	PropertyTypeCurrency = 6
-	PropertyTypeFloatingTime = 7
-	PropertyTypeErrorCode = 10
-	PropertyTypeBoolean = 11
-	PropertyTypeInteger64 = 20
-	PropertyTypeString = 31
-	PropertyTypeString8 = 30
-	PropertyTypeTime = 64
-	PropertyTypeGUID = 72
-	PropertyTypeServerID = 251
-	PropertyTypeRestriction = 253
-	PropertyTypeRuleAction = 254
-	PropertyTypeBinary = 258
-	PropertyTypeMultipleInteger16 = 4098
-	PropertyTypeMultipleInteger32 = 4099
-	PropertyTypeMultipleFloating32 = 4100
-	PropertyTypeMultipleFloating64 = 4101
-	PropertyTypeMultipleCurrency = 4102
+	PropertyTypeInteger16            = 2
+	PropertyTypeInteger32            = 3
+	PropertyTypeFloating32           = 4
+	PropertyTypeFloating64           = 5
+	PropertyTypeCurrency             = 6
+	PropertyTypeFloatingTime         = 7
+	PropertyTypeErrorCode            = 10
+	PropertyTypeBoolean              = 11
+	PropertyTypeInteger64            = 20
+	PropertyTypeString               = 31
+	PropertyTypeString8              = 30
+	PropertyTypeTime                 = 64
+	PropertyTypeGUID                 = 72
+	PropertyTypeServerID             = 251
+	PropertyTypeRestriction          = 253
+	PropertyTypeRuleAction           = 254
+	PropertyTypeBinary               = 258
+	PropertyTypeMultipleInteger16    = 4098
+	PropertyTypeMultipleInteger32    = 4099
+	PropertyTypeMultipleFloating32   = 4100
+	PropertyTypeMultipleFloating64   = 4101
+	PropertyTypeMultipleCurrency     = 4102
 	PropertyTypeMultipleFloatingTime = 4103
-	PropertyTypeMultipleInteger64 = 4116
-	PropertyTypeMultipleString = 4127
-	PropertyTypeMultipleString8 = 4126
-	PropertyTypeMultipleTime = 4160
-	PropertyTypeMultipleGUID = 4168
-	PropertyTypeMultipleBinary = 4354
-	PropertyTypeUnspecified = 0
-	PropertyTypeNull = 1
-	PropertyTypeObject = 13
+	PropertyTypeMultipleInteger64    = 4116
+	PropertyTypeMultipleString       = 4127
+	PropertyTypeMultipleString8      = 4126
+	PropertyTypeMultipleTime         = 4160
+	PropertyTypeMultipleGUID         = 4168
+	PropertyTypeMultipleBinary       = 4354
+	PropertyTypeUnspecified          = 0
+	PropertyTypeNull                 = 1
+	PropertyTypeObject               = 13
 )
 
 // PropertyContextItem represents an item within the property context.
 // References "Property Context B-Tree-on-Heap Record".
 type PropertyContextItem struct {
-	Index int
-	PropertyID int
-	PropertyType int
+	Index         int
+	PropertyID    int
+	PropertyType  int
 	ReferenceHNID int
 }
 
@@ -91,22 +91,22 @@ func (pstFile *File) GetPropertyContext(heapOnNode HeapOnNode, localDescriptors 
 			return nil, err
 		}
 
-		propertyType, err := keyTableNodeInputStream.SeekAndReadUint16(2, offset + 2)
+		propertyType, err := keyTableNodeInputStream.SeekAndReadUint16(2, offset+2)
 
 		if err != nil {
 			return nil, err
 		}
 
-		referenceHNID, err := keyTableNodeInputStream.SeekAndReadUint32(4, offset + 4)
+		referenceHNID, err := keyTableNodeInputStream.SeekAndReadUint32(4, offset+4)
 
 		if err != nil {
 			return nil, err
 		}
 
-		propertyContextItems = append(propertyContextItems, PropertyContextItem {
-			Index: i,
-			PropertyID: propertyID,
-			PropertyType: propertyType,
+		propertyContextItems = append(propertyContextItems, PropertyContextItem{
+			Index:         i,
+			PropertyID:    propertyID,
+			PropertyType:  propertyType,
 			ReferenceHNID: referenceHNID,
 		})
 

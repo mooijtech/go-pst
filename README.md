@@ -368,7 +368,6 @@ Blocks 8, 136, then every 128th contains the Heap-on-Node bitmap header (``i == 
 | ------------- | ------------- | ------------- |
 | 0             |  2            | The offset to the [Heap-on-Node page map](#heap-on-node-page-map) (starting at the Heap-on-Node page header). |
 
-
 #### Heap-on-Node page header
 
 This is only used when multiple Heap-on-Node blocks are present.
@@ -499,7 +498,6 @@ The table context starts at the [HID User Root](#heap-on-node-header) of the Hea
 | 6             |  1            | Data size.  |
 | 7             |  1            | Cell Existence Bitmap Index. See [Cell Existence Block](#cell-existence-block).  |
 
-
 #### Blocks
 
 Block sizes:
@@ -582,7 +580,6 @@ The 64-bit-with-4k local descriptors are the same format as the 64-bit local des
 | 0             |  4            | The [identifier](#identifier) (HNID). |
 | 4             |  4            | The data [identifier](#identifier). Searchable in the block b-tree. |
 | 8             |  4            | The local descriptor [identifier](#identifier). |
-
 
 
 ## Contact

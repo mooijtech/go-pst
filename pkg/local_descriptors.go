@@ -58,7 +58,7 @@ func (localDescriptor *LocalDescriptor) GetDataIdentifier(formatType string) (in
 		return -1, errors.New("unsupported format type")
 	}
 
-	return int(binary.LittleEndian.Uint32(localDescriptor.Data[identifierOffset:identifierOffset + identifierBufferSize])), nil
+	return int(binary.LittleEndian.Uint32(localDescriptor.Data[identifierOffset : identifierOffset+identifierBufferSize])), nil
 }
 
 // GetLocalDescriptorsIdentifier returns the local descriptors identifier of the local descriptor.
@@ -84,7 +84,7 @@ func (localDescriptor *LocalDescriptor) GetLocalDescriptorsIdentifier(formatType
 		return -1, errors.New("unsupported format type")
 	}
 
-	return int(binary.LittleEndian.Uint32(localDescriptor.Data[identifierOffset:identifierOffset + identifierBufferSize])), nil
+	return int(binary.LittleEndian.Uint32(localDescriptor.Data[identifierOffset : identifierOffset+identifierBufferSize])), nil
 }
 
 // GetLocalDescriptors returns the local descriptors of the b-tree node entry.
@@ -94,6 +94,11 @@ func (pstFile *File) GetLocalDescriptors(btreeNodeEntry BTreeNodeEntry, formatTy
 
 	if err != nil {
 		return nil, err
+	}
+
+	if localDescriptorsIdentifier == 0 {
+		// There are no local descriptors
+		return []LocalDescriptor{}, nil
 	}
 
 	blockBTreeOffset, err := pstFile.GetBlockBTreeOffset(formatType)
@@ -124,7 +129,7 @@ func (pstFile *File) GetLocalDescriptors(btreeNodeEntry BTreeNodeEntry, formatTy
 		return nil, errors.New("invalid local descriptors signature")
 	}
 
-	localDescriptorsLevel, err := pstFile.Read(1, localDescriptorsOffset + 1)
+	localDescriptorsLevel, err := pstFile.Read(1, localDescriptorsOffset+1)
 
 	if err != nil {
 		return nil, err
@@ -151,7 +156,7 @@ func (pstFile *File) GetLocalDescriptors(btreeNodeEntry BTreeNodeEntry, formatTy
 		return nil, errors.New("unsupported format type")
 	}
 
-	localDescriptorsEntryCount, err := pstFile.Read(2, localDescriptorsOffset + 2)
+	localDescriptorsEntryCount, err := pstFile.Read(2, localDescriptorsOffset+2)
 
 	if err != nil {
 		return nil, err
@@ -173,14 +178,14 @@ func (pstFile *File) GetLocalDescriptors(btreeNodeEntry BTreeNodeEntry, formatTy
 		return []LocalDescriptor{}, errors.New("unsupported format type")
 	}
 
-	localDescriptorsEntries, err := pstFile.Read(int(binary.LittleEndian.Uint16(localDescriptorsEntryCount)) * localDescriptorEntrySize, localDescriptorsEntriesOffset)
+	localDescriptorsEntries, err := pstFile.Read(int(binary.LittleEndian.Uint16(localDescriptorsEntryCount))*localDescriptorEntrySize, localDescriptorsEntriesOffset)
 
 	localDescriptors := make([]LocalDescriptor, binary.LittleEndian.Uint16(localDescriptorsEntryCount))
 
 	for i := 0; i < int(binary.LittleEndian.Uint16(localDescriptorsEntryCount)); i++ {
-		localDescriptorEntry := localDescriptorsEntries[i * localDescriptorEntrySize:(i + 1) * localDescriptorEntrySize]
+		localDescriptorEntry := localDescriptorsEntries[i*localDescriptorEntrySize : (i+1)*localDescriptorEntrySize]
 
-		localDescriptors[i] = LocalDescriptor {
+		localDescriptors[i] = LocalDescriptor{
 			Data: localDescriptorEntry,
 		}
 	}
