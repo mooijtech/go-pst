@@ -142,7 +142,7 @@ func (pstFile *File) GetMessage(identifier int, formatType string, encryptionTyp
 
 // GetMessageClass returns the message class.
 func (message *Message) GetMessageClass() string {
-	propertyContextItem, err := FindPropertyContextItem(message.PropertyContext, 23)
+	propertyContextItem, err := FindPropertyContextItem(message.PropertyContext, 26)
 
 	if err != nil {
 		return ""

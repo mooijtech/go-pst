@@ -4,7 +4,11 @@
 package pst
 
 import (
+	"encoding/csv"
 	"errors"
+	"os"
+	"strconv"
+	"strings"
 )
 
 // Constants defining the property types.
@@ -151,7 +155,63 @@ func FindPropertyContextItem(propertyContext []PropertyContextItem, propertyID i
 	return PropertyContextItem{}, errors.New("failed to find property context item")
 }
 
+// GetProperties returns all available properties.
+func GetProperties() ([][]string, error) {
+	csvFile, err := os.Open("data/properties.csv")
+
+	if err != nil {
+		return nil, err
+	}
+
+	csvReader := csv.NewReader(csvFile)
+
+	records, err := csvReader.ReadAll()
+
+	if err != nil {
+		return nil, err
+	}
+
+	err = csvFile.Close()
+
+	if err != nil {
+		return nil, err
+	}
+
+	return records, nil
+}
+
+// FindProperty finds the property from the property ID.
+func FindProperty(propertyID int) ([]string, error) {
+	properties, err := GetProperties()
+
+	if err != nil {
+		return nil, err
+	}
+
+	for _, propertyRow := range properties {
+		for _, propertyColumn := range propertyRow {
+
+			propertyColumnPropertyID, err := strconv.ParseInt(strings.Replace(propertyColumn, "0x", "", 1), 16, 64)
+
+			if err != nil {
+				continue
+			}
+
+			if propertyID == int(propertyColumnPropertyID) {
+				return propertyRow, nil
+			}
+		}
+	}
+
+	return nil, errors.New("failed to find property")
+}
+
 // GetString returns the string value of this property context item (data).
 func (propertyContextItem *PropertyContextItem) GetString() string {
 	return string(propertyContextItem.Data)
+}
+
+// String returns the string representation of this property.
+func (propertyContextItem *PropertyContextItem) String() ([]string, error) {
+	return FindProperty(propertyContextItem.PropertyID)
 }
