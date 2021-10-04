@@ -53,7 +53,7 @@ This library is tested on the following datasets:
   - [Enron Corporation](https://en.wikipedia.org/wiki/Enron)
 - [32-bit.pst](https://github.com/mooijtech/go-pst/blob/master/data/32-bit.pst)
   - [DFRWS 2009 Rodeo](http://old.dfrws.org/2009/rodeo.shtml)
-- [support.pst](https://github.com/mooijtech/go-pst/blob/master/data/support.pst), [a.dipasquale.pst](https://github.com/mooijtech/go-pst/blob/master/data/a.dipasquale.pst)
+- [support.pst](https://github.com/mooijtech/go-pst/blob/master/data/support.pst)
   - [Hacking Team](https://en.wikipedia.org/wiki/Hacking_Team)
   - 50GB worth of PST files from Hacking Team is available via this torrent magnet link (see the folders mail, mail2, mail3): 
     ```
@@ -61,8 +61,6 @@ This library is tested on the following datasets:
     ```
 
 ## Usage
-
-**This is an example, the go-pst library does not work fully yet.**
 
 ```go
 package main
@@ -73,7 +71,7 @@ import (
 )
 
 func main() {
-  pstFile := pst.New("data/enron.pst")
+  pstFile := pst.New("data/32-bit.pst")
 
   log.Infof("Parsing file: %s", pstFile.Filepath)
 
@@ -116,14 +114,14 @@ func main() {
 
   log.Infof("Encryption type: %s", encryptionType)
 
-  rootFolder, err := pstFile.GetRootFolder(formatType)
+  rootFolder, err := pstFile.GetRootFolder(formatType, encryptionType)
 
   if err != nil {
     log.Errorf("Failed to get root folder: %s", err)
     return
   }
 
-  err = GetSubFolders(pstFile, rootFolder, formatType)
+  err = GetSubFolders(pstFile, rootFolder, formatType, encryptionType)
 
   if err != nil {
     log.Errorf("Failed to get sub-folders: %s", err)
@@ -132,8 +130,8 @@ func main() {
 }
 
 // GetSubFolders is a recursive function which retrieves all sub-folders for the specified folder.
-func GetSubFolders(pstFile pst.File, folder pst.Folder, formatType string) error {
-  subFolders, err := pstFile.GetSubFolders(folder, formatType)
+func GetSubFolders(pstFile pst.File, folder pst.Folder, formatType string, encryptionType string) error {
+  subFolders, err := pstFile.GetSubFolders(folder, formatType, encryptionType)
 
   if err != nil {
     return err
@@ -142,13 +140,17 @@ func GetSubFolders(pstFile pst.File, folder pst.Folder, formatType string) error
   for _, subFolder := range subFolders {
     log.Infof("Parsing sub-folder: %s", subFolder.DisplayName)
 
-    err := pstFile.GetMessages(subFolder, formatType)
+    messages, err := pstFile.GetMessages(subFolder, formatType, encryptionType)
 
     if err != nil {
       return err
     }
 
-    err = GetSubFolders(pstFile, subFolder, formatType)
+    if len(messages) > 0 {
+      log.Infof("Found %d messages.", len(messages))
+    }
+
+    err = GetSubFolders(pstFile, subFolder, formatType, encryptionType)
 
     if err != nil {
       return err
@@ -470,6 +472,12 @@ The [identifier](#identifier-types) 290 refers to the root folder.
 A folder [identifier](#identifier-types) + 11 refers to the related sub folders (for example, for the root folder this is 290 + 11 = 301).
 
 The related sub folders consists of the Table Context (7c table).
+
+Each property ID of 26610 has a reference HNID which points to a message.
+
+### Messages
+
+Messages have a property context where all data is stored.
 
 ### Table Context
 
