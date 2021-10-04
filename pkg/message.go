@@ -49,85 +49,104 @@ func (pstFile *File) GetMessageTableContext(folder Folder, formatType string, en
 }
 
 // GetMessages returns an array of messages from the message table context.
-func (pstFile *File) GetMessages(folder Folder, formatType string, encryptionType string) error {
+func (pstFile *File) GetMessages(folder Folder, formatType string, encryptionType string) ([]Message, error) {
 	if folder.MessageCount == 0 {
-		return nil
+		return nil, nil
 	}
 
 	identifierType := folder.Identifier & 0x1F
 
 	if identifierType == IdentifierTypeSearchFolder {
-		return nil
+		return nil, nil
 	}
 
 	messageTableContext, err := pstFile.GetMessageTableContext(folder, formatType, encryptionType)
 
 	if err != nil {
-		return err
+		return nil, err
 	}
+
+	var messages []Message
 
 	for _, messageTableContextRow := range messageTableContext {
 		for _, messageTableContextColumn := range messageTableContextRow {
 			if messageTableContextColumn.PropertyID == 26610 {
 				log.Infof("Processing message: %d", messageTableContextColumn.ReferenceHNID)
 
-				err := pstFile.GetMessage(messageTableContextColumn.ReferenceHNID, formatType, encryptionType)
+				message, err := pstFile.GetMessage(messageTableContextColumn.ReferenceHNID, formatType, encryptionType)
 
 				if err != nil {
-					return err
+					// There may be other messages.
+					log.Errorf("Failed to get message (%d): %s", messageTableContextColumn.ReferenceHNID, err)
 				}
+
+				messages = append(messages, message)
 			}
 		}
 	}
 
-	return nil
+	return messages, nil
 }
 
 // GetMessage returns the message of the identifier.
-func (pstFile *File) GetMessage(identifier int, formatType string, encryptionType string) error {
+func (pstFile *File) GetMessage(identifier int, formatType string, encryptionType string) (Message, error) {
 	identifierType := identifier & 0x1F
 
 	if identifierType != IdentifierTypeNormalMessage {
-		return errors.New("invalid identifier type")
+		return Message{}, errors.New("invalid identifier type")
 	}
 
 	messageNode, err := pstFile.GetNodeBTreeNode(identifier, formatType)
 
 	if err != nil {
-		return err
+		return Message{}, err
 	}
 
 	messageNodeDataIdentifier, err := messageNode.GetDataIdentifier(formatType)
 
 	if err != nil {
-		return err
+		return Message{}, err
 	}
 
 	messageDataNode, err := pstFile.GetBlockBTreeNode(messageNodeDataIdentifier, formatType)
 
 	if err != nil {
-		return err
+		return Message{}, err
 	}
 
 	messageHeapOnNode, err := pstFile.NewHeapOnNodeFromNode(messageDataNode, formatType, encryptionType)
 
 	if err != nil {
-		return err
+		return Message{}, err
 	}
 
 	localDescriptors, err := pstFile.GetLocalDescriptors(messageNode, formatType)
 
 	if err != nil {
-		return err
+		return Message{}, err
 	}
 
-	tableContext, err := pstFile.GetTableContext(messageHeapOnNode, localDescriptors, formatType, encryptionType, 0, 1, 26)
+	propertyContext, err := pstFile.GetPropertyContext(messageHeapOnNode, localDescriptors, formatType, encryptionType)
 
 	if err != nil {
-		return err
+		return Message{}, err
 	}
 
-	log.Infof("Table context: %s", tableContext)
+	message := Message {
+		PropertyContext: propertyContext,
+		LocalDescriptors: localDescriptors,
+	}
 
-	return nil
+	return message, nil
+}
+
+// GetMessageClass returns the message class.
+func (message *Message) GetMessageClass() string {
+	propertyContextItem, err := FindPropertyContextItem(message.PropertyContext, 23)
+
+	if err != nil {
+		return ""
+	}
+
+	return propertyContextItem.GetString()
 }

@@ -15,9 +15,9 @@ type AllocationTableOffsets struct {
 }
 
 // GetAllocationTableNodeInputStream returns the offsets from the allocation table of the given HID.
-func (pstFile *File) GetAllocationTableNodeInputStream(hid int, heapOnNode HeapOnNode, localDescriptors []LocalDescriptor, formatType string, encryptionType string) (NodeInputStream, error) {
+func (pstFile *File) GetAllocationTableNodeInputStream(hnid int, heapOnNode HeapOnNode, localDescriptors []LocalDescriptor, formatType string, encryptionType string) (NodeInputStream, error) {
 	if len(localDescriptors) > 0 {
-		localDescriptor, err := pstFile.FindLocalDescriptor(localDescriptors, hid, formatType)
+		localDescriptor, err := pstFile.FindLocalDescriptor(localDescriptors, hnid, formatType)
 
 		if err == nil {
 			// Found the local descriptor for this identifier.
@@ -31,17 +31,17 @@ func (pstFile *File) GetAllocationTableNodeInputStream(hid int, heapOnNode HeapO
 		}
 	}
 
-	if (hid & 0x1F) != 0 {
-		return NodeInputStream{}, nil
+	if (hnid & 0x1F) != 0 {
+		return NodeInputStream{}, errors.New("external node")
 	}
 
-	hidBlockIndex := hid >> 16
+	hidBlockIndex := hnid >> 16
 
 	if hidBlockIndex > 0 {
 		return NodeInputStream{}, errors.New("block doesn't exist")
 	}
 
-	hidIndex := (hid & 0xFFFF) >> 5
+	hidIndex := (hnid & 0xFFFF) >> 5
 
 	heapOnNodePageMap, err := heapOnNode.GetPageMap()
 

@@ -77,10 +77,14 @@ func GetSubFolders(pstFile pst.File, folder pst.Folder, formatType string, encry
 	for _, subFolder := range subFolders {
 		log.Infof("Parsing sub-folder: %s", subFolder.DisplayName)
 
-		err := pstFile.GetMessages(subFolder, formatType, encryptionType)
+		messages, err := pstFile.GetMessages(subFolder, formatType, encryptionType)
 
 		if err != nil {
 			return err
+		}
+
+		if len(messages) > 0 {
+			log.Infof("Found %d messages.", len(messages))
 		}
 
 		err = GetSubFolders(pstFile, subFolder, formatType, encryptionType)

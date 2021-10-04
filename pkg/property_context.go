@@ -47,10 +47,12 @@ const (
 // PropertyContextItem represents an item within the property context.
 // References "Property Context B-Tree-on-Heap Record".
 type PropertyContextItem struct {
-	Index         int
-	PropertyID    int
-	PropertyType  int
-	ReferenceHNID int
+	Index                    int
+	PropertyID               int
+	PropertyType             int
+	ReferenceHNID            int
+	IsExternalValueReference bool
+	Data                     []byte
 }
 
 // GetPropertyContext returns the property context (BC Table).
@@ -85,6 +87,8 @@ func (pstFile *File) GetPropertyContext(heapOnNode HeapOnNode, localDescriptors 
 	offset := 0
 
 	for i := 0; i < keyCount; i++ {
+		var propertyContextItem PropertyContextItem
+
 		propertyID, err := keyTableNodeInputStream.SeekAndReadUint16(2, offset)
 
 		if err != nil {
@@ -103,13 +107,33 @@ func (pstFile *File) GetPropertyContext(heapOnNode HeapOnNode, localDescriptors 
 			return nil, err
 		}
 
-		propertyContextItems = append(propertyContextItems, PropertyContextItem{
-			Index:         i,
-			PropertyID:    propertyID,
-			PropertyType:  propertyType,
-			ReferenceHNID: referenceHNID,
-		})
+		propertyContextItem.Index = i
+		propertyContextItem.PropertyID = propertyID
+		propertyContextItem.PropertyType = propertyType
+		propertyContextItem.ReferenceHNID = referenceHNID
 
+		switch propertyType {
+		default:
+			propertyContextItem.IsExternalValueReference = true
+
+			propertyNodeInputStream, err := pstFile.GetAllocationTableNodeInputStream(referenceHNID, heapOnNode, localDescriptors, formatType, encryptionType)
+
+			if err != nil {
+				break
+			}
+
+			propertyContextItem.IsExternalValueReference = false
+
+			propertyContextItemData, err := propertyNodeInputStream.Read(propertyNodeInputStream.Size, 0)
+
+			if err != nil {
+				return nil, err
+			}
+
+			propertyContextItem.Data = propertyContextItemData
+		}
+
+		propertyContextItems = append(propertyContextItems, propertyContextItem)
 		offset = offset + 8
 	}
 
@@ -117,8 +141,7 @@ func (pstFile *File) GetPropertyContext(heapOnNode HeapOnNode, localDescriptors 
 }
 
 // FindPropertyContextItem returns the property context item from the property ID.
-// References GetPropertyContext.
-func (pstFile *File) FindPropertyContextItem(propertyContext []PropertyContextItem, propertyID int) (PropertyContextItem, error) {
+func FindPropertyContextItem(propertyContext []PropertyContextItem, propertyID int) (PropertyContextItem, error) {
 	for _, item := range propertyContext {
 		if item.PropertyID == propertyID {
 			return item, nil
@@ -126,4 +149,9 @@ func (pstFile *File) FindPropertyContextItem(propertyContext []PropertyContextIt
 	}
 
 	return PropertyContextItem{}, errors.New("failed to find property context item")
+}
+
+// GetString returns the string value of this property context item (data).
+func (propertyContextItem *PropertyContextItem) GetString() string {
+	return string(propertyContextItem.Data)
 }
