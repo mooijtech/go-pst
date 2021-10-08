@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	pstFile := pst.New("data/32-bit.pst")
+	pstFile := pst.New("data/enron.pst")
 
 	log.Infof("Parsing file: %s", pstFile.Filepath)
 
@@ -50,6 +50,13 @@ func main() {
 	}
 
 	log.Infof("Encryption type: %s", encryptionType)
+
+	err = pstFile.InitializeBTrees(formatType)
+
+	if err != nil {
+		log.Errorf("Failed to initialize node and block b-tree.")
+		return
+	}
 
 	rootFolder, err := pstFile.GetRootFolder(formatType, encryptionType)
 

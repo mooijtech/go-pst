@@ -6,6 +6,7 @@ package pst
 import (
 	"encoding/binary"
 	"errors"
+	log "github.com/sirupsen/logrus"
 )
 
 // GetNodeBTreeOffset returns the file offset to the node b-tree.
@@ -460,58 +461,116 @@ func (btreeNodeEntry *BTreeNodeEntry) GetSize(formatType string) (int, error) {
 	return int(binary.LittleEndian.Uint16(btreeNodeEntry.Data[nodeSizeOffset:(nodeSizeOffset + nodeSizeBufferSize)])), nil
 }
 
-// FindBTreeNode walks the b-tree and finds the node with the given identifier.
-func (pstFile *File) FindBTreeNode(btreeNodeOffset int, identifier int, formatType string) (BTreeNodeEntry, error) {
-	nodeEntries, err := pstFile.GetBTreeNodeEntries(btreeNodeOffset, formatType)
+// Constants defining the b-tree types.
+const (
+	BTreeTypeNode = 0
+	BTreeTypeBlock = 1
+)
 
-	if err != nil {
-		return BTreeNodeEntry{}, err
+// Variables defining the node and block b-tree which need to be initialized.
+var (
+	NodeBTree []BTreeNodeEntry
+	BlockBTree []BTreeNodeEntry
+)
+
+// InitializeBTree walks the b-tree and finds the node with the given identifier.
+func (pstFile *File) InitializeBTree(btreeType int, formatType string) error {
+	if len(NodeBTree) > 0 && btreeType == BTreeTypeNode || len(BlockBTree) > 0 && btreeType == BTreeTypeBlock {
+		return errors.New("b-tree is already initialized")
 	}
 
-	nodeLevel, err := pstFile.GetBTreeNodeLevel(btreeNodeOffset, formatType)
+	switch btreeType {
+	case BTreeTypeNode:
+		nodeBTreeOffset, err := pstFile.GetNodeBTreeOffset(formatType)
+
+		if err != nil {
+			return err
+		}
+
+		nodeBTreeNodes, err := pstFile.WalkBTree(nodeBTreeOffset, formatType)
+
+		if err != nil {
+			return err
+		}
+
+		NodeBTree = nodeBTreeNodes
+		return nil
+	case BTreeTypeBlock:
+		blockBTreeOffset, err := pstFile.GetBlockBTreeOffset(formatType)
+
+		if err != nil {
+			return err
+		}
+
+		blockBTreeNodes, err := pstFile.WalkBTree(blockBTreeOffset, formatType)
+
+		if err != nil {
+			return err
+		}
+
+		BlockBTree = blockBTreeNodes
+		return nil
+	default:
+		return errors.New("invalid b-tree type")
+	}
+}
+
+// InitializeBTrees initializes the node and block b-tree.
+func (pstFile *File) InitializeBTrees(formatType string) error {
+	err := pstFile.InitializeBTree(BTreeTypeNode, formatType)
 
 	if err != nil {
-		return BTreeNodeEntry{}, err
+		return err
 	}
+
+	err = pstFile.InitializeBTree(BTreeTypeBlock, formatType)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// WalkBTree walks the b-tree and returns all nodes.
+func (pstFile *File) WalkBTree(btreeOffset int, formatType string) ([]BTreeNodeEntry, error) {
+	nodeEntries, err := pstFile.GetBTreeNodeEntries(btreeOffset, formatType)
+
+	if err != nil {
+		return []BTreeNodeEntry{}, err
+	}
+
+	nodeLevel, err := pstFile.GetBTreeNodeLevel(btreeOffset, formatType)
+
+	if err != nil {
+		return []BTreeNodeEntry{}, err
+	}
+
+	var btreeNodeEntries []BTreeNodeEntry
 
 	if nodeLevel > 0 {
 		// Branch node entries.
 		for i := 0; i < len(nodeEntries); i++ {
 			nodeEntry := nodeEntries[i]
 
-			nodeEntryIdentifier, err := nodeEntry.GetIdentifier(formatType)
-
-			if err != nil {
-				return BTreeNodeEntry{}, err
-			}
-
-			if nodeEntryIdentifier == identifier {
-				return nodeEntry, nil
-			}
+			btreeNodeEntries = append(btreeNodeEntries, nodeEntry)
 
 			// Recursively walk through the branch node entries.
 			recursiveNodeOffset, err := nodeEntry.GetFileOffset(true, formatType)
 
 			if err != nil {
-				return BTreeNodeEntry{}, err
+				return []BTreeNodeEntry{}, err
 			}
 
-			recursiveNodeEntry, err := pstFile.FindBTreeNode(recursiveNodeOffset, identifier, formatType)
+			recursiveNodeEntries, err := pstFile.WalkBTree(recursiveNodeOffset, formatType)
 
 			if err != nil {
-				// There may be other entries left, so continue.
-				// I made the mistake of returning here and was wondering why some identifiers weren't being found.
-				continue
+				log.Fatal("Got here")
+				return []BTreeNodeEntry{}, err
 			}
 
-			recursiveNodeEntryIdentifier, err := recursiveNodeEntry.GetIdentifier(formatType)
-
-			if err != nil {
-				return BTreeNodeEntry{}, err
-			}
-
-			if recursiveNodeEntryIdentifier == identifier {
-				return recursiveNodeEntry, nil
+			for _, recursiveNodeEntry := range recursiveNodeEntries {
+				btreeNodeEntries = append(btreeNodeEntries, recursiveNodeEntry)
 			}
 		}
 	} else {
@@ -519,74 +578,95 @@ func (pstFile *File) FindBTreeNode(btreeNodeOffset int, identifier int, formatTy
 		for i := 0; i < len(nodeEntries); i++ {
 			nodeEntry := nodeEntries[i]
 
-			nodeEntryIdentifier, err := nodeEntry.GetIdentifier(formatType)
+			btreeNodeEntries = append(btreeNodeEntries, nodeEntry)
+		}
+	}
+
+	return btreeNodeEntries, nil
+}
+
+// FindBTreeNode returns the node in the node or block b-tree with the given identifier.
+// Note that we don't return the first identifier because there may be two nodes with the same identifier so prefer leaf nodes.
+func (pstFile *File) FindBTreeNode(btreeType int, identifier int, formatType string) (BTreeNodeEntry, error) {
+	switch btreeType {
+	case BTreeTypeNode:
+		var nodeBTreeNode BTreeNodeEntry
+
+		for _, btreeNode := range NodeBTree {
+			btreeNodeIdentifier, err := btreeNode.GetIdentifier(formatType)
 
 			if err != nil {
 				return BTreeNodeEntry{}, err
 			}
 
-			if nodeEntryIdentifier == identifier {
-				return nodeEntry, nil
+			if btreeNodeIdentifier == identifier {
+				nodeBTreeNode = btreeNode
 			}
 		}
-	}
 
-	return BTreeNodeEntry{}, errors.New("failed to find b-tree node")
+		return nodeBTreeNode, nil
+	case BTreeTypeBlock:
+		var blockBTreeNode BTreeNodeEntry
+
+		for _, btreeNode := range BlockBTree {
+			btreeNodeIdentifier, err := btreeNode.GetIdentifier(formatType)
+
+			if err != nil {
+				return BTreeNodeEntry{}, err
+			}
+
+			if btreeNodeIdentifier == identifier {
+				blockBTreeNode = btreeNode
+			}
+		}
+
+		return blockBTreeNode, nil
+	default:
+		return BTreeNodeEntry{}, errors.New("invalid b-tree type")
+	}
 }
 
-// GetNodeBTreeNode returns the node in the node b-tree with the given identifier.
+// GetNodeBTreeNode returns the node with the given identifier in the node b-tree.
 func (pstFile *File) GetNodeBTreeNode(identifier int, formatType string) (BTreeNodeEntry, error) {
-	nodeBTreeOffset, err := pstFile.GetNodeBTreeOffset(formatType)
+	nodeBTreeNode, err := pstFile.FindBTreeNode(BTreeTypeNode, identifier, formatType)
 
 	if err != nil {
 		return BTreeNodeEntry{}, err
 	}
 
-	node, err := pstFile.FindBTreeNode(nodeBTreeOffset, identifier, formatType)
-
-	if err != nil {
-		return BTreeNodeEntry{}, err
-	}
-
-	return node, nil
+	return nodeBTreeNode, nil
 }
 
-// GetBlockBTreeNode returns the node in the block b-tree with the given identifier.
+// GetBlockBTreeNode returns the node with the given identifier in the block b-tree.
 func (pstFile *File) GetBlockBTreeNode(identifier int, formatType string) (BTreeNodeEntry, error) {
-	blockBTreeOffset, err := pstFile.GetBlockBTreeOffset(formatType)
+	nodeBTreeNode, err := pstFile.FindBTreeNode(BTreeTypeBlock, identifier, formatType)
 
 	if err != nil {
 		return BTreeNodeEntry{}, err
 	}
 
-	node, err := pstFile.FindBTreeNode(blockBTreeOffset, identifier, formatType)
-
-	if err != nil {
-		return BTreeNodeEntry{}, err
-	}
-
-	return node, nil
+	return nodeBTreeNode, nil
 }
 
 // GetDataBTreeNode searches the identifier in the node b-tree, then searches the data identifier in the block b-tree.
 func (pstFile *File) GetDataBTreeNode(identifier int, formatType string) (BTreeNodeEntry, error) {
-	node, err := pstFile.GetNodeBTreeNode(identifier, formatType)
+	nodeBTreeNode, err := pstFile.GetNodeBTreeNode(identifier, formatType)
 
 	if err != nil {
 		return BTreeNodeEntry{}, err
 	}
 
-	dataIdentifier, err := node.GetDataIdentifier(formatType)
+	dataIdentifier, err := nodeBTreeNode.GetDataIdentifier(formatType)
 
 	if err != nil {
 		return BTreeNodeEntry{}, err
 	}
 
-	dataNode, err := pstFile.GetBlockBTreeNode(dataIdentifier, formatType)
+	blockBTreeNode, err := pstFile.GetBlockBTreeNode(dataIdentifier, formatType)
 
 	if err != nil {
 		return BTreeNodeEntry{}, err
 	}
 
-	return dataNode, nil
+	return blockBTreeNode, nil
 }

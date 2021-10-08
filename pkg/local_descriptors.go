@@ -101,13 +101,7 @@ func (pstFile *File) GetLocalDescriptors(btreeNodeEntry BTreeNodeEntry, formatTy
 		return []LocalDescriptor{}, nil
 	}
 
-	blockBTreeOffset, err := pstFile.GetBlockBTreeOffset(formatType)
-
-	if err != nil {
-		return nil, err
-	}
-
-	localDescriptorsNode, err := pstFile.FindBTreeNode(blockBTreeOffset, localDescriptorsIdentifier, formatType)
+	localDescriptorsNode, err := pstFile.GetBlockBTreeNode(localDescriptorsIdentifier, formatType)
 
 	if err != nil {
 		return nil, err
