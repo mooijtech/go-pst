@@ -71,7 +71,7 @@ import (
 )
 
 func main() {
-  pstFile := pst.New("data/32-bit.pst")
+  pstFile := pst.New("data/enron.pst")
 
   log.Infof("Parsing file: %s", pstFile.Filepath)
 
@@ -113,6 +113,13 @@ func main() {
   }
 
   log.Infof("Encryption type: %s", encryptionType)
+
+  err = pstFile.InitializeBTrees(formatType)
+
+  if err != nil {
+    log.Errorf("Failed to initialize node and block b-tree.")
+    return
+  }
 
   rootFolder, err := pstFile.GetRootFolder(formatType, encryptionType)
 
@@ -248,6 +255,8 @@ The following offsets start from the (node/block) b-tree offset.
 | 499           |  1            | B-tree node level. A zero value represents a leaf node. A value greater than zero represents a branch node, with the highest level representing the root. |
 
 ### The b-tree entries
+
+**Note: When searching for an identifier make sure to only return the last found identifier as there can be two nodes (branch and leaf) with the same identifier**.
 
 #### The 64-bit block b-tree branch node entry
 
