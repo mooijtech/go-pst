@@ -6,7 +6,6 @@ package pst
 import (
 	"encoding/binary"
 	"errors"
-	log "github.com/sirupsen/logrus"
 )
 
 // GetNodeBTreeOffset returns the file offset to the node b-tree.
@@ -463,13 +462,13 @@ func (btreeNodeEntry *BTreeNodeEntry) GetSize(formatType string) (int, error) {
 
 // Constants defining the b-tree types.
 const (
-	BTreeTypeNode = 0
+	BTreeTypeNode  = 0
 	BTreeTypeBlock = 1
 )
 
 // Variables defining the node and block b-tree which need to be initialized.
 var (
-	NodeBTree []BTreeNodeEntry
+	NodeBTree  []BTreeNodeEntry
 	BlockBTree []BTreeNodeEntry
 )
 
@@ -565,7 +564,6 @@ func (pstFile *File) WalkBTree(btreeOffset int, formatType string) ([]BTreeNodeE
 			recursiveNodeEntries, err := pstFile.WalkBTree(recursiveNodeOffset, formatType)
 
 			if err != nil {
-				log.Fatal("Got here")
 				return []BTreeNodeEntry{}, err
 			}
 
@@ -639,6 +637,9 @@ func (pstFile *File) GetNodeBTreeNode(identifier int, formatType string) (BTreeN
 
 // GetBlockBTreeNode returns the node with the given identifier in the block b-tree.
 func (pstFile *File) GetBlockBTreeNode(identifier int, formatType string) (BTreeNodeEntry, error) {
+	// Clear the LSB, which is reserved, but sometimes set
+	identifier &= 0xfffffffe
+
 	nodeBTreeNode, err := pstFile.FindBTreeNode(BTreeTypeBlock, identifier, formatType)
 
 	if err != nil {

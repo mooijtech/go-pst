@@ -19,32 +19,32 @@ type ColumnDescriptor struct {
 }
 
 // NewColumnDescriptor is a constructor for creating column descriptors.
-func NewColumnDescriptor(tableContextNodeInputStream NodeInputStream, columnStartOffset int) (ColumnDescriptor, error) {
-	propertyType, err := tableContextNodeInputStream.SeekAndReadUint16(2, columnStartOffset)
+func NewColumnDescriptor(tableContextInputStream HeapOnNodeInputStream, columnStartOffset int) (ColumnDescriptor, error) {
+	propertyType, err := tableContextInputStream.SeekAndReadUint16(2, columnStartOffset)
 
 	if err != nil {
 		return ColumnDescriptor{}, err
 	}
 
-	propertyID, err := tableContextNodeInputStream.SeekAndReadUint16(2, columnStartOffset+2)
+	propertyID, err := tableContextInputStream.SeekAndReadUint16(2, columnStartOffset+2)
 
 	if err != nil {
 		return ColumnDescriptor{}, err
 	}
 
-	dataOffset, err := tableContextNodeInputStream.SeekAndReadUint16(2, columnStartOffset+4)
+	dataOffset, err := tableContextInputStream.SeekAndReadUint16(2, columnStartOffset+4)
 
 	if err != nil {
 		return ColumnDescriptor{}, err
 	}
 
-	dataSize, err := tableContextNodeInputStream.SeekAndReadUint16(1, columnStartOffset+6)
+	dataSize, err := tableContextInputStream.SeekAndReadUint16(1, columnStartOffset+6)
 
 	if err != nil {
 		return ColumnDescriptor{}, err
 	}
 
-	cellExistenceBitmapIndex, err := tableContextNodeInputStream.SeekAndReadUint16(1, columnStartOffset+7)
+	cellExistenceBitmapIndex, err := tableContextInputStream.SeekAndReadUint16(1, columnStartOffset+7)
 
 	if err != nil {
 		return ColumnDescriptor{}, err
@@ -89,13 +89,13 @@ func (pstFile *File) GetTableContext(heapOnNode HeapOnNode, localDescriptors []L
 		return nil, err
 	}
 
-	tableContextNodeInputStream, err := pstFile.GetAllocationTableNodeInputStream(hidUserRoot, heapOnNode, localDescriptors, formatType, encryptionType)
+	tableContextInputStream, err := pstFile.NewHeapOnNodeInputStreamFromHNID(hidUserRoot, heapOnNode, localDescriptors, formatType, encryptionType)
 
 	if err != nil {
 		return nil, err
 	}
 
-	tableContextSignature, err := tableContextNodeInputStream.SeekAndReadUint16(1, 0)
+	tableContextSignature, err := tableContextInputStream.SeekAndReadUint16(1, 0)
 
 	if err != nil {
 		return nil, err
@@ -105,7 +105,7 @@ func (pstFile *File) GetTableContext(heapOnNode HeapOnNode, localDescriptors []L
 		return nil, errors.New("invalid table context signature")
 	}
 
-	tableColumnCount, err := tableContextNodeInputStream.SeekAndReadUint16(1, 1)
+	tableColumnCount, err := tableContextInputStream.SeekAndReadUint16(1, 1)
 
 	if err != nil {
 		return nil, err
@@ -116,25 +116,25 @@ func (pstFile *File) GetTableContext(heapOnNode HeapOnNode, localDescriptors []L
 	}
 
 	// TCI_1b is the start offset to the column which holds the 1-byte values.
-	tci1b, err := tableContextNodeInputStream.SeekAndReadUint16(2, 6)
+	tci1b, err := tableContextInputStream.SeekAndReadUint16(2, 6)
 
 	if err != nil {
 		return nil, err
 	}
 
-	rowSize, err := tableContextNodeInputStream.SeekAndReadUint16(2, 8)
+	rowSize, err := tableContextInputStream.SeekAndReadUint16(2, 8)
 
 	if err != nil {
 		return nil, err
 	}
 
-	tableRowMatrixHNID, err := tableContextNodeInputStream.SeekAndReadUint32(4, 14)
+	tableRowMatrixHNID, err := tableContextInputStream.SeekAndReadUint32(4, 14)
 
 	if err != nil {
 		return nil, err
 	}
 
-	tableRowMatrixNodeInputStream, err := pstFile.GetAllocationTableNodeInputStream(tableRowMatrixHNID, heapOnNode, localDescriptors, formatType, encryptionType)
+	tableRowMatrixInputStream, err := pstFile.NewHeapOnNodeInputStreamFromHNID(tableRowMatrixHNID, heapOnNode, localDescriptors, formatType, encryptionType)
 
 	if err != nil {
 		return nil, err
@@ -147,7 +147,7 @@ func (pstFile *File) GetTableContext(heapOnNode HeapOnNode, localDescriptors []L
 	var columnToGetIndex int
 
 	for i := 0; i < tableColumnCount; i++ {
-		columnDescriptor, err := NewColumnDescriptor(tableContextNodeInputStream, offset)
+		columnDescriptor, err := NewColumnDescriptor(tableContextInputStream, offset)
 
 		if err != nil {
 			return nil, err
@@ -174,9 +174,9 @@ func (pstFile *File) GetTableContext(heapOnNode HeapOnNode, localDescriptors []L
 		return nil, err
 	}
 
-	blockCount := tableContextNodeInputStream.Size / (blockSize - blockTrailerSize)
+	blockCount := tableContextInputStream.Size / (blockSize - blockTrailerSize)
 	rowsPerBlock := (blockSize - blockTrailerSize) / rowSize
-	rowCount := (blockCount * rowsPerBlock) + ((tableRowMatrixNodeInputStream.Size % (blockSize - blockTrailerSize)) / rowSize)
+	rowCount := (blockCount * rowsPerBlock) + ((tableRowMatrixInputStream.Size % (blockSize - blockTrailerSize)) / rowSize)
 	cellExistenceBlockSize := int(math.Ceil(float64(tableColumnCount) / 8))
 
 	if startAtRow == -1 || numberOfRowsToReturn == -1 {
@@ -190,7 +190,7 @@ func (pstFile *File) GetTableContext(heapOnNode HeapOnNode, localDescriptors []L
 	for i := 0; i < numberOfRowsToReturn; i++ {
 		currentRowStartOffset = (((startAtRow + i) / rowsPerBlock) * (blockSize - blockTrailerSize)) + (((startAtRow + i) % rowsPerBlock) * rowSize)
 
-		cellExistenceBlock, err := tableRowMatrixNodeInputStream.Read(cellExistenceBlockSize, currentRowStartOffset+tci1b)
+		cellExistenceBlock, err := tableRowMatrixInputStream.Read(cellExistenceBlockSize, currentRowStartOffset+tci1b)
 
 		if err != nil {
 			return nil, err
@@ -218,7 +218,7 @@ func (pstFile *File) GetTableContext(heapOnNode HeapOnNode, localDescriptors []L
 			switch column.DataSize {
 			case 1:
 				// 1 byte data
-				referenceHNID, err := tableRowMatrixNodeInputStream.SeekAndReadUint16(1, currentRowStartOffset+column.DataOffset)
+				referenceHNID, err := tableRowMatrixInputStream.SeekAndReadUint16(1, currentRowStartOffset+column.DataOffset)
 
 				if err != nil {
 					return nil, err
@@ -229,7 +229,7 @@ func (pstFile *File) GetTableContext(heapOnNode HeapOnNode, localDescriptors []L
 				break
 			case 2:
 				// 2 byte data
-				referenceHNID, err := tableRowMatrixNodeInputStream.SeekAndReadUint16(2, currentRowStartOffset+column.DataOffset)
+				referenceHNID, err := tableRowMatrixInputStream.SeekAndReadUint16(2, currentRowStartOffset+column.DataOffset)
 
 				if err != nil {
 					return nil, err
@@ -240,7 +240,7 @@ func (pstFile *File) GetTableContext(heapOnNode HeapOnNode, localDescriptors []L
 				break
 			case 8:
 				// 8 byte data
-				data, err := tableRowMatrixNodeInputStream.Read(8, currentRowStartOffset+column.DataOffset)
+				data, err := tableRowMatrixInputStream.Read(8, currentRowStartOffset+column.DataOffset)
 
 				if err != nil {
 					return nil, err
@@ -250,7 +250,7 @@ func (pstFile *File) GetTableContext(heapOnNode HeapOnNode, localDescriptors []L
 				break
 			default:
 				// 4 byte data
-				referenceHNID, err := tableRowMatrixNodeInputStream.SeekAndReadUint32(4, currentRowStartOffset+column.DataOffset)
+				referenceHNID, err := tableRowMatrixInputStream.SeekAndReadUint32(4, currentRowStartOffset+column.DataOffset)
 
 				if err != nil {
 					return nil, err
@@ -269,13 +269,13 @@ func (pstFile *File) GetTableContext(heapOnNode HeapOnNode, localDescriptors []L
 					break
 				}
 
-				tableContextItemNodeInputStream, err := pstFile.GetAllocationTableNodeInputStream(tableContextItem.ReferenceHNID, heapOnNode, localDescriptors, formatType, encryptionType)
+				tableContextItemInputStream, err := pstFile.NewHeapOnNodeInputStreamFromHNID(tableContextItem.ReferenceHNID, heapOnNode, localDescriptors, formatType, encryptionType)
 
 				if err != nil {
 					return nil, err
 				}
 
-				tableContextItemData, err := tableContextItemNodeInputStream.Read(tableContextItemNodeInputStream.Size, 0)
+				tableContextItemData, err := tableContextItemInputStream.Read(tableContextItemInputStream.Size, 0)
 
 				tableContextItem.Data = tableContextItemData
 			}

@@ -79,13 +79,13 @@ func (pstFile *File) GetPropertyContext(heapOnNode HeapOnNode, localDescriptors 
 		return nil, err
 	}
 
-	keyTableNodeInputStream, err := pstFile.GetAllocationTableNodeInputStream(btreeOnHeapHeader.HIDRoot, heapOnNode, localDescriptors, formatType, encryptionType)
+	keyTableInputStream, err := pstFile.NewHeapOnNodeInputStreamFromHNID(btreeOnHeapHeader.HIDRoot, heapOnNode, localDescriptors, formatType, encryptionType)
 
 	if err != nil {
 		return nil, err
 	}
 
-	keyCount := keyTableNodeInputStream.Size / (btreeOnHeapHeader.KeySize + btreeOnHeapHeader.ValueSize)
+	keyCount := keyTableInputStream.Size / (btreeOnHeapHeader.KeySize + btreeOnHeapHeader.ValueSize)
 
 	var propertyContextItems []PropertyContextItem
 	offset := 0
@@ -93,19 +93,19 @@ func (pstFile *File) GetPropertyContext(heapOnNode HeapOnNode, localDescriptors 
 	for i := 0; i < keyCount; i++ {
 		var propertyContextItem PropertyContextItem
 
-		propertyID, err := keyTableNodeInputStream.SeekAndReadUint16(2, offset)
+		propertyID, err := keyTableInputStream.SeekAndReadUint16(2, offset)
 
 		if err != nil {
 			return nil, err
 		}
 
-		propertyType, err := keyTableNodeInputStream.SeekAndReadUint16(2, offset+2)
+		propertyType, err := keyTableInputStream.SeekAndReadUint16(2, offset+2)
 
 		if err != nil {
 			return nil, err
 		}
 
-		referenceHNID, err := keyTableNodeInputStream.SeekAndReadUint32(4, offset+4)
+		referenceHNID, err := keyTableInputStream.SeekAndReadUint32(4, offset+4)
 
 		if err != nil {
 			return nil, err
@@ -117,10 +117,21 @@ func (pstFile *File) GetPropertyContext(heapOnNode HeapOnNode, localDescriptors 
 		propertyContextItem.ReferenceHNID = referenceHNID
 
 		switch propertyType {
+		case PropertyTypeInteger16:
+			propertyContextItem.ReferenceHNID &= 0xFFFF
+			break
+		case PropertyTypeInteger32:
+			break
+		case PropertyTypeNull:
+			break
+		case PropertyTypeBoolean:
+			propertyContextItem.ReferenceHNID &= 0xFF
+			propertyContextItem.IsExternalValueReference = true
+			break
 		default:
 			propertyContextItem.IsExternalValueReference = true
 
-			propertyNodeInputStream, err := pstFile.GetAllocationTableNodeInputStream(referenceHNID, heapOnNode, localDescriptors, formatType, encryptionType)
+			propertyNodeInputStream, err := pstFile.NewHeapOnNodeInputStreamFromHNID(referenceHNID, heapOnNode, localDescriptors, formatType, encryptionType)
 
 			if err != nil {
 				break
@@ -190,7 +201,6 @@ func FindProperty(propertyID int) ([]string, error) {
 
 	for _, propertyRow := range properties {
 		for _, propertyColumn := range propertyRow {
-
 			propertyColumnPropertyID, err := strconv.ParseInt(strings.Replace(propertyColumn, "0x", "", 1), 16, 64)
 
 			if err != nil {

@@ -7,7 +7,7 @@ import (
 
 // Message represents a message.
 type Message struct {
-	PropertyContext []PropertyContextItem
+	PropertyContext  []PropertyContextItem
 	LocalDescriptors []LocalDescriptor
 }
 
@@ -71,8 +71,6 @@ func (pstFile *File) GetMessages(folder Folder, formatType string, encryptionTyp
 	for _, messageTableContextRow := range messageTableContext {
 		for _, messageTableContextColumn := range messageTableContextRow {
 			if messageTableContextColumn.PropertyID == 26610 {
-				log.Infof("Processing message: %d", messageTableContextColumn.ReferenceHNID)
-
 				message, err := pstFile.GetMessage(messageTableContextColumn.ReferenceHNID, formatType, encryptionType)
 
 				if err != nil {
@@ -132,21 +130,36 @@ func (pstFile *File) GetMessage(identifier int, formatType string, encryptionTyp
 		return Message{}, err
 	}
 
-	message := Message {
-		PropertyContext: propertyContext,
+	message := Message{
+		PropertyContext:  propertyContext,
 		LocalDescriptors: localDescriptors,
 	}
 
 	return message, nil
 }
 
-// GetMessageClass returns the message class.
-func (message *Message) GetMessageClass() string {
-	propertyContextItem, err := FindPropertyContextItem(message.PropertyContext, 26)
+// GetString returns the string value of the property.
+func (message *Message) GetString(propertyID int) string {
+	propertyContextItem, err := FindPropertyContextItem(message.PropertyContext, propertyID)
 
 	if err != nil {
 		return ""
 	}
 
 	return propertyContextItem.GetString()
+}
+
+// GetMessageClass returns the message class.
+func (message *Message) GetMessageClass() string {
+	return message.GetString(26)
+}
+
+// GetMessageID returns the message ID.
+func (message *Message) GetMessageID() string {
+	return message.GetString(4149)
+}
+
+// GetHeaders return the message headers.
+func (message *Message) GetHeaders() string {
+	return message.GetString(125)
 }

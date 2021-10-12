@@ -5,36 +5,21 @@ package pst
 
 // HeapOnNode represents a Heap-on-Node.
 type HeapOnNode struct {
-	BTreeNodeEntry  BTreeNodeEntry
-	NodeInputStream NodeInputStream
+	BTreeNodeEntry BTreeNodeEntry
+	InputStream    HeapOnNodeInputStream
 }
 
 // NewHeapOnNodeFromNode creates a Heap-on-Node from the b-tree node entry.
 func (pstFile *File) NewHeapOnNodeFromNode(btreeNodeEntry BTreeNodeEntry, formatType string, encryptionType string) (HeapOnNode, error) {
-	nodeEntryHeapOnNodeOffset, err := btreeNodeEntry.GetFileOffset(false, formatType)
+	inputStream, err := pstFile.NewHeapOnNodeInputStream(btreeNodeEntry, formatType, encryptionType)
 
 	if err != nil {
 		return HeapOnNode{}, err
-	}
-
-	nodeEntryHeapOnNodeSize, err := btreeNodeEntry.GetSize(formatType)
-
-	if err != nil {
-		return HeapOnNode{}, err
-	}
-
-	// TODO - Pass a flag for is this is an internal (has blocks): if identifier & 0x02 != 0
-
-	nodeInputStream := NodeInputStream{
-		File:           pstFile,
-		EncryptionType: encryptionType,
-		FileOffset:     nodeEntryHeapOnNodeOffset,
-		Size:           nodeEntryHeapOnNodeSize,
 	}
 
 	return HeapOnNode{
-		BTreeNodeEntry:  btreeNodeEntry,
-		NodeInputStream: nodeInputStream,
+		BTreeNodeEntry: btreeNodeEntry,
+		InputStream:    inputStream,
 	}, nil
 }
 
@@ -52,28 +37,15 @@ func (pstFile *File) NewHeapOnNodeFromLocalDescriptor(localDescriptor LocalDescr
 		return HeapOnNode{}, err
 	}
 
-	localDescriptorDataOffset, err := localDescriptorDataNode.GetFileOffset(false, formatType)
+	inputStream, err := pstFile.NewHeapOnNodeInputStream(localDescriptorDataNode, formatType, encryptionType)
 
 	if err != nil {
 		return HeapOnNode{}, err
-	}
-
-	localDescriptorDataSize, err := localDescriptorDataNode.GetSize(formatType)
-
-	if err != nil {
-		return HeapOnNode{}, err
-	}
-
-	nodeInputStream := NodeInputStream{
-		File:           pstFile,
-		EncryptionType: encryptionType,
-		FileOffset:     localDescriptorDataOffset,
-		Size:           localDescriptorDataSize,
 	}
 
 	return HeapOnNode{
-		BTreeNodeEntry:  localDescriptorDataNode,
-		NodeInputStream: nodeInputStream,
+		BTreeNodeEntry: localDescriptorDataNode,
+		InputStream:    inputStream,
 	}, nil
 }
 
@@ -109,7 +81,7 @@ func DecodeCompressibleEncryption(data []byte) []byte {
 // IsValidSignature returns true if the signature of the block matches 0xEC (236).
 // References "Heap-on-Node header".
 func (heapOnNode *HeapOnNode) IsValidSignature() (bool, error) {
-	signature, err := heapOnNode.NodeInputStream.SeekAndReadUint16(1, 2)
+	signature, err := heapOnNode.InputStream.SeekAndReadUint16(1, 2)
 
 	if err != nil {
 		return false, err
@@ -121,7 +93,7 @@ func (heapOnNode *HeapOnNode) IsValidSignature() (bool, error) {
 // GetTableType returns the table type.
 // References "Heap-on-Node header", "Table types".
 func (heapOnNode *HeapOnNode) GetTableType() (int, error) {
-	tableType, err := heapOnNode.NodeInputStream.SeekAndReadUint16(1, 3)
+	tableType, err := heapOnNode.InputStream.SeekAndReadUint16(1, 3)
 
 	if err != nil {
 		return -1, err
@@ -133,7 +105,7 @@ func (heapOnNode *HeapOnNode) GetTableType() (int, error) {
 // GetHIDUserRoot returns the HID user root.
 // References "Heap-on-Node header".
 func (heapOnNode *HeapOnNode) GetHIDUserRoot() (int, error) {
-	hidUserRoot, err := heapOnNode.NodeInputStream.SeekAndReadUint32(4, 4)
+	hidUserRoot, err := heapOnNode.InputStream.SeekAndReadUint32(4, 4)
 
 	if err != nil {
 		return -1, err
@@ -144,8 +116,8 @@ func (heapOnNode *HeapOnNode) GetHIDUserRoot() (int, error) {
 
 // GetPageMap returns the Heap-on-Node Page Map.
 // References "Heap-on-Node page map".
-func (heapOnNode *HeapOnNode) GetPageMap() (int, error) {
-	pageMap, err := heapOnNode.NodeInputStream.SeekAndReadUint16(2, 0)
+func (heapOnNode *HeapOnNode) GetPageMap(blockOffset int) (int, error) {
+	pageMap, err := heapOnNode.InputStream.SeekAndReadUint16(2, blockOffset)
 
 	if err != nil {
 		return -1, err
