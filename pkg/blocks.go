@@ -81,11 +81,11 @@ func (pstFile *File) GetBlocks(nodeEntryHeapOnNodeOffset int, formatType string)
 		return nil, errors.New("unsupported format type")
 	}
 
-	blockType, err := pstFile.Read(1, nodeEntryHeapOnNodeOffset+1)
+	blockLevel, err := pstFile.Read(1, nodeEntryHeapOnNodeOffset+1)
 
 	var btreeNodeEntries []BTreeNodeEntry
 
-	switch int(binary.LittleEndian.Uint16([]byte{blockType[0], 0})) {
+	switch int(binary.LittleEndian.Uint16([]byte{blockLevel[0], 0})) {
 	case BlockTypeXBlock:
 		// XBlock
 		offset := 8 // Start of the array of identifiers that reference data blocks.

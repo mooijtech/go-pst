@@ -174,8 +174,9 @@ func (pstFile *File) GetTableContext(heapOnNode HeapOnNode, localDescriptors []L
 		return nil, err
 	}
 
-	blockCount := tableContextInputStream.Size / (blockSize - blockTrailerSize)
+	blockCount := tableRowMatrixInputStream.Size / (blockSize - blockTrailerSize)
 	rowsPerBlock := (blockSize - blockTrailerSize) / rowSize
+
 	rowCount := (blockCount * rowsPerBlock) + ((tableRowMatrixInputStream.Size % (blockSize - blockTrailerSize)) / rowSize)
 	cellExistenceBlockSize := int(math.Ceil(float64(tableColumnCount) / 8))
 

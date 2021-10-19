@@ -39,7 +39,8 @@ func (pstFile *File) NewHeapOnNodeInputStream(btreeNodeEntry BTreeNodeEntry, for
 		return HeapOnNodeInputStream{}, err
 	}
 
-	// Internal identifiers have blocks.
+	// Internal identifiers have blocks (XBlock or XXBlock).
+	// This is a list of block identifiers that point to block b-tree entries (where the data is).
 	isInternal := nodeEntryIdentifier&0x02 != 0
 
 	if isInternal {
@@ -56,6 +57,7 @@ func (pstFile *File) NewHeapOnNodeInputStream(btreeNodeEntry BTreeNodeEntry, for
 			FormatType:     formatType,
 			EncryptionType: encryptionType,
 			FileOffset:     nodeEntryHeapOnNodeOffset,
+			StartOffset:    0,
 			Size:           blocksTotalSize,
 			Blocks:         blocks,
 		}, nil
@@ -66,6 +68,7 @@ func (pstFile *File) NewHeapOnNodeInputStream(btreeNodeEntry BTreeNodeEntry, for
 		FormatType:     formatType,
 		EncryptionType: encryptionType,
 		FileOffset:     nodeEntryHeapOnNodeOffset,
+		StartOffset:    0,
 		Size:           nodeEntryHeapOnNodeSize,
 	}, nil
 }
@@ -168,7 +171,7 @@ func (heapOnNodeInputStream *HeapOnNodeInputStream) Read(outputBufferSize int, o
 				return nil, err
 			}
 
-			blockSize, err := block.GetSize(FormatTypeUnicode)
+			blockSize, err := block.GetSize(heapOnNodeInputStream.FormatType)
 
 			if err != nil {
 				return nil, err

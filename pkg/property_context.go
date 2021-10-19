@@ -134,7 +134,7 @@ func (pstFile *File) GetPropertyContext(heapOnNode HeapOnNode, localDescriptors 
 			propertyNodeInputStream, err := pstFile.NewHeapOnNodeInputStreamFromHNID(referenceHNID, heapOnNode, localDescriptors, formatType, encryptionType)
 
 			if err != nil {
-				break
+				return nil, err
 			}
 
 			propertyContextItem.IsExternalValueReference = false

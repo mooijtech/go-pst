@@ -39,7 +39,7 @@ func (pstFile *File) GetMessageTableContext(folder Folder, formatType string, en
 		return nil, err
 	}
 
-	tableContext, err := pstFile.GetTableContext(emailsHeapOnNode, localDescriptors, formatType, encryptionType, 0, -1, 26610)
+	tableContext, err := pstFile.GetTableContext(emailsHeapOnNode, localDescriptors, formatType, encryptionType, -1, -1, -1)
 
 	if err != nil {
 		return nil, err
@@ -76,6 +76,7 @@ func (pstFile *File) GetMessages(folder Folder, formatType string, encryptionTyp
 				if err != nil {
 					// There may be other messages.
 					log.Errorf("Failed to get message (%d): %s", messageTableContextColumn.ReferenceHNID, err)
+					continue
 				}
 
 				messages = append(messages, message)
