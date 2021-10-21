@@ -66,72 +66,74 @@ This library is tested on the following datasets:
 package main
 
 import (
+  "fmt"
   pst "github.com/mooijtech/go-pst/pkg"
-  log "github.com/sirupsen/logrus"
 )
 
 func main() {
   pstFile := pst.New("data/enron.pst")
 
-  log.Infof("Parsing file: %s", pstFile.Filepath)
+  fmt.Printf("Parsing file: %s\n", pstFile.Filepath)
 
   isValidSignature, err := pstFile.IsValidSignature()
 
   if err != nil {
-    log.Errorf("Failed to read signature: %s", err)
+    fmt.Printf("Failed to read signature: %s\n", err)
     return
   }
 
   if !isValidSignature {
-    log.Errorf("Invalid file signature.")
+    fmt.Printf("Invalid file signature.\n")
     return
   }
 
   contentType, err := pstFile.GetContentType()
 
   if err != nil {
-    log.Errorf("Failed to get content type: %s", err)
+    fmt.Printf("Failed to get content type: %s\n", err)
     return
   }
 
-  log.Infof("Content type: %s", contentType)
+  fmt.Printf("Content type: %s\n", contentType)
 
   formatType, err := pstFile.GetFormatType()
 
   if err != nil {
-    log.Errorf("Failed to get format type: %s", err)
+    fmt.Printf("Failed to get format type: %s\n", err)
     return
   }
 
-  log.Infof("Format type: %s", formatType)
+  fmt.Printf("Format type: %s\n", formatType)
 
   encryptionType, err := pstFile.GetEncryptionType(formatType)
 
   if err != nil {
-    log.Errorf("Failed to get encryption type: %s", err)
+    fmt.Printf("Failed to get encryption type: %s\n", err)
     return
   }
 
-  log.Infof("Encryption type: %s", encryptionType)
+  fmt.Printf("Encryption type: %s\n", encryptionType)
+
+  fmt.Printf("Initializing B-Trees...\n")
 
   err = pstFile.InitializeBTrees(formatType)
 
   if err != nil {
-    log.Errorf("Failed to initialize node and block b-tree.")
+    fmt.Printf("Failed to initialize node and block b-tree.\n")
     return
   }
 
   rootFolder, err := pstFile.GetRootFolder(formatType, encryptionType)
 
   if err != nil {
-    log.Errorf("Failed to get root folder: %s", err)
+    fmt.Printf("Failed to get root folder: %s\n", err)
     return
   }
 
   err = GetSubFolders(pstFile, rootFolder, formatType, encryptionType)
 
   if err != nil {
-    log.Errorf("Failed to get sub-folders: %s", err)
+    fmt.Printf("Failed to get sub-folders: %s\n", err)
     return
   }
 }
@@ -145,7 +147,7 @@ func GetSubFolders(pstFile pst.File, folder pst.Folder, formatType string, encry
   }
 
   for _, subFolder := range subFolders {
-    log.Infof("Parsing sub-folder: %s", subFolder.DisplayName)
+    fmt.Printf("Parsing sub-folder: %s\n", subFolder.DisplayName)
 
     messages, err := pstFile.GetMessages(subFolder, formatType, encryptionType)
 
@@ -154,7 +156,7 @@ func GetSubFolders(pstFile pst.File, folder pst.Folder, formatType string, encry
     }
 
     if len(messages) > 0 {
-      log.Infof("Found %d messages.", len(messages))
+      fmt.Printf("Found %d messages.\n", len(messages))
     }
 
     err = GetSubFolders(pstFile, subFolder, formatType, encryptionType)
@@ -348,9 +350,11 @@ The 32-bit integer (identifier) can be used to search for b-tree nodes.
 
 If the encryption type was set in the file header, **the entire Heap-on-Node is encrypted**.
 
+It is best to implement an input stream (Heap-on-Node input stream) to deal with encryption, local descriptors (which point to data) and blocks (XBlock and XXBlock) which point to block b-tree identifiers that contains the data.
+
 #### Compressible encryption
 
-Compressible encryption is a simple [byte-substitution cipher](https://github.com/rjohnsondev/java-libpst/blob/develop/src/main/java/com/pff/PSTObject.java#L843) with a fixed [substitution table](https://github.com/rjohnsondev/java-libpst/blob/develop/src/main/java/com/pff/PSTObject.java#L725).
+[Compressible encryption](https://github.com/mooijtech/go-pst/blob/master/pkg/heap_on_node.go#L54) is a simple byte-substitution cipher with a fixed substitution table.
 
 #### Heap-on-Node HID
 
@@ -370,22 +374,6 @@ The first block contains the Heap-on-Node header.
 | 2             |  1            | Block signature; MUST be set to 0xEC (236) to indicate a Heap-on-Node. |
 | 3             |  1            | [The table type](#table-types). |
 | 4             |  4            | [HID](#heap-on-node-hid) User Root. |
-
-#### Heap-on-Node bitmap header
-
-Blocks 8, 136, then every 128th contains the Heap-on-Node bitmap header (``i == 8 || i >= 138 && (i - 8) / 128 == 0``).
-
-| Offset        | Size          | Description   | 
-| ------------- | ------------- | ------------- |
-| 0             |  2            | The offset to the [Heap-on-Node page map](#heap-on-node-page-map) (starting at the Heap-on-Node page header). |
-
-#### Heap-on-Node page header
-
-This is only used when multiple Heap-on-Node blocks are present.
-
-| Offset        | Size          | Description   | 
-| ------------- | ------------- | ------------- |
-| 0             |  2            | The offset to the [Heap-on-Node page map](#heap-on-node-page-map) (starting at the Heap-on-Node page header). |
 
 #### Heap-on-Node page map
 
@@ -427,13 +415,15 @@ This is the HID User Root from the [Heap-on-Node header](#heap-on-node-header).
 
 The property context starts at the [HID root](#b-tree-on-heap-header) of the B-Tree-on-Heap header.
 
+A list of available properties can be found [here](https://github.com/mooijtech/go-pst/blob/master/data/properties.csv).
+
 #### Property Context B-Tree-on-Heap Record
 
 | Offset        | Size          | Description   | 
 | ------------- | ------------- | ------------- |
 | 0             |  2            | Property ID.  |
 | 2             |  2            | [Property type](#property-types).  |
-| 4             |  4            | Reference HNID (HID or NID). In the event where the Reference HNID contains an HID or NID, the actual data is stored in the corresponding heap or subnode entry, respectively.  |
+| 4             |  4            | Reference HNID (HID or NID). In the event where the Reference HNID contains an HID or NID, the actual data is stored in the corresponding heap (allocation table) or local descriptor entry, respectively.  |
 
 #### Property types
 
@@ -515,7 +505,7 @@ The table context starts at the [HID User Root](#heap-on-node-header) of the Hea
 | 6             |  1            | Data size.  |
 | 7             |  1            | Cell Existence Bitmap Index. See [Cell Existence Block](#cell-existence-block).  |
 
-#### Blocks
+### Blocks
 
 Block sizes:
 - Unicode: 8192
@@ -526,6 +516,16 @@ Block trailer sizes:
 - Unicode: 16
 - Unicode4k: 16
 - ANSI: 12
+
+#### XBlock
+
+| Offset        | Size          | Description   | 
+| ------------- | ------------- | ------------- |
+| 0             |  1            | Block signature (Must be set to 1 to indicate an XBlock or XXBlock.  |
+| 1             |  1            | Block level. MUST be set to 1 to indicate an XBlock. |
+| 2             |  2            | The amount of block b-tree identifiers in this XBlock.  |
+| 4             |  4            | Total count of bytes of all the external data stored in the data blocks referenced. |
+| 7             |  1            | The block b-tree identifiers. The size is equal to the number of entries multiplied by the size of a block b-tree identifier (8 bytes for Unicode, 4 bytes for ANSI).  |
 
 #### Number of records
 
