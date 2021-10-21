@@ -61,7 +61,7 @@ type PropertyContextItem struct {
 
 // GetPropertyContext returns the property context (BC Table).
 // References "Property Context".
-func (pstFile *File) GetPropertyContext(heapOnNode HeapOnNode, localDescriptors []LocalDescriptor, formatType string, encryptionType string) ([]PropertyContextItem, error) {
+func (pstFile *File) GetPropertyContext(heapOnNode HeapOnNode, formatType string, encryptionType string) ([]PropertyContextItem, error) {
 	tableType, err := heapOnNode.GetTableType()
 
 	if err != nil {
@@ -73,13 +73,13 @@ func (pstFile *File) GetPropertyContext(heapOnNode HeapOnNode, localDescriptors 
 		return nil, errors.New("invalid table type for property context")
 	}
 
-	btreeOnHeapHeader, err := pstFile.GetBTreeOnHeapHeader(heapOnNode, localDescriptors, formatType, encryptionType)
+	btreeOnHeapHeader, err := pstFile.GetBTreeOnHeapHeader(heapOnNode, []LocalDescriptor{}, formatType, encryptionType)
 
 	if err != nil {
 		return nil, err
 	}
 
-	keyTableInputStream, err := pstFile.NewHeapOnNodeInputStreamFromHNID(btreeOnHeapHeader.HIDRoot, heapOnNode, localDescriptors, formatType, encryptionType)
+	keyTableInputStream, err := pstFile.NewHeapOnNodeInputStreamFromHNID(btreeOnHeapHeader.HIDRoot, heapOnNode, []LocalDescriptor{}, formatType, encryptionType)
 
 	if err != nil {
 		return nil, err
@@ -131,10 +131,11 @@ func (pstFile *File) GetPropertyContext(heapOnNode HeapOnNode, localDescriptors 
 		default:
 			propertyContextItem.IsExternalValueReference = true
 
-			propertyNodeInputStream, err := pstFile.NewHeapOnNodeInputStreamFromHNID(referenceHNID, heapOnNode, localDescriptors, formatType, encryptionType)
+			propertyNodeInputStream, err := pstFile.NewHeapOnNodeInputStreamFromHNID(referenceHNID, heapOnNode, []LocalDescriptor{}, formatType, encryptionType)
 
 			if err != nil {
-				return nil, err
+				// External node
+				break
 			}
 
 			propertyContextItem.IsExternalValueReference = false

@@ -26,7 +26,7 @@ func (pstFile *File) GetRootFolder(formatType string, encryptionType string) (Fo
 		return Folder{}, err
 	}
 
-	propertyContextItems, err := pstFile.GetPropertyContext(rootFolderNodeDataNodeHeapOnNode, []LocalDescriptor{}, formatType, encryptionType)
+	propertyContextItems, err := pstFile.GetPropertyContext(rootFolderNodeDataNodeHeapOnNode, formatType, encryptionType)
 
 	if err != nil {
 		return Folder{}, err

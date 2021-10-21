@@ -57,7 +57,6 @@ func (pstFile *File) NewHeapOnNodeInputStream(btreeNodeEntry BTreeNodeEntry, for
 			FormatType:     formatType,
 			EncryptionType: encryptionType,
 			FileOffset:     nodeEntryHeapOnNodeOffset,
-			StartOffset:    0,
 			Size:           blocksTotalSize,
 			Blocks:         blocks,
 		}, nil
@@ -68,7 +67,6 @@ func (pstFile *File) NewHeapOnNodeInputStream(btreeNodeEntry BTreeNodeEntry, for
 		FormatType:     formatType,
 		EncryptionType: encryptionType,
 		FileOffset:     nodeEntryHeapOnNodeOffset,
-		StartOffset:    0,
 		Size:           nodeEntryHeapOnNodeSize,
 	}, nil
 }
@@ -98,7 +96,7 @@ func (pstFile *File) NewHeapOnNodeInputStreamFromHNID(hnid int, heapOnNode HeapO
 	blockOffset := 0
 
 	if hidBlockIndex > 0 {
-		if hidBlockIndex - 1 > len(heapOnNode.InputStream.Blocks) {
+		if hidBlockIndex-1 > len(heapOnNode.InputStream.Blocks) {
 			return HeapOnNodeInputStream{}, errors.New("block doesn't exist")
 		}
 
@@ -113,7 +111,7 @@ func (pstFile *File) NewHeapOnNodeInputStreamFromHNID(hnid int, heapOnNode HeapO
 
 			blockOffset = blockOffset + blockSize
 
-			if i == hidBlockIndex -1 {
+			if i == hidBlockIndex-1 {
 				break
 			}
 		}
@@ -150,26 +148,40 @@ func (pstFile *File) NewHeapOnNodeInputStreamFromHNID(hnid int, heapOnNode HeapO
 		FormatType:     formatType,
 		EncryptionType: encryptionType,
 		FileOffset:     heapOnNode.InputStream.FileOffset,
+		StartOffset:    startOffset,
 		Size:           endOffset - startOffset,
 		Blocks:         heapOnNode.InputStream.Blocks,
-		StartOffset:    startOffset,
 	}, nil
 }
 
 // Read reads from the node input stream.
 func (heapOnNodeInputStream *HeapOnNodeInputStream) Read(outputBufferSize int, offset int) ([]byte, error) {
-	if len(heapOnNodeInputStream.Blocks) > 0 {
-		var blocksData []byte
+	if len(heapOnNodeInputStream.Blocks) == 0 {
+		outputBuffer, err := heapOnNodeInputStream.File.Read(outputBufferSize, heapOnNodeInputStream.FileOffset+heapOnNodeInputStream.StartOffset+offset)
 
-		// TODO - This can be improved to only read what is required instead of reading everything first.
+		if err != nil {
+			return nil, err
+		}
+
+		switch heapOnNodeInputStream.EncryptionType {
+		case EncryptionTypePermute:
+			return DecodeCompressibleEncryption(outputBuffer), nil
+		case EncryptionTypeNone:
+			return outputBuffer, nil
+		default:
+			return nil, errors.New("unsupported encryption type")
+		}
+	} else {
+		// The following code is harder to implement than it looks.
+		// Before we used to read ALL blocks into memory and then get the bytes but this takes up way too much memory.
+		// Now we only reads what's required.
+
+		// Get the start offsets of each block.
+		blockStartOffsets := make([]int, len(heapOnNodeInputStream.Blocks))
+		currentBlockStartOffset := 0
+
 		for i := 0; i < len(heapOnNodeInputStream.Blocks); i++ {
 			block := heapOnNodeInputStream.Blocks[i]
-
-			blockFileOffset, err := block.GetFileOffset(false, heapOnNodeInputStream.FormatType)
-
-			if err != nil {
-				return nil, err
-			}
 
 			blockSize, err := block.GetSize(heapOnNodeInputStream.FormatType)
 
@@ -177,31 +189,61 @@ func (heapOnNodeInputStream *HeapOnNodeInputStream) Read(outputBufferSize int, o
 				return nil, err
 			}
 
-			blockData, err := heapOnNodeInputStream.File.Read(blockSize, blockFileOffset)
-
-			if err != nil {
-				return nil, err
-			}
-
-			blocksData = append(blocksData, blockData...)
+			blockStartOffsets[i] = currentBlockStartOffset
+			currentBlockStartOffset += blockSize
 		}
 
-		return DecodeCompressibleEncryption(blocksData[heapOnNodeInputStream.StartOffset+offset : heapOnNodeInputStream.StartOffset+offset+outputBufferSize]), nil
-	}
+		// Get the current block based on the offset.
+		currentBlock := 0
+		currentBlockEndOffset := blockStartOffsets[currentBlock+1]
 
-	outputBuffer, err := heapOnNodeInputStream.File.Read(outputBufferSize, heapOnNodeInputStream.FileOffset+heapOnNodeInputStream.StartOffset+offset)
+		for heapOnNodeInputStream.StartOffset+offset >= currentBlockEndOffset {
+			currentBlock += 1
 
-	if err != nil {
-		return nil, err
-	}
+			if currentBlock == len(heapOnNodeInputStream.Blocks)-1 {
+				break
+			} else {
+				currentBlockEndOffset = blockStartOffsets[currentBlock+1]
+			}
+		}
 
-	switch heapOnNodeInputStream.EncryptionType {
-	case EncryptionTypePermute:
-		return DecodeCompressibleEncryption(outputBuffer), nil
-	case EncryptionTypeNone:
-		return outputBuffer, nil
-	default:
-		return nil, errors.New("unsupported encryption type")
+		block := heapOnNodeInputStream.Blocks[currentBlock]
+
+		// This was the hardest part, figure out what the offset is into the current block.
+		var currentOffsetInBlock int
+
+		if currentBlock == 0 {
+			currentOffsetInBlock = heapOnNodeInputStream.StartOffset + offset
+		} else {
+			if heapOnNodeInputStream.StartOffset >= blockStartOffsets[currentBlock] || offset >= blockStartOffsets[currentBlock] {
+				currentOffsetInBlock = (heapOnNodeInputStream.StartOffset + offset) - blockStartOffsets[currentBlock]
+			} else {
+				currentOffsetInBlock = blockStartOffsets[currentBlock] - (heapOnNodeInputStream.StartOffset - offset)
+			}
+		}
+
+		blockFileOffset, err := block.GetFileOffset(false, heapOnNodeInputStream.FormatType)
+
+		if err != nil {
+			return nil, err
+		}
+
+		blockSize, err := block.GetSize(heapOnNodeInputStream.FormatType)
+
+		if err != nil {
+			return nil, err
+		}
+
+		blockEndOffset := blockStartOffsets[currentBlock] + blockSize
+
+		// The end offset of this block should not be larger than the requested offset and output buffer size.
+		if heapOnNodeInputStream.StartOffset+offset+outputBufferSize > blockEndOffset {
+			return nil, errors.New("requested offset is larger than the maximum block size, please open an issue on GitHub")
+		}
+
+		blockData, err := heapOnNodeInputStream.File.Read(outputBufferSize, blockFileOffset+currentOffsetInBlock)
+
+		return DecodeCompressibleEncryption(blockData), nil
 	}
 }
 

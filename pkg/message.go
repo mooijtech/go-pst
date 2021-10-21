@@ -2,7 +2,7 @@ package pst
 
 import (
 	"errors"
-	log "github.com/sirupsen/logrus"
+	"fmt"
 )
 
 // Message represents a message.
@@ -39,7 +39,7 @@ func (pstFile *File) GetMessageTableContext(folder Folder, formatType string, en
 		return nil, err
 	}
 
-	tableContext, err := pstFile.GetTableContext(emailsHeapOnNode, localDescriptors, formatType, encryptionType, -1, -1, -1)
+	tableContext, err := pstFile.GetTableContext(emailsHeapOnNode, localDescriptors, formatType, encryptionType, -1, -1, 26610)
 
 	if err != nil {
 		return nil, err
@@ -75,7 +75,7 @@ func (pstFile *File) GetMessages(folder Folder, formatType string, encryptionTyp
 
 				if err != nil {
 					// There may be other messages.
-					log.Errorf("Failed to get message (%d): %s", messageTableContextColumn.ReferenceHNID, err)
+					fmt.Printf("Failed to get message (%d): %s\n", messageTableContextColumn.ReferenceHNID, err)
 					continue
 				}
 
@@ -125,7 +125,7 @@ func (pstFile *File) GetMessage(identifier int, formatType string, encryptionTyp
 		return Message{}, err
 	}
 
-	propertyContext, err := pstFile.GetPropertyContext(messageHeapOnNode, localDescriptors, formatType, encryptionType)
+	propertyContext, err := pstFile.GetPropertyContext(messageHeapOnNode, formatType, encryptionType)
 
 	if err != nil {
 		return Message{}, err
