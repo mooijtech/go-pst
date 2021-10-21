@@ -104,13 +104,41 @@ func (pstFile *File) GetBlocks(nodeEntryHeapOnNodeOffset int, formatType string)
 			}
 
 			btreeNodeEntries = append(btreeNodeEntries, blockBTreeNode)
-
 			offset += identifierSize
 		}
 		break
 	case BlockTypeXXBlock:
 		// XXBlock
-		return nil, errors.New("XXBlock is not implemented yet, please open an issue on GitHub")
+		offset := 8
+
+		for i := 0; i < int(binary.LittleEndian.Uint16(entryCount)); i++ {
+			blockIdentifier, err := pstFile.Read(identifierSize, nodeEntryHeapOnNodeOffset+offset)
+
+			if err != nil {
+				return nil, err
+			}
+
+			blockBTreeNode, err := pstFile.GetBlockBTreeNode(int(binary.LittleEndian.Uint32(blockIdentifier)), formatType)
+
+			if err != nil {
+				return nil, err
+			}
+
+			blockBTreeNodeFileOffset, err := blockBTreeNode.GetFileOffset(false, formatType)
+
+			if err != nil {
+				return nil, err
+			}
+
+			blockBTreeNodeBlocks, err := pstFile.GetBlocks(blockBTreeNodeFileOffset, formatType)
+
+			if err != nil {
+				return nil, err
+			}
+
+			btreeNodeEntries = append(btreeNodeEntries, blockBTreeNodeBlocks...)
+			offset += identifierSize
+		}
 	default:
 		return nil, errors.New("unsupported block type")
 	}
