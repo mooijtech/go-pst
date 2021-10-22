@@ -628,7 +628,7 @@ func (pstFile *File) FindBTreeNode(btreeType int, identifier int, formatType str
 
 			return node, nil
 		} else {
-			nextBTreeNode := NodeBTree[i + 1]
+			nextBTreeNode := btree[i + 1]
 
 			nextBTreeNodeIdentifier, err := nextBTreeNode.GetIdentifier(formatType)
 
