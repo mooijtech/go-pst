@@ -157,6 +157,34 @@ func GetSubFolders(pstFile pst.File, folder pst.Folder, formatType string, encry
 
     if len(messages) > 0 {
       fmt.Printf("Found %d messages.\n", len(messages))
+
+      var attachmentsCount int
+
+      for _, message := range messages {
+        // Do something with the message.
+        attachments, err := pstFile.GetAttachments(&message, formatType, encryptionType)
+
+        if err != nil {
+          fmt.Printf("Failed to get attachments: %s\n", err)
+          continue
+        }
+
+        for _, attachment := range attachments {
+          // Do something with the attachment.
+          err = pstFile.WriteAttachmentToFile(attachment, "data/" + attachment.GetLongFilename(), formatType, encryptionType)
+
+          if err != nil {
+            fmt.Printf("Failed to write attachment to file: %s\n", err)
+            continue
+          }
+        }
+
+        attachmentsCount += len(attachments)
+      }
+
+      if attachmentsCount > 0 {
+        fmt.Printf("Found %d attachments.\n", attachmentsCount)
+      }
     }
 
     err = GetSubFolders(pstFile, subFolder, formatType, encryptionType)
@@ -233,7 +261,7 @@ The following offsets start from the (node/block) b-tree offset.
 
 | Offset        | Size          | Description   |
 | ------------- | ------------- | ------------- |
-| 0             |  488            | B-tree node entries (number of entries x entry size). |
+| 0             |  488          | B-tree node entries (number of entries x entry size). |
 | 488           |  1            | The number of entries. |
 | 490           |  1            | The size of an entry. |
 | 491           |  1            | B-tree node level. A zero value represents a leaf node. A value greater than zero represents a branch node, with the highest level representing the root. |
@@ -251,7 +279,7 @@ The following offsets start from the (node/block) b-tree offset.
 
 | Offset        | Size          | Description   |
 | ------------- | ------------- | ------------- |
-| 0             |  496            | B-tree node entries (number of entries x entry size). |
+| 0             |  496          | B-tree node entries (number of entries x entry size). |
 | 496           |  1            | The number of entries. |
 | 498           |  1            | The size of an entry. |
 | 499           |  1            | B-tree node level. A zero value represents a leaf node. A value greater than zero represents a branch node, with the highest level representing the root. |
@@ -477,6 +505,13 @@ Each property ID of 26610 has a reference HNID which points to a message.
 ### Messages
 
 Messages have a property context where all data is stored.
+
+### Attachments
+
+The message property context contains the property ID of 3591 (PidTagMessageFlags), ```reference HNID & 0x10 != 0``` indicates if the message contains attachments.
+
+The message local descriptors contains an identifier of 1649 which points to the attachments table context.
+
 
 ### Table Context
 
