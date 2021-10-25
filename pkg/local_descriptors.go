@@ -87,8 +87,6 @@ func (localDescriptor *LocalDescriptor) GetLocalDescriptorsIdentifier(formatType
 	return int(binary.LittleEndian.Uint32(localDescriptor.Data[identifierOffset : identifierOffset+identifierBufferSize])), nil
 }
 
-// GetLocalDescriptors returns the local descriptors of the b-tree node entry.
-// References "Local Descriptors".
 func (pstFile *File) GetLocalDescriptors(btreeNodeEntry BTreeNodeEntry, formatType string) ([]LocalDescriptor, error) {
 	localDescriptorsIdentifier, err := btreeNodeEntry.GetLocalDescriptorsIdentifier(formatType)
 
@@ -96,6 +94,12 @@ func (pstFile *File) GetLocalDescriptors(btreeNodeEntry BTreeNodeEntry, formatTy
 		return nil, err
 	}
 
+	return pstFile.GetLocalDescriptorsFromIdentifier(localDescriptorsIdentifier, formatType)
+}
+
+// GetLocalDescriptorsFromIdentifier returns the local descriptors of the local descriptors identifier.
+// References "Local Descriptors".
+func (pstFile *File) GetLocalDescriptorsFromIdentifier(localDescriptorsIdentifier int, formatType string) ([]LocalDescriptor, error) {
 	if localDescriptorsIdentifier == 0 {
 		// There are no local descriptors
 		return []LocalDescriptor{}, nil
@@ -188,7 +192,7 @@ func (pstFile *File) GetLocalDescriptors(btreeNodeEntry BTreeNodeEntry, formatTy
 }
 
 // FindLocalDescriptor returns the local descriptor with the specified identifier.
-func (pstFile *File) FindLocalDescriptor(localDescriptors []LocalDescriptor, identifier int, formatType string) (LocalDescriptor, error) {
+func FindLocalDescriptor(localDescriptors []LocalDescriptor, identifier int, formatType string) (LocalDescriptor, error) {
 	for _, localDescriptor := range localDescriptors {
 		localDescriptorIdentifier, err := localDescriptor.GetIdentifier(formatType)
 

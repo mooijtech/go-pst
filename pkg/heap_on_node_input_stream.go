@@ -74,7 +74,7 @@ func (pstFile *File) NewHeapOnNodeInputStream(btreeNodeEntry BTreeNodeEntry, for
 // NewHeapOnNodeInputStreamFromHNID returns the offsets from the allocation table of the given HID.
 func (pstFile *File) NewHeapOnNodeInputStreamFromHNID(hnid int, heapOnNode HeapOnNode, localDescriptors []LocalDescriptor, formatType string, encryptionType string) (HeapOnNodeInputStream, error) {
 	if len(localDescriptors) > 0 {
-		localDescriptor, err := pstFile.FindLocalDescriptor(localDescriptors, hnid, formatType)
+		localDescriptor, err := FindLocalDescriptor(localDescriptors, hnid, formatType)
 
 		if err == nil {
 			// Found the local descriptor for this identifier.
@@ -235,6 +235,10 @@ func (heapOnNodeInputStream *HeapOnNodeInputStream) Read(outputBufferSize int, o
 		}
 
 		blockEndOffset := blockStartOffsets[currentBlock] + blockSize
+
+		if outputBufferSize > blockSize {
+			return nil, errors.New("output buffer size is larger than the block size")
+		}
 
 		// The end offset of this block should not be larger than the requested offset and output buffer size.
 		if heapOnNodeInputStream.StartOffset+offset+outputBufferSize > blockEndOffset {

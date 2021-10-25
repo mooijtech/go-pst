@@ -217,11 +217,6 @@ func FindProperty(propertyID int) ([]string, error) {
 	return nil, errors.New("failed to find property")
 }
 
-// GetString returns the string value of this property context item (data).
-func (propertyContextItem *PropertyContextItem) GetString() string {
-	return string(propertyContextItem.Data)
-}
-
 // String returns the string representation of this property.
 func (propertyContextItem *PropertyContextItem) String() ([]string, error) {
 	return FindProperty(propertyContextItem.PropertyID)

@@ -1,3 +1,6 @@
+// Package pst
+// This file is part of go-pst (https://github.com/mooijtech/go-pst)
+// Copyright (C) 2021 Marten Mooij (https://www.mooijtech.com/)
 package pst
 
 import (
@@ -7,8 +10,9 @@ import (
 
 // Message represents a message.
 type Message struct {
-	PropertyContext  []PropertyContextItem
-	LocalDescriptors []LocalDescriptor
+	PropertyContext         []PropertyContextItem
+	LocalDescriptors        []LocalDescriptor
+	AttachmentsTableContext [][]TableContextItem
 }
 
 // GetMessageTableContext returns the message table context of this folder.
@@ -147,7 +151,18 @@ func (message *Message) GetString(propertyID int) string {
 		return ""
 	}
 
-	return propertyContextItem.GetString()
+	return string(propertyContextItem.Data)
+}
+
+// GetInteger returns the integer value of the property.
+func (message *Message) GetInteger(propertyID int) int {
+	propertyContextItem, err := FindPropertyContextItem(message.PropertyContext, propertyID)
+
+	if err != nil {
+		return -1
+	}
+
+	return propertyContextItem.ReferenceHNID
 }
 
 // GetMessageClass returns the message class.
