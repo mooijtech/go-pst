@@ -4,8 +4,10 @@
 package pst
 
 import (
+	"encoding/binary"
 	"errors"
 	"fmt"
+	"time"
 )
 
 // Message represents a message.
@@ -151,7 +153,7 @@ func (message *Message) GetString(propertyID int) string {
 		return ""
 	}
 
-	return string(propertyContextItem.Data)
+	return BytesToString(propertyContextItem.Data)
 }
 
 // GetInteger returns the integer value of the property.
@@ -163,6 +165,27 @@ func (message *Message) GetInteger(propertyID int) int {
 	}
 
 	return propertyContextItem.ReferenceHNID
+}
+
+// GetDate returns the date value of the property.
+// References https://stackoverflow.com/a/57903746
+func (message *Message) GetDate(propertyID int) time.Time {
+	propertyContextItem, err := FindPropertyContextItem(message.PropertyContext, propertyID)
+
+	if err != nil {
+		return time.Time{}
+	}
+
+	dateInteger := binary.LittleEndian.Uint64(propertyContextItem.Data)
+
+	t := time.Date(1601, 1, 1, 0, 0, 0, 0, time.UTC)
+	d := time.Duration(dateInteger)
+
+	for i := 0; i < 100; i++ {
+		t = t.Add(d)
+	}
+
+	return t
 }
 
 // GetMessageClass returns the message class.
@@ -178,4 +201,34 @@ func (message *Message) GetMessageID() string {
 // GetHeaders return the message headers.
 func (message *Message) GetHeaders() string {
 	return message.GetString(125)
+}
+
+// GetFrom returns the "From" header.
+func (message *Message) GetFrom() string {
+	return message.GetString(3103)
+}
+
+// GetTo returns the "To" header.
+func (message *Message) GetTo() string {
+	return message.GetString(3588)
+}
+
+// GetCC returns the "CC" header.
+func (message *Message) GetCC() string {
+	return message.GetString(3587)
+}
+
+// GetReceivedDate returns the date this message was received.
+func (message *Message) GetReceivedDate() time.Time {
+	return message.GetDate(3590)
+}
+
+// GetBody returns the plaintext body of the message.
+func (message *Message) GetBody() string {
+	return message.GetString(4096)
+}
+
+// GetBodyHTML returns the HTML body of this message.
+func (message *Message) GetBodyHTML() string {
+	return message.GetString(4115)
 }

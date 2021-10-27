@@ -4,12 +4,8 @@
 package pst
 
 import (
-	"bufio"
-	"bytes"
 	"errors"
 	"fmt"
-	"golang.org/x/text/encoding/unicode"
-	"golang.org/x/text/transform"
 	"io/ioutil"
 	"os"
 )
@@ -175,13 +171,7 @@ func (attachment *Attachment) GetString(propertyID int) string {
 		return ""
 	}
 
-	// TODO - Move this to BytesToString in util.go, we need to handle different encodings later.
-	scanner := bufio.NewScanner(transform.NewReader(bytes.NewReader(propertyContextItem.Data), unicode.UTF16(unicode.LittleEndian, unicode.UseBOM).NewDecoder()))
-	for scanner.Scan() {
-		return scanner.Text()
-	}
-
-	return string(propertyContextItem.Data)
+	return BytesToString(propertyContextItem.Data)
 }
 
 // GetFilename returns the file name of this attachment.
