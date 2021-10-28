@@ -188,6 +188,11 @@ func (message *Message) GetDate(propertyID int) time.Time {
 	return t
 }
 
+// GetSubject returns the subject of this message.
+func (message *Message) GetSubject() string {
+	return message.GetString(55)
+}
+
 // GetMessageClass returns the message class.
 func (message *Message) GetMessageClass() string {
 	return message.GetString(26)
@@ -216,6 +221,17 @@ func (message *Message) GetTo() string {
 // GetCC returns the "CC" header.
 func (message *Message) GetCC() string {
 	return message.GetString(3587)
+}
+
+// GetBCC returns the BCC of this message.
+func (message *Message) GetBCC() string {
+	originalDisplayBCC := message.GetString(114)
+
+	if originalDisplayBCC != "" {
+		return originalDisplayBCC
+	}
+
+	return message.GetString(3586)
 }
 
 // GetReceivedDate returns the date this message was received.
