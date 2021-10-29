@@ -462,15 +462,9 @@ const (
 	BTreeTypeBlock = 1
 )
 
-// Variables defining the node and block b-tree which need to be initialized.
-var (
-	NodeBTree  []BTreeNodeEntry
-	BlockBTree []BTreeNodeEntry
-)
-
 // InitializeBTree walks the b-tree and finds the node with the given identifier.
 func (pstFile *File) InitializeBTree(btreeType int, formatType string) error {
-	if len(NodeBTree) > 0 && btreeType == BTreeTypeNode || len(BlockBTree) > 0 && btreeType == BTreeTypeBlock {
+	if len(pstFile.NodeBTree) > 0 && btreeType == BTreeTypeNode || len(pstFile.BlockBTree) > 0 && btreeType == BTreeTypeBlock {
 		return errors.New("b-tree is already initialized")
 	}
 
@@ -488,7 +482,7 @@ func (pstFile *File) InitializeBTree(btreeType int, formatType string) error {
 			return err
 		}
 
-		NodeBTree = nodeBTreeNodes
+		pstFile.NodeBTree = nodeBTreeNodes
 		return nil
 	case BTreeTypeBlock:
 		blockBTreeOffset, err := pstFile.GetBlockBTreeOffset(formatType)
@@ -503,7 +497,7 @@ func (pstFile *File) InitializeBTree(btreeType int, formatType string) error {
 			return err
 		}
 
-		BlockBTree = blockBTreeNodes
+		pstFile.BlockBTree = blockBTreeNodes
 		return nil
 	default:
 		return errors.New("invalid b-tree type")
@@ -610,9 +604,9 @@ func (pstFile *File) FindBTreeNode(btreeType int, identifier int, formatType str
 
 	switch btreeType {
 	case BTreeTypeNode:
-		btree = NodeBTree
+		btree = pstFile.NodeBTree
 	case BTreeTypeBlock:
-		btree = BlockBTree
+		btree = pstFile.BlockBTree
 	default:
 		return BTreeNodeEntry{}, errors.New("invalid b-tree type")
 	}

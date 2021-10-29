@@ -14,6 +14,10 @@ import (
 // File represents a PST file.
 type File struct {
 	Filepath string
+
+	// Variables defining the node and block b-tree which need to be initialized.
+	NodeBTree  []BTreeNodeEntry
+	BlockBTree []BTreeNodeEntry
 }
 
 // New is a constructor for creating PST files.
