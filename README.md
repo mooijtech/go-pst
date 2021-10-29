@@ -645,4 +645,4 @@ Feel free to contact me if you have any questions.<br/>
 
 ## License
 
-[MIT](https://github.com/mooijtech/go-pst/blob/master/LICENSE.txt)
+[WTFPL](https://github.com/mooijtech/go-pst/blob/master/LICENSE.txt)
