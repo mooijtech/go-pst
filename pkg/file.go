@@ -51,6 +51,12 @@ func (pstFile *File) Read(outputBufferSize int, offset int) ([]byte, error) {
 		return nil, err
 	}
 
+	err = inputFile.Close()
+
+	if err != nil {
+		return nil, err
+	}
+
 	return outputBuffer, nil
 }
 
