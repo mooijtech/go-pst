@@ -14,12 +14,17 @@ import (
 // BytesToString converts bytes to string and deals with encoding.
 // References https://stackoverflow.com/a/55632545
 func BytesToString(input []byte) string {
-	inputScanner := bufio.NewScanner(transform.NewReader(bytes.NewReader(input), unicode.UTF16(unicode.LittleEndian, unicode.UseBOM).NewDecoder()))
-
+	inputScanner := bufio.NewScanner(transform.NewReader(bytes.NewReader(input), unicode.UTF16(unicode.LittleEndian, unicode.IgnoreBOM).NewDecoder()))
 	outputStringBuilder := strings.Builder{}
+	isFirstLine := true
 
 	for inputScanner.Scan() {
-		outputStringBuilder.WriteString(inputScanner.Text())
+		if isFirstLine {
+			outputStringBuilder.WriteString(inputScanner.Text())
+			isFirstLine = false
+		} else {
+			outputStringBuilder.WriteString("\n" + inputScanner.Text())
+		}
 	}
 
 	return outputStringBuilder.String()
