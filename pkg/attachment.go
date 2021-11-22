@@ -171,7 +171,7 @@ func (attachment *Attachment) GetString(propertyID int) string {
 		return ""
 	}
 
-	return BytesToString(propertyContextItem.Data)
+	return string(propertyContextItem.Data)
 }
 
 // GetFilename returns the file name of this attachment.

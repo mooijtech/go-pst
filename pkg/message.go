@@ -7,6 +7,8 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"golang.org/x/text/encoding/ianaindex"
+	"golang.org/x/text/encoding/unicode"
 	"time"
 )
 
@@ -153,10 +155,42 @@ func (message *Message) GetString(propertyID int) string {
 		return ""
 	}
 
-	return BytesToString(propertyContextItem.Data)
+	if propertyID == 4096 || propertyID == 4115 { // Only the message body uses the specified encoding as far as I know.
+		encoding, err := message.GetEncoding()
+
+		if err != nil {
+			return err.Error()
+		}
+
+		mimeEncoding, err := ianaindex.MIME.Encoding(encoding.Name)
+
+		if err != nil {
+			return err.Error()
+		}
+
+		inputReader, err := mimeEncoding.NewDecoder().Bytes(propertyContextItem.Data)
+
+		if err != nil {
+			return err.Error()
+		}
+
+		return string(inputReader)
+	} else {
+		// The libpff documentation states:
+		// "Unicode strings are stored in UTF-16 little-endian without the byte order mark (BOM)."
+		decoder := unicode.UTF16(unicode.LittleEndian, unicode.IgnoreBOM).NewDecoder()
+
+		utf16String, err := decoder.String(string(propertyContextItem.Data))
+
+		if err != nil {
+			return err.Error()
+		}
+
+		return utf16String
+	}
 }
 
-// GetInteger returns the integer value of the property.
+// GetInteger returns the integer value of the property or -1 if it was not found.
 func (message *Message) GetInteger(propertyID int) int {
 	propertyContextItem, err := FindPropertyContextItem(message.PropertyContext, propertyID)
 
