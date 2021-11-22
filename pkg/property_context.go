@@ -158,17 +158,23 @@ func (pstFile *File) GetPropertyContext(heapOnNode HeapOnNode, formatType string
 
 // FindPropertyContextItem returns the property context item from the property ID.
 func FindPropertyContextItem(propertyContext []PropertyContextItem, propertyID int) (PropertyContextItem, error) {
-	for _, item := range propertyContext {
-		if item.PropertyID == propertyID {
-			return item, nil
+	for _, propertyContextItem := range propertyContext {
+		if propertyContextItem.PropertyID == propertyID {
+			return propertyContextItem, nil
 		}
 	}
 
 	return PropertyContextItem{}, errors.New("failed to find property context item")
 }
 
+// Property represents a property.
+type Property struct {
+	Name string
+	ID int
+}
+
 // GetProperties returns all available properties.
-func GetProperties() ([][]string, error) {
+func GetProperties() ([]Property, error) {
 	csvFile, err := os.Open("data/properties.csv")
 
 	if err != nil {
@@ -177,7 +183,7 @@ func GetProperties() ([][]string, error) {
 
 	csvReader := csv.NewReader(csvFile)
 
-	records, err := csvReader.ReadAll()
+	csvProperties, err := csvReader.ReadAll()
 
 	if err != nil {
 		return nil, err
@@ -189,35 +195,49 @@ func GetProperties() ([][]string, error) {
 		return nil, err
 	}
 
-	return records, nil
+	var properties []Property
+
+	for _, propertyRow := range csvProperties {
+		// https://pkg.go.dev/strconv#ParseInt
+		propertyID, err := strconv.ParseInt(strings.Replace(propertyRow[1], "0x", "", 1), 16, 64)
+
+		if err != nil {
+			continue
+		}
+
+		properties = append(properties, Property {
+			Name: propertyRow[0],
+			ID: int(propertyID),
+		})
+	}
+
+	return properties, nil
 }
 
 // FindProperty finds the property from the property ID.
-func FindProperty(propertyID int) ([]string, error) {
+func FindProperty(propertyID int) (Property, error) {
 	properties, err := GetProperties()
 
 	if err != nil {
-		return nil, err
+		return Property{}, err
 	}
 
-	for _, propertyRow := range properties {
-		for _, propertyColumn := range propertyRow {
-			propertyColumnPropertyID, err := strconv.ParseInt(strings.Replace(propertyColumn, "0x", "", 1), 16, 64)
-
-			if err != nil {
-				continue
-			}
-
-			if propertyID == int(propertyColumnPropertyID) {
-				return propertyRow, nil
-			}
+	for _, property := range properties {
+		if propertyID == property.ID {
+			return property, nil
 		}
 	}
 
-	return nil, errors.New("failed to find property")
+	return Property{}, errors.New("failed to find property")
 }
 
 // String returns the string representation of this property.
-func (propertyContextItem *PropertyContextItem) String() ([]string, error) {
-	return FindProperty(propertyContextItem.PropertyID)
+func (propertyContextItem *PropertyContextItem) String() (string, error) {
+	property, err := FindProperty(propertyContextItem.PropertyID)
+
+	if err != nil {
+		return "", errors.New("failed to find property")
+	}
+
+	return property.Name, nil
 }
