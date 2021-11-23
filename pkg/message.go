@@ -162,6 +162,19 @@ func (message *Message) GetString(propertyID int) string {
 			return err.Error()
 		}
 
+		if encoding.Name == "us-ascii" {
+			// enron.pst shows replacement characters after each character with us-ascii but works with UTF-16.
+			decoder := unicode.UTF16(unicode.LittleEndian, unicode.IgnoreBOM).NewDecoder()
+
+			utf16String, err := decoder.String(string(propertyContextItem.Data))
+
+			if err != nil {
+				return err.Error()
+			}
+
+			return utf16String
+		}
+
 		mimeEncoding, err := ianaindex.MIME.Encoding(encoding.Name)
 
 		if err != nil {
