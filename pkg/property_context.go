@@ -4,9 +4,9 @@
 package pst
 
 import (
+	_ "embed"
 	"encoding/csv"
 	"errors"
-	"os"
 	"strconv"
 	"strings"
 )
@@ -167,6 +167,9 @@ func FindPropertyContextItem(propertyContext []PropertyContextItem, propertyID i
 	return PropertyContextItem{}, errors.New("failed to find property context item")
 }
 
+//go:embed properties.csv
+var properties string
+
 // Property represents a property.
 type Property struct {
 	Name string
@@ -175,21 +178,9 @@ type Property struct {
 
 // GetProperties returns all available properties.
 func GetProperties() ([]Property, error) {
-	csvFile, err := os.Open("data/properties.csv")
-
-	if err != nil {
-		return nil, err
-	}
-
-	csvReader := csv.NewReader(csvFile)
+	csvReader := csv.NewReader(strings.NewReader(properties))
 
 	csvProperties, err := csvReader.ReadAll()
-
-	if err != nil {
-		return nil, err
-	}
-
-	err = csvFile.Close()
 
 	if err != nil {
 		return nil, err

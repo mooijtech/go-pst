@@ -4,11 +4,12 @@
 package pst
 
 import (
+	_ "embed"
 	"encoding/csv"
 	"errors"
 	"fmt"
-	"os"
 	"strconv"
+	"strings"
 )
 
 // Encoding represents an IANA index encoding.
@@ -18,43 +19,14 @@ type Encoding struct {
 	Name string
 }
 
-// Defines the encodings which is initialized on startup.
-var (
-	Encodings []Encoding
-)
-
-func init() {
-	encodings, err := GetEncodings()
-
-	if err != nil {
-		fmt.Printf("Failed to get encodings: %s\n", err)
-		return
-	}
-
-	Encodings = encodings
-}
+//go:embed encodings.csv
+var encodings string
 
 // GetEncodings returns all available encodings.
 func GetEncodings() ([]Encoding, error) {
-	if len(Encodings) != 0 {
-		return Encodings, nil
-	}
-
-	csvFile, err := os.Open("data/encoding.csv")
-
-	if err != nil {
-		return nil, err
-	}
-
-	csvReader := csv.NewReader(csvFile)
+	csvReader := csv.NewReader(strings.NewReader(encodings))
 
 	csvEncodings, err := csvReader.ReadAll()
-
-	if err != nil {
-		return nil, err
-	}
-
-	err = csvFile.Close()
 
 	if err != nil {
 		return nil, err
