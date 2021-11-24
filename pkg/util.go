@@ -4,28 +4,19 @@
 package pst
 
 import (
-	"bufio"
-	"bytes"
 	"golang.org/x/text/encoding/unicode"
-	"golang.org/x/text/transform"
-	"strings"
 )
 
-// BytesToString converts bytes to string and deals with encoding.
-// References https://stackoverflow.com/a/55632545
+// The libpff documentation states:
+// "Unicode strings are stored in UTF-16 little-endian without the byte order mark (BOM)."
 func BytesToString(input []byte) string {
-	inputScanner := bufio.NewScanner(transform.NewReader(bytes.NewReader(input), unicode.UTF16(unicode.LittleEndian, unicode.IgnoreBOM).NewDecoder()))
-	outputStringBuilder := strings.Builder{}
-	isFirstLine := true
+	decoder := unicode.UTF16(unicode.LittleEndian, unicode.IgnoreBOM).NewDecoder()
 
-	for inputScanner.Scan() {
-		if isFirstLine {
-			outputStringBuilder.WriteString(inputScanner.Text())
-			isFirstLine = false
-		} else {
-			outputStringBuilder.WriteString("\n" + inputScanner.Text())
-		}
+	utf16String, err := decoder.String(string(input))
+
+	if err != nil {
+		return err.Error()
 	}
 
-	return outputStringBuilder.String()
+	return utf16String
 }

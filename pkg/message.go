@@ -8,7 +8,6 @@ import (
 	"errors"
 	"fmt"
 	"golang.org/x/text/encoding/ianaindex"
-	"golang.org/x/text/encoding/unicode"
 	"time"
 )
 
@@ -164,15 +163,7 @@ func (message *Message) GetString(propertyID int) string {
 
 		if encoding.Name == "us-ascii" {
 			// enron.pst shows replacement characters after each character with us-ascii but works with UTF-16.
-			decoder := unicode.UTF16(unicode.LittleEndian, unicode.IgnoreBOM).NewDecoder()
-
-			utf16String, err := decoder.String(string(propertyContextItem.Data))
-
-			if err != nil {
-				return err.Error()
-			}
-
-			return utf16String
+			return BytesToString(propertyContextItem.Data)
 		}
 
 		mimeEncoding, err := ianaindex.MIME.Encoding(encoding.Name)
@@ -189,17 +180,7 @@ func (message *Message) GetString(propertyID int) string {
 
 		return string(inputReader)
 	} else {
-		// The libpff documentation states:
-		// "Unicode strings are stored in UTF-16 little-endian without the byte order mark (BOM)."
-		decoder := unicode.UTF16(unicode.LittleEndian, unicode.IgnoreBOM).NewDecoder()
-
-		utf16String, err := decoder.String(string(propertyContextItem.Data))
-
-		if err != nil {
-			return err.Error()
-		}
-
-		return utf16String
+		return BytesToString(propertyContextItem.Data)
 	}
 }
 
