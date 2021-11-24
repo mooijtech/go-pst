@@ -18,8 +18,28 @@ type Encoding struct {
 	Name string
 }
 
+// Defines the encodings which is initialized on startup.
+var (
+	Encodings []Encoding
+)
+
+func init() {
+	encodings, err := GetEncodings()
+
+	if err != nil {
+		fmt.Printf("Failed to get encodings: %s\n", err)
+		return
+	}
+
+	Encodings = encodings
+}
+
 // GetEncodings returns all available encodings.
 func GetEncodings() ([]Encoding, error) {
+	if len(Encodings) != 0 {
+		return Encodings, nil
+	}
+
 	csvFile, err := os.Open("data/encoding.csv")
 
 	if err != nil {
