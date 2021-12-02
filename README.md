@@ -69,7 +69,7 @@ package main
 
 import (
   "fmt"
-  pst "github.com/mooijtech/go-pst/pkg"
+  pst "github.com/mooijtech/go-pst/v2/pkg"
 )
 
 func main() {
