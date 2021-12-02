@@ -30,8 +30,8 @@ func DecodeBytesToUTF16String(input []byte) (string, error) {
 }
 
 // DecodeMessageBytesToString decodes the message property context item to string using the message encoding.
-func DecodeMessageBytesToString(message Message, data []byte) (string, error) {
-	encoding, err := message.GetEncoding()
+func (pstFile *File) DecodeMessageBytesToString(message Message, data []byte) (string, error) {
+	encoding, err := pstFile.GetMessageEncoding(message)
 
 	if err != nil {
 		return "", err
@@ -118,14 +118,18 @@ func (encoding *Encoding) String() string {
 }
 
 // GetEncoding returns the encoding of the message.
-func (message *Message) GetEncoding() (Encoding, error) {
-	encoding := message.GetInteger(16381) // PidTagMessageCodepage
+func (pstFile *File) GetMessageEncoding(message Message) (Encoding, error) {
+	encoding, err := pstFile.GetMessageInteger(message, 16381) // PidTagMessageCodepage
 
-	if encoding == -1 {
-		encoding = message.GetInteger(26307) // PidTagCodepage
+	if err != nil {
+		encoding, err = pstFile.GetMessageInteger(message, 26307) // PidTagCodepage
 
-		if encoding == -1 {
-			encoding = message.GetInteger(16350) // PidTagInternetCodepage
+		if err != nil {
+			encoding, err = pstFile.GetMessageInteger(message, 16350) // PidTagInternetCodepage
+
+			if err != nil {
+				// Encoding is set to -1
+			}
 		}
 	}
 

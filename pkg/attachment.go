@@ -16,9 +16,15 @@ type Attachment struct {
 	LocalDescriptors []LocalDescriptor
 }
 
-// HasAttachments returns true if this message has attachments.
-func (message *Message) HasAttachments() bool {
-	return message.GetInteger(3591) & 0x10 != 0
+// GetMessageHasAttachments returns true if this message has attachments.
+func (pstFile *File) GetMessageHasAttachments(message Message) (bool, error) {
+	hasAttachment, err := pstFile.GetMessageInteger(message, 3591)
+
+	if err != nil {
+		return false, err
+	}
+
+	return hasAttachment & 0x10 != 0, nil
 }
 
 // GetAttachmentsTableContext returns the table context of the attachments of this message.
@@ -76,7 +82,13 @@ func (pstFile *File) GetAttachmentsCount(message *Message, formatType string, en
 
 // GetAttachment returns the specified attachment.
 func (pstFile *File) GetAttachment(message *Message, attachmentNumber int, formatType string, encryptionType string) (Attachment, error) {
-	if !message.HasAttachments() {
+	hasAttachments, err := pstFile.GetMessageHasAttachments(*message)
+
+	if err != nil {
+		return Attachment{}, err
+	}
+
+	if !hasAttachments {
 		return Attachment{}, nil
 	}
 
@@ -139,7 +151,13 @@ func (pstFile *File) GetAttachment(message *Message, attachmentNumber int, forma
 
 // GetAttachments returns the attachments of this message.
 func (pstFile *File) GetAttachments(message *Message, formatType string, encryptionType string) ([]Attachment, error) {
-	if !message.HasAttachments() {
+	hasAttachments, err := pstFile.GetMessageHasAttachments(*message)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if !hasAttachments {
 		return nil, nil
 	}
 
@@ -164,8 +182,8 @@ func (pstFile *File) GetAttachments(message *Message, formatType string, encrypt
 	return attachments, nil
 }
 
-// GetString returns the string value of the property.
-func (attachment *Attachment) GetString(propertyID int) (string, error) {
+// GetAttachmentString returns the string value of the property.
+func (pstFile *File) GetAttachmentString(attachment Attachment, propertyID int) (string, error) {
 	propertyContextItem, err := FindPropertyContextItem(attachment.PropertyContext, propertyID)
 
 	if err != nil {
@@ -175,14 +193,14 @@ func (attachment *Attachment) GetString(propertyID int) (string, error) {
 	return DecodeBytesToUTF16String(propertyContextItem.Data)
 }
 
-// GetFilename returns the file name of this attachment.
-func (attachment *Attachment) GetFilename() (string, error) {
-	return attachment.GetString(14084)
+// GetAttachmentFilename returns the file name of this attachment.
+func (pstFile *File) GetAttachmentFilename(attachment Attachment) (string, error) {
+	return pstFile.GetAttachmentString(attachment, 14084)
 }
 
-// GetLongFilename returns the long file name of this attachment.
-func (attachment *Attachment) GetLongFilename() (string, error) {
-	return attachment.GetString(14087)
+// GetAttachmentLongFilename returns the long file name of this attachment.
+func (pstFile *File) GetAttachmentLongFilename(attachment Attachment) (string, error) {
+	return pstFile.GetAttachmentString(attachment, 14087)
 }
 
 // GetAttachmentInputStream returns the input stream of this attachment.

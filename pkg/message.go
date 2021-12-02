@@ -155,7 +155,7 @@ func (pstFile *File) GetMessageString(message Message, propertyID int, formatTyp
 
 	if !propertyContextItem.IsExternalValueReference {
 		if propertyID == 4096 || propertyID == 4115 { // Only the message body uses the specified encoding as far as I know.
-			return DecodeMessageBytesToString(message, propertyContextItem.Data)
+			return pstFile.DecodeMessageBytesToString(message, propertyContextItem.Data)
 		} else {
 			return DecodeBytesToUTF16String(propertyContextItem.Data)
 		}
@@ -179,19 +179,19 @@ func (pstFile *File) GetMessageString(message Message, propertyID int, formatTyp
 			return "", err
 		}
 
-		return DecodeMessageBytesToString(message, data)
+		return pstFile.DecodeMessageBytesToString(message, data)
 	}
 }
 
-// GetInteger returns the integer value of the property or -1 if it was not found.
-func (message *Message) GetInteger(propertyID int) int {
+// GetMessageInteger returns the integer value of the property.
+func (pstFile *File) GetMessageInteger(message Message, propertyID int) (int, error) {
 	propertyContextItem, err := FindPropertyContextItem(message.PropertyContext, propertyID)
 
 	if err != nil {
-		return -1
+		return -1, err
 	}
 
-	return propertyContextItem.ReferenceHNID
+	return propertyContextItem.ReferenceHNID, nil
 }
 
 // GetMessageDate returns the date value of the property.
@@ -271,7 +271,7 @@ func (pstFile *File) GetMessageBody(message Message, formatType string, encrypti
 	return pstFile.GetMessageString(message, 4096, formatType, encryptionType)
 }
 
-// GetBodyHTML returns the HTML body of this message.
-func (pstFile *File) GetBodyHTML(message Message, formatType string, encryptionType string) (string, error) {
+// GetMessageBodyHTML returns the HTML body of this message.
+func (pstFile *File) GetMessageBodyHTML(message Message, formatType string, encryptionType string) (string, error) {
 	return pstFile.GetMessageString(message, 4115, formatType, encryptionType)
 }
