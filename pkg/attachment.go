@@ -56,6 +56,7 @@ func (pstFile *File) GetAttachmentsTableContext(message *Message, formatType str
 		}
 
 		message.AttachmentsTableContext = attachmentsTableContext
+
 		return attachmentsTableContext, nil
 	}
 
@@ -164,23 +165,23 @@ func (pstFile *File) GetAttachments(message *Message, formatType string, encrypt
 }
 
 // GetString returns the string value of the property.
-func (attachment *Attachment) GetString(propertyID int) string {
+func (attachment *Attachment) GetString(propertyID int) (string, error) {
 	propertyContextItem, err := FindPropertyContextItem(attachment.PropertyContext, propertyID)
 
 	if err != nil {
-		return ""
+		return "", err
 	}
 
-	return BytesToString(propertyContextItem.Data)
+	return DecodeBytesToUTF16String(propertyContextItem.Data)
 }
 
 // GetFilename returns the file name of this attachment.
-func (attachment *Attachment) GetFilename() string {
+func (attachment *Attachment) GetFilename() (string, error) {
 	return attachment.GetString(14084)
 }
 
 // GetLongFilename returns the long file name of this attachment.
-func (attachment *Attachment) GetLongFilename() string {
+func (attachment *Attachment) GetLongFilename() (string, error) {
 	return attachment.GetString(14087)
 }
 
@@ -251,7 +252,7 @@ func (pstFile *File) WriteAttachmentToFile(attachment Attachment, outputPath str
 		return err
 	}
 
-	err = ioutil.WriteFile(outputPath, outputBuffer, 0644)
+	err = ioutil.WriteFile(outputPath, outputBuffer, 0755)
 
 	if err != nil {
 		return err

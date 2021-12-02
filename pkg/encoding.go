@@ -8,9 +8,54 @@ import (
 	"encoding/csv"
 	"errors"
 	"fmt"
+	"golang.org/x/text/encoding/ianaindex"
+	"golang.org/x/text/encoding/unicode"
 	"strconv"
 	"strings"
 )
+
+// DecodeBytesToUTF16String decodes the bytes to UTF-16.
+// The libpff documentation states:
+// "Unicode strings are stored in UTF-16 little-endian without the byte order mark (BOM)."
+func DecodeBytesToUTF16String(input []byte) (string, error) {
+	decoder := unicode.UTF16(unicode.LittleEndian, unicode.IgnoreBOM).NewDecoder()
+
+	utf16String, err := decoder.String(string(input))
+
+	if err != nil {
+		return "", err
+	}
+
+	return utf16String, nil
+}
+
+// DecodeMessageBytesToString decodes the message property context item to string using the message encoding.
+func DecodeMessageBytesToString(message Message, data []byte) (string, error) {
+	encoding, err := message.GetEncoding()
+
+	if err != nil {
+		return "", err
+	}
+
+	if encoding.Name == "us-ascii" {
+		// enron.pst shows replacement characters after each character with us-ascii but works with UTF-16.
+		return DecodeBytesToUTF16String(data)
+	}
+
+	mimeEncoding, err := ianaindex.MIME.Encoding(encoding.Name)
+
+	if err != nil {
+		return "", err
+	}
+
+	inputReader, err := mimeEncoding.NewDecoder().Bytes(data)
+
+	if err != nil {
+		return "", err
+	}
+
+	return string(inputReader), nil
+}
 
 // Encoding represents an IANA index encoding.
 type Encoding struct {

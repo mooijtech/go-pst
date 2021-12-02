@@ -134,7 +134,10 @@ func (pstFile *File) GetPropertyContext(heapOnNode HeapOnNode, formatType string
 			propertyNodeInputStream, err := pstFile.NewHeapOnNodeInputStreamFromHNID(referenceHNID, heapOnNode, []LocalDescriptor{}, formatType, encryptionType)
 
 			if err != nil {
-				// External node
+				// External node.
+				// The data is in the local descriptors (when the HNID matches the local descriptor identifier) which
+				// gives us a data identifier that points to a node in the block b-tree (Heap-on-Node).
+				// We deal with this when getting the value of a property (like GetMessageString).
 				break
 			}
 
