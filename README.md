@@ -22,6 +22,8 @@
 
 ---
 
+[![pkg.go.dev reference](https://img.shields.io/badge/pkg.go.dev-reference-007d9c?logo=go&logoColor=white&style=flat-square)](https://pkg.go.dev/github.com/mooijtech/go-pst)
+
 ## Introduction
 
 **go-pst** is a library for reading PST files (written in Go/Golang).
