@@ -173,10 +173,33 @@ func (pstFile *File) GetMessageString(message Message, propertyID int, formatTyp
 			return "", err
 		}
 
-		data, err := propertyHeapOnNode.InputStream.Read(propertyHeapOnNode.InputStream.Size, 0)
+		var data []byte
 
-		if err != nil {
-			return "", err
+		if len(propertyHeapOnNode.InputStream.Blocks) > 0 {
+			currentOffset := 0
+
+			for _, block := range propertyHeapOnNode.InputStream.Blocks {
+				blockSize, err := block.GetSize(formatType)
+
+				if err != nil {
+					return "", err
+				}
+
+				blockData, err := propertyHeapOnNode.InputStream.Read(blockSize, currentOffset)
+
+				if err != nil {
+					return "", err
+				}
+
+				currentOffset += blockSize
+				data = append(data, blockData...)
+			}
+		} else {
+			data, err = propertyHeapOnNode.InputStream.Read(propertyHeapOnNode.InputStream.Size, 0)
+
+			if err != nil {
+				return "", err
+			}
 		}
 
 		return pstFile.DecodeMessageBytesToString(message, data)
