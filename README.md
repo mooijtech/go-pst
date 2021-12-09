@@ -64,12 +64,16 @@ This library is tested on the following datasets:
 
 ## Usage
 
+```bash
+$ go get github.com/mooijtech/go-pst/v3
+```
+
 ```go
 package main
 
 import (
   "fmt"
-  pst "github.com/mooijtech/go-pst/v2/pkg"
+  pst "github.com/mooijtech/go-pst/v3/pkg"
 )
 
 func main() {
