@@ -16,19 +16,19 @@ type Attachment struct {
 	LocalDescriptors []LocalDescriptor
 }
 
-// GetMessageHasAttachments returns true if this message has attachments.
-func (pstFile *File) GetMessageHasAttachments(message Message) (bool, error) {
-	hasAttachment, err := pstFile.GetMessageInteger(message, 3591)
+// HasAttachments returns true if this message has attachments.
+func (message *Message) HasAttachments() (bool, error) {
+	hasAttachments, err := message.GetInteger(3591)
 
 	if err != nil {
 		return false, err
 	}
 
-	return hasAttachment & 0x10 != 0, nil
+	return hasAttachments & 0x10 != 0, nil
 }
 
 // GetAttachmentsTableContext returns the table context of the attachments of this message.
-func (pstFile *File) GetAttachmentsTableContext(message *Message, formatType string, encryptionType string) ([][]TableContextItem, error) {
+func (message *Message) GetAttachmentsTableContext(pstFile *File, formatType string, encryptionType string) ([][]TableContextItem, error) {
 	if len(message.AttachmentsTableContext) == 0 {
 		// Initialize the attachments table context.
 		attachmentsLocalDescriptor, err := FindLocalDescriptor(message.LocalDescriptors, 1649, formatType)
@@ -70,8 +70,8 @@ func (pstFile *File) GetAttachmentsTableContext(message *Message, formatType str
 }
 
 // GetAttachmentsCount returns the amount of rows in the attachments table context.
-func (pstFile *File) GetAttachmentsCount(message *Message, formatType string, encryptionType string) (int, error) {
-	attachmentsTableContext, err := pstFile.GetAttachmentsTableContext(message, formatType, encryptionType)
+func (message *Message) GetAttachmentsCount(pstFile *File, formatType string, encryptionType string) (int, error) {
+	attachmentsTableContext, err := message.GetAttachmentsTableContext(pstFile, formatType, encryptionType)
 
 	if err != nil {
 		return -1, err
@@ -81,8 +81,8 @@ func (pstFile *File) GetAttachmentsCount(message *Message, formatType string, en
 }
 
 // GetAttachment returns the specified attachment.
-func (pstFile *File) GetAttachment(message *Message, attachmentNumber int, formatType string, encryptionType string) (Attachment, error) {
-	hasAttachments, err := pstFile.GetMessageHasAttachments(*message)
+func (message *Message) GetAttachment(attachmentNumber int, pstFile *File, formatType string, encryptionType string) (Attachment, error) {
+	hasAttachments, err := message.HasAttachments()
 
 	if err != nil {
 		return Attachment{}, err
@@ -92,7 +92,7 @@ func (pstFile *File) GetAttachment(message *Message, attachmentNumber int, forma
 		return Attachment{}, nil
 	}
 
-	attachmentsTableContext, err := pstFile.GetAttachmentsTableContext(message, formatType, encryptionType)
+	attachmentsTableContext, err := message.GetAttachmentsTableContext(pstFile, formatType, encryptionType)
 
 	if err != nil {
 		return Attachment{}, err
@@ -150,8 +150,8 @@ func (pstFile *File) GetAttachment(message *Message, attachmentNumber int, forma
 }
 
 // GetAttachments returns the attachments of this message.
-func (pstFile *File) GetAttachments(message *Message, formatType string, encryptionType string) ([]Attachment, error) {
-	hasAttachments, err := pstFile.GetMessageHasAttachments(*message)
+func (message *Message) GetAttachments(pstFile *File, formatType string, encryptionType string) ([]Attachment, error) {
+	hasAttachments, err := message.HasAttachments()
 
 	if err != nil {
 		return nil, err
@@ -161,7 +161,7 @@ func (pstFile *File) GetAttachments(message *Message, formatType string, encrypt
 		return nil, nil
 	}
 
-	attachmentsTableContext, err := pstFile.GetAttachmentsTableContext(message, formatType, encryptionType)
+	attachmentsTableContext, err := message.GetAttachmentsTableContext(pstFile, formatType, encryptionType)
 
 	if err != nil {
 		return nil, err
@@ -170,7 +170,7 @@ func (pstFile *File) GetAttachments(message *Message, formatType string, encrypt
 	var attachments []Attachment
 
 	for i := 0; i < len(attachmentsTableContext); i++ {
-		attachment, err := pstFile.GetAttachment(message, i, formatType, encryptionType)
+		attachment, err := message.GetAttachment(i, pstFile, formatType, encryptionType)
 
 		if err != nil {
 			return nil, err
@@ -182,29 +182,29 @@ func (pstFile *File) GetAttachments(message *Message, formatType string, encrypt
 	return attachments, nil
 }
 
-// GetAttachmentString returns the string value of the property.
-func (pstFile *File) GetAttachmentString(attachment Attachment, propertyID int) (string, error) {
+// GetString returns the string value of the property.
+func (attachment *Attachment) GetString(propertyID int) (string, error) {
 	propertyContextItem, err := FindPropertyContextItem(attachment.PropertyContext, propertyID)
 
 	if err != nil {
 		return "", err
 	}
 
-	return DecodeBytesToUTF16String(propertyContextItem.Data)
+	return DecodeBytesToUTF16String(propertyContextItem.data)
 }
 
-// GetAttachmentFilename returns the file name of this attachment.
-func (pstFile *File) GetAttachmentFilename(attachment Attachment) (string, error) {
-	return pstFile.GetAttachmentString(attachment, 14084)
+// GetFilename returns the file name of this attachment.
+func (attachment *Attachment) GetFilename() (string, error) {
+	return attachment.GetString(14084)
 }
 
 // GetAttachmentLongFilename returns the long file name of this attachment.
-func (pstFile *File) GetAttachmentLongFilename(attachment Attachment) (string, error) {
-	return pstFile.GetAttachmentString(attachment, 14087)
+func (attachment *Attachment) GetLongFilename() (string, error) {
+	return attachment.GetString(14087)
 }
 
-// GetAttachmentInputStream returns the input stream of this attachment.
-func (pstFile *File) GetAttachmentInputStream(attachment Attachment, formatType string, encryptionType string) (HeapOnNodeInputStream, error) {
+// GetInputStream returns the input stream of this attachment.
+func (attachment *Attachment) GetInputStream(pstFile *File, formatType string, encryptionType string) (HeapOnNodeInputStream, error) {
 	attachmentInputStreamPropertyContextItem, err := FindPropertyContextItem(attachment.PropertyContext, 14081)
 
 	if err != nil {
@@ -232,36 +232,18 @@ func (pstFile *File) GetAttachmentInputStream(attachment Attachment, formatType 
 	}
 }
 
-// WriteAttachmentToFile writes the input stream of the attachment to the specified output path.
-func (pstFile *File) WriteAttachmentToFile(attachment Attachment, outputPath string, formatType string, encryptionType string) error {
-	attachmentInputStream, err := pstFile.GetAttachmentInputStream(attachment, formatType, encryptionType)
+// WriteToFile writes the input stream of the attachment to the specified output path.
+func (attachment *Attachment) WriteToFile(outputPath string, pstFile *File, formatType string, encryptionType string) error {
+	attachmentInputStream, err := attachment.GetInputStream(pstFile, formatType, encryptionType)
 
 	if err != nil {
 		return err
 	}
 
-	currentOffset := 0
-	var outputBuffer []byte
+	outputBuffer, err := attachmentInputStream.ReadCompletely(formatType)
 
-	if len(attachmentInputStream.Blocks) > 0 {
-		for i := 0; i < len(attachmentInputStream.Blocks); i++ {
-			block := attachmentInputStream.Blocks[i]
-
-			blockSize, err := block.GetSize(formatType)
-
-			if err != nil {
-				return err
-			}
-
-			data, err := attachmentInputStream.Read(blockSize, currentOffset)
-
-			if err != nil {
-				return err
-			}
-
-			currentOffset += blockSize
-			outputBuffer = append(outputBuffer, data...)
-		}
+	if err != nil {
+		return err
 	}
 
 	_, err = os.Create(outputPath)

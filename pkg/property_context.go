@@ -5,10 +5,12 @@ package pst
 
 import (
 	_ "embed"
+	"encoding/binary"
 	"encoding/csv"
 	"errors"
 	"strconv"
 	"strings"
+	"time"
 )
 
 // Constants defining the property types.
@@ -56,7 +58,7 @@ type PropertyContextItem struct {
 	PropertyType             int
 	ReferenceHNID            int
 	IsExternalValueReference bool
-	Data                     []byte
+	data                     []byte
 }
 
 // GetPropertyContext returns the property context (BC Table).
@@ -149,7 +151,7 @@ func (pstFile *File) GetPropertyContext(heapOnNode HeapOnNode, formatType string
 				return nil, err
 			}
 
-			propertyContextItem.Data = propertyContextItemData
+			propertyContextItem.data = propertyContextItemData
 		}
 
 		propertyContextItems = append(propertyContextItems, propertyContextItem)
@@ -168,6 +170,78 @@ func FindPropertyContextItem(propertyContext []PropertyContextItem, propertyID i
 	}
 
 	return PropertyContextItem{}, errors.New("failed to find property context item")
+}
+
+// GetData returns all the data of the property context item.
+// Used for property type binary (external reference) which may be located in the local descriptors.
+func (propertyContextItem *PropertyContextItem) GetData(pstFile *File, localDescriptors []LocalDescriptor, formatType string, encryptionType string) ([]byte, error) {
+	if len(propertyContextItem.data) != 0 {
+		return propertyContextItem.data, nil
+	}
+
+	if len(localDescriptors) == 0 {
+		return nil, errors.New("external reference but no local descriptors")
+	}
+
+	if propertyContextItem.PropertyType != PropertyTypeBinary {
+		return nil, errors.New("attempting to get non-binary data")
+	}
+
+	localDescriptor, err := FindLocalDescriptor(localDescriptors, propertyContextItem.ReferenceHNID, formatType)
+
+	if err != nil {
+		return nil, err
+	}
+
+	localDescriptorData, err := localDescriptor.GetData(pstFile, formatType, encryptionType)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return localDescriptorData, nil
+}
+
+// GetString returns the string value of the property context item.
+func (propertyContextItem *PropertyContextItem) GetString(encoding Encoding, localDescriptors []LocalDescriptor, pstFile *File, formatType string, encryptionType string) (string, error) {
+	if !propertyContextItem.IsExternalValueReference {
+		if propertyContextItem.PropertyID == 4096 || propertyContextItem.PropertyID == 4115 { // Only the message body uses the specified encoding as far as I know.
+			return DecodeBytesToString(encoding, propertyContextItem.data)
+		} else {
+			return DecodeBytesToUTF16String(propertyContextItem.data)
+		}
+	} else {
+		// External value reference (data is stored in a separate node).
+		localDescriptor, err := FindLocalDescriptor(localDescriptors, propertyContextItem.ReferenceHNID, formatType)
+
+		if err != nil {
+			return "", err
+		}
+
+		data, err := localDescriptor.GetData(pstFile, formatType, encryptionType)
+
+		return DecodeBytesToString(encoding, data)
+	}
+}
+
+// GetInteger returns the integer value of the property context item.
+func (propertyContextItem *PropertyContextItem) GetInteger() int {
+	return propertyContextItem.ReferenceHNID
+}
+
+// GetDate returns the date value of the property context item.
+func (propertyContextItem *PropertyContextItem) GetDate() time.Time {
+	// References https://stackoverflow.com/a/57903746
+	dateInteger := binary.LittleEndian.Uint64(propertyContextItem.data)
+
+	t := time.Date(1601, 1, 1, 0, 0, 0, 0, time.UTC)
+	d := time.Duration(dateInteger)
+
+	for i := 0; i < 100; i++ {
+		t = t.Add(d)
+	}
+
+	return t
 }
 
 //go:embed properties.csv

@@ -251,6 +251,42 @@ func (heapOnNodeInputStream *HeapOnNodeInputStream) Read(outputBufferSize int, o
 	}
 }
 
+// ReadCompletely reads all the data.
+func (heapOnNodeInputStream *HeapOnNodeInputStream) ReadCompletely(formatType string) ([]byte, error) {
+	var outputBuffer []byte
+
+	if len(heapOnNodeInputStream.Blocks) > 0 {
+		currentOffset := 0
+
+		for _, block := range heapOnNodeInputStream.Blocks {
+			blockSize, err := block.GetSize(formatType)
+
+			if err != nil {
+				return nil, err
+			}
+
+			data, err := heapOnNodeInputStream.Read(blockSize, currentOffset)
+
+			if err != nil {
+				return nil, err
+			}
+
+			currentOffset += blockSize
+			outputBuffer = append(outputBuffer, data...)
+		}
+	} else {
+		data, err := heapOnNodeInputStream.Read(heapOnNodeInputStream.Size, 0)
+
+		if err != nil {
+			return nil, err
+		}
+
+		outputBuffer = data
+	}
+
+	return outputBuffer, nil
+}
+
 // SeekAndReadUint16 seeks and reads an uint16.
 func (heapOnNodeInputStream *HeapOnNodeInputStream) SeekAndReadUint16(outputBufferSize int, offset int) (int, error) {
 	if outputBufferSize > 2 || outputBufferSize < 1 {

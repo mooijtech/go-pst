@@ -9,8 +9,9 @@ import (
 )
 
 // LocalDescriptor represents an item in the local descriptors.
+// A local descriptor is basically a reference to a node which contains the data.
 type LocalDescriptor struct {
-	Data []byte
+	data []byte
 }
 
 // GetIdentifier returns the identifier of the local descriptor.
@@ -32,7 +33,7 @@ func (localDescriptor *LocalDescriptor) GetIdentifier(formatType string) (int, e
 		return -1, errors.New("unsupported format type")
 	}
 
-	return int(binary.LittleEndian.Uint32(localDescriptor.Data[:identifierBufferSize])), nil
+	return int(binary.LittleEndian.Uint32(localDescriptor.data[:identifierBufferSize])), nil
 }
 
 // GetDataIdentifier returns the data identifier of the local descriptor.
@@ -58,7 +59,7 @@ func (localDescriptor *LocalDescriptor) GetDataIdentifier(formatType string) (in
 		return -1, errors.New("unsupported format type")
 	}
 
-	return int(binary.LittleEndian.Uint32(localDescriptor.Data[identifierOffset : identifierOffset+identifierBufferSize])), nil
+	return int(binary.LittleEndian.Uint32(localDescriptor.data[identifierOffset : identifierOffset+identifierBufferSize])), nil
 }
 
 // GetLocalDescriptorsIdentifier returns the local descriptors identifier of the local descriptor.
@@ -84,7 +85,7 @@ func (localDescriptor *LocalDescriptor) GetLocalDescriptorsIdentifier(formatType
 		return -1, errors.New("unsupported format type")
 	}
 
-	return int(binary.LittleEndian.Uint32(localDescriptor.Data[identifierOffset : identifierOffset+identifierBufferSize])), nil
+	return int(binary.LittleEndian.Uint32(localDescriptor.data[identifierOffset : identifierOffset+identifierBufferSize])), nil
 }
 
 func (pstFile *File) GetLocalDescriptors(btreeNodeEntry BTreeNodeEntry, formatType string) ([]LocalDescriptor, error) {
@@ -184,7 +185,7 @@ func (pstFile *File) GetLocalDescriptorsFromIdentifier(localDescriptorsIdentifie
 		localDescriptorEntry := localDescriptorsEntries[i*localDescriptorEntrySize : (i+1)*localDescriptorEntrySize]
 
 		localDescriptors[i] = LocalDescriptor{
-			Data: localDescriptorEntry,
+			data: localDescriptorEntry,
 		}
 	}
 
@@ -206,4 +207,56 @@ func FindLocalDescriptor(localDescriptors []LocalDescriptor, identifier int, for
 	}
 
 	return LocalDescriptor{}, errors.New("failed to find local descriptor")
+}
+
+// GetData returns all the local descriptor data from the data node.
+func (localDescriptor *LocalDescriptor) GetData(pstFile *File, formatType string, encryptionType string) ([]byte, error) {
+	dataIdentifier, err := localDescriptor.GetDataIdentifier(formatType)
+
+	if err != nil {
+		return nil, err
+	}
+
+	blockBTreeNode, err := pstFile.GetBlockBTreeNode(dataIdentifier, formatType)
+
+	if err != nil {
+		return nil, err
+	}
+
+	inputStream, err := pstFile.NewHeapOnNodeInputStream(blockBTreeNode, formatType, encryptionType)
+
+	if err != nil {
+		return nil, err
+	}
+
+	var data []byte
+
+	if len(inputStream.Blocks) > 0 {
+		currentOffset := 0
+
+		for _, block := range inputStream.Blocks {
+			blockSize, err := block.GetSize(formatType)
+
+			if err != nil {
+				return nil, err
+			}
+
+			blockData, err := inputStream.Read(blockSize, currentOffset)
+
+			if err != nil {
+				return nil, err
+			}
+
+			data = append(data, blockData...)
+			currentOffset += blockSize
+		}
+	} else {
+		data, err = inputStream.Read(inputStream.Size, 0)
+
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return data, nil
 }

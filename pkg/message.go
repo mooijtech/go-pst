@@ -4,7 +4,6 @@
 package pst
 
 import (
-	"encoding/binary"
 	"errors"
 	"fmt"
 	"time"
@@ -145,156 +144,102 @@ func (pstFile *File) GetMessage(identifier int, formatType string, encryptionTyp
 	return message, nil
 }
 
-// GetMessageString returns the string value of the property.
-func (pstFile *File) GetMessageString(message Message, propertyID int, formatType string, encryptionType string) (string, error) {
+// GetString returns the string value of the property.
+func (message *Message) GetString(propertyID int, pstFile *File, formatType string, encryptionType string) (string, error) {
 	propertyContextItem, err := FindPropertyContextItem(message.PropertyContext, propertyID)
 
 	if err != nil {
 		return "", err
 	}
 
-	if !propertyContextItem.IsExternalValueReference {
-		if propertyID == 4096 || propertyID == 4115 { // Only the message body uses the specified encoding as far as I know.
-			return pstFile.DecodeMessageBytesToString(message, propertyContextItem.Data)
-		} else {
-			return DecodeBytesToUTF16String(propertyContextItem.Data)
-		}
-	} else {
-		// External value reference (data is stored in a separate node).
-		propertyLocalDescriptor, err := FindLocalDescriptor(message.LocalDescriptors, propertyContextItem.ReferenceHNID, formatType)
+	encoding, err := message.GetEncoding()
 
-		if err != nil {
-			return "", err
-		}
-
-		propertyHeapOnNode, err := pstFile.NewHeapOnNodeFromLocalDescriptor(propertyLocalDescriptor, formatType, encryptionType)
-
-		if err != nil {
-			return "", err
-		}
-
-		var data []byte
-
-		if len(propertyHeapOnNode.InputStream.Blocks) > 0 {
-			currentOffset := 0
-
-			for _, block := range propertyHeapOnNode.InputStream.Blocks {
-				blockSize, err := block.GetSize(formatType)
-
-				if err != nil {
-					return "", err
-				}
-
-				blockData, err := propertyHeapOnNode.InputStream.Read(blockSize, currentOffset)
-
-				if err != nil {
-					return "", err
-				}
-
-				currentOffset += blockSize
-				data = append(data, blockData...)
-			}
-		} else {
-			data, err = propertyHeapOnNode.InputStream.Read(propertyHeapOnNode.InputStream.Size, 0)
-
-			if err != nil {
-				return "", err
-			}
-		}
-
-		return pstFile.DecodeMessageBytesToString(message, data)
+	if err != nil {
+		return "", err
 	}
+
+ 	return propertyContextItem.GetString(encoding, message.LocalDescriptors, pstFile, formatType, encryptionType)
 }
 
-// GetMessageInteger returns the integer value of the property.
-func (pstFile *File) GetMessageInteger(message Message, propertyID int) (int, error) {
+// GetInteger returns the integer value of the property.
+func (message *Message) GetInteger(propertyID int) (int, error) {
 	propertyContextItem, err := FindPropertyContextItem(message.PropertyContext, propertyID)
 
 	if err != nil {
 		return -1, err
 	}
 
-	return propertyContextItem.ReferenceHNID, nil
+	return propertyContextItem.GetInteger(), nil
 }
 
 // GetMessageDate returns the date value of the property.
-func (pstFile *File) GetMessageDate(message Message, propertyID int) (time.Time, error) {
+func (message *Message) GetDate(propertyID int) (time.Time, error) {
 	propertyContextItem, err := FindPropertyContextItem(message.PropertyContext, propertyID)
 
 	if err != nil {
 		return time.Time{}, err
 	}
 
-	// References https://stackoverflow.com/a/57903746
-	dateInteger := binary.LittleEndian.Uint64(propertyContextItem.Data)
-
-	t := time.Date(1601, 1, 1, 0, 0, 0, 0, time.UTC)
-	d := time.Duration(dateInteger)
-
-	for i := 0; i < 100; i++ {
-		t = t.Add(d)
-	}
-
-	return t, nil
+	return propertyContextItem.GetDate(), nil
 }
 
 // GetSubject returns the subject of this message.
-func (pstFile *File) GetMessageSubject(message Message, formatType string, encryptionType string) (string, error) {
-	return pstFile.GetMessageString(message, 55, formatType, encryptionType)
+func (message *Message) GetSubject(pstFile *File, formatType string, encryptionType string) (string, error) {
+	return message.GetString(55, pstFile, formatType, encryptionType)
 }
 
 // GetMessageClass returns the message class.
-func (pstFile *File) GetMessageClass(message Message, formatType string, encryptionType string) (string, error) {
-	return pstFile.GetMessageString(message, 26, formatType, encryptionType)
+func (message *Message) GetMessageClass(pstFile *File, formatType string, encryptionType string) (string, error) {
+	return message.GetString( 26, pstFile, formatType, encryptionType)
 }
 
 // GetMessageID returns the message ID.
-func (pstFile *File) GetMessageID(message Message, formatType string, encryptionType string) (string, error) {
-	return pstFile.GetMessageString(message, 4149, formatType, encryptionType)
+func (message *Message) GetMessageID(pstFile *File, formatType string, encryptionType string) (string, error) {
+	return message.GetString( 4149, pstFile, formatType, encryptionType)
 }
 
-// GetMessageHeaders return the message headers.
-func (pstFile *File) GetMessageHeaders(message Message, formatType string, encryptionType string) (string, error) {
-	return pstFile.GetMessageString(message, 125, formatType, encryptionType)
+// GetHeaders return the message headers.
+func (message *Message) GetHeaders(pstFile *File, formatType string, encryptionType string) (string, error) {
+	return message.GetString(125, pstFile, formatType, encryptionType)
 }
 
 // GetFrom returns the "From" header.
-func (pstFile *File) GetMessageFrom(message Message, formatType string, encryptionType string) (string, error) {
-	return pstFile.GetMessageString(message, 3103, formatType, encryptionType)
+func (message *Message) GetFrom(pstFile *File, formatType string, encryptionType string) (string, error) {
+	return message.GetString(3103, pstFile, formatType, encryptionType)
 }
 
-// GetMessageTo returns the "To" header.
-func (pstFile *File) GetMessageTo(message Message, formatType string, encryptionType string) (string, error) {
-	return pstFile.GetMessageString(message, 3588, formatType, encryptionType)
+// GetTo returns the "To" header.
+func (message *Message) GetTo(pstFile *File, formatType string, encryptionType string) (string, error) {
+	return message.GetString(3588, pstFile, formatType, encryptionType)
 }
 
-// GetMessageCC returns the "CC" header.
-func (pstFile *File) GetMessageCC(message Message, formatType string, encryptionType string) (string, error) {
-	return pstFile.GetMessageString(message, 3587, formatType, encryptionType)
+// GetCC returns the "CC" header.
+func (message *Message) GetCC(pstFile *File, formatType string, encryptionType string) (string, error) {
+	return message.GetString(3587, pstFile, formatType, encryptionType)
 }
 
-// GetMessageBCC returns the BCC of this message.
-func (pstFile *File) GetMessageBCC(message Message, formatType string, encryptionType string) (string, error) {
-	originalDisplayBCC, err := pstFile.GetMessageString(message, 114, formatType, encryptionType)
+// GetBCC returns the BCC of this message.
+func (message *Message) GetBCC(pstFile *File, formatType string, encryptionType string) (string, error) {
+	originalDisplayBCC, err := message.GetString(114, pstFile, formatType, encryptionType)
 
 	if err == nil && originalDisplayBCC != "" {
 		return originalDisplayBCC, nil
 	}
 
-	return pstFile.GetMessageString(message, 3586, formatType, encryptionType)
+	return message.GetString(3586, pstFile, formatType, encryptionType)
 }
 
-// GetMessageReceivedDate returns the date this message was received.
-func (pstFile *File) GetMessageReceivedDate(message Message) (time.Time, error) {
-	return pstFile.GetMessageDate(message, 3590)
+// GetReceivedDate returns the date this message was received.
+func (message *Message) GetReceivedDate() (time.Time, error) {
+	return message.GetDate(3590)
 }
 
-// GetMessageBody returns the plaintext body of the message.
-func (pstFile *File) GetMessageBody(message Message, formatType string, encryptionType string) (string, error) {
-	return pstFile.GetMessageString(message, 4096, formatType, encryptionType)
+// GetBody returns the plaintext body of the message.
+func (message *Message) GetBody(pstFile *File, formatType string, encryptionType string) (string, error) {
+	return message.GetString(4096, pstFile, formatType, encryptionType)
 }
 
-// GetMessageBodyHTML returns the HTML body of this message.
-func (pstFile *File) GetMessageBodyHTML(message Message, formatType string, encryptionType string) (string, error) {
-	return pstFile.GetMessageString(message, 4115, formatType, encryptionType)
+// GetBodyHTML returns the HTML body of this message.
+func (message *Message) GetBodyHTML(pstFile *File, formatType string, encryptionType string) (string, error) {
+	return message.GetString(4115, pstFile, formatType, encryptionType)
 }
