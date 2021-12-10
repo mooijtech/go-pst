@@ -220,6 +220,10 @@ func (propertyContextItem *PropertyContextItem) GetString(encoding Encoding, loc
 
 		data, err := localDescriptor.GetData(pstFile, formatType, encryptionType)
 
+		if err != nil {
+			return "", err
+		}
+
 		return DecodeBytesToString(encoding, data)
 	}
 }
