@@ -9,7 +9,9 @@ import (
 	"errors"
 	"fmt"
 	"golang.org/x/text/encoding/ianaindex"
+	"golang.org/x/text/encoding/simplifiedchinese"
 	"golang.org/x/text/encoding/unicode"
+	"log"
 	"strconv"
 	"strings"
 )
@@ -42,13 +44,39 @@ func DecodeBytesToString(encoding Encoding, data []byte) (string, error) {
 		return "", err
 	}
 
-	inputReader, err := mimeEncoding.NewDecoder().Bytes(data)
+	if mimeEncoding == nil {
+		if encoding.Name == "gb2312" {
+			// Encoding gb2312 gives "invalid memory address or nil pointer dereference".
+			// References https://github.com/golang/go/issues/24636
+			decodedBytes, err := simplifiedchinese.HZGB2312.NewDecoder().Bytes(data)
+
+			if err != nil {
+				return "", err
+			}
+
+			return string(decodedBytes), nil
+		} else {
+			fmt.Printf("Failed to get encoding \"%s\", defaulting to UTF-16. Please open an issue on GitHub to add this encoding.\n", encoding.Name)
+
+			utf16String, err := DecodeBytesToUTF16String(data)
+
+			if err != nil {
+				return "", err
+			}
+
+			log.Fatalf("Got it: %s", utf16String)
+
+			return utf16String, nil
+		}
+	}
+
+	decodedBytes, err := mimeEncoding.NewDecoder().Bytes(data)
 
 	if err != nil {
 		return "", err
 	}
 
-	return string(inputReader), nil
+	return string(decodedBytes), nil
 }
 
 // Encoding represents an IANA index encoding.
