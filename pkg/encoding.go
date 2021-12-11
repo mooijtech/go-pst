@@ -11,7 +11,6 @@ import (
 	"golang.org/x/text/encoding/ianaindex"
 	"golang.org/x/text/encoding/simplifiedchinese"
 	"golang.org/x/text/encoding/unicode"
-	"log"
 	"strconv"
 	"strings"
 )
@@ -63,8 +62,6 @@ func DecodeBytesToString(encoding Encoding, data []byte) (string, error) {
 			if err != nil {
 				return "", err
 			}
-
-			log.Fatalf("Got it: %s", utf16String)
 
 			return utf16String, nil
 		}
