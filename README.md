@@ -72,114 +72,120 @@ $ go get github.com/mooijtech/go-pst/v3
 package main
 
 import (
-	"fmt"
-	pst "github.com/mooijtech/go-pst/v3/pkg"
+  "fmt"
+  pst "github.com/mooijtech/go-pst/v3/pkg"
 )
 
 func main() {
-	pstFile := pst.New("data/enron.pst")
+  pstFile, err := pst.NewFromFile("data/enron.pst")
 
-	fmt.Printf("Parsing file: %s\n", pstFile.Filepath)
+  if err != nil {
+    fmt.Printf("Failed to create PST file: %s\n", err)
+    return
+  }
 
-	isValidSignature, err := pstFile.IsValidSignature()
+  defer func() {
+    err := pstFile.Close()
 
-	if err != nil {
-		fmt.Printf("Failed to read signature: %s\n", err)
-		return
-	}
+    if err != nil {
+      fmt.Printf("Failed to close PST file: %s", err)
+    }
+  }()
 
-	if !isValidSignature {
-		fmt.Printf("Invalid file signature.\n")
-		return
-	}
+  fmt.Printf("Parsing file...")
 
-	contentType, err := pstFile.GetContentType()
+  isValidSignature, err := pstFile.IsValidSignature()
 
-	if err != nil {
-		fmt.Printf("Failed to get content type: %s\n", err)
-		return
-	}
+  if err != nil {
+    fmt.Printf("Failed to read signature: %s\n", err)
+    return
+  }
 
-	fmt.Printf("Content type: %s\n", contentType)
+  if !isValidSignature {
+    fmt.Printf("Invalid file signature.\n")
+    return
+  }
 
-	formatType, err := pstFile.GetFormatType()
+  contentType, err := pstFile.GetContentType()
 
-	if err != nil {
-		fmt.Printf("Failed to get format type: %s\n", err)
-		return
-	}
+  if err != nil {
+    fmt.Printf("Failed to get content type: %s\n", err)
+    return
+  }
 
-	fmt.Printf("Format type: %s\n", formatType)
+  fmt.Printf("Content type: %s\n", contentType)
 
-	encryptionType, err := pstFile.GetEncryptionType(formatType)
+  formatType, err := pstFile.GetFormatType()
 
-	if err != nil {
-		fmt.Printf("Failed to get encryption type: %s\n", err)
-		return
-	}
+  if err != nil {
+    fmt.Printf("Failed to get format type: %s\n", err)
+    return
+  }
 
-	fmt.Printf("Encryption type: %s\n", encryptionType)
+  fmt.Printf("Format type: %s\n", formatType)
 
-	fmt.Printf("Initializing B-Trees...\n")
+  encryptionType, err := pstFile.GetEncryptionType(formatType)
 
-	err = pstFile.InitializeBTrees(formatType)
+  if err != nil {
+    fmt.Printf("Failed to get encryption type: %s\n", err)
+    return
+  }
 
-	if err != nil {
-		fmt.Printf("Failed to initialize node and block b-tree.\n")
-		return
-	}
+  fmt.Printf("Encryption type: %s\n", encryptionType)
 
-	err = pstFile.InitializeNameToIDMap(formatType, encryptionType)
+  fmt.Printf("Initializing B-Trees...\n")
 
-	if err != nil {
-		fmt.Printf("Failed to initialize Name-To-ID Map: %s\n", err)
-		return
-	}
+  err = pstFile.InitializeBTrees(formatType)
 
-	rootFolder, err := pstFile.GetRootFolder(formatType, encryptionType)
+  if err != nil {
+    fmt.Printf("Failed to initialize node and block b-tree.\n")
+    return
+  }
 
-	if err != nil {
-		fmt.Printf("Failed to get root folder: %s\n", err)
-		return
-	}
+  rootFolder, err := pstFile.GetRootFolder(formatType, encryptionType)
 
-	err = GetSubFolders(pstFile, rootFolder, formatType, encryptionType)
+  if err != nil {
+    fmt.Printf("Failed to get root folder: %s\n", err)
+    return
+  }
 
-	if err != nil {
-		fmt.Printf("Failed to get sub-folders: %s\n", err)
-		return
-	}
+  err = GetSubFolders(pstFile, rootFolder, formatType, encryptionType)
+
+  if err != nil {
+    fmt.Printf("Failed to get sub-folders: %s\n", err)
+    return
+  }
 }
 
 // GetSubFolders is a recursive function which retrieves all sub-folders for the specified folder.
 func GetSubFolders(pstFile pst.File, folder pst.Folder, formatType string, encryptionType string) error {
-	subFolders, err := pstFile.GetSubFolders(folder, formatType, encryptionType)
+  subFolders, err := pstFile.GetSubFolders(folder, formatType, encryptionType)
 
-	if err != nil {
-		return err
-	}
+  if err != nil {
+    return err
+  }
 
-	for _, subFolder := range subFolders {
-		fmt.Printf("Parsing sub-folder: %s\n", subFolder.DisplayName)
+  for _, subFolder := range subFolders {
+    fmt.Printf("Parsing sub-folder: %s\n", subFolder.DisplayName)
 
-		messages, err := pstFile.GetMessages(subFolder, formatType, encryptionType)
+    messages, err := pstFile.GetMessages(subFolder, formatType, encryptionType)
 
-		if err != nil {
-			return err
-		}
+    if err != nil {
+      return err
+    }
 
-		if len(messages) > 0 {
-			fmt.Printf("Found %d messages.\n", len(messages))
-		}
+    if len(messages) > 0 {
+      fmt.Printf("Found %d messages.\n", len(messages))
+    }
 
-		err = GetSubFolders(pstFile, subFolder, formatType, encryptionType)
+    err = GetSubFolders(pstFile, subFolder, formatType, encryptionType)
 
-		if err != nil {
-			return err
-		}
-	}
+    if err != nil {
+      return err
+    }
+  }
 
-	return nil
+  return nil
 }
 ```
 
