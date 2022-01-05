@@ -4,13 +4,26 @@ package main
 
 import (
 	"fmt"
-	pst "github.com/mooijtech/go-pst/pkg"
+	pst "github.com/mooijtech/go-pst/v3/pkg"
 )
 
 func main() {
-	pstFile := pst.New("data/enron.pst")
+	pstFile, err := pst.NewFromFile("data/enron.pst")
 
-	fmt.Printf("Parsing file: %s\n", pstFile.Filepath)
+	if err != nil {
+		fmt.Printf("Failed to create PST file: %s\n", err)
+		return
+	}
+
+	defer func() {
+		err := pstFile.Close()
+
+		if err != nil {
+			fmt.Printf("Failed to close PST file: %s", err)
+		}
+	}()
+
+	fmt.Printf("Parsing file...")
 
 	isValidSignature, err := pstFile.IsValidSignature()
 

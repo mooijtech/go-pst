@@ -8,12 +8,13 @@ import (
 	"bytes"
 	"encoding/binary"
 	"errors"
+	"io"
 	"os"
 )
 
 // File represents a PST file.
 type File struct {
-	Filepath string
+	Reader io.ReadSeekCloser
 
 	// Variables which need to be initialized.
 	NodeBTree  []BTreeNodeEntry
@@ -21,38 +22,44 @@ type File struct {
 	NameToIDMap NameToIDMap
 }
 
-// New is a constructor for creating PST files.
-func New(filePath string) File {
-	return File{
-		Filepath: filePath,
+// NewFromFile is a constructor for creating PST files from a file path.
+func NewFromFile(filePath string) (File, error) {
+	inputFile, err := os.Open(filePath)
+
+	if err != nil {
+		return File{}, err
 	}
+
+	return File{
+		Reader: inputFile,
+	}, nil
+}
+
+// NewFromReader is a constructor for creating PST files from a reader.
+func NewFromReader(reader io.ReadSeekCloser) File {
+	return File{
+		Reader: reader,
+	}
+}
+
+// Close closes the PST file reader.
+func (pstFile *File) Close() error {
+	return pstFile.Reader.Close()
 }
 
 // Read reads the PST file from the given output buffer size and offset to bytes.
 func (pstFile *File) Read(outputBufferSize int, offset int) ([]byte, error) {
-	inputFile, err := os.Open(pstFile.Filepath)
+	_, err := pstFile.Reader.Seek(int64(offset), 0)
 
 	if err != nil {
 		return nil, err
 	}
 
-	_, err = inputFile.Seek(int64(offset), 0)
-
-	if err != nil {
-		return nil, err
-	}
-
-	inputReader := bufio.NewReader(inputFile)
+	inputReader := bufio.NewReader(pstFile.Reader)
 
 	outputBuffer := make([]byte, outputBufferSize)
 
 	_, err = inputReader.Read(outputBuffer)
-
-	if err != nil {
-		return nil, err
-	}
-
-	err = inputFile.Close()
 
 	if err != nil {
 		return nil, err
