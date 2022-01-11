@@ -4,7 +4,6 @@
 package pst
 
 import (
-	"bufio"
 	"bytes"
 	"encoding/binary"
 	"errors"
@@ -55,11 +54,9 @@ func (pstFile *File) Read(outputBufferSize int, offset int) ([]byte, error) {
 		return nil, err
 	}
 
-	inputReader := bufio.NewReader(pstFile.Reader)
-
 	outputBuffer := make([]byte, outputBufferSize)
 
-	_, err = inputReader.Read(outputBuffer)
+	_, err = pstFile.Reader.Read(outputBuffer)
 
 	if err != nil {
 		return nil, err
