@@ -30,37 +30,17 @@
 
 The PFF (Personal Folder File) and OFF (Offline Folder File) format is used to store Microsoft Outlook e-mails, appointments and contacts. The PST (Personal Storage Table), OST (Offline Storage Table) and PAB (Personal Address Book) file format consist of the PFF format.
 
-## References
+## License
 
-Special thanks to [James McLeod](https://github.com/Jmcleodfoss/) for helping me with some debugging.
+The source code of `go-pst` is provided under a **dual license model**.
 
-### Documentation
+### Commercial License
 
-- [Outlook Personal Folders (.pst) File Format](https://github.com/mooijtech/go-pst/blob/master/docs/MS-PST.pdf)
-- [Personal Folder File (PFF) file format specification](https://github.com/mooijtech/go-pst/blob/master/docs/PFF.pdf)
+If you want to use `go-pst` to develop commercial sites, tools, and applications, the Commercial License is the appropriate license. With this option, your source code is kept proprietary. Purchase an `go-pst` Commercial License by contacting **info@mooijtech.com**.
 
-### Libraries
+### Open source license
 
-- [java-libpst](https://github.com/rjohnsondev/java-libpst)
-- [libpff](https://github.com/libyal/libpff)
-- [XstReader](https://github.com/Dijji/XstReader)
-- [pstreader](https://github.com/Jmcleodfoss/pstreader)
-- [PANhunt](https://github.com/Dionach/PANhunt/blob/master/pst.py)
-
-## Datasets
-
-This library is tested on the following datasets:
-
-- [enron.pst](https://github.com/mooijtech/go-pst/blob/master/data/enron.pst)
-  - [Enron Corporation](https://en.wikipedia.org/wiki/Enron)
-- [32-bit.pst](https://github.com/mooijtech/go-pst/blob/master/data/32-bit.pst)
-  - [DFRWS 2009 Rodeo](http://old.dfrws.org/2009/rodeo.shtml)
-- [support.pst](https://github.com/mooijtech/go-pst/blob/master/data/support.pst)
-  - [Hacking Team](https://en.wikipedia.org/wiki/Hacking_Team)
-  - 50GB worth of PST files from Hacking Team is available via this torrent magnet link (see the folders mail, mail2, mail3): 
-    ```
-    magnet:?xt=urn:btih:51603bff88e0a1b3bad3962614978929c9d26955&dn=Hacked%20Team&tr=udp%3A%2F%2Fcoppersurfer.tk%3A6969%2Fannounce&tr=udp%3A%2F%2F9.rarbg.me%3A2710%2Fannounce&tr=http%3A%2F%2Fmgtracker.org%3A2710%2Fannounce&tr=http%3A%2F%2Fbt.careland.com.cn%3A6969%2Fannounce&tr=udp%3A%2F%2Fopen.demonii.com%3A1337&tr=udp%3A%2F%2Fexodus.desync.com%3A6969&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.pomf.se&tr=udp%3A%2F%2Ftracker.blackunicorn.xyz%3A6969
-    ```
+If you are creating an open source application under a license compatible with the GNU Affero GPL license v3, you may use `go-pst` under the terms of the [AGPL-3.0](https://opensource.org/licenses/AGPL-3.0).
 
 ## Usage
 
@@ -188,6 +168,39 @@ func GetSubFolders(pstFile pst.File, folder pst.Folder, formatType string, encry
   return nil
 }
 ```
+
+## References
+
+Created by [Marten Mooij](#contact).
+Special thanks to [James McLeod](https://github.com/Jmcleodfoss/) for helping me with some debugging.
+
+### Documentation
+
+- [Outlook Personal Folders (.pst) File Format](https://github.com/mooijtech/go-pst/blob/master/docs/MS-PST.pdf)
+- [Personal Folder File (PFF) file format specification](https://github.com/mooijtech/go-pst/blob/master/docs/PFF.pdf)
+
+### Libraries
+
+- [java-libpst](https://github.com/rjohnsondev/java-libpst)
+- [libpff](https://github.com/libyal/libpff)
+- [XstReader](https://github.com/Dijji/XstReader)
+- [pstreader](https://github.com/Jmcleodfoss/pstreader)
+- [PANhunt](https://github.com/Dionach/PANhunt/blob/master/pst.py)
+
+## Datasets
+
+This library is tested on the following datasets:
+
+- [enron.pst](https://github.com/mooijtech/go-pst/blob/master/data/enron.pst)
+  - [Enron Corporation](https://en.wikipedia.org/wiki/Enron)
+- [32-bit.pst](https://github.com/mooijtech/go-pst/blob/master/data/32-bit.pst)
+  - [DFRWS 2009 Rodeo](http://old.dfrws.org/2009/rodeo.shtml)
+- [support.pst](https://github.com/mooijtech/go-pst/blob/master/data/support.pst)
+  - [Hacking Team](https://en.wikipedia.org/wiki/Hacking_Team)
+  - ~200GB worth of PST files from Hacking Team is available via this torrent magnet link (see the folders mail, mail2, mail3):
+    ```
+    magnet:?xt=urn:btih:51603bff88e0a1b3bad3962614978929c9d26955&dn=Hacked%20Team&tr=udp%3A%2F%2Fcoppersurfer.tk%3A6969%2Fannounce&tr=udp%3A%2F%2F9.rarbg.me%3A2710%2Fannounce&tr=http%3A%2F%2Fmgtracker.org%3A2710%2Fannounce&tr=http%3A%2F%2Fbt.careland.com.cn%3A6969%2Fannounce&tr=udp%3A%2F%2Fopen.demonii.com%3A1337&tr=udp%3A%2F%2Fexodus.desync.com%3A6969&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.pomf.se&tr=udp%3A%2F%2Ftracker.blackunicorn.xyz%3A6969
+    ```
 
 ## Implementation
 
