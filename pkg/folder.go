@@ -90,13 +90,17 @@ func (pstFile *File) GetSubFolders(folder Folder, formatType string, encryptionT
 
 		for _, tableContextColumn := range tableContextRow {
 			if tableContextColumn.PropertyID == 12289 {
-				displayName, err := DecodeBytesToUTF16String(tableContextColumn.Data)
+				if formatType == FormatTypeANSI {
+					subFolder.DisplayName = string(tableContextColumn.Data)
+				} else {
+					displayName, err := DecodeBytesToUTF16String(tableContextColumn.Data)
 
-				if err != nil {
-					return nil, err
+					if err != nil {
+						return nil, err
+					}
+
+					subFolder.DisplayName = displayName
 				}
-
-				subFolder.DisplayName = displayName
 			} else if tableContextColumn.PropertyID == 13834 {
 				subFolder.HasSubFolders = tableContextColumn.ReferenceHNID == 1
 			} else if tableContextColumn.PropertyID == 26610 {
