@@ -213,7 +213,7 @@ func (pstFile *File) GetNameToIDMap(formatType string, encryptionType string) (N
 	stringToID := make(map[string]int)
 	idToString := make(map[int]string)
 
-	for i := 0; i + 8 < len(entryStreamData); i += 8 {
+	for i := 0; i + 8 <= len(entryStreamData); i += 8 {
 		namedPropertyIdentifier := binary.LittleEndian.Uint16(entryStreamData[i:i + 4])
 		namedPropertyGUID := binary.LittleEndian.Uint16(entryStreamData[i + 4:i+6]) // The first bit should be ignored which is the named property identifier type.
 		namedPropertyIdentifierType := namedPropertyGUID & 0x0001
