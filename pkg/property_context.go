@@ -131,6 +131,10 @@ func (pstFile *File) GetPropertyContext(heapOnNode HeapOnNode, formatType string
 			propertyContextItem.IsExternalValueReference = true
 			break
 		default:
+			if referenceHNID == 0 {
+				// zero HNID means nil data for property
+				break	
+			}
 			propertyContextItem.IsExternalValueReference = true
 
 			propertyNodeInputStream, err := pstFile.NewHeapOnNodeInputStreamFromHNID(referenceHNID, heapOnNode, []LocalDescriptor{}, formatType, encryptionType)
@@ -185,6 +189,10 @@ func (propertyContextItem *PropertyContextItem) GetData(pstFile *File, localDesc
 
 	if propertyContextItem.PropertyType != PropertyTypeBinary {
 		return nil, errors.New("attempting to get non-binary data")
+	}
+	
+	if propertyContextItem.ReferenceHNID == 0 {
+		return nil, nil	
 	}
 
 	localDescriptor, err := FindLocalDescriptor(localDescriptors, propertyContextItem.ReferenceHNID, formatType)
