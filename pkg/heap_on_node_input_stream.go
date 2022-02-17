@@ -17,6 +17,9 @@ type HeapOnNodeInputStream struct {
 	StartOffset    int
 	Size           int
 	Blocks         []BTreeNodeEntry
+
+	// PropertyContextItem works with data directly instead of a file offset.
+	UnencryptedInternalAttachmentData []byte
 }
 
 // NewHeapOnNodeInputStream creates a node input stream from the Heap-on-Node.
@@ -156,7 +159,11 @@ func (pstFile *File) NewHeapOnNodeInputStreamFromHNID(hnid int, heapOnNode HeapO
 
 // Read reads from the node input stream.
 func (heapOnNodeInputStream *HeapOnNodeInputStream) Read(outputBufferSize int, offset int) ([]byte, error) {
-	if len(heapOnNodeInputStream.Blocks) == 0 {
+	if len(heapOnNodeInputStream.UnencryptedInternalAttachmentData) > 0 {
+		// Internal unencrypted attachment data.
+		return heapOnNodeInputStream.UnencryptedInternalAttachmentData[offset:outputBufferSize], nil
+	} else if len(heapOnNodeInputStream.Blocks) == 0 {
+		// No external blocks.
 		outputBuffer, err := heapOnNodeInputStream.File.Read(outputBufferSize, heapOnNodeInputStream.FileOffset+heapOnNodeInputStream.StartOffset+offset)
 
 		if err != nil {
@@ -172,6 +179,7 @@ func (heapOnNodeInputStream *HeapOnNodeInputStream) Read(outputBufferSize int, o
 			return nil, errors.New("unsupported encryption type")
 		}
 	} else {
+		// External blocks.
 		// The following code is harder to implement than it looks.
 		// Before we used to read ALL blocks into memory and then get the bytes but this takes up way too much memory.
 		// Now we only reads what's required.
@@ -251,7 +259,7 @@ func (heapOnNodeInputStream *HeapOnNodeInputStream) Read(outputBufferSize int, o
 	}
 }
 
-// ReadCompletely reads all the data.
+// ReadCompletely reads all the data (handles blocks).
 func (heapOnNodeInputStream *HeapOnNodeInputStream) ReadCompletely(formatType string) ([]byte, error) {
 	var outputBuffer []byte
 

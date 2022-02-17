@@ -12,7 +12,7 @@ import (
 
 // Attachment represents a message attachment.
 type Attachment struct {
-	PropertyContext []PropertyContextItem
+	PropertyContext  []PropertyContextItem
 	LocalDescriptors []LocalDescriptor
 }
 
@@ -24,7 +24,7 @@ func (message *Message) HasAttachments() (bool, error) {
 		return false, err
 	}
 
-	return hasAttachments & 0x10 != 0, nil
+	return hasAttachments&0x10 != 0, nil
 }
 
 // GetAttachmentsTableContext returns the table context of the attachments of this message.
@@ -144,7 +144,7 @@ func (message *Message) GetAttachment(attachmentNumber int, pstFile *File, forma
 	}
 
 	return Attachment{
-		PropertyContext: attachmentPropertyContext,
+		PropertyContext:  attachmentPropertyContext,
 		LocalDescriptors: attachmentLocalDescriptorLocalDescriptors,
 	}, nil
 }
@@ -198,7 +198,7 @@ func (attachment *Attachment) GetFilename() (string, error) {
 	return attachment.GetString(14084)
 }
 
-// GetAttachmentLongFilename returns the long file name of this attachment.
+// GetLongFilename returns the long file name of this attachment.
 func (attachment *Attachment) GetLongFilename() (string, error) {
 	return attachment.GetString(14087)
 }
@@ -226,9 +226,10 @@ func (attachment *Attachment) GetInputStream(pstFile *File, formatType string, e
 
 		return attachmentInputStreamHeapOnNode.InputStream, nil
 	} else {
-		// TODO - Internal data is not encrypted.
-		// TODO - We need to be able to have a Heap-on-Node input stream without a file offset but only deal with the data directly.
-		return HeapOnNodeInputStream{}, errors.New("internal attachment data is not implemented yet, please open an issue on GitHub")
+		return HeapOnNodeInputStream{
+			UnencryptedInternalAttachmentData: attachmentInputStreamPropertyContextItem.data,
+			Size:                              len(attachmentInputStreamPropertyContextItem.data),
+		}, nil
 	}
 }
 
