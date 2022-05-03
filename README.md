@@ -10,7 +10,7 @@
 
 <p align="center">
   <a href="https://github.com/mooijtech/go-pst/blob/master/LICENSE.txt">
-      <img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square">
+      <img src="https://img.shields.io/badge/license-AGPLv3-blue.svg?style=flat-square">
   </a>
   <a href="https://github.com/mooijtech/go-pst/issues">
     <img src="https://img.shields.io/github/issues/mooijtech/go-pst.svg?style=flat-square">
@@ -649,4 +649,4 @@ Feel free to contact me if you have any questions.<br/>
 
 ## License
 
-[MIT](https://github.com/mooijtech/go-pst/blob/master/LICENSE.txt)
+[AGPLv3](https://github.com/mooijtech/go-pst/blob/master/LICENSE.md)
