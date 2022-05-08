@@ -241,7 +241,7 @@ func (attachment *Attachment) WriteToFile(outputPath string, pstFile *File, form
 		return err
 	}
 
-	outputBuffer, err := attachmentInputStream.ReadCompletely(formatType)
+	outputBuffer, err := attachmentInputStream.ReadCompletely()
 
 	if err != nil {
 		return err

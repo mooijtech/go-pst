@@ -30,6 +30,14 @@
 
 The PFF (Personal Folder File) and OFF (Offline Folder File) format is used to store Microsoft Outlook e-mails, appointments and contacts. The PST (Personal Storage Table), OST (Offline Storage Table) and PAB (Personal Address Book) file format consist of the PFF format.
 
+## go-pst v4
+
+The latest version of go-pst **requires Go 1.18** due to generics support: [Shaving 40% Off Google’s B-Tree Implementation with Go Generics](https://www.scylladb.com/2022/04/27/shaving-40-off-googles-b-tree-implementation-with-go-generics/).
+Operations that search for nodes (such as getting folders and messages) are much faster and uses less memory (but initializing the b-trees uses a bit more than previously).
+Benchmarks can be found [here](https://github.com/mooijtech/go-pst/tree/master/benchmarks).
+
+For Go 1.16 use go-pst v3 (`go get github.com/mooijtech/go-pst/v3`)
+
 ## License
 
 The source code of `go-pst` is provided under a **dual license model**.
@@ -45,7 +53,7 @@ If you are creating an open source application under a license compatible with t
 ## Usage
 
 ```bash
-$ go get github.com/mooijtech/go-pst/v3
+$ go get github.com/mooijtech/go-pst/v4
 ```
 
 ```go
@@ -53,7 +61,7 @@ package main
 
 import (
   "fmt"
-  pst "github.com/mooijtech/go-pst/v3/pkg"
+  pst "github.com/mooijtech/go-pst/v4/pkg"
 )
 
 func main() {

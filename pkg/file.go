@@ -7,18 +7,20 @@ import (
 	"bytes"
 	"encoding/binary"
 	"errors"
+	"github.com/mooijtech/btree/v2"
 	"io"
 	"os"
 )
 
 // File represents a PST file.
 type File struct {
-	Reader io.ReadSeekCloser
+	Reader     io.ReadSeekCloser
+	FormatType string
 
 	// Variables which need to be initialized.
-	NodeBTree  []BTreeNodeEntry
-	BlockBTree []BTreeNodeEntry
-	NameToIDMap NameToIDMap
+	NodeBTree   *btree.BTree[BTreeNodeEntry]
+	BlockBTree  *btree.BTree[BTreeNodeEntry]
+	NameToIDMap *NameToIDMap
 }
 
 // NewFromFile is a constructor for creating PST files from a file path.
@@ -41,8 +43,12 @@ func NewFromReader(reader io.ReadSeekCloser) File {
 	}
 }
 
-// Close closes the PST file reader.
+// Close closes the PST file.
 func (pstFile *File) Close() error {
+	pstFile.NodeBTree.Clear(false)
+	pstFile.BlockBTree.Clear(false)
+	pstFile.NameToIDMap = nil
+
 	return pstFile.Reader.Close()
 }
 

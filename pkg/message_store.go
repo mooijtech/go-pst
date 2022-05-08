@@ -10,19 +10,13 @@ type MessageStore struct {
 
 // GetMessageStore returns the message store of the PST file.
 func (pstFile *File) GetMessageStore(formatType string, encryptionType string) (MessageStore, error) {
-	nodeBTreeNode, err := pstFile.GetNodeBTreeNode(IdentifierTypeMessageStore, formatType)
+	nodeBTreeNode, err := pstFile.GetNodeBTreeNode(IdentifierTypeMessageStore)
 
 	if err != nil {
 		return MessageStore{}, err
 	}
 
-	nodeBTreeNodeDataIdentifier, err := nodeBTreeNode.GetDataIdentifier(formatType)
-
-	if err != nil {
-		return MessageStore{}, err
-	}
-
-	blockBTreeNode, err := pstFile.GetBlockBTreeNode(nodeBTreeNodeDataIdentifier, formatType)
+	blockBTreeNode, err := pstFile.GetBlockBTreeNode(nodeBTreeNode.DataIdentifier)
 
 	if err != nil {
 		return MessageStore{}, err
@@ -40,7 +34,7 @@ func (pstFile *File) GetMessageStore(formatType string, encryptionType string) (
 		return MessageStore{}, err
 	}
 
-	return MessageStore {
+	return MessageStore{
 		PropertyContext: propertyContext,
 	}, nil
 }

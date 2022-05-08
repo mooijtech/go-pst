@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-// Defines the property sets (GUIDs) in the Name-To-ID Map.
+// PropertySets defines the property sets (GUIDs) in the Name-To-ID Map.
 // "Property set: A GUID that identifies a group of properties with a similar purpose."
 // References [MS-OXPROPS].pdf "1.3.2 Commonly Used Property Sets"
 var (
@@ -37,32 +37,32 @@ var (
 
 // Constants defining the commonly used property sets.
 var (
-	PropertySetPublicStrings = 0
-	PropertySetCommon = 1
-	PropertySetAddress = 2
-	PropertySetInternetHeaders = 3
-	PropertySetAppointment = 4
-	PropertySetMeeting = 5
-	PropertySetLog = 6
-	PropertySetMessaging = 7
-	PropertySetNote = 8
-	PropertySetPostRSS = 9
-	PropertySetTask = 10
-	PropertySetUnifiedMessaging = 11
-	PropertySetMAPI = 12
-	PropertySetAirSync = 13
-	PropertySetSharing = 14
+	PropertySetPublicStrings        = 0
+	PropertySetCommon               = 1
+	PropertySetAddress              = 2
+	PropertySetInternetHeaders      = 3
+	PropertySetAppointment          = 4
+	PropertySetMeeting              = 5
+	PropertySetLog                  = 6
+	PropertySetMessaging            = 7
+	PropertySetNote                 = 8
+	PropertySetPostRSS              = 9
+	PropertySetTask                 = 10
+	PropertySetUnifiedMessaging     = 11
+	PropertySetMAPI                 = 12
+	PropertySetAirSync              = 13
+	PropertySetSharing              = 14
 	PropertySetXMLExtractedEntities = 15
-	PropertySetAttachment = 16
+	PropertySetAttachment           = 16
 )
 
 // NameToIDMap represents the Name-To-ID Map.
 type NameToIDMap struct {
 	PropertySets []string
-	NameToID map[int]int
-	IDToName map[int]int
-	StringToID map[string]int
-	IDToString map[int]string
+	NameToID     map[int]int
+	IDToName     map[int]int
+	StringToID   map[string]int
+	IDToString   map[int]string
 }
 
 // InitializeNameToIDMap initializes the Name-To-ID Map.
@@ -79,41 +79,35 @@ func (pstFile *File) InitializeNameToIDMap(formatType string, encryptionType str
 }
 
 // GetNameToIDMap returns the Name-To-ID Map.
-func (pstFile *File) GetNameToIDMap(formatType string, encryptionType string) (NameToIDMap, error) {
-	nameToIDMapNode, err := pstFile.GetNodeBTreeNode(IdentifierTypeNameToIDMap, formatType)
+func (pstFile *File) GetNameToIDMap(formatType string, encryptionType string) (*NameToIDMap, error) {
+	nameToIDMapNode, err := pstFile.GetNodeBTreeNode(IdentifierTypeNameToIDMap)
 
 	if err != nil {
-		return NameToIDMap{}, err
+		return nil, err
 	}
 
 	localDescriptors, err := pstFile.GetLocalDescriptors(nameToIDMapNode, formatType)
 
 	if err != nil {
-		return NameToIDMap{}, err
+		return nil, err
 	}
 
-	nameToIDMapNodeDataIdentifier, err := nameToIDMapNode.GetDataIdentifier(formatType)
+	blockBTreeNode, err := pstFile.GetBlockBTreeNode(nameToIDMapNode.DataIdentifier)
 
 	if err != nil {
-		return NameToIDMap{}, err
-	}
-
-	blockBTreeNode, err := pstFile.GetBlockBTreeNode(nameToIDMapNodeDataIdentifier, formatType)
-
-	if err != nil {
-		return NameToIDMap{}, err
+		return nil, err
 	}
 
 	heapOnNode, err := pstFile.NewHeapOnNodeFromNode(blockBTreeNode, formatType, encryptionType)
 
 	if err != nil {
-		return NameToIDMap{}, err
+		return nil, err
 	}
 
 	propertyContext, err := pstFile.GetPropertyContext(heapOnNode, formatType, encryptionType)
 
 	if err != nil {
-		return NameToIDMap{}, err
+		return nil, err
 	}
 
 	propertySetToIndex := make(map[string]int)
@@ -129,18 +123,18 @@ func (pstFile *File) GetNameToIDMap(formatType string, encryptionType string) (N
 	guidStream, err := FindPropertyContextItem(propertyContext, 2)
 
 	if err != nil {
-		return NameToIDMap{}, err
+		return nil, err
 	}
 
 	guidStreamData, err := guidStream.GetData(pstFile, localDescriptors, formatType, encryptionType)
 
 	if err != nil {
-		return NameToIDMap{}, err
+		return nil, err
 	}
 
 	guidCount := len(guidStreamData) / 16
 
-	var nameToIDMap NameToIDMap
+	var nameToIDMap *NameToIDMap
 
 	offset := 0
 
@@ -152,7 +146,7 @@ func (pstFile *File) GetNameToIDMap(formatType string, encryptionType string) (N
 		// References https://github.com/microsoft/go-winio/blob/master/pkg/guid/guid.go
 		var guidBytes [16]byte
 
-		copy(guidBytes[:], guidStreamData[offset:offset + 16])
+		copy(guidBytes[:], guidStreamData[offset:offset+16])
 
 		guid := GUIDFromWindowsArray(guidBytes)
 
@@ -182,13 +176,13 @@ func (pstFile *File) GetNameToIDMap(formatType string, encryptionType string) (N
 	entryStream, err := FindPropertyContextItem(propertyContext, 3)
 
 	if err != nil {
-		return NameToIDMap{}, err
+		return nil, err
 	}
 
 	entryStreamData, err := entryStream.GetData(pstFile, localDescriptors, formatType, encryptionType)
 
 	if err != nil {
-		return NameToIDMap{}, err
+		return nil, err
 	}
 
 	// References "2.4.7.4  The String Stream"
@@ -197,13 +191,13 @@ func (pstFile *File) GetNameToIDMap(formatType string, encryptionType string) (N
 	stringStream, err := FindPropertyContextItem(propertyContext, 4)
 
 	if err != nil {
-		return NameToIDMap{}, err
+		return nil, err
 	}
 
 	stringStreamData, err := stringStream.GetData(pstFile, localDescriptors, formatType, encryptionType)
 
 	if err != nil {
-		return NameToIDMap{}, err
+		return nil, err
 	}
 
 	// Process the Entry Stream (NAMEID records).
@@ -213,11 +207,11 @@ func (pstFile *File) GetNameToIDMap(formatType string, encryptionType string) (N
 	stringToID := make(map[string]int)
 	idToString := make(map[int]string)
 
-	for i := 0; i + 8 <= len(entryStreamData); i += 8 {
-		namedPropertyIdentifier := binary.LittleEndian.Uint16(entryStreamData[i:i + 4])
-		namedPropertyGUID := binary.LittleEndian.Uint16(entryStreamData[i + 4:i+6]) // The first bit should be ignored which is the named property identifier type.
+	for i := 0; i+8 <= len(entryStreamData); i += 8 {
+		namedPropertyIdentifier := binary.LittleEndian.Uint16(entryStreamData[i : i+4])
+		namedPropertyGUID := binary.LittleEndian.Uint16(entryStreamData[i+4 : i+6]) // The first bit should be ignored which is the named property identifier type.
 		namedPropertyIdentifierType := namedPropertyGUID & 0x0001
-		namedPropertyIndex := binary.LittleEndian.Uint16(entryStreamData[i + 6:i + 8]) // Property index. This is the ordinal number of the named property, which is used to calculate the NPID of this named property.
+		namedPropertyIndex := binary.LittleEndian.Uint16(entryStreamData[i+6 : i+8]) // Property index. This is the ordinal number of the named property, which is used to calculate the NPID of this named property.
 
 		if namedPropertyIdentifierType == 0 {
 			// If the named property identifier type is 0, the named property identifier contains the value of a numerical name.
@@ -236,22 +230,22 @@ func (pstFile *File) GetNameToIDMap(formatType string, encryptionType string) (N
 				propertySetIndex = PropertySetPublicStrings
 				break
 			default:
-				propertySetIndex = guidIndexes[int(namedPropertyGUID) - 3]
+				propertySetIndex = guidIndexes[int(namedPropertyGUID)-3]
 				break
 			}
 
-			nameToID[int(namedPropertyIdentifier) | propertySetIndex << 32] = int(namedPropertyIndex)
+			nameToID[int(namedPropertyIdentifier)|propertySetIndex<<32] = int(namedPropertyIndex)
 			idToName[int(namedPropertyIndex)] = int(namedPropertyIdentifier)
 		} else {
 			// If the named property identifier type is 1, this value is the byte offset into the String stream in
 			// which the string name of the property is stored.
-			keyLength := binary.LittleEndian.Uint16(stringStreamData[int(namedPropertyIdentifier):int(namedPropertyIdentifier) + 4])
+			keyLength := binary.LittleEndian.Uint16(stringStreamData[int(namedPropertyIdentifier) : int(namedPropertyIdentifier)+4])
 
 			if int(keyLength) > 0 && int(keyLength) < len(stringStreamData) {
-				key, err := DecodeBytesToUTF16String(stringStreamData[int(namedPropertyIdentifier) + 4:int(namedPropertyIdentifier) + 4 + int(keyLength)])
+				key, err := DecodeBytesToUTF16String(stringStreamData[int(namedPropertyIdentifier)+4 : int(namedPropertyIdentifier)+4+int(keyLength)])
 
 				if err != nil {
-					return NameToIDMap{}, err
+					return nil, err
 				}
 
 				namedPropertyIndex += 0x8000
@@ -273,7 +267,7 @@ func (pstFile *File) GetNameToIDMap(formatType string, encryptionType string) (N
 
 // GetPropertyID returns the Name-To-ID property ID.
 func (nameToIDMap *NameToIDMap) GetPropertyID(key int, propertySetIndex int) (int, error) {
-	nameToIDKey := propertySetIndex << 32 | key
+	nameToIDKey := propertySetIndex<<32 | key
 
 	value, ok := nameToIDMap.NameToID[nameToIDKey]
 

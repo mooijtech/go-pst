@@ -23,43 +23,25 @@ type HeapOnNodeInputStream struct {
 }
 
 // NewHeapOnNodeInputStream creates a node input stream from the Heap-on-Node.
-func (pstFile *File) NewHeapOnNodeInputStream(btreeNodeEntry BTreeNodeEntry, formatType string, encryptionType string) (HeapOnNodeInputStream, error) {
-	nodeEntryHeapOnNodeOffset, err := btreeNodeEntry.GetFileOffset(false, formatType)
-
-	if err != nil {
-		return HeapOnNodeInputStream{}, err
-	}
-
-	nodeEntryHeapOnNodeSize, err := btreeNodeEntry.GetSize(formatType)
-
-	if err != nil {
-		return HeapOnNodeInputStream{}, err
-	}
-
-	nodeEntryIdentifier, err := btreeNodeEntry.GetIdentifier(formatType)
-
-	if err != nil {
-		return HeapOnNodeInputStream{}, err
-	}
-
+func (pstFile *File) NewHeapOnNodeInputStream(nodeEntry BTreeNodeEntry, formatType string, encryptionType string) (HeapOnNodeInputStream, error) {
 	// Internal identifiers have blocks (XBlock or XXBlock).
 	// This is a list of block identifiers that point to block b-tree entries (where the data is).
-	isInternal := nodeEntryIdentifier&0x02 != 0
+	isInternal := nodeEntry.Identifier&0x02 != 0
 
 	if isInternal {
-		blocks, err := pstFile.GetBlocks(nodeEntryHeapOnNodeOffset, formatType)
+		blocks, err := pstFile.GetBlocks(nodeEntry.FileOffset, formatType)
 
 		if err != nil {
 			return HeapOnNodeInputStream{}, err
 		}
 
-		blocksTotalSize, err := pstFile.GetBlocksTotalSize(nodeEntryHeapOnNodeOffset)
+		blocksTotalSize, err := pstFile.GetBlocksTotalSize(nodeEntry.FileOffset)
 
 		return HeapOnNodeInputStream{
 			File:           pstFile,
 			FormatType:     formatType,
 			EncryptionType: encryptionType,
-			FileOffset:     nodeEntryHeapOnNodeOffset,
+			FileOffset:     nodeEntry.FileOffset,
 			Size:           blocksTotalSize,
 			Blocks:         blocks,
 		}, nil
@@ -69,8 +51,8 @@ func (pstFile *File) NewHeapOnNodeInputStream(btreeNodeEntry BTreeNodeEntry, for
 		File:           pstFile,
 		FormatType:     formatType,
 		EncryptionType: encryptionType,
-		FileOffset:     nodeEntryHeapOnNodeOffset,
-		Size:           nodeEntryHeapOnNodeSize,
+		FileOffset:     nodeEntry.FileOffset,
+		Size:           nodeEntry.Size,
 	}, nil
 }
 
@@ -106,13 +88,7 @@ func (pstFile *File) NewHeapOnNodeInputStreamFromHNID(hnid int, heapOnNode HeapO
 		for i := 0; i < len(heapOnNode.InputStream.Blocks); i++ {
 			block := heapOnNode.InputStream.Blocks[i]
 
-			blockSize, err := block.GetSize(formatType)
-
-			if err != nil {
-				return HeapOnNodeInputStream{}, err
-			}
-
-			blockOffset = blockOffset + blockSize
+			blockOffset = blockOffset + block.Size
 
 			if i == hidBlockIndex-1 {
 				break
@@ -191,14 +167,8 @@ func (heapOnNodeInputStream *HeapOnNodeInputStream) Read(outputBufferSize int, o
 		for i := 0; i < len(heapOnNodeInputStream.Blocks); i++ {
 			block := heapOnNodeInputStream.Blocks[i]
 
-			blockSize, err := block.GetSize(heapOnNodeInputStream.FormatType)
-
-			if err != nil {
-				return nil, err
-			}
-
 			blockStartOffsets[i] = currentBlockStartOffset
-			currentBlockStartOffset += blockSize
+			currentBlockStartOffset += block.Size
 		}
 
 		// Get the current block based on the offset.
@@ -230,21 +200,9 @@ func (heapOnNodeInputStream *HeapOnNodeInputStream) Read(outputBufferSize int, o
 			}
 		}
 
-		blockFileOffset, err := block.GetFileOffset(false, heapOnNodeInputStream.FormatType)
+		blockEndOffset := blockStartOffsets[currentBlock] + block.Size
 
-		if err != nil {
-			return nil, err
-		}
-
-		blockSize, err := block.GetSize(heapOnNodeInputStream.FormatType)
-
-		if err != nil {
-			return nil, err
-		}
-
-		blockEndOffset := blockStartOffsets[currentBlock] + blockSize
-
-		if outputBufferSize > blockSize {
+		if outputBufferSize > block.Size {
 			return nil, errors.New("output buffer size is larger than the block size")
 		}
 
@@ -253,33 +211,31 @@ func (heapOnNodeInputStream *HeapOnNodeInputStream) Read(outputBufferSize int, o
 			return nil, errors.New("requested offset is larger than the maximum block size, please open an issue on GitHub")
 		}
 
-		blockData, err := heapOnNodeInputStream.File.Read(outputBufferSize, blockFileOffset+currentOffsetInBlock)
+		blockData, err := heapOnNodeInputStream.File.Read(outputBufferSize, block.FileOffset+currentOffsetInBlock)
+
+		if err != nil {
+			return nil, err
+		}
 
 		return DecodeCompressibleEncryption(blockData), nil
 	}
 }
 
 // ReadCompletely reads all the data (handles blocks).
-func (heapOnNodeInputStream *HeapOnNodeInputStream) ReadCompletely(formatType string) ([]byte, error) {
+func (heapOnNodeInputStream *HeapOnNodeInputStream) ReadCompletely() ([]byte, error) {
 	var outputBuffer []byte
 
 	if len(heapOnNodeInputStream.Blocks) > 0 {
 		currentOffset := 0
 
 		for _, block := range heapOnNodeInputStream.Blocks {
-			blockSize, err := block.GetSize(formatType)
+			data, err := heapOnNodeInputStream.Read(block.Size, currentOffset)
 
 			if err != nil {
 				return nil, err
 			}
 
-			data, err := heapOnNodeInputStream.Read(blockSize, currentOffset)
-
-			if err != nil {
-				return nil, err
-			}
-
-			currentOffset += blockSize
+			currentOffset += block.Size
 			outputBuffer = append(outputBuffer, data...)
 		}
 	} else {

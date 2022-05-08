@@ -6,6 +6,7 @@ package pst
 import (
 	"encoding/binary"
 	"errors"
+	"github.com/mooijtech/btree/v2"
 )
 
 // GetNodeBTreeOffset returns the file offset to the node b-tree.
@@ -189,13 +190,82 @@ func (pstFile *File) GetBTreeNodeLevel(btreeNodeOffset int, formatType string) (
 
 // BTreeNodeEntry represents an entry in a b-tree node.
 type BTreeNodeEntry struct {
-	Data []byte
-	Children []BTreeNodeEntry
+	Identifier                 int
+	IdentifierType             int
+	FileOffset                 int
+	DataIdentifier             int
+	LocalDescriptorsIdentifier int
+	Size                       int
+	NodeLevel                  int
+}
+
+// NewBTreeNodeEntry creates a new b-tree node entry.
+func NewBTreeNodeEntry(nodeEntryData []byte, formatType string, nodeLevel int) (BTreeNodeEntry, error) {
+	identifier, err := GetBTreeNodeEntryIdentifier(nodeEntryData, formatType)
+
+	if err != nil {
+		return BTreeNodeEntry{}, err
+	}
+
+	identifierType, err := GetBTreeNodeEntryIdentifierType(nodeEntryData, formatType)
+
+	if err != nil {
+		return BTreeNodeEntry{}, err
+	}
+
+	fileOffset, err := GetBTreeNodeEntryFileOffset(nodeEntryData, formatType, nodeLevel > 0)
+
+	if err != nil {
+		return BTreeNodeEntry{}, err
+	}
+
+	dataIdentifier, err := GetBTreeNodeEntryDataIdentifier(nodeEntryData, formatType)
+
+	if err != nil {
+		return BTreeNodeEntry{}, err
+	}
+
+	localDescriptorsIdentifier, err := GetBTreeNodeEntryLocalDescriptorsIdentifier(nodeEntryData, formatType)
+
+	if err != nil {
+		return BTreeNodeEntry{}, err
+	}
+
+	size, err := GetBTreeNodeEntrySize(nodeEntryData, formatType)
+
+	if err != nil {
+		return BTreeNodeEntry{}, err
+	}
+
+	return BTreeNodeEntry{
+		Identifier:                 identifier,
+		IdentifierType:             identifierType,
+		FileOffset:                 fileOffset,
+		DataIdentifier:             dataIdentifier,
+		LocalDescriptorsIdentifier: localDescriptorsIdentifier,
+		Size:                       size,
+		NodeLevel:                  nodeLevel,
+	}, nil
+}
+
+// Less tests whether the current item is less than the given argument.
+//
+// This must provide a strict weak ordering.
+// If !a.Less(b) && !b.Less(a), we treat this to mean a == b (i.e. we can only
+// hold one of either a or b in the tree).
+func (btreeNodeEntry BTreeNodeEntry) Less(than BTreeNodeEntry) bool {
+	if btreeNodeEntry.Identifier == than.Identifier {
+		// We don't return the first identifier because there may be two or more nodes with
+		// the same identifier so prefer leaf nodes (which there is always only one of).
+		return btreeNodeEntry.NodeLevel < than.NodeLevel
+	} else {
+		return btreeNodeEntry.Identifier < than.Identifier
+	}
 }
 
 // GetBTreeNodeEntries returns the entries in the b-tree node.
 // References "The node and block b-tree".
-func (pstFile *File) GetBTreeNodeEntries(btreeNodeOffset int, formatType string) ([]BTreeNodeEntry, error) {
+func (pstFile *File) GetBTreeNodeEntries(btreeNodeOffset int, formatType string, nodeLevel int) ([]BTreeNodeEntry, error) {
 	var nodeEntriesBufferSize int
 
 	switch formatType {
@@ -233,19 +303,23 @@ func (pstFile *File) GetBTreeNodeEntries(btreeNodeOffset int, formatType string)
 	entries := make([]BTreeNodeEntry, nodeEntryCount)
 
 	for i := 0; i < nodeEntryCount; i++ {
-		nodeEntry := nodeEntries[(i * nodeEntrySize) : (i*nodeEntrySize)+nodeEntrySize]
+		nodeEntryData := nodeEntries[(i * nodeEntrySize) : (i*nodeEntrySize)+nodeEntrySize]
 
-		entries[i] = BTreeNodeEntry {
-			Data: nodeEntry,
+		btreeNodeEntry, err := NewBTreeNodeEntry(nodeEntryData, formatType, nodeLevel)
+
+		if err != nil {
+			return nil, err
 		}
+
+		entries[i] = btreeNodeEntry
 	}
 
 	return entries, nil
 }
 
-// GetIdentifier returns the identifier of this b-tree node entry.
+// GetBTreeNodeEntryIdentifier returns the identifier of this b-tree node entry.
 // References "The b-tree entries".
-func (btreeNodeEntry *BTreeNodeEntry) GetIdentifier(formatType string) (int, error) {
+func GetBTreeNodeEntryIdentifier(nodeEntryData []byte, formatType string) (int, error) {
 	var identifierBufferSize int
 
 	switch formatType {
@@ -262,7 +336,7 @@ func (btreeNodeEntry *BTreeNodeEntry) GetIdentifier(formatType string) (int, err
 		return -1, errors.New("unsupported format type")
 	}
 
-	return int(binary.LittleEndian.Uint32(btreeNodeEntry.Data[:identifierBufferSize])), nil
+	return int(binary.LittleEndian.Uint32(nodeEntryData[:identifierBufferSize])), nil
 }
 
 // Constants defining the identifier types.
@@ -294,10 +368,10 @@ const (
 	IdentifierTypeNameToIDMap  = 97
 )
 
-// GetIdentifierType returns the b-tree node entry identifier type.
+// GetBTreeNodeEntryIdentifierType returns the b-tree node entry identifier type.
 // References "The b-tree entries", "Identifier".
-func (btreeNodeEntry *BTreeNodeEntry) GetIdentifierType(formatType string) (int, error) {
-	nodeEntryIdentifier, err := btreeNodeEntry.GetIdentifier(formatType)
+func GetBTreeNodeEntryIdentifierType(nodeEntryData []byte, formatType string) (int, error) {
+	identifier, err := GetBTreeNodeEntryIdentifier(nodeEntryData, formatType)
 
 	if err != nil {
 		return -1, err
@@ -307,12 +381,12 @@ func (btreeNodeEntry *BTreeNodeEntry) GetIdentifierType(formatType string) (int,
 	// Use bitwise ANDing in order to extract a subset of the bits in the value.
 	// 11111 (binary) = 0x1F (hex), which with bitwise ANDing extracts the first 5 bits.
 	// See: https://www.rapidtables.com/convert/number/binary-to-hex.html
-	return nodeEntryIdentifier & 0x1F, nil
+	return identifier & 0x1F, nil
 }
 
-// GetFileOffset returns the file offset for this b-tree branch or leaf node.
+// GetBTreeNodeEntryFileOffset returns the file offset for this b-tree branch or leaf node.
 // References "The b-tree entries".
-func (btreeNodeEntry *BTreeNodeEntry) GetFileOffset(isBranchNode bool, formatType string) (int, error) {
+func GetBTreeNodeEntryFileOffset(nodeEntryData []byte, formatType string, isBranchNode bool) (int, error) {
 	var nodeOffsetOffset int
 	var nodeOffsetBufferSize int
 
@@ -354,19 +428,19 @@ func (btreeNodeEntry *BTreeNodeEntry) GetFileOffset(isBranchNode bool, formatTyp
 
 	switch formatType {
 	case FormatTypeUnicode:
-		return int(binary.LittleEndian.Uint64(btreeNodeEntry.Data[nodeOffsetOffset:(nodeOffsetOffset + nodeOffsetBufferSize)])), nil
+		return int(binary.LittleEndian.Uint64(nodeEntryData[nodeOffsetOffset:(nodeOffsetOffset + nodeOffsetBufferSize)])), nil
 	case FormatTypeUnicode4k:
-		return int(binary.LittleEndian.Uint64(btreeNodeEntry.Data[nodeOffsetOffset:(nodeOffsetOffset + nodeOffsetBufferSize)])), nil
+		return int(binary.LittleEndian.Uint64(nodeEntryData[nodeOffsetOffset:(nodeOffsetOffset + nodeOffsetBufferSize)])), nil
 	case FormatTypeANSI:
-		return int(binary.LittleEndian.Uint32(btreeNodeEntry.Data[nodeOffsetOffset:(nodeOffsetOffset + nodeOffsetBufferSize)])), nil
+		return int(binary.LittleEndian.Uint32(nodeEntryData[nodeOffsetOffset:(nodeOffsetOffset + nodeOffsetBufferSize)])), nil
 	default:
 		return -1, errors.New("unsupported format type")
 	}
 }
 
-// GetDataIdentifier returns the node identifier of the data (in the node b-tree).
+// GetBTreeNodeEntryDataIdentifier returns the node identifier of the data (in the block b-tree).
 // References "The b-tree entries".
-func (btreeNodeEntry *BTreeNodeEntry) GetDataIdentifier(formatType string) (int, error) {
+func GetBTreeNodeEntryDataIdentifier(nodeEntryData []byte, formatType string) (int, error) {
 	var dataOffset int
 	var dataBufferSize int
 
@@ -389,18 +463,18 @@ func (btreeNodeEntry *BTreeNodeEntry) GetDataIdentifier(formatType string) (int,
 
 	switch formatType {
 	case FormatTypeUnicode:
-		return int(binary.LittleEndian.Uint64(btreeNodeEntry.Data[dataOffset:(dataOffset + dataBufferSize)])), nil
+		return int(binary.LittleEndian.Uint64(nodeEntryData[dataOffset:(dataOffset + dataBufferSize)])), nil
 	case FormatTypeUnicode4k:
-		return int(binary.LittleEndian.Uint64(btreeNodeEntry.Data[dataOffset:(dataOffset + dataBufferSize)])), nil
+		return int(binary.LittleEndian.Uint64(nodeEntryData[dataOffset:(dataOffset + dataBufferSize)])), nil
 	case FormatTypeANSI:
-		return int(binary.LittleEndian.Uint32(btreeNodeEntry.Data[dataOffset:(dataOffset + dataBufferSize)])), nil
+		return int(binary.LittleEndian.Uint32(nodeEntryData[dataOffset:(dataOffset + dataBufferSize)])), nil
 	default:
 		return -1, errors.New("unsupported format type")
 	}
 }
 
-// GetLocalDescriptorsIdentifier returns the identifier to the local descriptors in the block b-tree.
-func (btreeNodeEntry *BTreeNodeEntry) GetLocalDescriptorsIdentifier(formatType string) (int, error) {
+// GetBTreeNodeEntryLocalDescriptorsIdentifier returns the identifier to the local descriptors in the block b-tree.
+func GetBTreeNodeEntryLocalDescriptorsIdentifier(nodeEntryData []byte, formatType string) (int, error) {
 	var localDescriptorsOffset int
 	var localDescriptorsBufferSize int
 
@@ -421,19 +495,19 @@ func (btreeNodeEntry *BTreeNodeEntry) GetLocalDescriptorsIdentifier(formatType s
 
 	switch formatType {
 	case FormatTypeUnicode:
-		return int(binary.LittleEndian.Uint64(btreeNodeEntry.Data[localDescriptorsOffset : localDescriptorsOffset+localDescriptorsBufferSize])), nil
+		return int(binary.LittleEndian.Uint64(nodeEntryData[localDescriptorsOffset : localDescriptorsOffset+localDescriptorsBufferSize])), nil
 	case FormatTypeUnicode4k:
-		return int(binary.LittleEndian.Uint64(btreeNodeEntry.Data[localDescriptorsOffset : localDescriptorsOffset+localDescriptorsBufferSize])), nil
+		return int(binary.LittleEndian.Uint64(nodeEntryData[localDescriptorsOffset : localDescriptorsOffset+localDescriptorsBufferSize])), nil
 	case FormatTypeANSI:
-		return int(binary.LittleEndian.Uint32(btreeNodeEntry.Data[localDescriptorsOffset : localDescriptorsOffset+localDescriptorsBufferSize])), nil
+		return int(binary.LittleEndian.Uint32(nodeEntryData[localDescriptorsOffset : localDescriptorsOffset+localDescriptorsBufferSize])), nil
 	default:
 		return -1, errors.New("unsupported format type")
 	}
 }
 
-// GetSize returns the size of the data in the block b-tree leaf node entry.
+// GetBTreeNodeEntrySize returns the size of the data in the block b-tree leaf node entry.
 // References "The b-tree entries".
-func (btreeNodeEntry *BTreeNodeEntry) GetSize(formatType string) (int, error) {
+func GetBTreeNodeEntrySize(nodeEntryData []byte, formatType string) (int, error) {
 	var nodeSizeOffset int
 	var nodeSizeBufferSize int
 
@@ -454,7 +528,7 @@ func (btreeNodeEntry *BTreeNodeEntry) GetSize(formatType string) (int, error) {
 		return -1, errors.New("unsupported format type")
 	}
 
-	return int(binary.LittleEndian.Uint16(btreeNodeEntry.Data[nodeSizeOffset:(nodeSizeOffset + nodeSizeBufferSize)])), nil
+	return int(binary.LittleEndian.Uint16(nodeEntryData[nodeSizeOffset:(nodeSizeOffset + nodeSizeBufferSize)])), nil
 }
 
 // Constants defining the b-tree types.
@@ -463,43 +537,36 @@ const (
 	BTreeTypeBlock = 1
 )
 
+// BTreeDegree defines the node and block b-tree degree.
+var BTreeDegree = 6
+
 // InitializeBTree walks the b-tree and finds the node with the given identifier.
 func (pstFile *File) InitializeBTree(btreeType int, formatType string) error {
-	if len(pstFile.NodeBTree) > 0 && btreeType == BTreeTypeNode || len(pstFile.BlockBTree) > 0 && btreeType == BTreeTypeBlock {
+	if btreeType == BTreeTypeNode && pstFile.NodeBTree != nil || btreeType == BTreeTypeBlock && pstFile.BlockBTree != nil {
 		return errors.New("b-tree is already initialized")
 	}
 
 	switch btreeType {
 	case BTreeTypeNode:
+		pstFile.NodeBTree = btree.New[BTreeNodeEntry](BTreeDegree)
+
 		nodeBTreeOffset, err := pstFile.GetNodeBTreeOffset(formatType)
 
 		if err != nil {
 			return err
 		}
 
-		nodeBTreeNodes, err := pstFile.WalkBTree(nodeBTreeOffset, formatType)
-
-		if err != nil {
-			return err
-		}
-
-		pstFile.NodeBTree = nodeBTreeNodes
-		return nil
+		return pstFile.WalkAndCreateBTree(pstFile.NodeBTree, nodeBTreeOffset, formatType)
 	case BTreeTypeBlock:
+		pstFile.BlockBTree = btree.New[BTreeNodeEntry](BTreeDegree)
+
 		blockBTreeOffset, err := pstFile.GetBlockBTreeOffset(formatType)
 
 		if err != nil {
 			return err
 		}
 
-		blockBTreeNodes, err := pstFile.WalkBTree(blockBTreeOffset, formatType)
-
-		if err != nil {
-			return err
-		}
-
-		pstFile.BlockBTree = blockBTreeNodes
-		return nil
+		return pstFile.WalkAndCreateBTree(pstFile.BlockBTree, blockBTreeOffset, formatType)
 	default:
 		return errors.New("invalid b-tree type")
 	}
@@ -522,175 +589,87 @@ func (pstFile *File) InitializeBTrees(formatType string) error {
 	return nil
 }
 
-// WalkBTree walks the b-tree and returns all nodes.
-func (pstFile *File) WalkBTree(btreeOffset int, formatType string) ([]BTreeNodeEntry, error) {
-	nodeEntries, err := pstFile.GetBTreeNodeEntries(btreeOffset, formatType)
-
-	if err != nil {
-		return []BTreeNodeEntry{}, err
-	}
-
+// WalkAndCreateBTree walks the b-tree and updates the given nodeEntryBTree.
+func (pstFile *File) WalkAndCreateBTree(nodeEntryBTree *btree.BTree[BTreeNodeEntry], btreeOffset int, formatType string) error {
 	nodeLevel, err := pstFile.GetBTreeNodeLevel(btreeOffset, formatType)
 
 	if err != nil {
-		return []BTreeNodeEntry{}, err
+		return err
 	}
 
-	var btreeNodeEntries []BTreeNodeEntry
+	nodeEntries, err := pstFile.GetBTreeNodeEntries(btreeOffset, formatType, nodeLevel)
+
+	if err != nil {
+		return err
+	}
 
 	if nodeLevel > 0 {
 		// Branch node entries.
 		for i := 0; i < len(nodeEntries); i++ {
 			nodeEntry := nodeEntries[i]
 
-			// Recursively walk through the branch node entries.
-			recursiveNodeOffset, err := nodeEntry.GetFileOffset(true, formatType)
+			nodeEntryBTree.ReplaceOrInsert(nodeEntry)
+
+			err = pstFile.WalkAndCreateBTree(nodeEntryBTree, nodeEntry.FileOffset, formatType)
 
 			if err != nil {
-				return []BTreeNodeEntry{}, err
+				return err
 			}
-
-			recursiveNodeEntries, err := pstFile.WalkBTree(recursiveNodeOffset, formatType)
-
-			if err != nil {
-				return []BTreeNodeEntry{}, err
-			}
-
-			nodeEntry.Children = append(nodeEntry.Children, recursiveNodeEntries...)
-			btreeNodeEntries = append(btreeNodeEntries, nodeEntry)
 		}
 	} else {
 		// Leaf node entries
 		for i := 0; i < len(nodeEntries); i++ {
 			nodeEntry := nodeEntries[i]
 
-			btreeNodeEntries = append(btreeNodeEntries, nodeEntry)
+			nodeEntryBTree.ReplaceOrInsert(nodeEntry)
 		}
 	}
 
-	return btreeNodeEntries, nil
-}
-
-// FindBTreeNodeFromNode recursively walks the children of this node to find the given identifier.
-func FindBTreeNodeFromNode(btreeNode BTreeNodeEntry, identifier int, formatType string) (BTreeNodeEntry, error) {
-	btreeNodeIdentifier, err := btreeNode.GetIdentifier(formatType)
-
-	if err != nil {
-		return BTreeNodeEntry{}, err
-	}
-
-	for _, btreeNodeChild := range btreeNode.Children {
-		node, err := FindBTreeNodeFromNode(btreeNodeChild, identifier, formatType)
-
-		if err != nil {
-			continue
-		}
-
-		return node, nil
-	}
-
-	// Done looping through all children.
-	if btreeNodeIdentifier == identifier {
-		return btreeNode, nil
-	} else {
-		return BTreeNodeEntry{}, errors.New("failed to find b-tree node")
-	}
+	return nil
 }
 
 // FindBTreeNode returns the node in the node or block b-tree with the given identifier.
-// Note that we don't return the first identifier because there may be two or more nodes with
-// the same identifier so prefer leaf nodes (which there is always only one of).
-func (pstFile *File) FindBTreeNode(btreeType int, identifier int, formatType string) (BTreeNodeEntry, error) {
-	var btree []BTreeNodeEntry
-
+func (pstFile *File) FindBTreeNode(btreeType int, identifier int) (BTreeNodeEntry, error) {
 	switch btreeType {
 	case BTreeTypeNode:
-		btree = pstFile.NodeBTree
+		btreeNodeEntry, found := pstFile.NodeBTree.Get(BTreeNodeEntry{Identifier: identifier})
+
+		if !found {
+			return BTreeNodeEntry{}, errors.New("failed to find b-tree node")
+		}
+
+		return btreeNodeEntry, nil
 	case BTreeTypeBlock:
-		btree = pstFile.BlockBTree
+		btreeNodeEntry, found := pstFile.BlockBTree.Get(BTreeNodeEntry{Identifier: identifier})
+
+		if !found {
+			return BTreeNodeEntry{}, errors.New("failed to find b-tree node")
+		}
+
+		return btreeNodeEntry, nil
 	default:
 		return BTreeNodeEntry{}, errors.New("invalid b-tree type")
 	}
-
-	for i, btreeNode := range btree {
-		if i == len(btree) -1 {
-			node, err := FindBTreeNodeFromNode(btreeNode, identifier, formatType)
-
-			if err != nil {
-				// Failed to find identifier.
-				continue
-			}
-
-			return node, nil
-		} else {
-			nextBTreeNode := btree[i + 1]
-
-			nextBTreeNodeIdentifier, err := nextBTreeNode.GetIdentifier(formatType)
-
-			if err != nil {
-				return BTreeNodeEntry{}, err
-			}
-
-			if nextBTreeNodeIdentifier > identifier {
-				node, err := FindBTreeNodeFromNode(btreeNode, identifier, formatType)
-
-				if err != nil {
-					// Failed to find identifier.
-					continue
-				}
-
-				return node, nil
-			}
-		}
-	}
-
-	return BTreeNodeEntry{}, errors.New("failed to find b-tree node")
 }
 
 // GetNodeBTreeNode returns the node with the given identifier in the node b-tree.
-func (pstFile *File) GetNodeBTreeNode(identifier int, formatType string) (BTreeNodeEntry, error) {
-	nodeBTreeNode, err := pstFile.FindBTreeNode(BTreeTypeNode, identifier, formatType)
-
-	if err != nil {
-		return BTreeNodeEntry{}, err
-	}
-
-	return nodeBTreeNode, nil
+func (pstFile *File) GetNodeBTreeNode(identifier int) (BTreeNodeEntry, error) {
+	return pstFile.FindBTreeNode(BTreeTypeNode, identifier)
 }
 
 // GetBlockBTreeNode returns the node with the given identifier in the block b-tree.
-func (pstFile *File) GetBlockBTreeNode(identifier int, formatType string) (BTreeNodeEntry, error) {
+func (pstFile *File) GetBlockBTreeNode(identifier int) (BTreeNodeEntry, error) {
 	// Clear the LSB, which is reserved, but sometimes set.
-	identifier &= 0xfffffffe
-
-	nodeBTreeNode, err := pstFile.FindBTreeNode(BTreeTypeBlock, identifier, formatType)
-
-	if err != nil {
-		return BTreeNodeEntry{}, err
-	}
-
-	return nodeBTreeNode, nil
+	return pstFile.FindBTreeNode(BTreeTypeBlock, identifier&0xfffffffe)
 }
 
 // GetDataBTreeNode searches the identifier in the node b-tree, then searches the data identifier in the block b-tree.
-func (pstFile *File) GetDataBTreeNode(identifier int, formatType string) (BTreeNodeEntry, error) {
-	nodeBTreeNode, err := pstFile.GetNodeBTreeNode(identifier, formatType)
+func (pstFile *File) GetDataBTreeNode(identifier int) (BTreeNodeEntry, error) {
+	nodeBTreeNode, err := pstFile.GetNodeBTreeNode(identifier)
 
 	if err != nil {
 		return BTreeNodeEntry{}, err
 	}
 
-	dataIdentifier, err := nodeBTreeNode.GetDataIdentifier(formatType)
-
-	if err != nil {
-		return BTreeNodeEntry{}, err
-	}
-
-	blockBTreeNode, err := pstFile.GetBlockBTreeNode(dataIdentifier, formatType)
-
-	if err != nil {
-		return BTreeNodeEntry{}, err
-	}
-
-	return blockBTreeNode, nil
+	return pstFile.GetBlockBTreeNode(nodeBTreeNode.DataIdentifier)
 }

@@ -14,7 +14,7 @@ type Folder struct {
 
 // GetRootFolder returns the root folder of the PST file.
 func (pstFile *File) GetRootFolder(formatType string, encryptionType string) (Folder, error) {
-	rootFolderDataNode, err := pstFile.GetDataBTreeNode(IdentifierTypeRootFolder, formatType)
+	rootFolderDataNode, err := pstFile.GetDataBTreeNode(IdentifierTypeRootFolder)
 
 	if err != nil {
 		return Folder{}, err
@@ -44,7 +44,7 @@ func (pstFile *File) GetRootFolder(formatType string, encryptionType string) (Fo
 func (pstFile *File) GetSubFolderTableContext(folder Folder, formatType string, encryptionType string) ([][]TableContextItem, error) {
 	subFoldersIdentifier := folder.Identifier + 11 // +11 returns the identifier of the sub-folders.
 
-	subFoldersDataNode, err := pstFile.GetDataBTreeNode(subFoldersIdentifier, formatType)
+	subFoldersDataNode, err := pstFile.GetDataBTreeNode(subFoldersIdentifier)
 
 	if err != nil {
 		return nil, err

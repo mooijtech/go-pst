@@ -38,6 +38,27 @@ func (pstFile *File) GetBlockTrailerSize(formatType string) (int, error) {
 	}
 }
 
+// GetBlockIdentifierSize return the identifier size of a block identifier stored in the XBlock or XXBlock.
+func (pstFile *File) GetBlockIdentifierSize(formatType string) (int, error) {
+	var identifierSize int
+
+	switch formatType {
+	case FormatTypeUnicode:
+		identifierSize = 8
+		break
+	case FormatTypeUnicode4k:
+		identifierSize = 8
+		break
+	case FormatTypeANSI:
+		identifierSize = 4
+		break
+	default:
+		return -1, errors.New("unsupported format type")
+	}
+
+	return identifierSize, nil
+}
+
 // Constants defining the block types.
 const (
 	BlockTypeXBlock  = 1
@@ -64,21 +85,10 @@ func (pstFile *File) GetBlocks(nodeEntryHeapOnNodeOffset int, formatType string)
 		return nil, err
 	}
 
-	// The identifier size of a block identifier stored in the XBlock or XXBlock.
-	var identifierSize int
+	identifierSize, err := pstFile.GetBlockIdentifierSize(formatType)
 
-	switch formatType {
-	case FormatTypeUnicode:
-		identifierSize = 8
-		break
-	case FormatTypeUnicode4k:
-		identifierSize = 8
-		break
-	case FormatTypeANSI:
-		identifierSize = 4
-		break
-	default:
-		return nil, errors.New("unsupported format type")
+	if err != nil {
+		return nil, err
 	}
 
 	blockLevel, err := pstFile.Read(1, nodeEntryHeapOnNodeOffset+1)
@@ -97,7 +107,7 @@ func (pstFile *File) GetBlocks(nodeEntryHeapOnNodeOffset int, formatType string)
 				return nil, err
 			}
 
-			blockBTreeNode, err := pstFile.GetBlockBTreeNode(int(binary.LittleEndian.Uint32(blockIdentifier)), formatType)
+			blockBTreeNode, err := pstFile.GetBlockBTreeNode(int(binary.LittleEndian.Uint32(blockIdentifier)))
 
 			if err != nil {
 				return nil, err
@@ -118,19 +128,13 @@ func (pstFile *File) GetBlocks(nodeEntryHeapOnNodeOffset int, formatType string)
 				return nil, err
 			}
 
-			blockBTreeNode, err := pstFile.GetBlockBTreeNode(int(binary.LittleEndian.Uint32(blockIdentifier)), formatType)
+			blockBTreeNode, err := pstFile.GetBlockBTreeNode(int(binary.LittleEndian.Uint32(blockIdentifier)))
 
 			if err != nil {
 				return nil, err
 			}
 
-			blockBTreeNodeFileOffset, err := blockBTreeNode.GetFileOffset(false, formatType)
-
-			if err != nil {
-				return nil, err
-			}
-
-			blockBTreeNodeBlocks, err := pstFile.GetBlocks(blockBTreeNodeFileOffset, formatType)
+			blockBTreeNodeBlocks, err := pstFile.GetBlocks(blockBTreeNode.FileOffset, formatType)
 
 			if err != nil {
 				return nil, err

@@ -89,13 +89,7 @@ func (localDescriptor *LocalDescriptor) GetLocalDescriptorsIdentifier(formatType
 }
 
 func (pstFile *File) GetLocalDescriptors(btreeNodeEntry BTreeNodeEntry, formatType string) ([]LocalDescriptor, error) {
-	localDescriptorsIdentifier, err := btreeNodeEntry.GetLocalDescriptorsIdentifier(formatType)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return pstFile.GetLocalDescriptorsFromIdentifier(localDescriptorsIdentifier, formatType)
+	return pstFile.GetLocalDescriptorsFromIdentifier(btreeNodeEntry.LocalDescriptorsIdentifier, formatType)
 }
 
 // GetLocalDescriptorsFromIdentifier returns the local descriptors of the local descriptors identifier.
@@ -106,19 +100,13 @@ func (pstFile *File) GetLocalDescriptorsFromIdentifier(localDescriptorsIdentifie
 		return []LocalDescriptor{}, nil
 	}
 
-	localDescriptorsNode, err := pstFile.GetBlockBTreeNode(localDescriptorsIdentifier, formatType)
+	localDescriptorsNode, err := pstFile.GetBlockBTreeNode(localDescriptorsIdentifier)
 
 	if err != nil {
 		return nil, err
 	}
 
-	localDescriptorsOffset, err := localDescriptorsNode.GetFileOffset(false, formatType)
-
-	if err != nil {
-		return nil, err
-	}
-
-	signature, err := pstFile.Read(1, localDescriptorsOffset)
+	signature, err := pstFile.Read(1, localDescriptorsNode.FileOffset)
 
 	if err != nil {
 		return nil, err
@@ -128,7 +116,7 @@ func (pstFile *File) GetLocalDescriptorsFromIdentifier(localDescriptorsIdentifie
 		return nil, errors.New("invalid local descriptors signature")
 	}
 
-	localDescriptorsLevel, err := pstFile.Read(1, localDescriptorsOffset+1)
+	localDescriptorsLevel, err := pstFile.Read(1, localDescriptorsNode.FileOffset+1)
 
 	if err != nil {
 		return nil, err
@@ -155,7 +143,7 @@ func (pstFile *File) GetLocalDescriptorsFromIdentifier(localDescriptorsIdentifie
 		return nil, errors.New("unsupported format type")
 	}
 
-	localDescriptorsEntryCount, err := pstFile.Read(2, localDescriptorsOffset+2)
+	localDescriptorsEntryCount, err := pstFile.Read(2, localDescriptorsNode.FileOffset+2)
 
 	if err != nil {
 		return nil, err
@@ -165,13 +153,13 @@ func (pstFile *File) GetLocalDescriptorsFromIdentifier(localDescriptorsIdentifie
 
 	switch formatType {
 	case FormatTypeUnicode:
-		localDescriptorsEntriesOffset = localDescriptorsOffset + 8
+		localDescriptorsEntriesOffset = localDescriptorsNode.FileOffset + 8
 		break
 	case FormatTypeUnicode4k:
-		localDescriptorsEntriesOffset = localDescriptorsOffset + 8
+		localDescriptorsEntriesOffset = localDescriptorsNode.FileOffset + 8
 		break
 	case FormatTypeANSI:
-		localDescriptorsEntriesOffset = localDescriptorsOffset + 4
+		localDescriptorsEntriesOffset = localDescriptorsNode.FileOffset + 4
 		break
 	default:
 		return []LocalDescriptor{}, errors.New("unsupported format type")
@@ -217,7 +205,7 @@ func (localDescriptor *LocalDescriptor) GetData(pstFile *File, formatType string
 		return nil, err
 	}
 
-	blockBTreeNode, err := pstFile.GetBlockBTreeNode(dataIdentifier, formatType)
+	blockBTreeNode, err := pstFile.GetBlockBTreeNode(dataIdentifier)
 
 	if err != nil {
 		return nil, err
@@ -235,20 +223,14 @@ func (localDescriptor *LocalDescriptor) GetData(pstFile *File, formatType string
 		currentOffset := 0
 
 		for _, block := range inputStream.Blocks {
-			blockSize, err := block.GetSize(formatType)
-
-			if err != nil {
-				return nil, err
-			}
-
-			blockData, err := inputStream.Read(blockSize, currentOffset)
+			blockData, err := inputStream.Read(block.Size, currentOffset)
 
 			if err != nil {
 				return nil, err
 			}
 
 			data = append(data, blockData...)
-			currentOffset += blockSize
+			currentOffset += block.Size
 		}
 	} else {
 		data, err = inputStream.Read(inputStream.Size, 0)

@@ -31,7 +31,7 @@ func (pstFile *File) NewHeapOnNodeFromLocalDescriptor(localDescriptor LocalDescr
 		return HeapOnNode{}, err
 	}
 
-	localDescriptorDataNode, err := pstFile.GetBlockBTreeNode(localDescriptorDataIdentifier, formatType)
+	localDescriptorDataNode, err := pstFile.GetBlockBTreeNode(localDescriptorDataIdentifier)
 
 	if err != nil {
 		return HeapOnNode{}, err

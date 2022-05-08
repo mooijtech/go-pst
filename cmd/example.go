@@ -4,10 +4,13 @@ package main
 
 import (
 	"fmt"
-	pst "github.com/mooijtech/go-pst/v3/pkg"
+	pst "github.com/mooijtech/go-pst/v4/pkg"
+	"time"
 )
 
 func main() {
+	startTime := time.Now()
+
 	pstFile, err := pst.NewFromFile("data/enron.pst")
 
 	if err != nil {
@@ -86,6 +89,8 @@ func main() {
 		fmt.Printf("Failed to get sub-folders: %s\n", err)
 		return
 	}
+
+	fmt.Printf("Time: %s", time.Now().Sub(startTime).String())
 }
 
 // GetSubFolders is a recursive function which retrieves all sub-folders for the specified folder.

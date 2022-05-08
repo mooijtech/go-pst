@@ -20,7 +20,7 @@ type Message struct {
 func (pstFile *File) GetMessageTableContext(folder Folder, formatType string, encryptionType string) ([][]TableContextItem, error) {
 	emailsIdentifier := folder.Identifier + 12
 
-	emailsNode, err := pstFile.GetNodeBTreeNode(emailsIdentifier, formatType)
+	emailsNode, err := pstFile.GetNodeBTreeNode(emailsIdentifier)
 
 	if err != nil {
 		return nil, err
@@ -32,7 +32,7 @@ func (pstFile *File) GetMessageTableContext(folder Folder, formatType string, en
 		return nil, err
 	}
 
-	emailsDataNode, err := pstFile.GetDataBTreeNode(emailsIdentifier, formatType)
+	emailsDataNode, err := pstFile.GetDataBTreeNode(emailsIdentifier)
 
 	if err != nil {
 		return nil, err
@@ -100,19 +100,13 @@ func (pstFile *File) GetMessage(identifier int, formatType string, encryptionTyp
 		return Message{}, errors.New("invalid identifier type")
 	}
 
-	messageNode, err := pstFile.GetNodeBTreeNode(identifier, formatType)
+	messageNode, err := pstFile.GetNodeBTreeNode(identifier)
 
 	if err != nil {
 		return Message{}, err
 	}
 
-	messageNodeDataIdentifier, err := messageNode.GetDataIdentifier(formatType)
-
-	if err != nil {
-		return Message{}, err
-	}
-
-	messageDataNode, err := pstFile.GetBlockBTreeNode(messageNodeDataIdentifier, formatType)
+	messageDataNode, err := pstFile.GetBlockBTreeNode(messageNode.DataIdentifier)
 
 	if err != nil {
 		return Message{}, err
@@ -158,7 +152,7 @@ func (message *Message) GetString(propertyID int, pstFile *File, formatType stri
 		return "", err
 	}
 
- 	return propertyContextItem.GetString(encoding, message.LocalDescriptors, pstFile, formatType, encryptionType)
+	return propertyContextItem.GetString(encoding, message.LocalDescriptors, pstFile, formatType, encryptionType)
 }
 
 // GetInteger returns the integer value of the property.
@@ -172,7 +166,7 @@ func (message *Message) GetInteger(propertyID int) (int, error) {
 	return propertyContextItem.GetInteger(), nil
 }
 
-// GetMessageDate returns the date value of the property.
+// GetDate returns the date value of the property.
 func (message *Message) GetDate(propertyID int) (time.Time, error) {
 	propertyContextItem, err := FindPropertyContextItem(message.PropertyContext, propertyID)
 
@@ -190,12 +184,12 @@ func (message *Message) GetSubject(pstFile *File, formatType string, encryptionT
 
 // GetMessageClass returns the message class.
 func (message *Message) GetMessageClass(pstFile *File, formatType string, encryptionType string) (string, error) {
-	return message.GetString( 26, pstFile, formatType, encryptionType)
+	return message.GetString(26, pstFile, formatType, encryptionType)
 }
 
 // GetMessageID returns the message ID.
 func (message *Message) GetMessageID(pstFile *File, formatType string, encryptionType string) (string, error) {
-	return message.GetString( 4149, pstFile, formatType, encryptionType)
+	return message.GetString(4149, pstFile, formatType, encryptionType)
 }
 
 // GetHeaders return the message headers.
