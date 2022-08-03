@@ -30,26 +30,6 @@
 
 The PFF (Personal Folder File) and OFF (Offline Folder File) format is used to store Microsoft Outlook e-mails, appointments and contacts. The PST (Personal Storage Table), OST (Offline Storage Table) and PAB (Personal Address Book) file format consist of the PFF format.
 
-## go-pst v4
-
-The latest version of go-pst **requires Go 1.18** due to generics support: [Shaving 40% Off Google’s B-Tree Implementation with Go Generics](https://www.scylladb.com/2022/04/27/shaving-40-off-googles-b-tree-implementation-with-go-generics/).
-Operations that search for nodes (such as getting folders and messages) are much faster and uses less memory (but initializing the b-trees uses a bit more than previously).
-Benchmarks can be found [here](https://github.com/mooijtech/go-pst/tree/master/benchmarks).
-
-For Go 1.16 use go-pst v3 (`go get github.com/mooijtech/go-pst/v3`)
-
-## License
-
-The source code of `go-pst` is provided under a **dual license model**.
-
-### Commercial License
-
-If you want to use `go-pst` to develop commercial sites, tools, and applications, the Commercial License is the appropriate license. With this option, your source code is kept proprietary. Purchase an `go-pst` Commercial License by contacting **info@mooijtech.com**.
-
-### Open source license
-
-If you are creating an open source application under a license compatible with the GNU Affero GPL license v3, you may use `go-pst` under the terms of the [AGPL-3.0](https://opensource.org/licenses/AGPL-3.0).
-
 ## Usage
 
 ```bash
@@ -176,6 +156,16 @@ func GetSubFolders(pstFile pst.File, folder pst.Folder, formatType string, encry
   return nil
 }
 ```
+
+## License 
+
+go-pst is open-source under the GNU Affero General Public License Version 3 - AGPLv3. Fundamentally, this means that you are free to use go-pst for your project, as long as you don't modify go-pst. If you do, you have to make the modifications public.
+
+## Contact
+
+Feel free to contact me if you have any questions.<br/>
+**Name**: Marten Mooij<br/>
+**Email**: info@mooijtech.com<br/>
 
 ## References
 
@@ -646,15 +636,3 @@ The 64-bit-with-4k local descriptors are the same format as the 64-bit local des
 | 0             |  4            | The [identifier](#identifier) (HNID). |
 | 4             |  4            | The data [identifier](#identifier). Searchable in the block b-tree. |
 | 8             |  4            | The local descriptor [identifier](#identifier). |
-
-
-## Contact
-
-Feel free to contact me if you have any questions.<br/>
-**Name**: Marten Mooij<br/>
-**Email**: info@mooijtech.com<br/>
-**Phone**: +31 6 30 53 47 67
-
-## License
-
-[AGPLv3](https://github.com/mooijtech/go-pst/blob/master/LICENSE.md)

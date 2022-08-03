@@ -1,12 +1,7 @@
-Copyright (C) 2022 Mooij Technologies.
+Copyright (C) 2022 Marten Mooij.
 
-go-pst is offered under the [GNU Affero General Public License v3.0](https://opensource.org/licenses/AGPL-3.0)
-and as commercial software.
+go-pst is offered under the [GNU Affero General Public License v3.0](https://opensource.org/licenses/AGPL-3.0).
 A copy of the AGPL license can be found in [LICENSE_AGPLv3.0.txt](https://github.com/mooijtech/go-pst/blob/master/LICENSE_AGPLv3.0.txt)
-
-# Commercial Licensing
-
-For commercial licensing, contact us at info@mooijtech.com.
 
 # AGPL
 This program is free software: you can redistribute it and/or modify
