@@ -1,0 +1,49 @@
+// go-pst is a library for reading Personal Storage Table (.pst) files (written in Go/Golang).
+//
+// Copyright (C) 2022  Marten Mooij
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+syntax = "proto3";
+option go_package = "github.com/mooijtech/go-pst;properties";
+
+message Voicemail {
+  // Contains textual annotations to a voice message after it has been delivered to the user's mailbox.
+  optional string audio_notes = 1; 
+  // Contains a unique identifier associated with the phone call.
+  optional string x_call_id = 3; 
+  // Specifies how many discrete pages are contained within an attachment representing a facsimile message.
+  optional int32 x_fax_number_of_pages = 4; 
+  // Indicates that the client only renders the message on a phone.
+  optional bool x_require_protected_play_on_phone = 5; 
+  // Contains the telephone number of the caller associated with a voice mail message.
+  optional string x_sender_telephone_number = 6; 
+  // Contains the list of names for the audio file attachments that are to be played as part of a message, in reverse order.
+  optional string x_voice_message_attachment_order = 7; 
+  // Specifies the length of the attached audio message, in seconds.
+  optional int32 x_voice_message_duration = 8; 
+  // Contains the name of the caller who left the attached voice message, as provided by the voice network's caller ID system.
+  optional string x_voice_message_sender_name = 9; 
+  // Contains a unique identifier associated with the phone call.
+  optional string call_id = 10; // @gotags: propertyID:"26630"
+  // Contains the number of pages in a Fax object.
+  optional int32 fax_number_of_pages = 11; // @gotags: propertyID:"26628"
+  // Contains the telephone number of the caller associated with a voice mail message.
+  optional string sender_telephone_number = 12; // @gotags: propertyID:"26626"
+  // Contains a list of file names for the audio file attachments that are to be played as part of a message.
+  optional string voice_message_attachment_order = 13; // @gotags: propertyID:"26629"
+  // Specifies the length of the attached audio message, in seconds.
+  optional int32 voice_message_duration = 14; // @gotags: propertyID:"26625"
+  // Specifies the name of the caller who left the attached voice message, as provided by the voice network's caller ID system.
+  optional string voice_message_sender_name = 15; // @gotags: propertyID:"26627"
+}

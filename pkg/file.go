@@ -1,131 +1,206 @@
-// Package pst
-// This file is part of go-pst (https://github.com/mooijtech/go-pst)
-// Copyright (C) 2021 Marten Mooij (https://www.mooijtech.com/)
+// go-pst is a library for reading Personal Storage Table (.pst) files (written in Go/Golang).
+//
+// Copyright (C) 2022  Marten Mooij
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 package pst
 
 import (
 	"bytes"
 	"encoding/binary"
-	"errors"
-	"github.com/mooijtech/btree/v2"
 	"io"
 	"os"
+
+	"github.com/pkg/errors"
 )
 
 // File represents a PST file.
 type File struct {
-	Reader     io.ReadSeekCloser
-	FormatType string
-
-	// Variables which need to be initialized.
-	NodeBTree   *btree.BTree[BTreeNodeEntry]
-	BlockBTree  *btree.BTree[BTreeNodeEntry]
-	NameToIDMap *NameToIDMap
+	Reader         io.ReadSeekCloser
+	FormatType     FormatType
+	EncryptionType EncryptionType
+	NodeBTree      BTreeStore
+	BlockBTree     BTreeStore
+	NameToIDMap    *NameToIDMap
 }
 
 // NewFromFile is a constructor for creating PST files from a file path.
-func NewFromFile(filePath string) (File, error) {
+func NewFromFile(name string) (*File, error) {
+	inputFile, err := os.Open(name)
+
+	if err != nil {
+		return nil, errors.WithStack(err)
+	}
+
+	return NewFromReader(inputFile)
+}
+
+// NewFromReader is a constructor for creating PST files from an io.ReadSeekCloser.
+func NewFromReader(reader io.ReadSeekCloser) (*File, error) {
+	return NewFromReaderWithBTrees(reader, NewBTreeStoreInMemory(), NewBTreeStoreInMemory())
+}
+
+// NewFromFileWithBTrees is a constructor for creating PST files from a file path using the b-tree stores.
+// Initialization of the b-tree stores will be skipped respectively if not empty.
+func NewFromFileWithBTrees(filePath string, nodeBTree BTreeStore, blockBTree BTreeStore) (*File, error) {
 	inputFile, err := os.Open(filePath)
 
 	if err != nil {
-		return File{}, err
+		return nil, errors.WithStack(err)
 	}
 
-	return File{
-		Reader: inputFile,
-	}, nil
+	return NewFromReaderWithBTrees(inputFile, nodeBTree, blockBTree)
 }
 
-// NewFromReader is a constructor for creating PST files from a reader.
-func NewFromReader(reader io.ReadSeekCloser) File {
-	return File{
-		Reader: reader,
+// NewFromReaderWithBTrees is a constructor for creating PST files from a reader using the specified b-tree stores.
+// Initialization of the b-tree stores will be skipped respectively if not empty.
+func NewFromReaderWithBTrees(reader io.ReadSeekCloser, nodeBTree BTreeStore, blockBTree BTreeStore) (*File, error) {
+	pstFile := &File{
+		Reader:     reader,
+		NodeBTree:  nodeBTree,
+		BlockBTree: blockBTree,
 	}
-}
 
-// Close closes the PST file.
-func (pstFile *File) Close() error {
-	pstFile.NodeBTree.Clear(false)
-	pstFile.BlockBTree.Clear(false)
-	pstFile.NameToIDMap = nil
-
-	return pstFile.Reader.Close()
-}
-
-// Read reads the PST file from the given output buffer size and offset to bytes.
-func (pstFile *File) Read(outputBufferSize int, offset int) ([]byte, error) {
-	_, err := pstFile.Reader.Seek(int64(offset), 0)
+	isValidSignature, err := pstFile.IsValidSignature()
 
 	if err != nil {
-		return nil, err
+		return nil, errors.WithStack(err)
+	} else if !isValidSignature {
+		return nil, errors.WithStack(ErrFileSignatureInvalid)
 	}
 
-	outputBuffer := make([]byte, outputBufferSize)
-
-	_, err = pstFile.Reader.Read(outputBuffer)
+	formatType, err := pstFile.GetFormatType()
 
 	if err != nil {
-		return nil, err
+		return nil, errors.WithStack(err)
 	}
 
-	return outputBuffer, nil
+	pstFile.FormatType = formatType
+
+	if _, err := pstFile.GetContentType(); err != nil {
+		return nil, errors.WithStack(err)
+	}
+
+	encryptionType, err := pstFile.GetEncryptionType()
+
+	if err != nil {
+		return nil, errors.WithStack(err)
+	}
+
+	pstFile.EncryptionType = encryptionType
+
+	if pstFile.NodeBTree.Len() == 0 {
+		nodeBTreeOffset, err := pstFile.GetNodeBTreeOffset()
+
+		if err != nil {
+			return nil, errors.WithStack(err)
+		}
+
+		err = pstFile.WalkAndCreateBTree(nodeBTreeOffset, BTreeTypeNode, pstFile.NodeBTree)
+
+		if err != nil {
+			return nil, errors.WithStack(err)
+		}
+	}
+
+	if pstFile.BlockBTree.Len() == 0 {
+		blockBTreeOffset, err := pstFile.GetBlockBTreeOffset()
+
+		if err != nil {
+			return nil, errors.WithStack(err)
+		}
+
+		err = pstFile.WalkAndCreateBTree(blockBTreeOffset, BTreeTypeBlock, pstFile.BlockBTree)
+
+		if err != nil {
+			return nil, errors.WithStack(err)
+		}
+	}
+
+	nameToIDMap, err := pstFile.GetNameToIDMap()
+
+	if err != nil {
+		return nil, errors.WithStack(err)
+	}
+
+	pstFile.NameToIDMap = nameToIDMap
+
+	return pstFile, nil
 }
 
 // IsValidSignature returns true is the file matches the PFF format signature.
 // References "File Header".
-func (pstFile *File) IsValidSignature() (bool, error) {
-	signature, err := pstFile.Read(4, 0)
+func (file *File) IsValidSignature() (bool, error) {
+	signature := make([]byte, 4)
 
-	if err != nil {
-		return false, err
+	if _, err := file.ReadAt(signature, 0); err != nil {
+		return false, errors.WithStack(err)
 	}
 
 	return bytes.Equal(signature, []byte("!BDN")), nil
 }
 
+// ContentType represents a PST, OST or PAB file.
+type ContentType uint8
+
 // Constants defining the content types.
 // References "Content Types".
-var (
-	ContentTypePST = []byte("SM")
-	ContentTypeOST = []byte("SO")
-	ContentTypePAB = []byte("AB")
+const (
+	ContentTypePST ContentType = iota
+	ContentTypeOST
+	ContentTypePAB
 )
 
 // GetContentType returns if the file is a PST, OST or PAB file.
 // References "File Header", "Content Types".
-func (pstFile *File) GetContentType() ([]byte, error) {
-	contentType, err := pstFile.Read(2, 8)
+func (file *File) GetContentType() (ContentType, error) {
+	contentType := make([]byte, 2)
 
-	if err != nil {
-		return nil, err
+	if _, err := file.ReadAt(contentType, 8); err != nil {
+		return 0, errors.WithStack(err)
 	}
 
-	if bytes.Equal(contentType, ContentTypePST) {
+	if bytes.Equal(contentType, []byte("SM")) {
 		return ContentTypePST, nil
-	} else if bytes.Equal(contentType, ContentTypeOST) {
+	} else if bytes.Equal(contentType, []byte("SO")) {
 		return ContentTypeOST, nil
-	} else if bytes.Equal(contentType, ContentTypePAB) {
+	} else if bytes.Equal(contentType, []byte("AB")) {
 		return ContentTypePAB, nil
 	} else {
-		return nil, errors.New("unsupported content type")
+		return 0, errors.WithStack(ErrContentTypeUnsupported)
 	}
 }
+
+// FormatType represents a Unicode or ANSI format type.
+type FormatType uint8
 
 // Constants defining the format types.
 // References "Format Types".
 const (
-	FormatTypeANSI      = "ANSI"
-	FormatTypeUnicode   = "Unicode"
-	FormatTypeUnicode4k = "Unicode4k"
+	FormatTypeANSI FormatType = iota
+	FormatTypeUnicode
+	FormatTypeUnicode4k
 )
 
 // GetFormatType returns the format type.
 // References "File Header", "Format Types".
-func (pstFile *File) GetFormatType() (string, error) {
-	formatType, err := pstFile.Read(2, 10)
+func (file *File) GetFormatType() (FormatType, error) {
+	formatType := make([]byte, 2)
 
-	if err != nil {
-		return "", err
+	if _, err := file.ReadAt(formatType, 10); err != nil {
+		return 0, errors.WithStack(err)
 	}
 
 	switch binary.LittleEndian.Uint16(formatType) {
@@ -140,51 +215,66 @@ func (pstFile *File) GetFormatType() (string, error) {
 	case 36:
 		return FormatTypeUnicode4k, nil
 	default:
-		return "", errors.New("unsupported format type")
+		return 0, errors.WithStack(ErrFormatTypeUnsupported)
 	}
 }
+
+type EncryptionType uint8
 
 // Constants defining the encryption types.
 // References "Encryption Types".
 const (
-	EncryptionTypeNone    = "None"
-	EncryptionTypePermute = "Permute"
-	EncryptionTypeCyclic  = "Cyclic"
+	EncryptionTypeNone    EncryptionType = 0
+	EncryptionTypePermute EncryptionType = 1
+	//EncryptionTypeCyclic  EncryptionType = 2 // Not implemented currently.
 )
 
 // GetEncryptionType returns the encryption type.
 // References "The 64-bit header data", "The 32-bit header data", "Encryption Types".
-func (pstFile *File) GetEncryptionType(formatType string) (string, error) {
-	var encryptionTypeOffset int
+func (file *File) GetEncryptionType() (EncryptionType, error) {
+	outputBuffer := make([]byte, 1)
+	var offset int64
 
-	switch formatType {
-	case FormatTypeUnicode:
-		encryptionTypeOffset = 513
-		break
-	case FormatTypeUnicode4k:
-		encryptionTypeOffset = 513
-		break
+	switch file.FormatType {
 	case FormatTypeANSI:
-		encryptionTypeOffset = 461
-		break
+		offset = 461
 	default:
-		return "", errors.New("unsupported format type")
+		offset = 513
 	}
 
-	encryptionType, err := pstFile.Read(1, encryptionTypeOffset)
-
-	if err != nil {
-		return "", err
+	if _, err := file.ReadAt(outputBuffer, offset); err != nil {
+		return 0, errors.WithStack(err)
 	}
 
-	switch binary.LittleEndian.Uint16([]byte{encryptionType[0], 0}) {
+	switch outputBuffer[0] {
 	case 0:
 		return EncryptionTypeNone, nil
 	case 1:
 		return EncryptionTypePermute, nil
-	case 2:
-		return EncryptionTypeCyclic, nil
 	default:
-		return "", errors.New("unsupported encryption type")
+		return 0, errors.WithStack(ErrEncryptionTypeUnsupported)
 	}
+}
+
+// Close closes the PST file.
+func (file *File) Close() error {
+	file.NodeBTree.Clear()
+	file.BlockBTree.Clear()
+
+	return file.Reader.Close()
+}
+
+// ReadAt implements io.ReadAt for the PST file.
+func (file *File) ReadAt(outputBuffer []byte, offset int64) (int, error) {
+	if _, err := file.Reader.Seek(offset, 0); err != nil {
+		return 0, errors.WithStack(err)
+	}
+
+	written, err := file.Reader.Read(outputBuffer)
+
+	if err != nil {
+		return written, errors.WithStack(err)
+	}
+
+	return written, nil
 }

@@ -1,67 +1,87 @@
-// Package pst
-// This file is part of go-pst (https://github.com/mooijtech/go-pst)
-// Copyright (C) 2021 Marten Mooij (https://www.mooijtech.com/)
+// go-pst is a library for reading Personal Storage Table (.pst) files (written in Go/Golang).
+//
+// Copyright (C) 2022  Marten Mooij
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 package pst
 
-// BTreeOnHeapHeader represents the b-tree on heap header.
+import (
+	"encoding/binary"
+
+	"github.com/pkg/errors"
+)
+
+// BTreeOnHeapHeader represents the B-Tree-on-Heap header.
 type BTreeOnHeapHeader struct {
-	TableType int
-	KeySize   int
-	ValueSize int
-	Levels    int
-	HIDRoot   int
+	TableType uint8
+	KeySize   uint8
+	ValueSize uint8
+	Levels    uint8
+	HIDRoot   Identifier
 }
 
-// GetBTreeOnHeapHeader returns the btree on heap header.
-func (pstFile *File) GetBTreeOnHeapHeader(heapOnNode HeapOnNode, localDescriptors []LocalDescriptor, formatType string, encryptionType string) (BTreeOnHeapHeader, error) {
+// GetBTreeOnHeapHeader returns the B-Tree-on-Heap header.
+func (file *File) GetBTreeOnHeapHeader(heapOnNode *HeapOnNode) (*BTreeOnHeapHeader, error) {
 	// All tables should have a BTree-on-Heap header at HID 0x20 (HID User Root from the Heap-on-Node header).
 	hidUserRoot, err := heapOnNode.GetHIDUserRoot()
 
 	if err != nil {
-		return BTreeOnHeapHeader{}, err
+		return nil, errors.WithStack(err)
 	}
 
-	inputStream, err := pstFile.NewHeapOnNodeInputStreamFromHNID(hidUserRoot, heapOnNode, localDescriptors, formatType, encryptionType)
+	btreeOnHeapReader, err := file.GetHeapOnNodeReaderFromHNID(hidUserRoot, *heapOnNode.Reader)
 
 	if err != nil {
-		return BTreeOnHeapHeader{}, err
+		return nil, errors.WithStack(err)
 	}
 
-	btreeOnHeapTableType, err := inputStream.SeekAndReadUint16(1, 0)
+	btreeOnHeapTableType := make([]byte, 1)
 
-	if err != nil {
-		return BTreeOnHeapHeader{}, err
+	if _, err := btreeOnHeapReader.ReadAt(btreeOnHeapTableType, 0); err != nil {
+		return nil, errors.WithStack(err)
 	}
 
-	btreeOnHeapKeySize, err := inputStream.SeekAndReadUint16(1, 1)
+	btreeOnHeapKeySize := make([]byte, 1)
 
-	if err != nil {
-		return BTreeOnHeapHeader{}, err
+	if _, err := btreeOnHeapReader.ReadAt(btreeOnHeapKeySize, 1); err != nil {
+		return nil, errors.WithStack(err)
 	}
 
-	btreeOnHeapValueSize, err := inputStream.SeekAndReadUint16(1, 2)
+	btreeOnHeapValueSize := make([]byte, 1)
 
-	if err != nil {
-		return BTreeOnHeapHeader{}, err
+	if _, err := btreeOnHeapReader.ReadAt(btreeOnHeapValueSize, 2); err != nil {
+		return nil, errors.WithStack(err)
 	}
 
-	btreeOnHeapLevels, err := inputStream.SeekAndReadUint16(1, 3)
+	btreeOnHeapLevels := make([]byte, 1)
 
-	if err != nil {
-		return BTreeOnHeapHeader{}, err
+	if _, err := btreeOnHeapReader.ReadAt(btreeOnHeapLevels, 3); err != nil {
+		return nil, errors.WithStack(err)
 	}
 
-	btreeOnHeapHIDRoot, err := inputStream.SeekAndReadUint32(4, 4)
+	btreeOnHeapHIDRoot := make([]byte, 4)
 
-	if err != nil {
-		return BTreeOnHeapHeader{}, err
+	if _, err := btreeOnHeapReader.ReadAt(btreeOnHeapHIDRoot, 4); err != nil {
+		return nil, errors.WithStack(err)
 	}
 
-	return BTreeOnHeapHeader{
-		TableType: btreeOnHeapTableType,
-		KeySize:   btreeOnHeapKeySize,
-		ValueSize: btreeOnHeapValueSize,
-		Levels:    btreeOnHeapLevels,
-		HIDRoot:   btreeOnHeapHIDRoot,
+	return &BTreeOnHeapHeader{
+		TableType: btreeOnHeapTableType[0],
+		KeySize:   btreeOnHeapKeySize[0],
+		ValueSize: btreeOnHeapValueSize[0],
+		Levels:    btreeOnHeapLevels[0],
+		HIDRoot:   Identifier(binary.LittleEndian.Uint32(btreeOnHeapHIDRoot)),
 	}, nil
 }

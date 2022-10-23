@@ -1,0 +1,67 @@
+// go-pst is a library for reading Personal Storage Table (.pst) files (written in Go/Golang).
+//
+// Copyright (C) 2022  Marten Mooij
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+syntax = "proto3";
+option go_package = "github.com/mooijtech/go-pst;properties";
+
+message Attachment {
+  // Contains the Content-Type of the Mac attachment.
+  optional string attachment_mac_content_type = 1; 
+  // Contains the original permission type data associated with a web reference attachment.
+  optional int32 attachment_original_permission_type = 3; 
+  // Contains the permission type data associated with a web reference attachment.
+  optional int32 attachment_permission_type = 4; 
+  // Contains the provider type data associated with a web reference attachment.
+  optional string attachment_provider_type = 5; 
+  // Contains the base of a relative URI.
+  optional string attach_content_base = 7; // @gotags: propertyID:"14097"
+  // Contains a content identifier unique to the Message object that matches a corresponding "cid:" URI schema reference in the HTML body of the Message object.
+  optional string attach_content_id = 8; // @gotags: propertyID:"14098"
+  // Contains a relative or full URI that matches a corresponding reference in the HTML body of a Message object.
+  optional string attach_content_location = 9; // @gotags: propertyID:"14099"
+  // Contains a file name extension that indicates the document type of an attachment.
+  optional string attach_extension = 13; // @gotags: propertyID:"14083"
+  // Contains the 8.3 name of the PidTagAttachLongFilename property (section 2.595).
+  optional string attach_filename = 14; // @gotags: propertyID:"14084"
+  // Indicates which body formats might reference this attachment when rendering data.
+  optional int32 attach_flags = 15; // @gotags: propertyID:"14100"
+  // Contains the full filename and extension of the Attachment object.
+  optional string attach_long_filename = 16; // @gotags: propertyID:"14087"
+  // Contains the fully-qualified path and file name with extension.
+  optional string attach_long_pathname = 17; // @gotags: propertyID:"14093"
+  // Indicates that a contact photo attachment is attached to a Contact object.
+  optional bool attachment_contact_photo = 18; // @gotags: propertyID:"32767"
+  // Indicates special handling for an Attachment object.
+  optional int32 attachment_flags = 19; // @gotags: propertyID:"32765"
+  // Indicates whether an Attachment object is hidden from the end user.
+  optional bool attachment_hidden = 20; // @gotags: propertyID:"32766"
+  // Contains the type of Message object to which an attachment is linked.
+  optional int32 attachment_link_id = 21; // @gotags: propertyID:"32762"
+  // Represents the way the contents of an attachment are accessed.
+  optional int32 attach_method = 22; // @gotags: propertyID:"14085"
+  // Contains a content-type MIME header.
+  optional string attach_mime_tag = 23; // @gotags: propertyID:"14094"
+  // Identifies the Attachment object within its Message object.
+  optional int32 attach_number = 24; // @gotags: propertyID:"3617"
+  // Contains the 8.3 name of the PidTagAttachLongPathname property (section 2.596).
+  optional string attach_pathname = 25; // @gotags: propertyID:"14088"
+  // Contains the size, in bytes, consumed by the Attachment object on the server.
+  optional int32 attach_size = 27; // @gotags: propertyID:"3616"
+  // Contains the name of an attachment file, modified so that it can be correlated with TNEF messages.
+  optional string attach_transport_name = 29; // @gotags: propertyID:"14092"
+  // Specifies the character set of an attachment received via MIME with the content-type of text.
+  optional string text_attachment_charset = 31; // @gotags: propertyID:"14107"
+}

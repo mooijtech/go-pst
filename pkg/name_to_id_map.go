@@ -1,59 +1,76 @@
-// Package pst
-// This file is part of go-pst (https://github.com/mooijtech/go-pst)
-// Copyright (C) 2021 Marten Mooij (https://www.mooijtech.com/)
+// go-pst is a library for reading Personal Storage Table (.pst) files (written in Go/Golang).
+//
+// Copyright (C) 2022  Marten Mooij
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 package pst
 
 import (
 	"encoding/binary"
-	"errors"
 	"fmt"
 	"strings"
+
+	"github.com/pkg/errors"
+	"golang.org/x/text/encoding/unicode"
 )
 
 // PropertySets defines the property sets (GUIDs) in the Name-To-ID Map.
 // "Property set: A GUID that identifies a group of properties with a similar purpose."
-// References [MS-OXPROPS].pdf "1.3.2 Commonly Used Property Sets"
-var (
-	PropertySets = []string{
-		"00020329-0000-0000-C000-000000000046",
-		"00062008-0000-0000-C000-000000000046",
-		"00062004-0000-0000-C000-000000000046",
-		"00020386-0000-0000-C000-000000000046",
-		"00062002-0000-0000-C000-000000000046",
-		"6ED8DA90-450B-101B-98DA-00AA003F1305",
-		"0006200A-0000-0000-C000-000000000046",
-		"41F28F13-83F4-4114-A584-EEDB5A6B0BFF",
-		"0006200E-0000-0000-C000-000000000046",
-		"00062041-0000-0000-C000-000000000046",
-		"00062003-0000-0000-C000-000000000046",
-		"4442858E-A9E3-4E80-B900-317A210CC15B",
-		"00020328-0000-0000-C000-000000000046",
-		"71035549-0739-4DCB-9163-00F0580DBBDF",
-		"00062040-0000-0000-C000-000000000046",
-		"23239608-685D-4732-9C55-4C95CB4E8E33",
-		"96357F7F-59E1-47D0-99A7-46515C183B54",
-	}
-)
+// References [MS-OXPROPS]: "1.3.2 Commonly Used Property Sets".
+var PropertySets = []string{
+	"00020329-0000-0000-C000-000000000046",
+	"00062008-0000-0000-C000-000000000046",
+	"00062004-0000-0000-C000-000000000046",
+	"00020386-0000-0000-C000-000000000046",
+	"00062002-0000-0000-C000-000000000046",
+	"6ED8DA90-450B-101B-98DA-00AA003F1305",
+	"0006200A-0000-0000-C000-000000000046",
+	"41F28F13-83F4-4114-A584-EEDB5A6B0BFF",
+	"0006200E-0000-0000-C000-000000000046",
+	"00062041-0000-0000-C000-000000000046",
+	"00062003-0000-0000-C000-000000000046",
+	"4442858E-A9E3-4E80-B900-317A210CC15B",
+	"00020328-0000-0000-C000-000000000046",
+	"71035549-0739-4DCB-9163-00F0580DBBDF",
+	"00062040-0000-0000-C000-000000000046",
+	"23239608-685D-4732-9C55-4C95CB4E8E33",
+	"96357F7F-59E1-47D0-99A7-46515C183B54",
+}
+
+// PropertySet represents a collection of properties.
+type PropertySet uint8
 
 // Constants defining the commonly used property sets.
-var (
-	PropertySetPublicStrings        = 0
-	PropertySetCommon               = 1
-	PropertySetAddress              = 2
-	PropertySetInternetHeaders      = 3
-	PropertySetAppointment          = 4
-	PropertySetMeeting              = 5
-	PropertySetLog                  = 6
-	PropertySetMessaging            = 7
-	PropertySetNote                 = 8
-	PropertySetPostRSS              = 9
-	PropertySetTask                 = 10
-	PropertySetUnifiedMessaging     = 11
-	PropertySetMAPI                 = 12
-	PropertySetAirSync              = 13
-	PropertySetSharing              = 14
-	PropertySetXMLExtractedEntities = 15
-	PropertySetAttachment           = 16
+const (
+	PropertySetPublicStrings PropertySet = iota
+	PropertySetCommon
+	PropertySetAddress
+	PropertySetInternetHeaders
+	PropertySetAppointment
+	PropertySetMeeting
+	PropertySetLog
+	PropertySetMessaging
+	PropertySetNote
+	PropertySetPostRSS
+	PropertySetTask
+	PropertySetUnifiedMessaging
+	PropertySetMAPI
+	PropertySetAirSync
+	PropertySetSharing
+	PropertySetXMLExtractedEntities
+	PropertySetAttachment
 )
 
 // NameToIDMap represents the Name-To-ID Map.
@@ -65,52 +82,39 @@ type NameToIDMap struct {
 	IDToString   map[int]string
 }
 
-// InitializeNameToIDMap initializes the Name-To-ID Map.
-func (pstFile *File) InitializeNameToIDMap(formatType string, encryptionType string) error {
-	nameToIDMap, err := pstFile.GetNameToIDMap(formatType, encryptionType)
-
-	if err != nil {
-		return err
-	}
-
-	pstFile.NameToIDMap = nameToIDMap
-
-	return nil
-}
-
 // GetNameToIDMap returns the Name-To-ID Map.
-func (pstFile *File) GetNameToIDMap(formatType string, encryptionType string) (*NameToIDMap, error) {
-	nameToIDMapNode, err := pstFile.GetNodeBTreeNode(IdentifierTypeNameToIDMap)
+func (file *File) GetNameToIDMap() (*NameToIDMap, error) {
+	nodeBTreeNode, err := file.GetNodeBTreeNode(IdentifierNameToIDMap)
 
 	if err != nil {
-		return nil, err
+		return nil, errors.WithStack(err)
 	}
 
-	localDescriptors, err := pstFile.GetLocalDescriptors(nameToIDMapNode, formatType)
+	localDescriptors, err := file.GetLocalDescriptors(nodeBTreeNode)
 
 	if err != nil {
-		return nil, err
+		return nil, errors.WithStack(err)
 	}
 
-	blockBTreeNode, err := pstFile.GetBlockBTreeNode(nameToIDMapNode.DataIdentifier)
+	blockBTreeNode, err := file.GetBlockBTreeNode(nodeBTreeNode.DataIdentifier)
 
 	if err != nil {
-		return nil, err
+		return nil, errors.WithStack(err)
 	}
 
-	heapOnNode, err := pstFile.NewHeapOnNodeFromNode(blockBTreeNode, formatType, encryptionType)
+	heapOnNode, err := file.GetHeapOnNode(blockBTreeNode)
 
 	if err != nil {
-		return nil, err
+		return nil, errors.WithStack(err)
 	}
 
-	propertyContext, err := pstFile.GetPropertyContext(heapOnNode, formatType, encryptionType)
+	propertyContext, err := file.GetPropertyContext(heapOnNode)
 
 	if err != nil {
-		return nil, err
+		return nil, errors.WithStack(err)
 	}
 
-	propertySetToIndex := make(map[string]int)
+	propertySetToIndex := make(map[string]int, len(PropertySets))
 
 	for i, propertySet := range PropertySets {
 		propertySetToIndex[propertySet] = i
@@ -120,33 +124,25 @@ func (pstFile *File) GetNameToIDMap(formatType string, encryptionType string) (*
 	// References [MS-PST].pdf "2.1.2 Properties"
 	// The GUID Stream is a flat array of 16-byte GUID values that contains the GUIDs associated with all
 	// the property sets used in all the named properties in the PST.
-	guidStream, err := FindPropertyContextItem(propertyContext, 2)
+	guidReader, err := propertyContext.GetPropertyReader(2, localDescriptors...)
 
 	if err != nil {
-		return nil, err
+		return nil, errors.WithStack(err)
 	}
 
-	guidStreamData, err := guidStream.GetData(pstFile, localDescriptors, formatType, encryptionType)
+	guidCount := int(guidReader.Size() / 16)
 
-	if err != nil {
-		return nil, err
-	}
-
-	guidCount := len(guidStreamData) / 16
-
-	var nameToIDMap *NameToIDMap
-
-	offset := 0
+	offset := int64(0)
 
 	var guids []string
 	guidIndexes := make([]int, guidCount)
 
 	for i := 0; i < guidCount; i++ {
-		// Convert bytes to GUID.
-		// References https://github.com/microsoft/go-winio/blob/master/pkg/guid/guid.go
-		var guidBytes [16]byte
+		guidBytes := make([]byte, 16)
 
-		copy(guidBytes[:], guidStreamData[offset:offset+16])
+		if _, err := guidReader.ReadAt(guidBytes, offset); err != nil {
+			return nil, errors.WithStack(err)
+		}
 
 		guid := GUIDFromWindowsArray(guidBytes)
 
@@ -173,31 +169,31 @@ func (pstFile *File) GetNameToIDMap(formatType string, encryptionType string) (*
 	// References [MS-PST].pdf "2.4.7.3 Entry Stream"
 	// References [MS-PST].pdf "2.1.2 Properties"
 	// The Entry Stream is a flat array of NAMEID records that represent all the named properties in the PST.
-	entryStream, err := FindPropertyContextItem(propertyContext, 3)
+	entryStream, err := propertyContext.GetPropertyReader(3, localDescriptors...)
 
 	if err != nil {
-		return nil, err
+		return nil, errors.WithStack(err)
 	}
 
-	entryStreamData, err := entryStream.GetData(pstFile, localDescriptors, formatType, encryptionType)
+	entryStreamData := make([]byte, entryStream.Size())
 
-	if err != nil {
-		return nil, err
+	if _, err := entryStream.ReadAt(entryStreamData, 0); err != nil {
+		return nil, errors.WithStack(err)
 	}
 
 	// References "2.4.7.4  The String Stream"
 	// References [MS-PST].pdf "2.1.2 Properties"
 	// The String Stream is a packed list of strings that is used for all the named properties in the PST.
-	stringStream, err := FindPropertyContextItem(propertyContext, 4)
+	stringStream, err := propertyContext.GetPropertyReader(4)
 
 	if err != nil {
-		return nil, err
+		return nil, errors.WithStack(err)
 	}
 
-	stringStreamData, err := stringStream.GetData(pstFile, localDescriptors, formatType, encryptionType)
+	stringStreamData := make([]byte, stringStream.Size())
 
-	if err != nil {
-		return nil, err
+	if _, err := stringStream.ReadAt(stringStreamData, 0); err != nil {
+		return nil, errors.WithStack(err)
 	}
 
 	// Process the Entry Stream (NAMEID records).
@@ -224,14 +220,11 @@ func (pstFile *File) GetNameToIDMap(formatType string, encryptionType string) (*
 
 			switch namedPropertyGUID {
 			case 1:
-				propertySetIndex = PropertySetMAPI
-				break
+				propertySetIndex = int(PropertySetMAPI)
 			case 2:
-				propertySetIndex = PropertySetPublicStrings
-				break
+				propertySetIndex = int(PropertySetPublicStrings)
 			default:
 				propertySetIndex = guidIndexes[int(namedPropertyGUID)-3]
-				break
 			}
 
 			nameToID[int(namedPropertyIdentifier)|propertySetIndex<<32] = int(namedPropertyIndex)
@@ -239,13 +232,15 @@ func (pstFile *File) GetNameToIDMap(formatType string, encryptionType string) (*
 		} else {
 			// If the named property identifier type is 1, this value is the byte offset into the String stream in
 			// which the string name of the property is stored.
-			keyLength := binary.LittleEndian.Uint16(stringStreamData[int(namedPropertyIdentifier) : int(namedPropertyIdentifier)+4])
+			keyLength := binary.LittleEndian.Uint32(stringStreamData[int(namedPropertyIdentifier) : int(namedPropertyIdentifier)+4])
 
 			if int(keyLength) > 0 && int(keyLength) < len(stringStreamData) {
-				key, err := DecodeBytesToUTF16String(stringStreamData[int(namedPropertyIdentifier)+4 : int(namedPropertyIdentifier)+4+int(keyLength)])
+				utf16Decoder := unicode.UTF16(unicode.LittleEndian, unicode.IgnoreBOM).NewDecoder()
+
+				key, err := utf16Decoder.String(string(stringStreamData[int(namedPropertyIdentifier)+4 : int(namedPropertyIdentifier)+4+int(keyLength)]))
 
 				if err != nil {
-					return nil, err
+					return nil, errors.WithStack(err)
 				}
 
 				namedPropertyIndex += 0x8000
@@ -256,23 +251,23 @@ func (pstFile *File) GetNameToIDMap(formatType string, encryptionType string) (*
 		}
 	}
 
-	nameToIDMap.PropertySets = guids
-	nameToIDMap.NameToID = nameToID
-	nameToIDMap.IDToName = idToName
-	nameToIDMap.StringToID = stringToID
-	nameToIDMap.IDToString = idToString
-
-	return nameToIDMap, nil
+	return &NameToIDMap{
+		PropertySets: guids,
+		NameToID:     nameToID,
+		IDToName:     idToName,
+		StringToID:   stringToID,
+		IDToString:   idToString,
+	}, nil
 }
 
 // GetPropertyID returns the Name-To-ID property ID.
-func (nameToIDMap *NameToIDMap) GetPropertyID(key int, propertySetIndex int) (int, error) {
-	nameToIDKey := propertySetIndex<<32 | key
+func (nameToIDMap *NameToIDMap) GetPropertyID(key int, propertySet PropertySet) (int, error) {
+	nameToIDKey := int(propertySet)<<32 | key
 
-	value, ok := nameToIDMap.NameToID[nameToIDKey]
+	value, found := nameToIDMap.NameToID[nameToIDKey]
 
-	if !ok {
-		return -1, errors.New("failed to find key in Name-To-ID Map")
+	if !found {
+		return -1, errors.WithStack(ErrNameToIDMapKeyNotFound)
 	}
 
 	return value, nil
@@ -291,7 +286,8 @@ type GUID struct {
 }
 
 // GUIDFromWindowsArray constructs a GUID from a Windows encoding array of bytes.
-func GUIDFromWindowsArray(b [16]byte) GUID {
+// References https://github.com/microsoft/go-winio/blob/master/pkg/guid/guid.go
+func GUIDFromWindowsArray(b []byte) GUID {
 	var g GUID
 
 	g.Data1 = binary.LittleEndian.Uint32(b[0:4])

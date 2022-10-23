@@ -1,239 +1,255 @@
-// Package pst
-// This file is part of go-pst (https://github.com/mooijtech/go-pst)
-// Copyright (C) 2021 Marten Mooij (https://www.mooijtech.com/)
+// go-pst is a library for reading Personal Storage Table (.pst) files (written in Go/Golang).
+//
+// Copyright (C) 2022  Marten Mooij
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 package pst
 
 import (
-	"errors"
+	_ "embed"
+	"encoding/csv"
 	"fmt"
-	"time"
+	"github.com/mooijtech/go-pst/v5/pkg/properties"
+	"github.com/pkg/errors"
+	"strings"
 )
 
 // Message represents a message.
 type Message struct {
-	PropertyContext         []PropertyContextItem
-	LocalDescriptors        []LocalDescriptor
-	AttachmentsTableContext [][]TableContextItem
+	PropertyContext        *PropertyContext
+	AttachmentTableContext *TableContext
+	LocalDescriptors       []LocalDescriptor // Used by the PropertyContext and TableContext.
+	File                   *File
+	properties.Message
 }
 
-// GetMessageTableContext returns the message table context of this folder.
-func (pstFile *File) GetMessageTableContext(folder Folder, formatType string, encryptionType string) ([][]TableContextItem, error) {
+// GetMessageTableContext returns the message table context of this folder which contains references to all messages.
+// Note this only returns the identifier of each message.
+func (folder *Folder) GetMessageTableContext() (TableContext, error) {
 	emailsIdentifier := folder.Identifier + 12
 
-	emailsNode, err := pstFile.GetNodeBTreeNode(emailsIdentifier)
+	emailsNode, err := folder.File.GetNodeBTreeNode(emailsIdentifier)
 
 	if err != nil {
-		return nil, err
+		return TableContext{}, errors.WithStack(err)
 	}
 
-	localDescriptors, err := pstFile.GetLocalDescriptors(emailsNode, formatType)
+	localDescriptors, err := folder.File.GetLocalDescriptors(emailsNode)
 
 	if err != nil {
-		return nil, err
+		return TableContext{}, errors.WithStack(err)
 	}
 
-	emailsDataNode, err := pstFile.GetDataBTreeNode(emailsIdentifier)
+	emailsDataNode, err := folder.File.GetDataBTreeNode(emailsIdentifier)
 
 	if err != nil {
-		return nil, err
+		return TableContext{}, errors.WithStack(err)
 	}
 
-	emailsHeapOnNode, err := pstFile.NewHeapOnNodeFromNode(emailsDataNode, formatType, encryptionType)
+	emailsHeapOnNode, err := folder.File.GetHeapOnNode(emailsDataNode)
 
 	if err != nil {
-		return nil, err
+		return TableContext{}, errors.WithStack(err)
 	}
 
-	tableContext, err := pstFile.GetTableContext(emailsHeapOnNode, localDescriptors, formatType, encryptionType, -1, -1, 26610)
+	// 26610 is a message property HNID.
+	tableContext, err := folder.File.GetTableContext(emailsHeapOnNode, localDescriptors, 26610)
 
 	if err != nil {
-		return nil, err
+		return TableContext{}, errors.WithStack(err)
 	}
 
 	return tableContext, nil
 }
 
-// GetMessages returns an array of messages from the message table context.
-func (pstFile *File) GetMessages(folder Folder, formatType string, encryptionType string) ([]Message, error) {
+// MessageIterator implements a message iterator.
+type MessageIterator struct {
+	file                *File
+	messageTableContext TableContext
+
+	err            error
+	currentIndex   int
+	currentMessage *Message
+}
+
+// Err return the error cause.
+func (messageIterator *MessageIterator) Err() error {
+	return messageIterator.err
+}
+
+// Next will ensure that Value returns the next item when executed.
+// If the next value is not retrievable, Next will return false and Err() will return the error cause.
+func (messageIterator *MessageIterator) Next() bool {
+	hasNext := len(messageIterator.messageTableContext.Properties)-1 > messageIterator.currentIndex
+
+	if !hasNext {
+		return false
+	}
+
+	var currentMessage *Message
+
+	for _, property := range messageIterator.messageTableContext.Properties[messageIterator.currentIndex] {
+		// We only return the message identifier in GetMessageTableContext,
+		// so we don't need to check the property ID here.
+		propertyReader, err := messageIterator.messageTableContext.GetPropertyReader(property)
+
+		if err != nil {
+			messageIterator.err = errors.WithStack(err)
+			return false
+		}
+
+		messageIdentifier, err := propertyReader.GetInteger32()
+
+		if err != nil {
+			messageIterator.err = errors.WithStack(err)
+			return false
+		}
+
+		message, err := messageIterator.file.GetMessage(Identifier(messageIdentifier))
+
+		if err != nil {
+			messageIterator.err = errors.WithStack(err)
+			return false
+		}
+
+		currentMessage = message
+	}
+
+	messageIterator.currentIndex++
+	messageIterator.currentMessage = currentMessage
+
+	return true
+}
+
+// Value returns the current value in the iterator.
+func (messageIterator *MessageIterator) Value() *Message {
+	return messageIterator.currentMessage
+}
+
+// Size returns the amount of messages in the message iterator.
+func (messageIterator *MessageIterator) Size() int {
+	return len(messageIterator.messageTableContext.Properties)
+}
+
+func (messageIterator *MessageIterator) CurrentIndex() int {
+	return messageIterator.currentIndex
+}
+
+// GetMessageIterator returns an iterator for messages.
+func (folder *Folder) GetMessageIterator() (MessageIterator, error) {
 	if folder.MessageCount == 0 {
-		return nil, nil
+		return MessageIterator{}, ErrMessagesNotFound
+	} else if folder.Identifier.GetType() == IdentifierTypeSearchFolder {
+		return MessageIterator{}, ErrMessagesNotFound
 	}
 
-	identifierType := folder.Identifier & 0x1F
+	messageTableContext, err := folder.GetMessageTableContext()
 
-	if identifierType == IdentifierTypeSearchFolder {
-		return nil, nil
+	if err != nil {
+		return MessageIterator{}, errors.WithStack(err)
 	}
 
-	messageTableContext, err := pstFile.GetMessageTableContext(folder, formatType, encryptionType)
+	return MessageIterator{
+		file:                folder.File,
+		messageTableContext: messageTableContext,
+	}, nil
+}
+
+// GetAllMessages returns an array of all messages from the message table context.
+// See GetMessageIterator.
+func (folder *Folder) GetAllMessages() ([]*Message, error) {
+	messageIterator, err := folder.GetMessageIterator()
 
 	if err != nil {
 		return nil, err
 	}
 
-	var messages []Message
+	var messages []*Message
 
-	for _, messageTableContextRow := range messageTableContext {
-		for _, messageTableContextColumn := range messageTableContextRow {
-			if messageTableContextColumn.PropertyID == 26610 {
-				message, err := pstFile.GetMessage(messageTableContextColumn.ReferenceHNID, formatType, encryptionType)
-
-				if err != nil {
-					// There may be other messages.
-					fmt.Printf("Failed to get message (%d): %s\n", messageTableContextColumn.ReferenceHNID, err)
-					continue
-				}
-
-				messages = append(messages, message)
-			}
-		}
+	for messageIterator.Next() {
+		messages = append(messages, messageIterator.Value())
 	}
 
-	return messages, nil
+	return messages, messageIterator.Err()
 }
 
 // GetMessage returns the message of the identifier.
-func (pstFile *File) GetMessage(identifier int, formatType string, encryptionType string) (Message, error) {
-	identifierType := identifier & 0x1F
-
-	if identifierType != IdentifierTypeNormalMessage {
-		return Message{}, errors.New("invalid identifier type")
+func (file *File) GetMessage(identifier Identifier) (*Message, error) {
+	if identifier.GetType() != IdentifierTypeNormalMessage {
+		return nil, errors.WithStack(errors.WithMessage(ErrMessageIdentifierTypeInvalid, fmt.Sprintf("Identifier type: %d", identifier.GetType())))
 	}
 
-	messageNode, err := pstFile.GetNodeBTreeNode(identifier)
+	messageNode, err := file.GetNodeBTreeNode(identifier)
 
 	if err != nil {
-		return Message{}, err
+		return nil, errors.WithStack(err)
 	}
 
-	messageDataNode, err := pstFile.GetBlockBTreeNode(messageNode.DataIdentifier)
+	messageDataNode, err := file.GetBlockBTreeNode(messageNode.DataIdentifier)
 
 	if err != nil {
-		return Message{}, err
+		return nil, errors.WithStack(err)
 	}
 
-	messageHeapOnNode, err := pstFile.NewHeapOnNodeFromNode(messageDataNode, formatType, encryptionType)
+	messageHeapOnNode, err := file.GetHeapOnNode(messageDataNode)
 
 	if err != nil {
-		return Message{}, err
+		return nil, errors.WithStack(err)
 	}
 
-	localDescriptors, err := pstFile.GetLocalDescriptors(messageNode, formatType)
+	localDescriptors, err := file.GetLocalDescriptors(messageNode)
 
 	if err != nil {
-		return Message{}, err
+		return nil, errors.WithStack(err)
 	}
 
-	propertyContext, err := pstFile.GetPropertyContext(messageHeapOnNode, formatType, encryptionType)
+	propertyContext, err := file.GetPropertyContext(messageHeapOnNode)
 
 	if err != nil {
-		return Message{}, err
+		return nil, errors.WithStack(err)
 	}
 
-	message := Message{
+	message := &Message{
+		File:             file,
 		PropertyContext:  propertyContext,
 		LocalDescriptors: localDescriptors,
+	}
+
+	if err := propertyContext.LoadProperties(message, localDescriptors...); err != nil {
+		return nil, errors.WithStack(err)
 	}
 
 	return message, nil
 }
 
-// GetString returns the string value of the property.
-func (message *Message) GetString(propertyID int, pstFile *File, formatType string, encryptionType string) (string, error) {
-	propertyContextItem, err := FindPropertyContextItem(message.PropertyContext, propertyID)
+//go:embed properties.csv
+var PropertyMapCSV string
+
+// PropertyMap maps the property ID to the struct JSON name.
+var PropertyMap = make(map[string]string)
+
+func init() {
+	propertyMapReader := csv.NewReader(strings.NewReader(PropertyMapCSV))
+
+	csvProperties, err := propertyMapReader.ReadAll()
 
 	if err != nil {
-		return "", err
+		panic("go-pst: failed to initialize property map")
 	}
 
-	encoding, err := message.GetEncoding()
-
-	if err != nil {
-		return "", err
+	for _, row := range csvProperties {
+		PropertyMap[row[0]] = row[1]
 	}
-
-	return propertyContextItem.GetString(encoding, message.LocalDescriptors, pstFile, formatType, encryptionType)
-}
-
-// GetInteger returns the integer value of the property.
-func (message *Message) GetInteger(propertyID int) (int, error) {
-	propertyContextItem, err := FindPropertyContextItem(message.PropertyContext, propertyID)
-
-	if err != nil {
-		return -1, err
-	}
-
-	return propertyContextItem.GetInteger(), nil
-}
-
-// GetDate returns the date value of the property.
-func (message *Message) GetDate(propertyID int) (time.Time, error) {
-	propertyContextItem, err := FindPropertyContextItem(message.PropertyContext, propertyID)
-
-	if err != nil {
-		return time.Time{}, err
-	}
-
-	return propertyContextItem.GetDate(), nil
-}
-
-// GetSubject returns the subject of this message.
-func (message *Message) GetSubject(pstFile *File, formatType string, encryptionType string) (string, error) {
-	return message.GetString(55, pstFile, formatType, encryptionType)
-}
-
-// GetMessageClass returns the message class.
-func (message *Message) GetMessageClass(pstFile *File, formatType string, encryptionType string) (string, error) {
-	return message.GetString(26, pstFile, formatType, encryptionType)
-}
-
-// GetMessageID returns the message ID.
-func (message *Message) GetMessageID(pstFile *File, formatType string, encryptionType string) (string, error) {
-	return message.GetString(4149, pstFile, formatType, encryptionType)
-}
-
-// GetHeaders return the message headers.
-func (message *Message) GetHeaders(pstFile *File, formatType string, encryptionType string) (string, error) {
-	return message.GetString(125, pstFile, formatType, encryptionType)
-}
-
-// GetFrom returns the "From" header.
-func (message *Message) GetFrom(pstFile *File, formatType string, encryptionType string) (string, error) {
-	return message.GetString(3103, pstFile, formatType, encryptionType)
-}
-
-// GetTo returns the "To" header.
-func (message *Message) GetTo(pstFile *File, formatType string, encryptionType string) (string, error) {
-	return message.GetString(3588, pstFile, formatType, encryptionType)
-}
-
-// GetCC returns the "CC" header.
-func (message *Message) GetCC(pstFile *File, formatType string, encryptionType string) (string, error) {
-	return message.GetString(3587, pstFile, formatType, encryptionType)
-}
-
-// GetBCC returns the BCC of this message.
-func (message *Message) GetBCC(pstFile *File, formatType string, encryptionType string) (string, error) {
-	originalDisplayBCC, err := message.GetString(114, pstFile, formatType, encryptionType)
-
-	if err == nil && originalDisplayBCC != "" {
-		return originalDisplayBCC, nil
-	}
-
-	return message.GetString(3586, pstFile, formatType, encryptionType)
-}
-
-// GetReceivedDate returns the date this message was received.
-func (message *Message) GetReceivedDate() (time.Time, error) {
-	return message.GetDate(3590)
-}
-
-// GetBody returns the plaintext body of the message.
-func (message *Message) GetBody(pstFile *File, formatType string, encryptionType string) (string, error) {
-	return message.GetString(4096, pstFile, formatType, encryptionType)
-}
-
-// GetBodyHTML returns the HTML body of this message.
-func (message *Message) GetBodyHTML(pstFile *File, formatType string, encryptionType string) (string, error) {
-	return message.GetString(4115, pstFile, formatType, encryptionType)
 }

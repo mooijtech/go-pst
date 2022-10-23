@@ -1,263 +1,288 @@
-// Package pst
-// This file is part of go-pst (https://github.com/mooijtech/go-pst)
-// Copyright (C) 2021 Marten Mooij (https://www.mooijtech.com/)
+// go-pst is a library for reading Personal Storage Table (.pst) files (written in Go/Golang).
+//
+// Copyright (C) 2022  Marten Mooij
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 package pst
 
 import (
-	"errors"
-	"fmt"
-	"io/ioutil"
-	"os"
+	"github.com/mooijtech/go-pst/v5/pkg/properties"
+	"io"
+
+	"github.com/pkg/errors"
 )
 
 // Attachment represents a message attachment.
 type Attachment struct {
-	PropertyContext  []PropertyContextItem
+	PropertyContext  *PropertyContext
 	LocalDescriptors []LocalDescriptor
+	properties.Attachment
 }
 
 // HasAttachments returns true if this message has attachments.
 func (message *Message) HasAttachments() (bool, error) {
-	hasAttachments, err := message.GetInteger(3591)
+	reader, err := message.PropertyContext.GetPropertyReader(3591, message.LocalDescriptors...)
 
 	if err != nil {
-		return false, err
+		return false, errors.WithStack(err)
 	}
 
-	return hasAttachments&0x10 != 0, nil
+	value, err := reader.GetInteger32()
+
+	if err != nil {
+		return false, errors.WithStack(err)
+	}
+
+	return value&0x10 != 0, nil
 }
 
-// GetAttachmentsTableContext returns the table context of the attachments of this message.
-func (message *Message) GetAttachmentsTableContext(pstFile *File, formatType string, encryptionType string) ([][]TableContextItem, error) {
-	if len(message.AttachmentsTableContext) == 0 {
+// GetAttachmentTableContext returns the table context of the attachments of this message.
+// Note we only return the attachment identifier property.
+func (message *Message) GetAttachmentTableContext() (*TableContext, error) {
+	hasAttachments, err := message.HasAttachments()
+
+	if err != nil {
+		return nil, errors.WithStack(err)
+	}
+
+	if !hasAttachments {
+		return nil, errors.WithStack(ErrAttachmentsNotFound)
+	}
+
+	if message.AttachmentTableContext == nil {
 		// Initialize the attachments table context.
-		attachmentsLocalDescriptor, err := FindLocalDescriptor(message.LocalDescriptors, 1649, formatType)
+		attachmentLocalDescriptor, err := FindLocalDescriptor(1649, message.LocalDescriptors)
 
 		if err != nil {
-			return nil, err
+			return nil, errors.WithStack(err)
 		}
 
-		attachmentsHeapOnNode, err := pstFile.NewHeapOnNodeFromLocalDescriptor(attachmentsLocalDescriptor, formatType, encryptionType)
+		attachmentHeapOnNode, err := message.File.GetHeapOnNodeFromLocalDescriptor(attachmentLocalDescriptor)
 
 		if err != nil {
-			return nil, err
+			return nil, errors.WithStack(err)
 		}
 
-		attachmentsLocalDescriptorLocalDescriptorsIdentifier, err := attachmentsLocalDescriptor.GetLocalDescriptorsIdentifier(formatType)
+		attachmentLocalDescriptors, err := message.File.GetLocalDescriptorsFromIdentifier(attachmentLocalDescriptor.LocalDescriptorsIdentifier)
 
 		if err != nil {
-			return nil, err
+			return nil, errors.WithStack(err)
 		}
 
-		attachmentsLocalDescriptors, err := pstFile.GetLocalDescriptorsFromIdentifier(attachmentsLocalDescriptorLocalDescriptorsIdentifier, formatType)
+		attachmentTableContext, err := message.File.GetTableContext(attachmentHeapOnNode, attachmentLocalDescriptors, 26610)
 
 		if err != nil {
-			return nil, err
+			return nil, errors.WithStack(err)
 		}
 
-		attachmentsTableContext, err := pstFile.GetTableContext(attachmentsHeapOnNode, attachmentsLocalDescriptors, formatType, encryptionType, -1, -1, -1)
-
-		if err != nil {
-			return nil, err
-		}
-
-		message.AttachmentsTableContext = attachmentsTableContext
-
-		return attachmentsTableContext, nil
+		message.AttachmentTableContext = &attachmentTableContext
 	}
 
-	return message.AttachmentsTableContext, nil
+	return message.AttachmentTableContext, nil
 }
 
-// GetAttachmentsCount returns the amount of rows in the attachments table context.
-func (message *Message) GetAttachmentsCount(pstFile *File, formatType string, encryptionType string) (int, error) {
-	attachmentsTableContext, err := message.GetAttachmentsTableContext(pstFile, formatType, encryptionType)
+// GetAttachmentCount returns the amount of rows in the attachment table context.
+func (message *Message) GetAttachmentCount() (int, error) {
+	attachmentTableContext, err := message.GetAttachmentTableContext()
 
-	if err != nil {
-		return -1, err
+	if errors.Is(err, ErrAttachmentsNotFound) {
+		return 0, nil
+	} else if err != nil {
+		return 0, errors.WithStack(err)
 	}
 
-	return len(attachmentsTableContext), nil
+	return len(attachmentTableContext.Properties), nil
 }
 
 // GetAttachment returns the specified attachment.
-func (message *Message) GetAttachment(attachmentNumber int, pstFile *File, formatType string, encryptionType string) (Attachment, error) {
-	hasAttachments, err := message.HasAttachments()
+func (message *Message) GetAttachment(attachmentIndex int) (*Attachment, error) {
+	attachmentsTableContext, err := message.GetAttachmentTableContext()
 
 	if err != nil {
-		return Attachment{}, err
+		return nil, errors.WithStack(err)
+	} else if attachmentIndex > len(attachmentsTableContext.Properties)-1 {
+		return nil, errors.WithStack(ErrAttachmentIndexInvalid)
 	}
 
-	if !hasAttachments {
-		return Attachment{}, nil
-	}
+	var attachmentHNID Identifier
 
-	attachmentsTableContext, err := message.GetAttachmentsTableContext(pstFile, formatType, encryptionType)
-
-	if err != nil {
-		return Attachment{}, err
-	}
-
-	if attachmentNumber > len(attachmentsTableContext) {
-		return Attachment{}, errors.New(fmt.Sprintf("invalid attachment number, there are only %d attachments", len(attachmentsTableContext)))
-	}
-
-	attachmentTableContextItem := attachmentsTableContext[attachmentNumber]
-
-	var attachmentReferenceHNID int
-
-	for _, attachmentTableContextItemColumn := range attachmentTableContextItem {
-		if attachmentTableContextItemColumn.PropertyID == 26610 {
-			attachmentReferenceHNID = attachmentTableContextItemColumn.ReferenceHNID
-			break
-		}
-	}
-
-	attachmentLocalDescriptor, err := FindLocalDescriptor(message.LocalDescriptors, attachmentReferenceHNID, formatType)
-
-	if err != nil {
-		return Attachment{}, err
-	}
-
-	attachmentLocalDescriptorLocalDescriptorsIdentifier, err := attachmentLocalDescriptor.GetLocalDescriptorsIdentifier(formatType)
-
-	if err != nil {
-		return Attachment{}, err
-	}
-
-	attachmentLocalDescriptorLocalDescriptors, err := pstFile.GetLocalDescriptorsFromIdentifier(attachmentLocalDescriptorLocalDescriptorsIdentifier, formatType)
-
-	if err != nil {
-		return Attachment{}, err
-	}
-
-	attachmentHeapOnNode, err := pstFile.NewHeapOnNodeFromLocalDescriptor(attachmentLocalDescriptor, formatType, encryptionType)
-
-	if err != nil {
-		return Attachment{}, err
-	}
-
-	attachmentPropertyContext, err := pstFile.GetPropertyContext(attachmentHeapOnNode, formatType, encryptionType)
-
-	if err != nil {
-		return Attachment{}, err
-	}
-
-	return Attachment{
-		PropertyContext:  attachmentPropertyContext,
-		LocalDescriptors: attachmentLocalDescriptorLocalDescriptors,
-	}, nil
-}
-
-// GetAttachments returns the attachments of this message.
-func (message *Message) GetAttachments(pstFile *File, formatType string, encryptionType string) ([]Attachment, error) {
-	hasAttachments, err := message.HasAttachments()
-
-	if err != nil {
-		return nil, err
-	}
-
-	if !hasAttachments {
-		return nil, nil
-	}
-
-	attachmentsTableContext, err := message.GetAttachmentsTableContext(pstFile, formatType, encryptionType)
-
-	if err != nil {
-		return nil, err
-	}
-
-	var attachments []Attachment
-
-	for i := 0; i < len(attachmentsTableContext); i++ {
-		attachment, err := message.GetAttachment(i, pstFile, formatType, encryptionType)
+	for _, attachmentProperty := range attachmentsTableContext.Properties[attachmentIndex] {
+		// We only get the attachment identifier property from GetAttachmentTableContext.
+		propertyReader, err := attachmentsTableContext.GetPropertyReader(attachmentProperty)
 
 		if err != nil {
-			return nil, err
+			return nil, errors.WithStack(err)
 		}
 
-		attachments = append(attachments, attachment)
+		identifier, err := propertyReader.GetInteger32()
+
+		if err != nil {
+			return nil, errors.WithStack(err)
+		}
+
+		attachmentHNID = Identifier(identifier)
+	}
+
+	if attachmentHNID == 0 {
+		return nil, errors.WithStack(errors.New("go-pst: failed to get attachment HNID"))
+	}
+
+	attachmentLocalDescriptor, err := FindLocalDescriptor(attachmentHNID, message.LocalDescriptors)
+
+	if err != nil {
+		return nil, errors.WithStack(err)
+	}
+
+	attachmentLocalDescriptors, err := message.File.GetLocalDescriptorsFromIdentifier(attachmentLocalDescriptor.LocalDescriptorsIdentifier)
+
+	if err != nil {
+		return nil, errors.WithStack(err)
+	}
+
+	attachmentHeapOnNode, err := message.File.GetHeapOnNodeFromLocalDescriptor(attachmentLocalDescriptor)
+
+	if err != nil {
+		return nil, errors.WithStack(err)
+	}
+
+	attachmentPropertyContext, err := message.File.GetPropertyContext(attachmentHeapOnNode)
+
+	if err != nil {
+		return nil, errors.WithStack(err)
+	}
+
+	attachment := &Attachment{
+		PropertyContext:  attachmentPropertyContext,
+		LocalDescriptors: attachmentLocalDescriptors,
+	}
+
+	if err := attachmentPropertyContext.LoadProperties(attachment, attachmentLocalDescriptors...); err != nil {
+		return nil, errors.WithStack(err)
+	}
+
+	return attachment, nil
+}
+
+// GetAllAttachments returns the attachments of this message.
+// See AttachmentIterator.
+func (message *Message) GetAllAttachments() ([]*Attachment, error) {
+	attachmentCount, err := message.GetAttachmentCount()
+
+	if errors.Is(err, ErrAttachmentsNotFound) {
+		return nil, nil
+	} else if err != nil {
+		return nil, errors.WithStack(err)
+	}
+
+	attachments := make([]*Attachment, attachmentCount)
+
+	for i := 0; i < attachmentCount; i++ {
+		attachment, err := message.GetAttachment(i)
+
+		if err != nil {
+			return nil, errors.WithStack(err)
+		}
+
+		attachments[i] = attachment
 	}
 
 	return attachments, nil
 }
 
-// GetString returns the string value of the property.
-func (attachment *Attachment) GetString(propertyID int) (string, error) {
-	propertyContextItem, err := FindPropertyContextItem(attachment.PropertyContext, propertyID)
+// AttachmentIterator implements an attachment iterator.
+type AttachmentIterator struct {
+	message *Message
 
-	if err != nil {
-		return "", err
-	}
-
-	return DecodeBytesToUTF16String(propertyContextItem.data)
+	err               error
+	currentIndex      int
+	currentAttachment *Attachment
 }
 
-// GetFilename returns the file name of this attachment.
-func (attachment *Attachment) GetFilename() (string, error) {
-	return attachment.GetString(14084)
+// Err return the error cause.
+func (attachmentIterator *AttachmentIterator) Err() error {
+	return attachmentIterator.err
 }
 
-// GetLongFilename returns the long file name of this attachment.
-func (attachment *Attachment) GetLongFilename() (string, error) {
-	return attachment.GetString(14087)
+// Next will ensure that Value returns the next item when executed.
+// If the next value is not retrievable, Next will return false and Err() will return the error cause.
+func (attachmentIterator *AttachmentIterator) Next() bool {
+	hasNext := len(attachmentIterator.message.AttachmentTableContext.Properties)-1 > attachmentIterator.currentIndex
+
+	if !hasNext {
+		return false
+	}
+
+	attachment, err := attachmentIterator.message.GetAttachment(attachmentIterator.currentIndex)
+
+	if err != nil {
+		attachmentIterator.err = errors.WithStack(err)
+		return false
+	}
+
+	attachmentIterator.currentIndex++
+	attachmentIterator.currentAttachment = attachment
+
+	return true
 }
 
-// GetInputStream returns the input stream of this attachment.
-func (attachment *Attachment) GetInputStream(pstFile *File, formatType string, encryptionType string) (HeapOnNodeInputStream, error) {
-	attachmentInputStreamPropertyContextItem, err := FindPropertyContextItem(attachment.PropertyContext, 14081)
-
-	if err != nil {
-		return HeapOnNodeInputStream{}, err
-	}
-
-	if attachmentInputStreamPropertyContextItem.IsExternalValueReference {
-		attachmentInputStreamLocalDescriptor, err := FindLocalDescriptor(attachment.LocalDescriptors, attachmentInputStreamPropertyContextItem.ReferenceHNID, formatType)
-
-		if err != nil {
-			return HeapOnNodeInputStream{}, err
-		}
-
-		attachmentInputStreamHeapOnNode, err := pstFile.NewHeapOnNodeFromLocalDescriptor(attachmentInputStreamLocalDescriptor, formatType, encryptionType)
-
-		if err != nil {
-			return HeapOnNodeInputStream{}, err
-		}
-
-		return attachmentInputStreamHeapOnNode.InputStream, nil
-	} else {
-		return HeapOnNodeInputStream{
-			UnencryptedInternalAttachmentData: attachmentInputStreamPropertyContextItem.data,
-			Size:                              len(attachmentInputStreamPropertyContextItem.data),
-		}, nil
-	}
+// Value returns the current value in the iterator.
+func (attachmentIterator *AttachmentIterator) Value() *Attachment {
+	return attachmentIterator.currentAttachment
 }
 
-// WriteToFile writes the input stream of the attachment to the specified output path.
-func (attachment *Attachment) WriteToFile(outputPath string, pstFile *File, formatType string, encryptionType string) error {
-	attachmentInputStream, err := attachment.GetInputStream(pstFile, formatType, encryptionType)
+// Size returns the amount of attachments in the message iterator.
+func (attachmentIterator *AttachmentIterator) Size() int {
+	return len(attachmentIterator.message.AttachmentTableContext.Properties)
+}
+
+func (attachmentIterator *AttachmentIterator) CurrentIndex() int {
+	return attachmentIterator.currentIndex
+}
+
+// GetAttachmentIterator returns an iterator for attachments.
+func (message *Message) GetAttachmentIterator() (AttachmentIterator, error) {
+	attachmentCount, err := message.GetAttachmentCount()
 
 	if err != nil {
-		return err
+		return AttachmentIterator{}, errors.WithStack(err)
+	} else if attachmentCount == 0 {
+		return AttachmentIterator{}, ErrAttachmentsNotFound
 	}
 
-	outputBuffer, err := attachmentInputStream.ReadCompletely()
+	return AttachmentIterator{
+		message: message,
+	}, nil
+}
+
+// WriteTo writes the attachment to the specified io.Writer.
+func (attachment *Attachment) WriteTo(writer io.Writer) (int64, error) {
+	attachmentReader, err := attachment.PropertyContext.GetPropertyReader(14081, attachment.LocalDescriptors...)
+
+	if errors.Is(err, ErrPropertyNoData) {
+		return 0, nil
+	} else if err != nil {
+		return 0, errors.WithStack(err)
+	}
+
+	sectionReader := io.NewSectionReader(&attachmentReader, 0, attachmentReader.Size())
+
+	written, err := io.CopyN(writer, sectionReader, sectionReader.Size())
 
 	if err != nil {
-		return err
+		return written, errors.WithStack(err)
 	}
 
-	_, err = os.Create(outputPath)
-
-	if err != nil {
-		return err
-	}
-
-	err = ioutil.WriteFile(outputPath, outputBuffer, 0755)
-
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return written, nil
 }

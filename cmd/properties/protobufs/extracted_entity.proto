@@ -1,0 +1,35 @@
+// go-pst is a library for reading Personal Storage Table (.pst) files (written in Go/Golang).
+//
+// Copyright (C) 2022  Marten Mooij
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+syntax = "proto3";
+option go_package = "github.com/mooijtech/go-pst;properties";
+
+message ExtractedEntity {
+  // Contains an XML document with a single AddressSet element.
+  optional string extracted_addresses = 1; 
+  // Contains an XML document with a single ContactSet element.
+  optional string extracted_contacts = 2; 
+  // Contains an XML document with a single EmailSet element.
+  optional string extracted_emails = 3; 
+  // Contains an XML document with a single MeetingSet element.
+  optional string extracted_meetings = 4; 
+  // Contains an XML document with a single PhoneSet element.
+  optional string extracted_phones = 5; 
+  // Contains an XML document with a single TaskSet element.
+  optional string extracted_tasks = 6; 
+  // Contains an XML document with a single UrlSet element.
+  optional string extracted_urls = 7; 
+}

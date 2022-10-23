@@ -1,17 +1,32 @@
-// Package pst
-// This file is part of go-pst (https://github.com/mooijtech/go-pst)
-// Copyright (C) 2021 Marten Mooij (https://www.mooijtech.com/)
+// go-pst is a library for reading Personal Storage Table (.pst) files (written in Go/Golang).
+//
+// Copyright (C) 2022  Marten Mooij
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 package pst
 
 import (
 	"encoding/binary"
-	"errors"
+
+	"github.com/pkg/errors"
 )
 
 // GetBlockSize returns the size of a block.
 // References "Blocks".
-func (pstFile *File) GetBlockSize(formatType string) (int, error) {
-	switch formatType {
+func (file *File) GetBlockSize() (int, error) {
+	switch file.FormatType {
 	case FormatTypeUnicode:
 		return 8192, nil
 	case FormatTypeUnicode4k:
@@ -19,14 +34,14 @@ func (pstFile *File) GetBlockSize(formatType string) (int, error) {
 	case FormatTypeANSI:
 		return 8192, nil
 	default:
-		return -1, errors.New("unsupported format type")
+		return 0, errors.WithStack(ErrFormatTypeUnsupported)
 	}
 }
 
 // GetBlockTrailerSize returns the size of a block trailer.
 // References "Blocks".
-func (pstFile *File) GetBlockTrailerSize(formatType string) (int, error) {
-	switch formatType {
+func (file *File) GetBlockTrailerSize() (int, error) {
+	switch file.FormatType {
 	case FormatTypeUnicode:
 		return 16, nil
 	case FormatTypeUnicode4k:
@@ -34,129 +49,110 @@ func (pstFile *File) GetBlockTrailerSize(formatType string) (int, error) {
 	case FormatTypeANSI:
 		return 12, nil
 	default:
-		return -1, errors.New("unsupported format type")
+		return 0, errors.WithStack(ErrFormatTypeUnsupported)
 	}
 }
 
-// GetBlockIdentifierSize return the identifier size of a block identifier stored in the XBlock or XXBlock.
-func (pstFile *File) GetBlockIdentifierSize(formatType string) (int, error) {
-	var identifierSize int
-
-	switch formatType {
-	case FormatTypeUnicode:
-		identifierSize = 8
-		break
-	case FormatTypeUnicode4k:
-		identifierSize = 8
-		break
-	case FormatTypeANSI:
-		identifierSize = 4
-		break
-	default:
-		return -1, errors.New("unsupported format type")
-	}
-
-	return identifierSize, nil
-}
+// BlockType represents a XBlock or XXBlock.
+type BlockType uint8
 
 // Constants defining the block types.
 const (
-	BlockTypeXBlock  = 1
-	BlockTypeXXBlock = 2
+	BlockTypeXBlock  BlockType = 1
+	BlockTypeXXBlock BlockType = 2
 )
 
-// GetBlocks parses the XBlock and XXBlock from a Heap-on-Node.
-// Used by the NodeInputStream (internal identifiers have blocks).
-func (pstFile *File) GetBlocks(nodeEntryHeapOnNodeOffset int, formatType string) ([]BTreeNodeEntry, error) {
-	blockSignature, err := pstFile.Read(1, nodeEntryHeapOnNodeOffset)
+// GetBlocks returns all blocks (XBlock/XXBlock) from a Heap-on-Node.
+// Internal identifiers have blocks.
+//
+// References:
+// - https://github.com/mooijtech/go-pst/tree/master/docs#xblock
+// - https://github.com/mooijtech/go-pst/tree/master/docs#xxblock
+func (file *File) GetBlocks(btreeNodeHeapOnNodeOffset int64) ([]BTreeNode, error) {
+	blockSignature := make([]byte, 1)
 
-	if err != nil {
-		return nil, err
-	}
-
-	if int(binary.LittleEndian.Uint16([]byte{blockSignature[0], 0})) != 1 {
-		return nil, errors.New("invalid block signature (MUST be XBlock or XXBlock)")
+	if _, err := file.ReadAt(blockSignature, btreeNodeHeapOnNodeOffset); err != nil {
+		return nil, errors.WithStack(err)
+	} else if blockSignature[0] != 1 {
+		return nil, errors.WithStack(ErrBlockSignatureInvalid)
 	}
 
 	// The number of block b-tree identifiers in this XBlock or XXBlock.
-	entryCount, err := pstFile.Read(2, nodeEntryHeapOnNodeOffset+2)
+	entryCount := make([]byte, 2)
 
-	if err != nil {
-		return nil, err
+	if _, err := file.ReadAt(entryCount, btreeNodeHeapOnNodeOffset+2); err != nil {
+		return nil, errors.WithStack(err)
 	}
 
-	identifierSize, err := pstFile.GetBlockIdentifierSize(formatType)
+	blockLevel := make([]byte, 1)
 
-	if err != nil {
-		return nil, err
+	if _, err := file.ReadAt(blockLevel, btreeNodeHeapOnNodeOffset+1); err != nil {
+		return nil, errors.WithStack(err)
 	}
 
-	blockLevel, err := pstFile.Read(1, nodeEntryHeapOnNodeOffset+1)
+	var blocks []BTreeNode
 
-	var btreeNodeEntries []BTreeNodeEntry
-
-	switch int(binary.LittleEndian.Uint16([]byte{blockLevel[0], 0})) {
+	switch BlockType(blockLevel[0]) {
 	case BlockTypeXBlock:
 		// XBlock
-		offset := 8 // Start of the array of identifiers that reference data blocks.
+		blockIdentifierOffset := int64(8)
 
 		for i := 0; i < int(binary.LittleEndian.Uint16(entryCount)); i++ {
-			blockIdentifier, err := pstFile.Read(identifierSize, nodeEntryHeapOnNodeOffset+offset)
+			blockIdentifier := make([]byte, GetIdentifierSize(file.FormatType))
 
-			if err != nil {
-				return nil, err
+			if _, err := file.ReadAt(blockIdentifier, btreeNodeHeapOnNodeOffset+blockIdentifierOffset); err != nil {
+				return nil, errors.WithStack(err)
 			}
 
-			blockBTreeNode, err := pstFile.GetBlockBTreeNode(int(binary.LittleEndian.Uint32(blockIdentifier)))
+			blockBTreeNode, err := file.GetBlockBTreeNode(GetIdentifierFromBytes(blockIdentifier, file.FormatType))
 
 			if err != nil {
-				return nil, err
+				return nil, errors.WithStack(err)
 			}
 
-			btreeNodeEntries = append(btreeNodeEntries, blockBTreeNode)
-			offset += identifierSize
+			blocks = append(blocks, blockBTreeNode)
+			blockIdentifierOffset += int64(GetIdentifierSize(file.FormatType))
 		}
-		break
 	case BlockTypeXXBlock:
 		// XXBlock
-		offset := 8
+		blockIdentifierOffset := int64(8)
 
 		for i := 0; i < int(binary.LittleEndian.Uint16(entryCount)); i++ {
-			blockIdentifier, err := pstFile.Read(identifierSize, nodeEntryHeapOnNodeOffset+offset)
+			blockIdentifier := make([]byte, GetIdentifierSize(file.FormatType))
 
-			if err != nil {
-				return nil, err
+			if _, err := file.ReadAt(blockIdentifier, btreeNodeHeapOnNodeOffset+blockIdentifierOffset); err != nil {
+				return nil, errors.WithStack(err)
 			}
 
-			blockBTreeNode, err := pstFile.GetBlockBTreeNode(int(binary.LittleEndian.Uint32(blockIdentifier)))
+			blockBTreeNode, err := file.GetBlockBTreeNode(GetIdentifierFromBytes(blockIdentifier, file.FormatType))
 
 			if err != nil {
-				return nil, err
+				return nil, errors.WithStack(err)
 			}
 
-			blockBTreeNodeBlocks, err := pstFile.GetBlocks(blockBTreeNode.FileOffset, formatType)
+			blockBTreeNodeBlocks, err := file.GetBlocks(blockBTreeNode.FileOffset)
 
 			if err != nil {
-				return nil, err
+				return nil, errors.WithStack(err)
 			}
 
-			btreeNodeEntries = append(btreeNodeEntries, blockBTreeNodeBlocks...)
-			offset += identifierSize
+			blocks = append(blocks, blockBTreeNodeBlocks...)
+			blockIdentifierOffset += int64(GetIdentifierSize(file.FormatType))
 		}
 	default:
-		return nil, errors.New("unsupported block type")
+		return nil, errors.WithStack(ErrBlockTypeInvalid)
 	}
 
-	return btreeNodeEntries, nil
+	return blocks, nil
 }
 
 // GetBlocksTotalSize returns the size of the external data referenced by the XBlock or XXBlock.
-func (pstFile *File) GetBlocksTotalSize(nodeEntryHeapOnNodeOffset int) (int, error) {
-	totalDataSize, err := pstFile.Read(4, nodeEntryHeapOnNodeOffset+4)
+func (file *File) GetBlocksTotalSize(nodeEntryHeapOnNodeOffset int64) (uint32, error) {
+	blocksTotalSize := make([]byte, 4)
 
-	if err != nil {
-		return -1, err
+	if _, err := file.ReadAt(blocksTotalSize, nodeEntryHeapOnNodeOffset+4); err != nil {
+		return 0, errors.WithStack(err)
 	}
 
-	return int(binary.LittleEndian.Uint32(totalDataSize)), nil
+	return binary.LittleEndian.Uint32(blocksTotalSize), nil
 }

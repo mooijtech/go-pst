@@ -1,244 +1,139 @@
-// Package pst
-// This file is part of go-pst (https://github.com/mooijtech/go-pst)
-// Copyright (C) 2021 Marten Mooij (https://www.mooijtech.com/)
+// go-pst is a library for reading Personal Storage Table (.pst) files (written in Go/Golang).
+//
+// Copyright (C) 2022  Marten Mooij
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 package pst
 
 import (
 	"encoding/binary"
-	"errors"
+
+	"github.com/pkg/errors"
 )
 
 // LocalDescriptor represents an item in the local descriptors.
 // A local descriptor is basically a reference to a node which contains the data.
 type LocalDescriptor struct {
-	data []byte
+	Identifier                 Identifier
+	DataIdentifier             Identifier
+	LocalDescriptorsIdentifier Identifier
 }
 
-// GetIdentifier returns the identifier of the local descriptor.
-// References "Local Descriptors".
-func (localDescriptor *LocalDescriptor) GetIdentifier(formatType string) (int, error) {
-	var identifierBufferSize int
-
+// NewLocalDescriptor creates a new local descriptor.
+func NewLocalDescriptor(data []byte, formatType FormatType) LocalDescriptor {
 	switch formatType {
-	case FormatTypeUnicode:
-		identifierBufferSize = 8
-		break
-	case FormatTypeUnicode4k:
-		identifierBufferSize = 8
-		break
 	case FormatTypeANSI:
-		identifierBufferSize = 4
-		break
+		return LocalDescriptor{
+			Identifier:                 Identifier(binary.LittleEndian.Uint32(data[:4])),
+			DataIdentifier:             Identifier(binary.LittleEndian.Uint32(data[4 : 4+4])),
+			LocalDescriptorsIdentifier: Identifier(binary.LittleEndian.Uint32(data[8 : 8+4])),
+		}
 	default:
-		return -1, errors.New("unsupported format type")
+		// TODO - Reference [MS-PDF] that this is actually 32-bit.
+		return LocalDescriptor{
+			Identifier:                 Identifier(binary.LittleEndian.Uint32(data[:8])),
+			DataIdentifier:             Identifier(binary.LittleEndian.Uint32(data[8 : 8+8])),
+			LocalDescriptorsIdentifier: Identifier(binary.LittleEndian.Uint32(data[16 : 16+8])),
+		}
 	}
-
-	return int(binary.LittleEndian.Uint32(localDescriptor.data[:identifierBufferSize])), nil
 }
 
-// GetDataIdentifier returns the data identifier of the local descriptor.
-// References "Local Descriptors".
-func (localDescriptor *LocalDescriptor) GetDataIdentifier(formatType string) (int, error) {
-	var identifierOffset int
-	var identifierBufferSize int
-
-	switch formatType {
-	case FormatTypeUnicode:
-		identifierOffset = 8
-		identifierBufferSize = 8
-		break
-	case FormatTypeUnicode4k:
-		identifierOffset = 8
-		identifierBufferSize = 8
-		break
-	case FormatTypeANSI:
-		identifierOffset = 4
-		identifierBufferSize = 4
-		break
-	default:
-		return -1, errors.New("unsupported format type")
-	}
-
-	return int(binary.LittleEndian.Uint32(localDescriptor.data[identifierOffset : identifierOffset+identifierBufferSize])), nil
-}
-
-// GetLocalDescriptorsIdentifier returns the local descriptors identifier of the local descriptor.
-// References "Local Descriptors".
-func (localDescriptor *LocalDescriptor) GetLocalDescriptorsIdentifier(formatType string) (int, error) {
-	var identifierOffset int
-	var identifierBufferSize int
-
-	switch formatType {
-	case FormatTypeUnicode:
-		identifierOffset = 16
-		identifierBufferSize = 8
-		break
-	case FormatTypeUnicode4k:
-		identifierOffset = 16
-		identifierBufferSize = 8
-		break
-	case FormatTypeANSI:
-		identifierOffset = 8
-		identifierBufferSize = 4
-		break
-	default:
-		return -1, errors.New("unsupported format type")
-	}
-
-	return int(binary.LittleEndian.Uint32(localDescriptor.data[identifierOffset : identifierOffset+identifierBufferSize])), nil
-}
-
-func (pstFile *File) GetLocalDescriptors(btreeNodeEntry BTreeNodeEntry, formatType string) ([]LocalDescriptor, error) {
-	return pstFile.GetLocalDescriptorsFromIdentifier(btreeNodeEntry.LocalDescriptorsIdentifier, formatType)
+// GetLocalDescriptors returns the local descriptors of the b-tree node.
+func (file *File) GetLocalDescriptors(btreeNodeEntry BTreeNode) ([]LocalDescriptor, error) {
+	return file.GetLocalDescriptorsFromIdentifier(btreeNodeEntry.LocalDescriptorsIdentifier)
 }
 
 // GetLocalDescriptorsFromIdentifier returns the local descriptors of the local descriptors identifier.
 // References "Local Descriptors".
-func (pstFile *File) GetLocalDescriptorsFromIdentifier(localDescriptorsIdentifier int, formatType string) ([]LocalDescriptor, error) {
+func (file *File) GetLocalDescriptorsFromIdentifier(localDescriptorsIdentifier Identifier) ([]LocalDescriptor, error) {
 	if localDescriptorsIdentifier == 0 {
-		// There are no local descriptors
-		return []LocalDescriptor{}, nil
+		// There are no local descriptors.
+		return nil, nil
 	}
 
-	localDescriptorsNode, err := pstFile.GetBlockBTreeNode(localDescriptorsIdentifier)
+	localDescriptorsNode, err := file.GetBlockBTreeNode(localDescriptorsIdentifier)
 
 	if err != nil {
-		return nil, err
+		return nil, errors.WithStack(err)
 	}
 
-	signature, err := pstFile.Read(1, localDescriptorsNode.FileOffset)
+	signature := make([]byte, 1)
 
-	if err != nil {
-		return nil, err
+	if _, err = file.ReadAt(signature, localDescriptorsNode.FileOffset); err != nil {
+		return nil, errors.WithStack(err)
+	} else if signature[0] != 2 {
+		return nil, errors.WithStack(ErrLocalDescriptorsSignatureInvalid)
 	}
 
-	if binary.LittleEndian.Uint16([]byte{signature[0], 0}) != 2 {
-		return nil, errors.New("invalid local descriptors signature")
-	}
+	localDescriptorsLevel := make([]byte, 1)
 
-	localDescriptorsLevel, err := pstFile.Read(1, localDescriptorsNode.FileOffset+1)
-
-	if err != nil {
-		return nil, err
-	}
-
-	if binary.LittleEndian.Uint16([]byte{localDescriptorsLevel[0], 0}) > 0 {
+	if _, err := file.ReadAt(localDescriptorsLevel, localDescriptorsNode.FileOffset+1); err != nil {
+		return nil, errors.WithStack(err)
+	} else if localDescriptorsLevel[0] > 0 {
 		// Haven't seen branch nodes yet.
-		return nil, errors.New("local descriptors level is not 0, please open an issue on GitHub for this to be implemented")
+		return nil, errors.WithStack(ErrLocalDescriptorBranchNode)
 	}
 
-	var localDescriptorEntrySize int
+	var localDescriptorEntrySize uint8
 
-	switch formatType {
-	case FormatTypeUnicode:
-		localDescriptorEntrySize = 24
-		break
-	case FormatTypeUnicode4k:
-		localDescriptorEntrySize = 24
-		break
+	switch file.FormatType {
 	case FormatTypeANSI:
 		localDescriptorEntrySize = 12
-		break
 	default:
-		return nil, errors.New("unsupported format type")
+		localDescriptorEntrySize = 24
 	}
 
-	localDescriptorsEntryCount, err := pstFile.Read(2, localDescriptorsNode.FileOffset+2)
+	localDescriptorsEntryCount := make([]byte, 2)
 
-	if err != nil {
-		return nil, err
+	if _, err := file.ReadAt(localDescriptorsEntryCount, localDescriptorsNode.FileOffset+2); err != nil {
+		return nil, errors.WithStack(err)
 	}
 
-	var localDescriptorsEntriesOffset int
+	var localDescriptorsEntriesOffset int64
 
-	switch formatType {
-	case FormatTypeUnicode:
-		localDescriptorsEntriesOffset = localDescriptorsNode.FileOffset + 8
-		break
-	case FormatTypeUnicode4k:
-		localDescriptorsEntriesOffset = localDescriptorsNode.FileOffset + 8
-		break
+	switch file.FormatType {
 	case FormatTypeANSI:
 		localDescriptorsEntriesOffset = localDescriptorsNode.FileOffset + 4
-		break
 	default:
-		return []LocalDescriptor{}, errors.New("unsupported format type")
+		localDescriptorsEntriesOffset = localDescriptorsNode.FileOffset + 8
 	}
 
-	localDescriptorsEntries, err := pstFile.Read(int(binary.LittleEndian.Uint16(localDescriptorsEntryCount))*localDescriptorEntrySize, localDescriptorsEntriesOffset)
+	localDescriptorsEntries := make([]byte, binary.LittleEndian.Uint16(localDescriptorsEntryCount)*uint16(localDescriptorEntrySize))
+
+	if _, err := file.ReadAt(localDescriptorsEntries, localDescriptorsEntriesOffset); err != nil {
+		return nil, errors.WithStack(err)
+	}
 
 	localDescriptors := make([]LocalDescriptor, binary.LittleEndian.Uint16(localDescriptorsEntryCount))
 
 	for i := 0; i < int(binary.LittleEndian.Uint16(localDescriptorsEntryCount)); i++ {
-		localDescriptorEntry := localDescriptorsEntries[i*localDescriptorEntrySize : (i+1)*localDescriptorEntrySize]
+		localDescriptorEntry := localDescriptorsEntries[i*int(localDescriptorEntrySize) : (i+1)*int(localDescriptorEntrySize)]
 
-		localDescriptors[i] = LocalDescriptor{
-			data: localDescriptorEntry,
-		}
+		localDescriptors[i] = NewLocalDescriptor(localDescriptorEntry, file.FormatType)
 	}
 
 	return localDescriptors, nil
 }
 
-// FindLocalDescriptor returns the local descriptor with the specified identifier.
-func FindLocalDescriptor(localDescriptors []LocalDescriptor, identifier int, formatType string) (LocalDescriptor, error) {
+// FindLocalDescriptor returns the local descriptor with the specified identifier or an error if not found.
+func FindLocalDescriptor(identifier Identifier, localDescriptors []LocalDescriptor) (LocalDescriptor, error) {
 	for _, localDescriptor := range localDescriptors {
-		localDescriptorIdentifier, err := localDescriptor.GetIdentifier(formatType)
-
-		if err != nil {
-			return LocalDescriptor{}, err
-		}
-
-		if localDescriptorIdentifier == identifier {
+		if localDescriptor.Identifier == identifier {
 			return localDescriptor, nil
 		}
 	}
 
-	return LocalDescriptor{}, errors.New("failed to find local descriptor")
-}
-
-// GetData returns all the local descriptor data from the data node.
-func (localDescriptor *LocalDescriptor) GetData(pstFile *File, formatType string, encryptionType string) ([]byte, error) {
-	dataIdentifier, err := localDescriptor.GetDataIdentifier(formatType)
-
-	if err != nil {
-		return nil, err
-	}
-
-	blockBTreeNode, err := pstFile.GetBlockBTreeNode(dataIdentifier)
-
-	if err != nil {
-		return nil, err
-	}
-
-	inputStream, err := pstFile.NewHeapOnNodeInputStream(blockBTreeNode, formatType, encryptionType)
-
-	if err != nil {
-		return nil, err
-	}
-
-	var data []byte
-
-	if len(inputStream.Blocks) > 0 {
-		currentOffset := 0
-
-		for _, block := range inputStream.Blocks {
-			blockData, err := inputStream.Read(block.Size, currentOffset)
-
-			if err != nil {
-				return nil, err
-			}
-
-			data = append(data, blockData...)
-			currentOffset += block.Size
-		}
-	} else {
-		data, err = inputStream.Read(inputStream.Size, 0)
-
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	return data, nil
+	return LocalDescriptor{}, errors.WithStack(ErrLocalDescriptorNotFound)
 }

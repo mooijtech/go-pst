@@ -1,4 +1,2 @@
 .idea/
-benchmarks/benchmarks.test
-benchmarks/enron.pst
-benchmarks/trace.out
+.vscode/

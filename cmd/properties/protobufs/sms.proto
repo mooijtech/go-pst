@@ -1,0 +1,31 @@
+// go-pst is a library for reading Personal Storage Table (.pst) files (written in Go/Golang).
+//
+// Copyright (C) 2022  Marten Mooij
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+syntax = "proto3";
+option go_package = "github.com/mooijtech/go-pst;properties";
+
+message SMS {
+  // Contains the GUID of the SMS account used to deliver the message.
+  optional string oms_account_guid = 1; 
+  // Indicates the model of the mobile device used to send the SMS or MMS message.
+  optional string oms_mobile_model = 2; 
+  // Contains the time, in UTC, at which the client requested that the service provider send the SMS or MMS message.
+  optional int64 oms_schedule_time = 3; 
+  // Contains the type of service used to send an SMS or MMS message.
+  optional int32 oms_service_type = 4; 
+  // Contains the source of an SMS or MMS message.
+  optional int32 oms_source_type = 5; 
+}

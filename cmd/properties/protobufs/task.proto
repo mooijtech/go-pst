@@ -1,0 +1,99 @@
+// go-pst is a library for reading Personal Storage Table (.pst) files (written in Go/Golang).
+//
+// Copyright (C) 2022  Marten Mooij
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+syntax = "proto3";
+option go_package = "github.com/mooijtech/go-pst;properties";
+
+message Task {
+  // Contains an index identifying one of a set of pre-defined text strings to be associated with the flag.
+  optional int32 flag_string = 1; // @gotags: propertyID:"267648"
+  // Indicates whether a time-flagged Message object is complete.
+  optional double percent_complete = 3; // @gotags: propertyID:"263170"
+  // Indicates the acceptance state of the task.
+  optional int32 task_acceptance_state = 4; // @gotags: propertyID:"263242"
+  // Indicates whether a task assignee has replied to a task request for this Task object.
+  optional bool task_accepted = 5; // @gotags: propertyID:"263176"
+  // Indicates the number of minutes that the user actually spent working on a task.
+  optional int32 task_actual_effort = 6; // @gotags: propertyID:"263200"
+  // Specifies the name of the user that last assigned the task.
+  optional string task_assigner = 7; // @gotags: propertyID:"263233"
+  // Indicates that the task is complete.
+  optional bool task_complete = 9; // @gotags: propertyID:"263212"
+  // The client can set this property, but it has no impact on the Task-Related Objects Protocol and is ignored by the server.
+  optional int32 task_custom_flags = 10; // @gotags: propertyID:"263273"
+  // Specifies the date when the user completed work on the task.
+  optional int64 task_date_completed = 11; // @gotags: propertyID:"263183"
+  // Indicates whether new occurrences remain to be generated.
+  optional bool task_dead_occurrence = 12; // @gotags: propertyID:"263177"
+  // Specifies the date by which the user expects work on the task to be complete.
+  optional int64 task_due_date = 13; // @gotags: propertyID:"263173"
+  // Indicates the number of minutes that the user expects to work on a task.
+  optional int32 task_estimated_effort = 14; // @gotags: propertyID:"263201"
+  // Indicates that the Task object was originally created by the action of the current user or user agent instead of by the processing of a task request.
+  optional bool taskf_creator = 15; // @gotags: propertyID:"263214"
+  // Indicates the accuracy of the PidLidTaskOwner property (section 2.328).
+  optional bool taskf_fix_offline = 16; // @gotags: propertyID:"263244"
+  // Indicates whether the task includes a recurrence pattern.
+  optional bool taskf_recurring = 17; // @gotags: propertyID:"263238"
+  // Indicates the type of change that was last made to the Task object.
+  optional int32 task_history = 19; // @gotags: propertyID:"263210"
+  // Contains the name of the user who most recently assigned the task, or the user to whom it was most recently assigned.
+  optional string task_last_delegate = 20; // @gotags: propertyID:"263237"
+  // Contains the date and time of the most recent change made to the Task object.
+  optional int64 task_last_update = 21; // @gotags: propertyID:"263205"
+  // Contains the name of the most recent user to have been the owner of the task.
+  optional string task_last_user = 22; // @gotags: propertyID:"263234"
+  // Specifies the assignment status of the embedded Task object.
+  optional int32 task_mode = 23; // @gotags: propertyID:"267304"
+  // Provides optimization hints about the recipients of a Task object.
+  optional int32 task_multiple_recipients = 24; // @gotags: propertyID:"263232"
+  // Not used. The client can set this property, but it has no impact on the Task-Related Objects Protocol and is ignored by the server.
+  optional bool task_no_compute = 25; // @gotags: propertyID:"263236"
+  // Provides an aid to custom sorting of Task objects.
+  optional int32 task_ordinal = 26; // @gotags: propertyID:"263235"
+  // Contains the name of the owner of the task.
+  optional string task_owner = 27; // @gotags: propertyID:"263215"
+  // Indicates the role of the current user relative to the Task object.
+  optional int32 task_ownership = 28; // @gotags: propertyID:"263241"
+  // Indicates whether future instances of recurring tasks need reminders, even though the value of the PidLidReminderSet property (section 2.222) is 0x00.
+  optional bool task_reset_reminder = 30; // @gotags: propertyID:"263175"
+  // Not used. The client can set this property, but it has no impact on the Task-Related Objects Protocol and is ignored by the server.
+  optional string task_role = 31; // @gotags: propertyID:"263239"
+  // Specifies the date on which the user expects work on the task to begin.
+  optional int64 task_start_date = 32; // @gotags: propertyID:"263172"
+  // Indicates the current assignment state of the Task object.
+  optional int32 task_state = 33; // @gotags: propertyID:"263203"
+  // Specifies the status of a task.
+  optional int32 task_status = 34; // @gotags: propertyID:"263169"
+  // Indicates whether the task assignee has been requested to send an email message update upon completion of the assigned task.
+  optional bool task_status_on_complete = 35; // @gotags: propertyID:"263209"
+  // Indicates whether the task assignee has been requested to send a task update when the assigned Task object changes.
+  optional bool task_updates = 36; // @gotags: propertyID:"263211"
+  // Indicates which copy is the latest update of a Task object.
+  optional int32 task_version = 37; // @gotags: propertyID:"263202"
+  // This property is set by the client but is ignored by the server.
+  optional bool team_task = 38; // @gotags: propertyID:"263171"
+  // Contains the current time, in UTC, which is used to determine the sort order of objects in a consolidated to-do list.
+  optional int64 to_do_ordinal_date = 39; // @gotags: propertyID:"267584"
+  // Contains the numerals 0 through 9 that are used to break a tie when the PidLidToDoOrdinalDate property (section 2.344) is used to perform a sort of objects.
+  optional string to_do_sub_ordinal = 40; // @gotags: propertyID:"267585"
+  // Contains user-specifiable text to identify this Message object in a consolidated to-do list.
+  optional string to_do_title = 41; // @gotags: propertyID:"267588"
+  // Contains the value of the PidTagMessageDeliveryTime  property (section 2.789) when modifying the PidLidFlagRequest property (section 2.136).
+  optional int64 valid_flag_string_proof = 42; // @gotags: propertyID:"267631"
+  // Contains a positive number whose negative is less than or equal to the value of the PidLidTaskOrdinal property (section 2.327) of all of the Task objects in the folder.
+  optional int32 ordinal_most = 43; // @gotags: propertyID:"14050"
+}
