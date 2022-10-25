@@ -64,19 +64,31 @@ func (file *File) GetRootFolder() (Folder, error) {
 // GetSubFoldersTableContext returns the TableContext for the sub-folders of this folder.
 // Note this limits the returned properties to the ones we use in the Folder struct.
 func (folder *Folder) GetSubFoldersTableContext() (TableContext, error) {
-	subFoldersDataNode, err := folder.File.GetDataBTreeNode(folder.Identifier + 11) // +11 returns the identifier of the sub-folders.
+	nodeBTreeNode, err := folder.File.GetNodeBTreeNode(folder.Identifier + 11) // +11 returns the identifier of the sub-folders.
 
 	if err != nil {
 		return TableContext{}, errors.WithStack(err)
 	}
 
-	subFoldersDataNodeHeapOnNode, err := folder.File.GetHeapOnNode(subFoldersDataNode)
+	localDescriptors, err := folder.File.GetLocalDescriptors(nodeBTreeNode)
 
 	if err != nil {
 		return TableContext{}, errors.WithStack(err)
 	}
 
-	tableContext, err := folder.File.GetTableContext(subFoldersDataNodeHeapOnNode, []LocalDescriptor{}, 12289, 13834, 26610, 13826)
+	blockBTreeNode, err := folder.File.GetBlockBTreeNode(nodeBTreeNode.DataIdentifier)
+
+	if err != nil {
+		return TableContext{}, errors.WithStack(err)
+	}
+
+	subFoldersDataNodeHeapOnNode, err := folder.File.GetHeapOnNode(blockBTreeNode)
+
+	if err != nil {
+		return TableContext{}, errors.WithStack(err)
+	}
+
+	tableContext, err := folder.File.GetTableContext(subFoldersDataNodeHeapOnNode, localDescriptors, 12289, 13834, 26610, 13826)
 
 	if err != nil {
 		return TableContext{}, errors.WithStack(err)

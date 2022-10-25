@@ -61,7 +61,8 @@ func (propertyReader *PropertyReader) GetValue() (any, error) {
 	switch propertyReader.Property.Type {
 	case PropertyTypeString:
 		return propertyReader.GetString()
-	// TODO - PropertyTypeString8
+	case PropertyTypeString8:
+		return propertyReader.GetString8(65001) // TODO - Get from caller.
 	case PropertyTypeTime:
 		return propertyReader.GetDate()
 	case PropertyTypeInteger16:
