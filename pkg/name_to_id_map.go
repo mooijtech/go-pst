@@ -184,7 +184,7 @@ func (file *File) GetNameToIDMap() (*NameToIDMap, error) {
 	// References "2.4.7.4  The String Stream"
 	// References [MS-PST].pdf "2.1.2 Properties"
 	// The String Stream is a packed list of strings that is used for all the named properties in the PST.
-	stringStream, err := propertyContext.GetPropertyReader(4)
+	stringStream, err := propertyContext.GetPropertyReader(4, localDescriptors...)
 
 	if err != nil {
 		return nil, errors.WithStack(err)
