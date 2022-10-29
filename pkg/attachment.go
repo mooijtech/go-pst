@@ -218,7 +218,7 @@ func (attachmentIterator *AttachmentIterator) Err() error {
 // Next will ensure that Value returns the next item when executed.
 // If the next value is not retrievable, Next will return false and Err() will return the error cause.
 func (attachmentIterator *AttachmentIterator) Next() bool {
-	hasNext := len(attachmentIterator.message.AttachmentTableContext.Properties)-1 > attachmentIterator.currentIndex
+	hasNext := len(attachmentIterator.message.AttachmentTableContext.Properties) > attachmentIterator.currentIndex
 
 	if !hasNext {
 		return false

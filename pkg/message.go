@@ -92,7 +92,7 @@ func (messageIterator *MessageIterator) Err() error {
 // Next will ensure that Value returns the next item when executed.
 // If the next value is not retrievable, Next will return false and Err() will return the error cause.
 func (messageIterator *MessageIterator) Next() bool {
-	hasNext := len(messageIterator.messageTableContext.Properties)-1 > messageIterator.currentIndex
+	hasNext := len(messageIterator.messageTableContext.Properties) > messageIterator.currentIndex
 
 	if !hasNext {
 		return false
