@@ -14,226 +14,229 @@
 //
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+//go:generate msgp -tests=false
+
 syntax = "proto3";
 option go_package = "github.com/mooijtech/go-pst;properties";
 
 message Contact {
   // Specifies the state of the electronic addresses of the contact and represents a set of bit flags.
-  optional int32 address_book_provider_array_type = 1; // @gotags: propertyID:"262217"
+  optional int32 address_book_provider_array_type = 1; // @gotags: msg:"2622173"
   // Specifies the country code portion of the mailing address of the contact.
-  optional string address_country_code = 3; // @gotags: propertyID:"262573"
+  optional string address_country_code = 3; // @gotags: msg:"26257331"
   // Specifies to the application whether to create a Journal object for each action associated with this Contact object.
-  optional bool auto_log = 5; // @gotags: propertyID:"262213"
+  optional bool auto_log = 5; // @gotags: msg:"26221311"
   // Specifies the birthday of a contact.
-  optional int64 birthday_local = 7; // @gotags: propertyID:"262574"
+  optional int64 birthday_local = 7; // @gotags: msg:"26257464"
   // Specifies the character set used for a Contact object.
-  optional int32 contact_character_set = 10; // @gotags: propertyID:"262211"
+  optional int32 contact_character_set = 10; // @gotags: msg:"2622113"
   // Specifies the GUID of the GAL contact to which the duplicate contact is linked.
-  optional uint64 contact_link_global_address_list_link_id = 14; // @gotags: propertyID:"262600"
+  optional uint64 contact_link_global_address_list_link_id = 14; // @gotags: msg:"26260072"
   // Specifies the state of the linking between the GAL contact and the duplicate contact.
-  optional int32 contact_link_global_address_list_link_state = 15; // @gotags: propertyID:"262598"
+  optional int32 contact_link_global_address_list_link_state = 15; // @gotags: msg:"2625983"
   // 
-  optional string contact_link_name = 17; // @gotags: propertyID:"267526"
+  optional string contact_link_name = 17; // @gotags: msg:"26752631"
   // Contains text used to add custom text to a business card representation of a Contact object.
-  optional string contact_user_field1 = 20; // @gotags: propertyID:"262287"
+  optional string contact_user_field1 = 20; // @gotags: msg:"26228731"
   // Contains text used to add custom text to a business card representation of a Contact object.
-  optional string contact_user_field2 = 21; // @gotags: propertyID:"262304"
+  optional string contact_user_field2 = 21; // @gotags: msg:"26230431"
   // Contains text used to add custom text to a business card representation of a Contact object.
-  optional string contact_user_field3 = 22; // @gotags: propertyID:"262305"
+  optional string contact_user_field3 = 22; // @gotags: msg:"26230531"
   // Contains text used to add custom text to a business card representation of a Contact object.
-  optional string contact_user_field4 = 23; // @gotags: propertyID:"262306"
+  optional string contact_user_field4 = 23; // @gotags: msg:"26230631"
   // This property is ignored by the server and is set to an empty string by the client.
-  optional string department = 24; // @gotags: propertyID:"262176"
+  optional string department = 24; // @gotags: msg:"26217631"
   // Specifies the 32-bit cyclic redundancy check (CRC) polynomial checksum, as specified in [ISO/IEC8802-3], calculated on the value of the PidLidDistributionListMembers property (section 2.96).
-  optional int32 distribution_list_checksum = 25; // @gotags: propertyID:"262284"
+  optional int32 distribution_list_checksum = 25; // @gotags: msg:"2622843"
   // Specifies the name of the personal distribution list.
-  optional string distribution_list_name = 27; // @gotags: propertyID:"262307"
+  optional string distribution_list_name = 27; // @gotags: msg:"26230731"
   // Specifies the address type of an electronic address.
-  optional string email1_address_type = 30; // @gotags: propertyID:"262402"
+  optional string email1_address_type = 30; // @gotags: msg:"26240231"
   // Specifies the user-readable display name for the email address.
-  optional string email1_display_name = 31; // @gotags: propertyID:"262400"
+  optional string email1_display_name = 31; // @gotags: msg:"26240031"
   // Specifies the email address of the contact.
-  optional string email1_email_address = 32; // @gotags: propertyID:"262403"
+  optional string email1_email_address = 32; // @gotags: msg:"26240331"
   // Specifies the SMTP email address that corresponds to the email address for the Contact object.
-  optional string email1_original_display_name = 33; // @gotags: propertyID:"262404"
+  optional string email1_original_display_name = 33; // @gotags: msg:"26240431"
   // Specifies the address type of the electronic address.
-  optional string email2_address_type = 35; // @gotags: propertyID:"262434"
+  optional string email2_address_type = 35; // @gotags: msg:"26243431"
   // Specifies the user-readable display name for the email address.
-  optional string email2_display_name = 36; // @gotags: propertyID:"262432"
+  optional string email2_display_name = 36; // @gotags: msg:"26243231"
   // Specifies the email address of the contact.
-  optional string email2_email_address = 37; // @gotags: propertyID:"262435"
+  optional string email2_email_address = 37; // @gotags: msg:"26243531"
   // Specifies the SMTP email address that corresponds to the email address for the Contact object.
-  optional string email2_original_display_name = 38; // @gotags: propertyID:"262436"
+  optional string email2_original_display_name = 38; // @gotags: msg:"26243631"
   // Specifies the address type of the electronic address.
-  optional string email3_address_type = 40; // @gotags: propertyID:"262466"
+  optional string email3_address_type = 40; // @gotags: msg:"26246631"
   // Specifies the user-readable display name for the email address.
-  optional string email3_display_name = 41; // @gotags: propertyID:"262464"
+  optional string email3_display_name = 41; // @gotags: msg:"26246431"
   // Specifies the email address of the contact.
-  optional string email3_email_address = 42; // @gotags: propertyID:"262467"
+  optional string email3_email_address = 42; // @gotags: msg:"26246731"
   // Specifies the SMTP email address that corresponds to the email address for the Contact object.
-  optional string email3_original_display_name = 43; // @gotags: propertyID:"262468"
+  optional string email3_original_display_name = 43; // @gotags: msg:"26246831"
   // Contains the string value "FAX".
-  optional string fax1_address_type = 45; // @gotags: propertyID:"262498"
+  optional string fax1_address_type = 45; // @gotags: msg:"26249831"
   // Contains a user-readable display name, followed by the "@" character, followed by a fax number.
-  optional string fax1_email_address = 46; // @gotags: propertyID:"262499"
+  optional string fax1_email_address = 46; // @gotags: msg:"26249931"
   // Contains the same value as the PidTagNormalizedSubject property (section 2.812).
-  optional string fax1_original_display_name = 47; // @gotags: propertyID:"262500"
+  optional string fax1_original_display_name = 47; // @gotags: msg:"26250031"
   // Contains the string value "FAX".
-  optional string fax2_address_type = 49; // @gotags: propertyID:"262530"
+  optional string fax2_address_type = 49; // @gotags: msg:"26253031"
   // Contains a user-readable display name, followed by the "@" character, followed by a fax number.
-  optional string fax2_email_address = 50; // @gotags: propertyID:"262531"
+  optional string fax2_email_address = 50; // @gotags: msg:"26253131"
   // Contains the same value as the PidTagNormalizedSubject property (section 2.812).
-  optional string fax2_original_display_name = 51; // @gotags: propertyID:"262532"
+  optional string fax2_original_display_name = 51; // @gotags: msg:"26253231"
   // Contains the string value "FAX".
-  optional string fax3_address_type = 53; // @gotags: propertyID:"262562"
+  optional string fax3_address_type = 53; // @gotags: msg:"26256231"
   // Contains a user-readable display name, followed by the "@" character, followed by a fax number.
-  optional string fax3_email_address = 54; // @gotags: propertyID:"262563"
+  optional string fax3_email_address = 54; // @gotags: msg:"26256331"
   // Contains the same value as the PidTagNormalizedSubject property (section 2.812).
-  optional string fax3_original_display_name = 55; // @gotags: propertyID:"262564"
+  optional string fax3_original_display_name = 55; // @gotags: msg:"26256431"
   // Specifies the name under which to file a contact when displaying a list of contacts.
-  optional string file_under = 57; // @gotags: propertyID:"262149"
+  optional string file_under = 57; // @gotags: msg:"26214931"
   // Specifies how to generate and recompute the value of the PidLidFileUnder property (section 2.132) when other contact name properties change.
-  optional int32 file_under_id = 58; // @gotags: propertyID:"262150"
+  optional int32 file_under_id = 58; // @gotags: msg:"2621503"
   // Specifies a URL path from which a client can retrieve free/busy status information for the contact.
-  optional string free_busy_location = 60; // @gotags: propertyID:"262568"
+  optional string free_busy_location = 60; // @gotags: msg:"26256831"
   // Specifies whether the attachment has a picture.
-  optional bool has_picture = 61; // @gotags: propertyID:"262181"
+  optional bool has_picture = 61; // @gotags: msg:"26218111"
   // Specifies the complete address of the home address of the contact.
-  optional string home_address = 62; // @gotags: propertyID:"262186"
+  optional string home_address = 62; // @gotags: msg:"26218631"
   // Specifies the country code portion of the home address of the contact.
-  optional string home_address_country_code = 63; // @gotags: propertyID:"262570"
+  optional string home_address_country_code = 63; // @gotags: msg:"26257031"
   // Specifies the business webpage URL of the contact.
-  optional string html = 64; // @gotags: propertyID:"262219"
+  optional string html = 64; // @gotags: msg:"26221931"
   // Specifies the instant messaging address of the contact.
-  optional string instant_messaging_address = 65; // @gotags: propertyID:"262338"
+  optional string instant_messaging_address = 65; // @gotags: msg:"26233831"
   // Specifies whether the contact is linked to other contacts.
-  optional bool is_contact_linked = 66; // @gotags: propertyID:"262592"
+  optional bool is_contact_linked = 66; // @gotags: msg:"26259211"
   // Specifies the complete address of the other address of the contact.
-  optional string other_address = 67; // @gotags: propertyID:"262188"
+  optional string other_address = 67; // @gotags: msg:"26218831"
   // Specifies the country code portion of the other address of the contact.
-  optional string other_address_country_code = 68; // @gotags: propertyID:"262572"
+  optional string other_address_country_code = 68; // @gotags: msg:"26257231"
   // Specifies which physical address is the mailing address for this contact.
-  optional int32 postal_address_id = 69; // @gotags: propertyID:"262210"
+  optional int32 postal_address_id = 69; // @gotags: msg:"2622103"
   // Specifies the wedding anniversary of the contact, at midnight in the client's local time zone, and is saved without any time zone conversions.
-  optional int64 wedding_anniversary_local = 71; // @gotags: propertyID:"262575"
+  optional int64 wedding_anniversary_local = 71; // @gotags: msg:"26257564"
   // Specifies the complete address of the work address of the contact.
-  optional string work_address = 72; // @gotags: propertyID:"262187"
+  optional string work_address = 72; // @gotags: msg:"26218731"
   // Specifies the city or locality portion of the work address of the contact.
-  optional string work_address_city = 73; // @gotags: propertyID:"262278"
+  optional string work_address_city = 73; // @gotags: msg:"26227831"
   // Specifies the country or region portion of the work address of the contact.
-  optional string work_address_country = 74; // @gotags: propertyID:"262281"
+  optional string work_address_country = 74; // @gotags: msg:"26228131"
   // Specifies the country code portion of the work address of the contact.
-  optional string work_address_country_code = 75; // @gotags: propertyID:"262571"
+  optional string work_address_country_code = 75; // @gotags: msg:"26257131"
   // Specifies the postal code (ZIP code) portion of the work address of the contact.
-  optional string work_address_postal_code = 76; // @gotags: propertyID:"262280"
+  optional string work_address_postal_code = 76; // @gotags: msg:"26228031"
   // Specifies the post office box portion of the work address of the contact.
-  optional string work_address_post_office_box = 77; // @gotags: propertyID:"262282"
+  optional string work_address_post_office_box = 77; // @gotags: msg:"26228231"
   // Specifies the state or province portion of the work address of the contact.
-  optional string work_address_state = 78; // @gotags: propertyID:"262279"
+  optional string work_address_state = 78; // @gotags: msg:"26227931"
   // Specifies the street portion of the work address of the contact.
-  optional string work_address_street = 79; // @gotags: propertyID:"262277"
+  optional string work_address_street = 79; // @gotags: msg:"26227731"
   // Specifies the phonetic pronunciation of the company name of the contact.
-  optional string yomi_company_name = 80; // @gotags: propertyID:"262222"
+  optional string yomi_company_name = 80; // @gotags: msg:"26222231"
   // Specifies the phonetic pronunciation of the given name of the contact.
-  optional string yomi_first_name = 81; // @gotags: propertyID:"262220"
+  optional string yomi_first_name = 81; // @gotags: msg:"26222031"
   // Specifies the phonetic pronunciation of the surname of the contact.
-  optional string yomi_last_name = 82; // @gotags: propertyID:"262221"
+  optional string yomi_last_name = 82; // @gotags: msg:"26222131"
   // Indicates the name of the contact associated with the birthday event.
   optional string birthday_contact_attribution_display_name = 83; 
   // Indicates whether the contact associated with the birthday event is writable.
   optional bool is_birthday_contact_writable = 86; 
   // Contains the date of the mail user's birthday at midnight.
-  optional int64 birthday = 87; // @gotags: propertyID:"14914"
+  optional int64 birthday = 87; // @gotags: msg:"1491464"
   // Contains a secondary telephone number at the mail user's place of business.
-  optional string business2_telephone_number = 88; // @gotags: propertyID:"14875"
+  optional string business2_telephone_number = 88; // @gotags: msg:"1487531"
   // Contains the telephone number of the mail user's business fax machine.
-  optional string business_fax_number = 90; // @gotags: propertyID:"14884"
+  optional string business_fax_number = 90; // @gotags: msg:"1488431"
   // Contains the URL of the mail user's business home page.
-  optional string business_home_page = 91; // @gotags: propertyID:"14929"
+  optional string business_home_page = 91; // @gotags: msg:"1492931"
   // Contains the primary telephone number of the mail user's place of business.
-  optional string business_telephone_number = 92; // @gotags: propertyID:"14856"
+  optional string business_telephone_number = 92; // @gotags: msg:"1485631"
   // Contains a telephone number to reach the mail user.
-  optional string callback_telephone_number = 93; // @gotags: propertyID:"14850"
+  optional string callback_telephone_number = 93; // @gotags: msg:"1485031"
   // Contains the mail user's car telephone number.
-  optional string car_telephone_number = 94; // @gotags: propertyID:"14878"
+  optional string car_telephone_number = 94; // @gotags: msg:"1487831"
   // Contains the main telephone number of the mail user's company.
-  optional string company_main_telephone_number = 96; // @gotags: propertyID:"14935"
+  optional string company_main_telephone_number = 96; // @gotags: msg:"1493531"
   // Contains the mail user's company name.
-  optional string company_name = 97; // @gotags: propertyID:"14870"
+  optional string company_name = 97; // @gotags: msg:"1487031"
   // Contains the name of the mail user's computer network.
-  optional string computer_network_name = 98; // @gotags: propertyID:"14921"
+  optional string computer_network_name = 98; // @gotags: msg:"1492131"
   // Contains the name of the mail user's country/region.
-  optional string country = 99; // @gotags: propertyID:"14886"
+  optional string country = 99; // @gotags: msg:"1488631"
   // Contains the mail user's customer identification number.
-  optional string customer_id = 100; // @gotags: propertyID:"14922"
+  optional string customer_id = 100; // @gotags: msg:"1492231"
   // Contains a name for the department in which the mail user works.
-  optional string department_name = 101; // @gotags: propertyID:"14872"
+  optional string department_name = 101; // @gotags: msg:"1487231"
   // Contains the mail user's honorific title.
-  optional string display_name_prefix = 102; // @gotags: propertyID:"14917"
+  optional string display_name_prefix = 102; // @gotags: msg:"1491731"
   // Contains the File Transfer Protocol (FTP) site address of the mail user.
-  optional string ftp_site = 103; // @gotags: propertyID:"14924"
+  optional string ftp_site = 103; // @gotags: msg:"1492431"
   // Contains a value that represents the mail user's gender.
-  optional int32 gender = 104; // @gotags: propertyID:"14925"
+  optional int32 gender = 104; // @gotags: msg:"149252"
   // Contains a generational abbreviation that follows the full name of the mail user.
-  optional string generation = 105; // @gotags: propertyID:"14853"
+  optional string generation = 105; // @gotags: msg:"1485331"
   // Contains the mail user's given name.
-  optional string given_name = 106; // @gotags: propertyID:"14854"
+  optional string given_name = 106; // @gotags: msg:"1485431"
   // Contains a government identifier for the mail user.
-  optional string government_id_number = 107; // @gotags: propertyID:"14855"
+  optional string government_id_number = 107; // @gotags: msg:"1485531"
   // Contains the names of the mail user's hobbies.
-  optional string hobbies = 108; // @gotags: propertyID:"14915"
+  optional string hobbies = 108; // @gotags: msg:"1491531"
   // Contains a secondary telephone number at the mail user's home.
-  optional string home2_telephone_number = 109; // @gotags: propertyID:"14895"
+  optional string home2_telephone_number = 109; // @gotags: msg:"1489531"
   // Contains the name of the mail user's home locality, such as the town or city.
-  optional string home_address_city = 111; // @gotags: propertyID:"14937"
+  optional string home_address_city = 111; // @gotags: msg:"1493731"
   // Contains the name of the mail user's home country/region.
-  optional string home_address_country = 112; // @gotags: propertyID:"14938"
+  optional string home_address_country = 112; // @gotags: msg:"1493831"
   // Contains the postal code for the mail user's home postal address.
-  optional string home_address_postal_code = 113; // @gotags: propertyID:"14939"
+  optional string home_address_postal_code = 113; // @gotags: msg:"1493931"
   // Contains the number or identifier of the mail user's home post office box.
-  optional string home_address_post_office_box = 114; // @gotags: propertyID:"14942"
+  optional string home_address_post_office_box = 114; // @gotags: msg:"1494231"
   // Contains the name of the mail user's home state or province.
-  optional string home_address_state_or_province = 115; // @gotags: propertyID:"14940"
+  optional string home_address_state_or_province = 115; // @gotags: msg:"1494031"
   // Contains the mail user's home street address.
-  optional string home_address_street = 116; // @gotags: propertyID:"14941"
+  optional string home_address_street = 116; // @gotags: msg:"1494131"
   // Contains the telephone number of the mail user's home fax machine.
-  optional string home_fax_number = 117; // @gotags: propertyID:"14885"
+  optional string home_fax_number = 117; // @gotags: msg:"1488531"
   // Contains the primary telephone number of the mail user's home.
-  optional string home_telephone_number = 118; // @gotags: propertyID:"14857"
+  optional string home_telephone_number = 118; // @gotags: msg:"1485731"
   // Specifies whether contact synchronization with an external source is handled by the server.
-  optional bool osc_sync_enabled = 119; // @gotags: propertyID:"31780"
+  optional bool osc_sync_enabled = 119; // @gotags: msg:"3178011"
   // Contains the URL of the mail user's personal home page.
-  optional string personal_home_page = 120; // @gotags: propertyID:"14928"
+  optional string personal_home_page = 120; // @gotags: msg:"1492831"
   // Contains the mail user's postal address.
-  optional string postal_address = 121; // @gotags: propertyID:"14869"
+  optional string postal_address = 121; // @gotags: msg:"1486931"
   // Contains the postal code for the mail user's postal address.
-  optional string postal_code = 122; // @gotags: propertyID:"14890"
+  optional string postal_code = 122; // @gotags: msg:"1489031"
   // Contains the number or identifier of the mail user's post office box.
-  optional string post_office_box = 123; // @gotags: propertyID:"14891"
+  optional string post_office_box = 123; // @gotags: msg:"1489131"
   // Contains the telephone number of the mail user's primary fax machine.
-  optional string primary_fax_number = 124; // @gotags: propertyID:"14883"
+  optional string primary_fax_number = 124; // @gotags: msg:"1488331"
   // Contains the mail user's primary telephone number.
-  optional string primary_telephone_number = 125; // @gotags: propertyID:"14874"
+  optional string primary_telephone_number = 125; // @gotags: msg:"1487431"
   // Contains the name of the mail user's line of business.
-  optional string profession = 126; // @gotags: propertyID:"14918"
+  optional string profession = 126; // @gotags: msg:"1491831"
   // Contains the mail user's radio telephone number.
-  optional string radio_telephone_number = 127; // @gotags: propertyID:"14877"
+  optional string radio_telephone_number = 127; // @gotags: msg:"1487731"
   // Contains the name of the mail user's referral.
-  optional string referred_by_name = 128; // @gotags: propertyID:"14919"
+  optional string referred_by_name = 128; // @gotags: msg:"1491931"
   // Contains the name of the mail user's spouse/partner.
-  optional string spouse_name = 129; // @gotags: propertyID:"14920"
+  optional string spouse_name = 129; // @gotags: msg:"1492031"
   // Contains the name of the mail user's state or province.
-  optional string state_or_province = 130; // @gotags: propertyID:"14888"
+  optional string state_or_province = 130; // @gotags: msg:"1488831"
   // Contains the mail user's street address.
-  optional string street_address = 131; // @gotags: propertyID:"14889"
+  optional string street_address = 131; // @gotags: msg:"1488931"
   // Contains the mail user's family name.
-  optional string surname = 132; // @gotags: propertyID:"14865"
+  optional string surname = 132; // @gotags: msg:"1486531"
   // Contains the mail user's telecommunication device for the deaf (TTY/TDD) telephone number.
-  optional string telecommunications_device_for_deaf_telephone_number = 133; // @gotags: propertyID:"14923"
+  optional string telecommunications_device_for_deaf_telephone_number = 133; // @gotags: msg:"1492331"
   // Contains the mail user's telex number. This property is returned from an NSPI server as a PtypMultipleBinary. Otherwise, the data type is PtypString.
-  optional string telex_number = 134; // @gotags: propertyID:"14892"
+  optional string telex_number = 134; // @gotags: msg:"1489231"
   // Contains the mail user's job title.
-  optional string title = 135; // @gotags: propertyID:"14871"
+  optional string title = 135; // @gotags: msg:"1487131"
   // Contains the date of the mail user's wedding anniversary.
-  optional int64 wedding_anniversary = 138; // @gotags: propertyID:"14913"
+  optional int64 wedding_anniversary = 138; // @gotags: msg:"1491364"
 }

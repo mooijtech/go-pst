@@ -20,6 +20,7 @@ package pst
 import (
 	"encoding/binary"
 	"fmt"
+	"github.com/tinylib/msgp/msgp"
 	"math"
 	"time"
 
@@ -56,23 +57,99 @@ func NewPropertyReader(property Property, heapOnNode *HeapOnNode, file *File, lo
 	}
 }
 
-// GetValue returns any value based on the property type.
-func (propertyReader *PropertyReader) GetValue() (any, error) {
+// WriteMessagePackValue writes the Message Pack format of the property value.
+// Used to populate struct fields.
+func (propertyReader *PropertyReader) WriteMessagePackValue(writer *msgp.Writer) error {
+	key := fmt.Sprintf("%d%d", propertyReader.Property.ID, propertyReader.Property.Type)
+
 	switch propertyReader.Property.Type {
 	case PropertyTypeString:
-		return propertyReader.GetString()
+		value, err := propertyReader.GetString()
+
+		if err != nil {
+			return errors.WithStack(err)
+		}
+
+		if err := writer.WriteString(key); err != nil {
+			return errors.WithStack(err)
+		} else if err := writer.WriteString(value); err != nil {
+			return errors.WithStack(err)
+		}
+
+		return nil
 	case PropertyTypeString8:
-		return propertyReader.GetString8(65001) // TODO - Get from caller.
+		value, err := propertyReader.GetString8(65001) // TODO - Get from called, this is UTF-8 for now.
+
+		if err != nil {
+			return errors.WithStack(err)
+		}
+
+		if err := writer.WriteString(key); err != nil {
+			return errors.WithStack(err)
+		} else if err := writer.WriteString(value); err != nil {
+			return errors.WithStack(err)
+		}
+
+		return nil
 	case PropertyTypeTime:
-		return propertyReader.GetDate()
+		value, err := propertyReader.GetDate()
+
+		if err != nil {
+			return errors.WithStack(err)
+		}
+
+		if err := writer.WriteString(key); err != nil {
+			return errors.WithStack(err)
+		} else if err := writer.WriteInt64(value); err != nil {
+			return errors.WithStack(err)
+		}
+
+		return nil
 	case PropertyTypeInteger16:
-		return propertyReader.GetInteger16()
+		value, err := propertyReader.GetInteger16()
+
+		if err != nil {
+			return errors.WithStack(err)
+		}
+
+		if err := writer.WriteString(key); err != nil {
+			return errors.WithStack(err)
+		} else if err := writer.WriteInt16(value); err != nil {
+			return errors.WithStack(err)
+		}
+
+		return nil
 	case PropertyTypeInteger32:
-		return propertyReader.GetInteger32()
+		value, err := propertyReader.GetInteger32()
+
+		if err != nil {
+			return errors.WithStack(err)
+		}
+
+		if err := writer.WriteString(key); err != nil {
+			return errors.WithStack(err)
+		} else if err := writer.WriteInt32(value); err != nil {
+			return errors.WithStack(err)
+		}
+
+		return nil
 	case PropertyTypeInteger64:
-		return propertyReader.GetInteger64()
+		value, err := propertyReader.GetInteger64()
+
+		if err != nil {
+			return errors.WithStack(err)
+		}
+
+		if err := writer.WriteString(key); err != nil {
+			return errors.WithStack(err)
+		} else if err := writer.WriteInt64(value); err != nil {
+			return errors.WithStack(err)
+		}
+
+		return nil
 	default:
-		return nil, ErrPropertyNoData
+		// TODO - Write Nil?
+		return ErrPropertyNoData
 	}
 }
 
@@ -84,7 +161,7 @@ func (propertyReader *PropertyReader) GetString() (string, error) {
 		return "", errors.WithStack(ErrPropertyNoData)
 	}
 
-	data := make([]byte, propertyReader.HeapOnNodeReader.Size())
+	data := make([]byte, propertyReader.Size())
 
 	if _, err := propertyReader.ReadAt(data, 0); err != nil {
 		return "", errors.WithStack(err)

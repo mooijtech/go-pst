@@ -18,11 +18,12 @@
 package pst
 
 import (
+	"bytes"
 	_ "embed"
 	"encoding/binary"
-	"encoding/json"
 	"github.com/pkg/errors"
-	"strconv"
+	"github.com/tinylib/msgp/msgp"
+	"io"
 )
 
 // PropertyContext represents the property context.
@@ -131,41 +132,37 @@ func (file *File) GetPropertyContext(heapOnNode *HeapOnNode) (*PropertyContext, 
 	}, nil
 }
 
-// LoadProperties loads all message properties from the property context.
-func (propertyContext *PropertyContext) LoadProperties(propertiesStruct any, localDescriptors ...LocalDescriptor) error {
-	propertiesMap := make(map[string]any)
+// Populate all properties to the decodable.
+func (propertyContext *PropertyContext) Populate(decodable msgp.Decodable, localDescriptors []LocalDescriptor) error {
+	// Populate the properties.
+	messagePackBuffer := &bytes.Buffer{}
+	messagePackWriter := msgp.NewWriter(messagePackBuffer)
 
-	for _, property := range propertyContext.Properties {
-		jsonName := PropertyMap[strconv.Itoa(int(property.ID))]
-
-		if jsonName == "" {
-			continue
-		}
-
-		propertyReader, err := propertyContext.GetPropertyReader(property.ID, localDescriptors...)
-
-		if errors.Is(err, ErrPropertyNoData) {
-			continue
-		} else if err != nil {
-			return errors.WithStack(err)
-		}
-
-		messagePropertyValue, err := propertyReader.GetValue()
-
-		if errors.Is(err, ErrPropertyNoData) {
-			continue
-		} else if err != nil {
-			return errors.WithStack(err)
-		}
-
-		propertiesMap[jsonName] = messagePropertyValue
+	if err := messagePackWriter.WriteMapHeader(uint32(len(propertyContext.Properties))); err != nil {
+		return errors.WithStack(err)
 	}
 
-	marshal, err := json.Marshal(propertiesMap)
+	for _, property := range propertyContext.Properties {
+		propertyReader, err := propertyContext.GetPropertyReader(property.ID, localDescriptors...)
 
-	if err != nil {
+		if err != nil && !errors.Is(err, ErrPropertyNoData) {
+			return errors.WithStack(err)
+		}
+
+		err = propertyReader.WriteMessagePackValue(messagePackWriter)
+
+		if err != nil && !errors.Is(err, ErrPropertyNoData) {
+			return errors.WithStack(err)
+		}
+	}
+
+	if err := messagePackWriter.Flush(); err != nil {
 		return errors.WithStack(err)
-	} else if err := json.Unmarshal(marshal, propertiesStruct); err != nil {
+	}
+
+	err := decodable.DecodeMsg(msgp.NewReader(messagePackBuffer))
+
+	if err != nil && !errors.Is(err, io.EOF) {
 		return errors.WithStack(err)
 	}
 

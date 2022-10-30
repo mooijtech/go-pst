@@ -227,7 +227,7 @@ func (file *File) GetMessage(identifier Identifier) (*Message, error) {
 		LocalDescriptors: localDescriptors,
 	}
 
-	if err := propertyContext.LoadProperties(message, localDescriptors...); err != nil {
+	if err := propertyContext.Populate(message, localDescriptors); err != nil {
 		return nil, errors.WithStack(err)
 	}
 

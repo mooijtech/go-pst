@@ -168,7 +168,7 @@ func (message *Message) GetAttachment(attachmentIndex int) (*Attachment, error) 
 		LocalDescriptors: attachmentLocalDescriptors,
 	}
 
-	if err := attachmentPropertyContext.LoadProperties(attachment, attachmentLocalDescriptors...); err != nil {
+	if err := attachmentPropertyContext.Populate(attachment, attachmentLocalDescriptors); err != nil {
 		return nil, errors.WithStack(err)
 	}
 

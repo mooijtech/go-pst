@@ -14,28 +14,31 @@
 //
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+//go:generate msgp -tests=false
+
 syntax = "proto3";
 option go_package = "github.com/mooijtech/go-pst;properties";
 
 message Journal {
   // Indicates whether the document was sent by email or posted to a server folder during journaling.
-  optional bool log_document_posted = 1; // @gotags: propertyID:"269345"
+  optional bool log_document_posted = 1; // @gotags: msg:"26934511"
   // Indicates whether the document was printed during journaling.
-  optional bool log_document_printed = 2; // @gotags: propertyID:"269326"
+  optional bool log_document_printed = 2; // @gotags: msg:"26932611"
   // Indicates whether the document was sent to a routing recipient during journaling.
-  optional bool log_document_routed = 3; // @gotags: propertyID:"269344"
+  optional bool log_document_routed = 3; // @gotags: msg:"26934411"
   // Indicates whether the document was saved during journaling.
-  optional bool log_document_saved = 4; // @gotags: propertyID:"269327"
+  optional bool log_document_saved = 4; // @gotags: msg:"26932711"
   // Contains the duration, in minutes, of the activity.
-  optional int32 log_duration = 5; // @gotags: propertyID:"269319"
+  optional int32 log_duration = 5; // @gotags: msg:"2693193"
   // Contains the time, in UTC, at which the activity ended.
-  optional int64 log_end = 6; // @gotags: propertyID:"269320"
+  optional int64 log_end = 6; // @gotags: msg:"26932064"
   // Contains metadata about the Journal object.
-  optional int32 log_flags = 7; // @gotags: propertyID:"269324"
+  optional int32 log_flags = 7; // @gotags: msg:"2693243"
   // Contains the time, in UTC, at which the activity began.
-  optional int64 log_start = 8; // @gotags: propertyID:"269318"
+  optional int64 log_start = 8; // @gotags: msg:"26931864"
   // Briefly describes the journal activity that is being recorded.
-  optional string log_type = 9; // @gotags: propertyID:"269312"
+  optional string log_type = 9; // @gotags: msg:"26931231"
   // Contains an expanded description of the journal activity that is being recorded.
-  optional string log_type_desc = 10; // @gotags: propertyID:"269346"
+  optional string log_type_desc = 10; // @gotags: msg:"26934631"
 }

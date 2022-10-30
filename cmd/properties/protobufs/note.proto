@@ -14,18 +14,21 @@
 //
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+//go:generate msgp -tests=false
+
 syntax = "proto3";
 option go_package = "github.com/mooijtech/go-pst;properties";
 
 message Note {
   // Specifies the suggested background color of the Note object.
-  optional int32 note_color = 1; // @gotags: propertyID:"273408"
+  optional int32 note_color = 1; // @gotags: msg:"2734083"
   // Specifies the height of the visible message window in pixels.
-  optional int32 note_height = 2; // @gotags: propertyID:"273411"
+  optional int32 note_height = 2; // @gotags: msg:"2734113"
   // Specifies the width of the visible message window in pixels.
-  optional int32 note_width = 3; // @gotags: propertyID:"273410"
+  optional int32 note_width = 3; // @gotags: msg:"2734103"
   // Specifies the distance, in pixels, from the left edge of the screen that a user interface displays a Note object.
-  optional int32 note_x = 4; // @gotags: propertyID:"273412"
+  optional int32 note_x = 4; // @gotags: msg:"2734123"
   // Specifies the distance, in pixels, from the top edge of the screen that a user interface displays a Note object.
-  optional int32 note_y = 5; // @gotags: propertyID:"273413"
+  optional int32 note_y = 5; // @gotags: msg:"2734133"
 }

@@ -14,18 +14,21 @@
 //
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+//go:generate msgp -tests=false
+
 syntax = "proto3";
 option go_package = "github.com/mooijtech/go-pst;properties";
 
 message Spam {
   // Indicates whether email recipients are to be added to the safe senders list.
-  optional int32 junk_add_recipients_to_safe_senders_list = 2; // @gotags: propertyID:"24835"
+  optional int32 junk_add_recipients_to_safe_senders_list = 2; // @gotags: msg:"248353"
   // Indicates whether email addresses of the contacts in the Contacts folder are treated in a special way with respect to the spam filter.
-  optional int32 junk_include_contacts = 3; // @gotags: propertyID:"24832"
+  optional int32 junk_include_contacts = 3; // @gotags: msg:"248323"
   // Indicates whether messages identified as spam can be permanently deleted.
-  optional int32 junk_permanently_delete = 4; // @gotags: propertyID:"24834"
+  optional int32 junk_permanently_delete = 4; // @gotags: msg:"248343"
   // Indicated whether the phishing stamp on a message is to be ignored.
-  optional bool junk_phishing_enable_links = 5; // @gotags: propertyID:"24839"
+  optional bool junk_phishing_enable_links = 5; // @gotags: msg:"2483911"
   // Indicates how aggressively incoming email is to be sent to the Junk Email folder.
-  optional int32 junk_threshold = 6; // @gotags: propertyID:"24833"
+  optional int32 junk_threshold = 6; // @gotags: msg:"248333"
 }
