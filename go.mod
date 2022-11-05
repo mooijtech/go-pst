@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/pkg/errors v0.9.1
-	github.com/tidwall/btree v1.5.0
+	github.com/tidwall/btree v1.5.1
 	github.com/tinylib/msgp v1.1.6
 	golang.org/x/text v0.4.0
 	google.golang.org/protobuf v1.28.1
