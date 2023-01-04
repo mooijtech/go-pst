@@ -6,7 +6,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/tidwall/btree v1.6.0
 	github.com/tinylib/msgp v1.1.8
-	golang.org/x/text v0.5.0
+	golang.org/x/text v0.6.0
 	google.golang.org/protobuf v1.28.1
 )
 
