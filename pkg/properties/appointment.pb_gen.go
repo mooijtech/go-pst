@@ -2197,1790 +2197,2482 @@ func (z *Appointment) DecodeMsg(dc *msgp.Reader) (err error) {
 
 // EncodeMsg implements msgp.Encodable
 func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
-	// map header, size 120
-	// write "26429631"
-	err = en.Append(0xde, 0x0, 0x78, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x39, 0x36, 0x33, 0x31)
-	if err != nil {
-		return
-	}
+	// omitempty: check for empty values
+	zb0001Len := uint32(120)
+	var zb0001Mask [2]uint64 /* 120 bits */
 	if z.AllAttendeesString == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.AllAttendeesString)
-		if err != nil {
-			err = msgp.WrapError(err, "AllAttendeesString")
-			return
-		}
-	}
-	// write "26432611"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x33, 0x32, 0x36, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x1
 	}
 	if z.AllowExternalCheck == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.AllowExternalCheck)
-		if err != nil {
-			err = msgp.WrapError(err, "AllowExternalCheck")
-			return
-		}
-	}
-	// write "2641993"
-	err = en.Append(0xa7, 0x32, 0x36, 0x34, 0x31, 0x39, 0x39, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x2
 	}
 	if z.AppointmentAuxiliaryFlags == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.AppointmentAuxiliaryFlags)
-		if err != nil {
-			err = msgp.WrapError(err, "AppointmentAuxiliaryFlags")
-			return
-		}
-	}
-	// write "2642283"
-	err = en.Append(0xa7, 0x32, 0x36, 0x34, 0x32, 0x32, 0x38, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x4
 	}
 	if z.AppointmentColor == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.AppointmentColor)
-		if err != nil {
-			err = msgp.WrapError(err, "AppointmentColor")
-			return
-		}
-	}
-	// write "26435911"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x33, 0x35, 0x39, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x8
 	}
 	if z.AppointmentCounterProposal == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.AppointmentCounterProposal)
-		if err != nil {
-			err = msgp.WrapError(err, "AppointmentCounterProposal")
-			return
-		}
-	}
-	// write "2642273"
-	err = en.Append(0xa7, 0x32, 0x36, 0x34, 0x32, 0x32, 0x37, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x10
 	}
 	if z.AppointmentDuration == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.AppointmentDuration)
-		if err != nil {
-			err = msgp.WrapError(err, "AppointmentDuration")
-			return
-		}
-	}
-	// write "26422564"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x32, 0x35, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x20
 	}
 	if z.AppointmentEndDate == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.AppointmentEndDate)
-		if err != nil {
-			err = msgp.WrapError(err, "AppointmentEndDate")
-			return
-		}
-	}
-	// write "26422464"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x32, 0x34, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x40
 	}
 	if z.AppointmentEndTime == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.AppointmentEndTime)
-		if err != nil {
-			err = msgp.WrapError(err, "AppointmentEndTime")
-			return
-		}
-	}
-	// write "26420664"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x30, 0x36, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x80
 	}
 	if z.AppointmentEndWhole == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.AppointmentEndWhole)
-		if err != nil {
-			err = msgp.WrapError(err, "AppointmentEndWhole")
-			return
-		}
-	}
-	// write "2641953"
-	err = en.Append(0xa7, 0x32, 0x36, 0x34, 0x31, 0x39, 0x35, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x100
 	}
 	if z.AppointmentLastSequence == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.AppointmentLastSequence)
-		if err != nil {
-			err = msgp.WrapError(err, "AppointmentLastSequence")
-			return
-		}
-	}
-	// write "6831"
-	err = en.Append(0xa4, 0x36, 0x38, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x200
 	}
 	if z.AppointmentMessageClass == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.AppointmentMessageClass)
-		if err != nil {
-			err = msgp.WrapError(err, "AppointmentMessageClass")
-			return
-		}
-	}
-	// write "26436211"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x33, 0x36, 0x32, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x400
 	}
 	if z.AppointmentNotAllowPropose == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.AppointmentNotAllowPropose)
-		if err != nil {
-			err = msgp.WrapError(err, "AppointmentNotAllowPropose")
-			return
-		}
-	}
-	// write "2643613"
-	err = en.Append(0xa7, 0x32, 0x36, 0x34, 0x33, 0x36, 0x31, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x800
 	}
 	if z.AppointmentProposalNumber == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.AppointmentProposalNumber)
-		if err != nil {
-			err = msgp.WrapError(err, "AppointmentProposalNumber")
-			return
-		}
-	}
-	// write "2643583"
-	err = en.Append(0xa7, 0x32, 0x36, 0x34, 0x33, 0x35, 0x38, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x1000
 	}
 	if z.AppointmentProposedDuration == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.AppointmentProposedDuration)
-		if err != nil {
-			err = msgp.WrapError(err, "AppointmentProposedDuration")
-			return
-		}
-	}
-	// write "26435364"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x33, 0x35, 0x33, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x2000
 	}
 	if z.AppointmentProposedEndWhole == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.AppointmentProposedEndWhole)
-		if err != nil {
-			err = msgp.WrapError(err, "AppointmentProposedEndWhole")
-			return
-		}
-	}
-	// write "26435264"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x33, 0x35, 0x32, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x4000
 	}
 	if z.AppointmentProposedStartWhole == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.AppointmentProposedStartWhole)
-		if err != nil {
-			err = msgp.WrapError(err, "AppointmentProposedStartWhole")
-			return
-		}
-	}
-	// write "26428831"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x38, 0x38, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x8000
 	}
 	if z.AppointmentReplyName == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.AppointmentReplyName)
-		if err != nil {
-			err = msgp.WrapError(err, "AppointmentReplyName")
-			return
-		}
-	}
-	// write "26425664"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x35, 0x36, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x10000
 	}
 	if z.AppointmentReplyTime == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.AppointmentReplyTime)
-		if err != nil {
-			err = msgp.WrapError(err, "AppointmentReplyTime")
-			return
-		}
-	}
-	// write "2641933"
-	err = en.Append(0xa7, 0x32, 0x36, 0x34, 0x31, 0x39, 0x33, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x20000
 	}
 	if z.AppointmentSequence == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.AppointmentSequence)
-		if err != nil {
-			err = msgp.WrapError(err, "AppointmentSequence")
-			return
-		}
-	}
-	// write "26419464"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x31, 0x39, 0x34, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x40000
 	}
 	if z.AppointmentSequenceTime == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.AppointmentSequenceTime)
-		if err != nil {
-			err = msgp.WrapError(err, "AppointmentSequenceTime")
-			return
-		}
-	}
-	// write "26422664"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x32, 0x36, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x80000
 	}
 	if z.AppointmentStartDate == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.AppointmentStartDate)
-		if err != nil {
-			err = msgp.WrapError(err, "AppointmentStartDate")
-			return
-		}
-	}
-	// write "26420764"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x30, 0x37, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x100000
 	}
 	if z.AppointmentStartTime == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.AppointmentStartTime)
-		if err != nil {
-			err = msgp.WrapError(err, "AppointmentStartTime")
-			return
-		}
-	}
-	// write "26420564"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x30, 0x35, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x200000
 	}
 	if z.AppointmentStartWhole == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.AppointmentStartWhole)
-		if err != nil {
-			err = msgp.WrapError(err, "AppointmentStartWhole")
-			return
-		}
-	}
-	// write "2642313"
-	err = en.Append(0xa7, 0x32, 0x36, 0x34, 0x32, 0x33, 0x31, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x400000
 	}
 	if z.AppointmentStateFlags == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.AppointmentStateFlags)
-		if err != nil {
-			err = msgp.WrapError(err, "AppointmentStateFlags")
-			return
-		}
-	}
-	// write "26422911"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x32, 0x39, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x800000
 	}
 	if z.AppointmentSubType == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.AppointmentSubType)
-		if err != nil {
-			err = msgp.WrapError(err, "AppointmentSubType")
-			return
-		}
-	}
-	// write "26426264"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x36, 0x32, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x1000000
 	}
 	if z.AppointmentUpdateTime == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.AppointmentUpdateTime)
-		if err != nil {
-			err = msgp.WrapError(err, "AppointmentUpdateTime")
-			return
-		}
-	}
-	// write "164"
-	err = en.Append(0xa3, 0x31, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x2000000
 	}
 	if z.AttendeeCriticalChange == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.AttendeeCriticalChange)
-		if err != nil {
-			err = msgp.WrapError(err, "AttendeeCriticalChange")
-			return
-		}
-	}
-	// write "26429811"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x39, 0x38, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x4000000
 	}
 	if z.AutoFillLocation == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.AutoFillLocation)
-		if err != nil {
-			err = msgp.WrapError(err, "AutoFillLocation")
-			return
-		}
-	}
-	// write "26432411"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x33, 0x32, 0x34, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x8000000
 	}
 	if z.AutoStartCheck == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.AutoStartCheck)
-		if err != nil {
-			err = msgp.WrapError(err, "AutoStartCheck")
-			return
-		}
-	}
-	// write "2641973"
-	err = en.Append(0xa7, 0x32, 0x36, 0x34, 0x31, 0x39, 0x37, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x10000000
 	}
 	if z.BusyStatus == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.BusyStatus)
-		if err != nil {
-			err = msgp.WrapError(err, "BusyStatus")
-			return
-		}
-	}
-	// write "443"
-	err = en.Append(0xa3, 0x34, 0x34, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x20000000
 	}
 	if z.CalendarType == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.CalendarType)
-		if err != nil {
-			err = msgp.WrapError(err, "CalendarType")
-			return
-		}
-	}
-	// write "26430031"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x33, 0x30, 0x30, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x40000000
 	}
 	if z.CcAttendeesString == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.CcAttendeesString)
-		if err != nil {
-			err = msgp.WrapError(err, "CcAttendeesString")
-			return
-		}
-	}
-	// write "2641963"
-	err = en.Append(0xa7, 0x32, 0x36, 0x34, 0x31, 0x39, 0x36, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x80000000
 	}
 	if z.ChangeHighlight == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.ChangeHighlight)
-		if err != nil {
-			err = msgp.WrapError(err, "ChangeHighlight")
-			return
-		}
-	}
-	// write "373"
-	err = en.Append(0xa3, 0x33, 0x37, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x100000000
 	}
 	if z.ClientIntent == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.ClientIntent)
-		if err != nil {
-			err = msgp.WrapError(err, "ClientIntent")
-			return
-		}
-	}
-	// write "26429464"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x39, 0x34, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x200000000
 	}
 	if z.ClipEnd == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.ClipEnd)
-		if err != nil {
-			err = msgp.WrapError(err, "ClipEnd")
-			return
-		}
-	}
-	// write "26429364"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x39, 0x33, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x400000000
 	}
 	if z.ClipStart == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.ClipStart)
-		if err != nil {
-			err = msgp.WrapError(err, "ClipStart")
-			return
-		}
-	}
-	// write "26432731"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x33, 0x32, 0x37, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x800000000
 	}
 	if z.CollaborateDoc == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.CollaborateDoc)
-		if err != nil {
-			err = msgp.WrapError(err, "CollaborateDoc")
-			return
-		}
-	}
-	// write "26432011"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x33, 0x32, 0x30, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x1000000000
 	}
 	if z.ConferencingCheck == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.ConferencingCheck)
-		if err != nil {
-			err = msgp.WrapError(err, "ConferencingCheck")
-			return
-		}
-	}
-	// write "2643213"
-	err = en.Append(0xa7, 0x32, 0x36, 0x34, 0x33, 0x32, 0x31, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x2000000000
 	}
 	if z.ConferencingType == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.ConferencingType)
-		if err != nil {
-			err = msgp.WrapError(err, "ConferencingType")
-			return
-		}
-	}
-	// write "332"
-	err = en.Append(0xa3, 0x33, 0x33, 0x32)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x4000000000
 	}
 	if z.DayInterval == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.DayInterval)
-		if err != nil {
-			err = msgp.WrapError(err, "DayInterval")
-			return
-		}
-	}
-	// write "327683"
-	err = en.Append(0xa6, 0x33, 0x32, 0x37, 0x36, 0x38, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x8000000000
 	}
 	if z.DayOfMonth == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.DayOfMonth)
-		if err != nil {
-			err = msgp.WrapError(err, "DayOfMonth")
-			return
-		}
-	}
-	// write "911"
-	err = en.Append(0xa3, 0x39, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x10000000000
 	}
 	if z.DelegateMail == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.DelegateMail)
-		if err != nil {
-			err = msgp.WrapError(err, "DelegateMail")
-			return
-		}
-	}
-	// write "26432231"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x33, 0x32, 0x32, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x20000000000
 	}
 	if z.Directory == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.Directory)
-		if err != nil {
-			err = msgp.WrapError(err, "Directory")
-			return
-		}
-	}
-	// write "153"
-	err = en.Append(0xa3, 0x31, 0x35, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x40000000000
 	}
 	if z.EndRecurrenceDate == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.EndRecurrenceDate)
-		if err != nil {
-			err = msgp.WrapError(err, "EndRecurrenceDate")
-			return
-		}
-	}
-	// write "323"
-	err = en.Append(0xa3, 0x33, 0x32, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x80000000000
 	}
 	if z.EndRecurrenceTime == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.EndRecurrenceTime)
-		if err != nil {
-			err = msgp.WrapError(err, "EndRecurrenceTime")
-			return
-		}
-	}
-	// write "26426464"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x36, 0x34, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x100000000000
 	}
 	if z.ExceptionReplaceTime == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.ExceptionReplaceTime)
-		if err != nil {
-			err = msgp.WrapError(err, "ExceptionReplaceTime")
-			return
-		}
-	}
-	// write "26426711"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x36, 0x37, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x200000000000
 	}
 	if z.FExceptionalAttendees == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.FExceptionalAttendees)
-		if err != nil {
-			err = msgp.WrapError(err, "FExceptionalAttendees")
-			return
-		}
-	}
-	// write "26419811"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x31, 0x39, 0x38, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x400000000000
 	}
 	if z.FExceptionalBody == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.FExceptionalBody)
-		if err != nil {
-			err = msgp.WrapError(err, "FExceptionalBody")
-			return
-		}
-	}
-	// write "26426511"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x36, 0x35, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x800000000000
 	}
 	if z.FInvited == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.FInvited)
-		if err != nil {
-			err = msgp.WrapError(err, "FInvited")
-			return
-		}
-	}
-	// write "26420211"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x30, 0x32, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x1000000000000
 	}
 	if z.ForwardInstance == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.ForwardInstance)
-		if err != nil {
-			err = msgp.WrapError(err, "ForwardInstance")
-			return
-		}
-	}
-	// write "26427111"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x37, 0x31, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x2000000000000
 	}
 	if z.FOthersAppointment == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.FOthersAppointment)
-		if err != nil {
-			err = msgp.WrapError(err, "FOthersAppointment")
-			return
-		}
-	}
-	// write "327693"
-	err = en.Append(0xa6, 0x33, 0x32, 0x37, 0x36, 0x39, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x4000000000000
 	}
 	if z.ICalendarDayOfWeekMask == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.ICalendarDayOfWeekMask)
-		if err != nil {
-			err = msgp.WrapError(err, "ICalendarDayOfWeekMask")
-			return
-		}
-	}
-	// write "2642603"
-	err = en.Append(0xa7, 0x32, 0x36, 0x34, 0x32, 0x36, 0x30, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x8000000000000
 	}
 	if z.IntendedBusyStatus == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.IntendedBusyStatus)
-		if err != nil {
-			err = msgp.WrapError(err, "IntendedBusyStatus")
-			return
-		}
-	}
-	// write "1011"
-	err = en.Append(0xa4, 0x31, 0x30, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x10000000000000
 	}
 	if z.IsException == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.IsException)
-		if err != nil {
-			err = msgp.WrapError(err, "IsException")
-			return
-		}
-	}
-	// write "511"
-	err = en.Append(0xa3, 0x35, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x20000000000000
 	}
 	if z.IsRecurring == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.IsRecurring)
-		if err != nil {
-			err = msgp.WrapError(err, "IsRecurring")
-			return
-		}
-	}
-	// write "411"
-	err = en.Append(0xa3, 0x34, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x40000000000000
 	}
 	if z.IsSilent == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.IsSilent)
-		if err != nil {
-			err = msgp.WrapError(err, "IsSilent")
-			return
-		}
-	}
-	// write "26420031"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x30, 0x30, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x80000000000000
 	}
 	if z.Location == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.Location)
-		if err != nil {
-			err = msgp.WrapError(err, "Location")
-			return
-		}
-	}
-	// write "703"
-	err = en.Append(0xa3, 0x37, 0x30, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x100000000000000
 	}
 	if z.MeetingType == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.MeetingType)
-		if err != nil {
-			err = msgp.WrapError(err, "MeetingType")
-			return
-		}
-	}
-	// write "26420131"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x30, 0x31, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x200000000000000
 	}
 	if z.MeetingWorkspaceUrl == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.MeetingWorkspaceUrl)
-		if err != nil {
-			err = msgp.WrapError(err, "MeetingWorkspaceUrl")
-			return
-		}
-	}
-	// write "352"
-	err = en.Append(0xa3, 0x33, 0x35, 0x32)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x400000000000000
 	}
 	if z.MonthInterval == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.MonthInterval)
-		if err != nil {
-			err = msgp.WrapError(err, "MonthInterval")
-			return
-		}
-	}
-	// write "327743"
-	err = en.Append(0xa6, 0x33, 0x32, 0x37, 0x37, 0x34, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x800000000000000
 	}
 	if z.MonthOfYear == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.MonthOfYear)
-		if err != nil {
-			err = msgp.WrapError(err, "MonthOfYear")
-			return
-		}
-	}
-	// write "393"
-	err = en.Append(0xa3, 0x33, 0x39, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x1000000000000000
 	}
 	if z.MonthOfYearMask == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.MonthOfYearMask)
-		if err != nil {
-			err = msgp.WrapError(err, "MonthOfYearMask")
-			return
-		}
-	}
-	// write "26432831"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x33, 0x32, 0x38, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x2000000000000000
 	}
 	if z.NetShowUrl == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.NetShowUrl)
-		if err != nil {
-			err = msgp.WrapError(err, "NetShowUrl")
-			return
-		}
-	}
-	// write "3277911"
-	err = en.Append(0xa7, 0x33, 0x32, 0x37, 0x37, 0x39, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x4000000000000000
 	}
 	if z.NoEndDateFlag == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.NoEndDateFlag)
-		if err != nil {
-			err = msgp.WrapError(err, "NoEndDateFlag")
-			return
-		}
-	}
-	// write "26736831"
-	err = en.Append(0xa8, 0x32, 0x36, 0x37, 0x33, 0x36, 0x38, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x8000000000000000
 	}
 	if z.NonSendableBcc == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.NonSendableBcc)
-		if err != nil {
-			err = msgp.WrapError(err, "NonSendableBcc")
-			return
-		}
-	}
-	// write "26736731"
-	err = en.Append(0xa8, 0x32, 0x36, 0x37, 0x33, 0x36, 0x37, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[1] |= 0x1
 	}
 	if z.NonSendableCc == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.NonSendableCc)
-		if err != nil {
-			err = msgp.WrapError(err, "NonSendableCc")
-			return
-		}
-	}
-	// write "26736631"
-	err = en.Append(0xa8, 0x32, 0x36, 0x37, 0x33, 0x36, 0x36, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[1] |= 0x2
 	}
 	if z.NonSendableTo == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.NonSendableTo)
-		if err != nil {
-			err = msgp.WrapError(err, "NonSendableTo")
-			return
-		}
-	}
-	// write "327733"
-	err = en.Append(0xa6, 0x33, 0x32, 0x37, 0x37, 0x33, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[1] |= 0x4
 	}
 	if z.Occurrences == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.Occurrences)
-		if err != nil {
-			err = msgp.WrapError(err, "Occurrences")
-			return
-		}
-	}
-	// write "7231"
-	err = en.Append(0xa4, 0x37, 0x32, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[1] |= 0x8
 	}
 	if z.OldLocation == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.OldLocation)
-		if err != nil {
-			err = msgp.WrapError(err, "OldLocation")
-			return
-		}
-	}
-	// write "402"
-	err = en.Append(0xa3, 0x34, 0x30, 0x32)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[1] |= 0x10
 	}
 	if z.OldRecurrenceType == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.OldRecurrenceType)
-		if err != nil {
-			err = msgp.WrapError(err, "OldRecurrenceType")
-			return
-		}
-	}
-	// write "7464"
-	err = en.Append(0xa4, 0x37, 0x34, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[1] |= 0x20
 	}
 	if z.OldWhenEndWhole == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.OldWhenEndWhole)
-		if err != nil {
-			err = msgp.WrapError(err, "OldWhenEndWhole")
-			return
-		}
-	}
-	// write "7364"
-	err = en.Append(0xa4, 0x37, 0x33, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[1] |= 0x40
 	}
 	if z.OldWhenStartWhole == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.OldWhenStartWhole)
-		if err != nil {
-			err = msgp.WrapError(err, "OldWhenStartWhole")
-			return
-		}
-	}
-	// write "26432931"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x33, 0x32, 0x39, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[1] |= 0x80
 	}
 	if z.OnlinePassword == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.OnlinePassword)
-		if err != nil {
-			err = msgp.WrapError(err, "OnlinePassword")
-			return
-		}
-	}
-	// write "731"
-	err = en.Append(0xa3, 0x37, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[1] |= 0x100
 	}
 	if z.OptionalAttendees == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.OptionalAttendees)
-		if err != nil {
-			err = msgp.WrapError(err, "OptionalAttendees")
-			return
-		}
-	}
-	// write "26432331"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x33, 0x32, 0x33, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[1] |= 0x200
 	}
 	if z.OrganizerAlias == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.OrganizerAlias)
-		if err != nil {
-			err = msgp.WrapError(err, "OrganizerAlias")
-			return
-		}
-	}
-	// write "4264"
-	err = en.Append(0xa4, 0x34, 0x32, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[1] |= 0x400
 	}
 	if z.OwnerCriticalChange == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.OwnerCriticalChange)
-		if err != nil {
-			err = msgp.WrapError(err, "OwnerCriticalChange")
-			return
-		}
-	}
-	// write "26427031"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x37, 0x30, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[1] |= 0x800
 	}
 	if z.OwnerName == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.OwnerName)
-		if err != nil {
-			err = msgp.WrapError(err, "OwnerName")
-			return
-		}
-	}
-	// write "327813"
-	err = en.Append(0xa6, 0x33, 0x32, 0x37, 0x38, 0x31, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[1] |= 0x1000
 	}
 	if z.RecurrenceDuration == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.RecurrenceDuration)
-		if err != nil {
-			err = msgp.WrapError(err, "RecurrenceDuration")
-			return
-		}
-	}
-	// write "26429031"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x39, 0x30, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[1] |= 0x2000
 	}
 	if z.RecurrencePattern == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.RecurrencePattern)
-		if err != nil {
-			err = msgp.WrapError(err, "RecurrencePattern")
-			return
-		}
-	}
-	// write "2642893"
-	err = en.Append(0xa7, 0x32, 0x36, 0x34, 0x32, 0x38, 0x39, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[1] |= 0x4000
 	}
 	if z.RecurrenceType == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.RecurrenceType)
-		if err != nil {
-			err = msgp.WrapError(err, "RecurrenceType")
-			return
-		}
-	}
-	// write "26425911"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x35, 0x39, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[1] |= 0x8000
 	}
 	if z.Recurring == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.Recurring)
-		if err != nil {
-			err = msgp.WrapError(err, "Recurring")
-			return
-		}
-	}
-	// write "2672653"
-	err = en.Append(0xa7, 0x32, 0x36, 0x37, 0x32, 0x36, 0x35, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[1] |= 0x10000
 	}
 	if z.ReminderDelta == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.ReminderDelta)
-		if err != nil {
-			err = msgp.WrapError(err, "ReminderDelta")
-			return
-		}
-	}
-	// write "26731131"
-	err = en.Append(0xa8, 0x32, 0x36, 0x37, 0x33, 0x31, 0x31, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[1] |= 0x20000
 	}
 	if z.ReminderFileParameter == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.ReminderFileParameter)
-		if err != nil {
-			err = msgp.WrapError(err, "ReminderFileParameter")
-			return
-		}
-	}
-	// write "26730811"
-	err = en.Append(0xa8, 0x32, 0x36, 0x37, 0x33, 0x30, 0x38, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[1] |= 0x40000
 	}
 	if z.ReminderOverride == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.ReminderOverride)
-		if err != nil {
-			err = msgp.WrapError(err, "ReminderOverride")
-			return
-		}
-	}
-	// write "26731011"
-	err = en.Append(0xa8, 0x32, 0x36, 0x37, 0x33, 0x31, 0x30, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[1] |= 0x80000
 	}
 	if z.ReminderPlaySound == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.ReminderPlaySound)
-		if err != nil {
-			err = msgp.WrapError(err, "ReminderPlaySound")
-			return
-		}
-	}
-	// write "26726711"
-	err = en.Append(0xa8, 0x32, 0x36, 0x37, 0x32, 0x36, 0x37, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[1] |= 0x100000
 	}
 	if z.ReminderSet == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.ReminderSet)
-		if err != nil {
-			err = msgp.WrapError(err, "ReminderSet")
-			return
-		}
-	}
-	// write "26745664"
-	err = en.Append(0xa8, 0x32, 0x36, 0x37, 0x34, 0x35, 0x36, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[1] |= 0x200000
 	}
 	if z.ReminderSignalTime == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.ReminderSignalTime)
-		if err != nil {
-			err = msgp.WrapError(err, "ReminderSignalTime")
-			return
-		}
-	}
-	// write "26726664"
-	err = en.Append(0xa8, 0x32, 0x36, 0x37, 0x32, 0x36, 0x36, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[1] |= 0x400000
 	}
 	if z.ReminderTime == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.ReminderTime)
-		if err != nil {
-			err = msgp.WrapError(err, "ReminderTime")
-			return
-		}
-	}
-	// write "26726964"
-	err = en.Append(0xa8, 0x32, 0x36, 0x37, 0x32, 0x36, 0x39, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[1] |= 0x800000
 	}
 	if z.ReminderTimeDate == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.ReminderTimeDate)
-		if err != nil {
-			err = msgp.WrapError(err, "ReminderTimeDate")
-			return
-		}
-	}
-	// write "26726864"
-	err = en.Append(0xa8, 0x32, 0x36, 0x37, 0x32, 0x36, 0x38, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[1] |= 0x1000000
 	}
 	if z.ReminderTimeTime == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.ReminderTimeTime)
-		if err != nil {
-			err = msgp.WrapError(err, "ReminderTimeTime")
-			return
-		}
-	}
-	// write "2673093"
-	err = en.Append(0xa7, 0x32, 0x36, 0x37, 0x33, 0x30, 0x39, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[1] |= 0x2000000
 	}
 	if z.ReminderType == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.ReminderType)
-		if err != nil {
-			err = msgp.WrapError(err, "ReminderType")
-			return
-		}
-	}
-	// write "631"
-	err = en.Append(0xa3, 0x36, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[1] |= 0x4000000
 	}
 	if z.RequiredAttendees == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.RequiredAttendees)
-		if err != nil {
-			err = msgp.WrapError(err, "RequiredAttendees")
-			return
-		}
-	}
-	// write "831"
-	err = en.Append(0xa3, 0x38, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[1] |= 0x8000000
 	}
 	if z.ResourceAttendees == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.ResourceAttendees)
-		if err != nil {
-			err = msgp.WrapError(err, "ResourceAttendees")
-			return
-		}
-	}
-	// write "2642323"
-	err = en.Append(0xa7, 0x32, 0x36, 0x34, 0x32, 0x33, 0x32, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[1] |= 0x10000000
 	}
 	if z.ResponseStatus == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.ResponseStatus)
-		if err != nil {
-			err = msgp.WrapError(err, "ResponseStatus")
-			return
-		}
-	}
-	// write "26766011"
-	err = en.Append(0xa8, 0x32, 0x36, 0x37, 0x36, 0x36, 0x30, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[1] |= 0x20000000
 	}
 	if z.ServerProcessed == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.ServerProcessed)
-		if err != nil {
-			err = msgp.WrapError(err, "ServerProcessed")
-			return
-		}
-	}
-	// write "2676613"
-	err = en.Append(0xa7, 0x32, 0x36, 0x37, 0x36, 0x36, 0x31, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[1] |= 0x40000000
 	}
 	if z.ServerProcessingActions == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.ServerProcessingActions)
-		if err != nil {
-			err = msgp.WrapError(err, "ServerProcessingActions")
-			return
-		}
-	}
-	// write "26442711"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x34, 0x32, 0x37, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[1] |= 0x80000000
 	}
 	if z.SingleBodyiCal == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.SingleBodyiCal)
-		if err != nil {
-			err = msgp.WrapError(err, "SingleBodyiCal")
-			return
-		}
-	}
-	// write "133"
-	err = en.Append(0xa3, 0x31, 0x33, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[1] |= 0x100000000
 	}
 	if z.StartRecurrenceDate == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.StartRecurrenceDate)
-		if err != nil {
-			err = msgp.WrapError(err, "StartRecurrenceDate")
-			return
-		}
-	}
-	// write "143"
-	err = en.Append(0xa3, 0x31, 0x34, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[1] |= 0x200000000
 	}
 	if z.StartRecurrenceTime == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.StartRecurrenceTime)
-		if err != nil {
-			err = msgp.WrapError(err, "StartRecurrenceTime")
-			return
-		}
-	}
-	// write "123"
-	err = en.Append(0xa3, 0x31, 0x32, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[1] |= 0x400000000
 	}
 	if z.TimeZone == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.TimeZone)
-		if err != nil {
-			err = msgp.WrapError(err, "TimeZone")
-			return
-		}
-	}
-	// write "26429231"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x39, 0x32, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[1] |= 0x800000000
 	}
 	if z.TimeZoneDescription == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.TimeZoneDescription)
-		if err != nil {
-			err = msgp.WrapError(err, "TimeZoneDescription")
-			return
-		}
-	}
-	// write "26429931"
-	err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x39, 0x39, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[1] |= 0x1000000000
 	}
 	if z.ToAttendeesString == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.ToAttendeesString)
-		if err != nil {
-			err = msgp.WrapError(err, "ToAttendeesString")
-			return
-		}
-	}
-	// write "342"
-	err = en.Append(0xa3, 0x33, 0x34, 0x32)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[1] |= 0x2000000000
 	}
 	if z.WeekInterval == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.WeekInterval)
-		if err != nil {
-			err = msgp.WrapError(err, "WeekInterval")
-			return
-		}
-	}
-	// write "231"
-	err = en.Append(0xa3, 0x32, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[1] |= 0x4000000000
 	}
 	if z.Where == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.Where)
-		if err != nil {
-			err = msgp.WrapError(err, "Where")
-			return
-		}
+		zb0001Len--
+		zb0001Mask[1] |= 0x8000000000
 	}
-	// write "362"
-	err = en.Append(0xa3, 0x33, 0x36, 0x32)
+	if z.YearInterval == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x10000000000
+	}
+	if z.FreeBusyPublishEnd == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x80000000000
+	}
+	if z.FreeBusyPublishStart == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x100000000000
+	}
+	if z.FreeBusyRangeTimestamp == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x200000000000
+	}
+	if z.ICalendarEndTime == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x400000000000
+	}
+	if z.ICalendarReminderNextTime == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x800000000000
+	}
+	if z.Processed == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x1000000000000
+	}
+	if z.ScheduleInfoAutoAcceptAppointments == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x2000000000000
+	}
+	if z.ScheduleInfoDelegatorWantsCopy == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x4000000000000
+	}
+	if z.ScheduleInfoDelegatorWantsInfo == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x8000000000000
+	}
+	if z.ScheduleInfoDisallowOverlappingAppts == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x10000000000000
+	}
+	if z.ScheduleInfoDisallowRecurringAppts == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x20000000000000
+	}
+	if z.ScheduleInfoDontMailDelegates == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x40000000000000
+	}
+	if z.ScheduleInfoResourceType == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x80000000000000
+	}
+	// variable map header, size zb0001Len
+	err = en.WriteMapHeader(zb0001Len)
 	if err != nil {
 		return
 	}
-	if z.YearInterval == nil {
-		err = en.WriteNil()
+	if zb0001Len == 0 {
+		return
+	}
+	if (zb0001Mask[0] & 0x1) == 0 { // if not empty
+		// write "26429631"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x39, 0x36, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteInt32(*z.YearInterval)
+		if z.AllAttendeesString == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AllAttendeesString)
+			if err != nil {
+				err = msgp.WrapError(err, "AllAttendeesString")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x2) == 0 { // if not empty
+		// write "26432611"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x33, 0x32, 0x36, 0x31, 0x31)
 		if err != nil {
-			err = msgp.WrapError(err, "YearInterval")
 			return
+		}
+		if z.AllowExternalCheck == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.AllowExternalCheck)
+			if err != nil {
+				err = msgp.WrapError(err, "AllowExternalCheck")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x4) == 0 { // if not empty
+		// write "2641993"
+		err = en.Append(0xa7, 0x32, 0x36, 0x34, 0x31, 0x39, 0x39, 0x33)
+		if err != nil {
+			return
+		}
+		if z.AppointmentAuxiliaryFlags == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.AppointmentAuxiliaryFlags)
+			if err != nil {
+				err = msgp.WrapError(err, "AppointmentAuxiliaryFlags")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x8) == 0 { // if not empty
+		// write "2642283"
+		err = en.Append(0xa7, 0x32, 0x36, 0x34, 0x32, 0x32, 0x38, 0x33)
+		if err != nil {
+			return
+		}
+		if z.AppointmentColor == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.AppointmentColor)
+			if err != nil {
+				err = msgp.WrapError(err, "AppointmentColor")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x10) == 0 { // if not empty
+		// write "26435911"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x33, 0x35, 0x39, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AppointmentCounterProposal == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.AppointmentCounterProposal)
+			if err != nil {
+				err = msgp.WrapError(err, "AppointmentCounterProposal")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x20) == 0 { // if not empty
+		// write "2642273"
+		err = en.Append(0xa7, 0x32, 0x36, 0x34, 0x32, 0x32, 0x37, 0x33)
+		if err != nil {
+			return
+		}
+		if z.AppointmentDuration == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.AppointmentDuration)
+			if err != nil {
+				err = msgp.WrapError(err, "AppointmentDuration")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x40) == 0 { // if not empty
+		// write "26422564"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x32, 0x35, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.AppointmentEndDate == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.AppointmentEndDate)
+			if err != nil {
+				err = msgp.WrapError(err, "AppointmentEndDate")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x80) == 0 { // if not empty
+		// write "26422464"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x32, 0x34, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.AppointmentEndTime == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.AppointmentEndTime)
+			if err != nil {
+				err = msgp.WrapError(err, "AppointmentEndTime")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x100) == 0 { // if not empty
+		// write "26420664"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x30, 0x36, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.AppointmentEndWhole == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.AppointmentEndWhole)
+			if err != nil {
+				err = msgp.WrapError(err, "AppointmentEndWhole")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x200) == 0 { // if not empty
+		// write "2641953"
+		err = en.Append(0xa7, 0x32, 0x36, 0x34, 0x31, 0x39, 0x35, 0x33)
+		if err != nil {
+			return
+		}
+		if z.AppointmentLastSequence == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.AppointmentLastSequence)
+			if err != nil {
+				err = msgp.WrapError(err, "AppointmentLastSequence")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x400) == 0 { // if not empty
+		// write "6831"
+		err = en.Append(0xa4, 0x36, 0x38, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AppointmentMessageClass == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AppointmentMessageClass)
+			if err != nil {
+				err = msgp.WrapError(err, "AppointmentMessageClass")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x800) == 0 { // if not empty
+		// write "26436211"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x33, 0x36, 0x32, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AppointmentNotAllowPropose == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.AppointmentNotAllowPropose)
+			if err != nil {
+				err = msgp.WrapError(err, "AppointmentNotAllowPropose")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x1000) == 0 { // if not empty
+		// write "2643613"
+		err = en.Append(0xa7, 0x32, 0x36, 0x34, 0x33, 0x36, 0x31, 0x33)
+		if err != nil {
+			return
+		}
+		if z.AppointmentProposalNumber == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.AppointmentProposalNumber)
+			if err != nil {
+				err = msgp.WrapError(err, "AppointmentProposalNumber")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x2000) == 0 { // if not empty
+		// write "2643583"
+		err = en.Append(0xa7, 0x32, 0x36, 0x34, 0x33, 0x35, 0x38, 0x33)
+		if err != nil {
+			return
+		}
+		if z.AppointmentProposedDuration == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.AppointmentProposedDuration)
+			if err != nil {
+				err = msgp.WrapError(err, "AppointmentProposedDuration")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x4000) == 0 { // if not empty
+		// write "26435364"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x33, 0x35, 0x33, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.AppointmentProposedEndWhole == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.AppointmentProposedEndWhole)
+			if err != nil {
+				err = msgp.WrapError(err, "AppointmentProposedEndWhole")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x8000) == 0 { // if not empty
+		// write "26435264"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x33, 0x35, 0x32, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.AppointmentProposedStartWhole == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.AppointmentProposedStartWhole)
+			if err != nil {
+				err = msgp.WrapError(err, "AppointmentProposedStartWhole")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x10000) == 0 { // if not empty
+		// write "26428831"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x38, 0x38, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AppointmentReplyName == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AppointmentReplyName)
+			if err != nil {
+				err = msgp.WrapError(err, "AppointmentReplyName")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x20000) == 0 { // if not empty
+		// write "26425664"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x35, 0x36, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.AppointmentReplyTime == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.AppointmentReplyTime)
+			if err != nil {
+				err = msgp.WrapError(err, "AppointmentReplyTime")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x40000) == 0 { // if not empty
+		// write "2641933"
+		err = en.Append(0xa7, 0x32, 0x36, 0x34, 0x31, 0x39, 0x33, 0x33)
+		if err != nil {
+			return
+		}
+		if z.AppointmentSequence == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.AppointmentSequence)
+			if err != nil {
+				err = msgp.WrapError(err, "AppointmentSequence")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x80000) == 0 { // if not empty
+		// write "26419464"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x31, 0x39, 0x34, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.AppointmentSequenceTime == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.AppointmentSequenceTime)
+			if err != nil {
+				err = msgp.WrapError(err, "AppointmentSequenceTime")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x100000) == 0 { // if not empty
+		// write "26422664"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x32, 0x36, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.AppointmentStartDate == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.AppointmentStartDate)
+			if err != nil {
+				err = msgp.WrapError(err, "AppointmentStartDate")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x200000) == 0 { // if not empty
+		// write "26420764"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x30, 0x37, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.AppointmentStartTime == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.AppointmentStartTime)
+			if err != nil {
+				err = msgp.WrapError(err, "AppointmentStartTime")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x400000) == 0 { // if not empty
+		// write "26420564"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x30, 0x35, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.AppointmentStartWhole == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.AppointmentStartWhole)
+			if err != nil {
+				err = msgp.WrapError(err, "AppointmentStartWhole")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x800000) == 0 { // if not empty
+		// write "2642313"
+		err = en.Append(0xa7, 0x32, 0x36, 0x34, 0x32, 0x33, 0x31, 0x33)
+		if err != nil {
+			return
+		}
+		if z.AppointmentStateFlags == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.AppointmentStateFlags)
+			if err != nil {
+				err = msgp.WrapError(err, "AppointmentStateFlags")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x1000000) == 0 { // if not empty
+		// write "26422911"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x32, 0x39, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AppointmentSubType == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.AppointmentSubType)
+			if err != nil {
+				err = msgp.WrapError(err, "AppointmentSubType")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x2000000) == 0 { // if not empty
+		// write "26426264"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x36, 0x32, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.AppointmentUpdateTime == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.AppointmentUpdateTime)
+			if err != nil {
+				err = msgp.WrapError(err, "AppointmentUpdateTime")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x4000000) == 0 { // if not empty
+		// write "164"
+		err = en.Append(0xa3, 0x31, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.AttendeeCriticalChange == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.AttendeeCriticalChange)
+			if err != nil {
+				err = msgp.WrapError(err, "AttendeeCriticalChange")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x8000000) == 0 { // if not empty
+		// write "26429811"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x39, 0x38, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AutoFillLocation == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.AutoFillLocation)
+			if err != nil {
+				err = msgp.WrapError(err, "AutoFillLocation")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x10000000) == 0 { // if not empty
+		// write "26432411"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x33, 0x32, 0x34, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AutoStartCheck == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.AutoStartCheck)
+			if err != nil {
+				err = msgp.WrapError(err, "AutoStartCheck")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x20000000) == 0 { // if not empty
+		// write "2641973"
+		err = en.Append(0xa7, 0x32, 0x36, 0x34, 0x31, 0x39, 0x37, 0x33)
+		if err != nil {
+			return
+		}
+		if z.BusyStatus == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.BusyStatus)
+			if err != nil {
+				err = msgp.WrapError(err, "BusyStatus")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x40000000) == 0 { // if not empty
+		// write "443"
+		err = en.Append(0xa3, 0x34, 0x34, 0x33)
+		if err != nil {
+			return
+		}
+		if z.CalendarType == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.CalendarType)
+			if err != nil {
+				err = msgp.WrapError(err, "CalendarType")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x80000000) == 0 { // if not empty
+		// write "26430031"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x33, 0x30, 0x30, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.CcAttendeesString == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.CcAttendeesString)
+			if err != nil {
+				err = msgp.WrapError(err, "CcAttendeesString")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x100000000) == 0 { // if not empty
+		// write "2641963"
+		err = en.Append(0xa7, 0x32, 0x36, 0x34, 0x31, 0x39, 0x36, 0x33)
+		if err != nil {
+			return
+		}
+		if z.ChangeHighlight == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.ChangeHighlight)
+			if err != nil {
+				err = msgp.WrapError(err, "ChangeHighlight")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x200000000) == 0 { // if not empty
+		// write "373"
+		err = en.Append(0xa3, 0x33, 0x37, 0x33)
+		if err != nil {
+			return
+		}
+		if z.ClientIntent == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.ClientIntent)
+			if err != nil {
+				err = msgp.WrapError(err, "ClientIntent")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x400000000) == 0 { // if not empty
+		// write "26429464"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x39, 0x34, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.ClipEnd == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.ClipEnd)
+			if err != nil {
+				err = msgp.WrapError(err, "ClipEnd")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x800000000) == 0 { // if not empty
+		// write "26429364"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x39, 0x33, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.ClipStart == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.ClipStart)
+			if err != nil {
+				err = msgp.WrapError(err, "ClipStart")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x1000000000) == 0 { // if not empty
+		// write "26432731"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x33, 0x32, 0x37, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.CollaborateDoc == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.CollaborateDoc)
+			if err != nil {
+				err = msgp.WrapError(err, "CollaborateDoc")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x2000000000) == 0 { // if not empty
+		// write "26432011"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x33, 0x32, 0x30, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.ConferencingCheck == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.ConferencingCheck)
+			if err != nil {
+				err = msgp.WrapError(err, "ConferencingCheck")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x4000000000) == 0 { // if not empty
+		// write "2643213"
+		err = en.Append(0xa7, 0x32, 0x36, 0x34, 0x33, 0x32, 0x31, 0x33)
+		if err != nil {
+			return
+		}
+		if z.ConferencingType == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.ConferencingType)
+			if err != nil {
+				err = msgp.WrapError(err, "ConferencingType")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x8000000000) == 0 { // if not empty
+		// write "332"
+		err = en.Append(0xa3, 0x33, 0x33, 0x32)
+		if err != nil {
+			return
+		}
+		if z.DayInterval == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.DayInterval)
+			if err != nil {
+				err = msgp.WrapError(err, "DayInterval")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x10000000000) == 0 { // if not empty
+		// write "327683"
+		err = en.Append(0xa6, 0x33, 0x32, 0x37, 0x36, 0x38, 0x33)
+		if err != nil {
+			return
+		}
+		if z.DayOfMonth == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.DayOfMonth)
+			if err != nil {
+				err = msgp.WrapError(err, "DayOfMonth")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x20000000000) == 0 { // if not empty
+		// write "911"
+		err = en.Append(0xa3, 0x39, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.DelegateMail == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.DelegateMail)
+			if err != nil {
+				err = msgp.WrapError(err, "DelegateMail")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x40000000000) == 0 { // if not empty
+		// write "26432231"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x33, 0x32, 0x32, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.Directory == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.Directory)
+			if err != nil {
+				err = msgp.WrapError(err, "Directory")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x80000000000) == 0 { // if not empty
+		// write "153"
+		err = en.Append(0xa3, 0x31, 0x35, 0x33)
+		if err != nil {
+			return
+		}
+		if z.EndRecurrenceDate == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.EndRecurrenceDate)
+			if err != nil {
+				err = msgp.WrapError(err, "EndRecurrenceDate")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x100000000000) == 0 { // if not empty
+		// write "323"
+		err = en.Append(0xa3, 0x33, 0x32, 0x33)
+		if err != nil {
+			return
+		}
+		if z.EndRecurrenceTime == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.EndRecurrenceTime)
+			if err != nil {
+				err = msgp.WrapError(err, "EndRecurrenceTime")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x200000000000) == 0 { // if not empty
+		// write "26426464"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x36, 0x34, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.ExceptionReplaceTime == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.ExceptionReplaceTime)
+			if err != nil {
+				err = msgp.WrapError(err, "ExceptionReplaceTime")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x400000000000) == 0 { // if not empty
+		// write "26426711"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x36, 0x37, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.FExceptionalAttendees == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.FExceptionalAttendees)
+			if err != nil {
+				err = msgp.WrapError(err, "FExceptionalAttendees")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x800000000000) == 0 { // if not empty
+		// write "26419811"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x31, 0x39, 0x38, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.FExceptionalBody == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.FExceptionalBody)
+			if err != nil {
+				err = msgp.WrapError(err, "FExceptionalBody")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x1000000000000) == 0 { // if not empty
+		// write "26426511"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x36, 0x35, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.FInvited == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.FInvited)
+			if err != nil {
+				err = msgp.WrapError(err, "FInvited")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x2000000000000) == 0 { // if not empty
+		// write "26420211"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x30, 0x32, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.ForwardInstance == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.ForwardInstance)
+			if err != nil {
+				err = msgp.WrapError(err, "ForwardInstance")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x4000000000000) == 0 { // if not empty
+		// write "26427111"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x37, 0x31, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.FOthersAppointment == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.FOthersAppointment)
+			if err != nil {
+				err = msgp.WrapError(err, "FOthersAppointment")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x8000000000000) == 0 { // if not empty
+		// write "327693"
+		err = en.Append(0xa6, 0x33, 0x32, 0x37, 0x36, 0x39, 0x33)
+		if err != nil {
+			return
+		}
+		if z.ICalendarDayOfWeekMask == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.ICalendarDayOfWeekMask)
+			if err != nil {
+				err = msgp.WrapError(err, "ICalendarDayOfWeekMask")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x10000000000000) == 0 { // if not empty
+		// write "2642603"
+		err = en.Append(0xa7, 0x32, 0x36, 0x34, 0x32, 0x36, 0x30, 0x33)
+		if err != nil {
+			return
+		}
+		if z.IntendedBusyStatus == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.IntendedBusyStatus)
+			if err != nil {
+				err = msgp.WrapError(err, "IntendedBusyStatus")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x20000000000000) == 0 { // if not empty
+		// write "1011"
+		err = en.Append(0xa4, 0x31, 0x30, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.IsException == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.IsException)
+			if err != nil {
+				err = msgp.WrapError(err, "IsException")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x40000000000000) == 0 { // if not empty
+		// write "511"
+		err = en.Append(0xa3, 0x35, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.IsRecurring == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.IsRecurring)
+			if err != nil {
+				err = msgp.WrapError(err, "IsRecurring")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x80000000000000) == 0 { // if not empty
+		// write "411"
+		err = en.Append(0xa3, 0x34, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.IsSilent == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.IsSilent)
+			if err != nil {
+				err = msgp.WrapError(err, "IsSilent")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x100000000000000) == 0 { // if not empty
+		// write "26420031"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x30, 0x30, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.Location == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.Location)
+			if err != nil {
+				err = msgp.WrapError(err, "Location")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x200000000000000) == 0 { // if not empty
+		// write "703"
+		err = en.Append(0xa3, 0x37, 0x30, 0x33)
+		if err != nil {
+			return
+		}
+		if z.MeetingType == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.MeetingType)
+			if err != nil {
+				err = msgp.WrapError(err, "MeetingType")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x400000000000000) == 0 { // if not empty
+		// write "26420131"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x30, 0x31, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.MeetingWorkspaceUrl == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.MeetingWorkspaceUrl)
+			if err != nil {
+				err = msgp.WrapError(err, "MeetingWorkspaceUrl")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x800000000000000) == 0 { // if not empty
+		// write "352"
+		err = en.Append(0xa3, 0x33, 0x35, 0x32)
+		if err != nil {
+			return
+		}
+		if z.MonthInterval == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.MonthInterval)
+			if err != nil {
+				err = msgp.WrapError(err, "MonthInterval")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x1000000000000000) == 0 { // if not empty
+		// write "327743"
+		err = en.Append(0xa6, 0x33, 0x32, 0x37, 0x37, 0x34, 0x33)
+		if err != nil {
+			return
+		}
+		if z.MonthOfYear == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.MonthOfYear)
+			if err != nil {
+				err = msgp.WrapError(err, "MonthOfYear")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x2000000000000000) == 0 { // if not empty
+		// write "393"
+		err = en.Append(0xa3, 0x33, 0x39, 0x33)
+		if err != nil {
+			return
+		}
+		if z.MonthOfYearMask == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.MonthOfYearMask)
+			if err != nil {
+				err = msgp.WrapError(err, "MonthOfYearMask")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x4000000000000000) == 0 { // if not empty
+		// write "26432831"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x33, 0x32, 0x38, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.NetShowUrl == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.NetShowUrl)
+			if err != nil {
+				err = msgp.WrapError(err, "NetShowUrl")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x8000000000000000) == 0 { // if not empty
+		// write "3277911"
+		err = en.Append(0xa7, 0x33, 0x32, 0x37, 0x37, 0x39, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.NoEndDateFlag == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.NoEndDateFlag)
+			if err != nil {
+				err = msgp.WrapError(err, "NoEndDateFlag")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x1) == 0 { // if not empty
+		// write "26736831"
+		err = en.Append(0xa8, 0x32, 0x36, 0x37, 0x33, 0x36, 0x38, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.NonSendableBcc == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.NonSendableBcc)
+			if err != nil {
+				err = msgp.WrapError(err, "NonSendableBcc")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x2) == 0 { // if not empty
+		// write "26736731"
+		err = en.Append(0xa8, 0x32, 0x36, 0x37, 0x33, 0x36, 0x37, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.NonSendableCc == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.NonSendableCc)
+			if err != nil {
+				err = msgp.WrapError(err, "NonSendableCc")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x4) == 0 { // if not empty
+		// write "26736631"
+		err = en.Append(0xa8, 0x32, 0x36, 0x37, 0x33, 0x36, 0x36, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.NonSendableTo == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.NonSendableTo)
+			if err != nil {
+				err = msgp.WrapError(err, "NonSendableTo")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x8) == 0 { // if not empty
+		// write "327733"
+		err = en.Append(0xa6, 0x33, 0x32, 0x37, 0x37, 0x33, 0x33)
+		if err != nil {
+			return
+		}
+		if z.Occurrences == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.Occurrences)
+			if err != nil {
+				err = msgp.WrapError(err, "Occurrences")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x10) == 0 { // if not empty
+		// write "7231"
+		err = en.Append(0xa4, 0x37, 0x32, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.OldLocation == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.OldLocation)
+			if err != nil {
+				err = msgp.WrapError(err, "OldLocation")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x20) == 0 { // if not empty
+		// write "402"
+		err = en.Append(0xa3, 0x34, 0x30, 0x32)
+		if err != nil {
+			return
+		}
+		if z.OldRecurrenceType == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.OldRecurrenceType)
+			if err != nil {
+				err = msgp.WrapError(err, "OldRecurrenceType")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x40) == 0 { // if not empty
+		// write "7464"
+		err = en.Append(0xa4, 0x37, 0x34, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.OldWhenEndWhole == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.OldWhenEndWhole)
+			if err != nil {
+				err = msgp.WrapError(err, "OldWhenEndWhole")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x80) == 0 { // if not empty
+		// write "7364"
+		err = en.Append(0xa4, 0x37, 0x33, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.OldWhenStartWhole == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.OldWhenStartWhole)
+			if err != nil {
+				err = msgp.WrapError(err, "OldWhenStartWhole")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x100) == 0 { // if not empty
+		// write "26432931"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x33, 0x32, 0x39, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.OnlinePassword == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.OnlinePassword)
+			if err != nil {
+				err = msgp.WrapError(err, "OnlinePassword")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x200) == 0 { // if not empty
+		// write "731"
+		err = en.Append(0xa3, 0x37, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.OptionalAttendees == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.OptionalAttendees)
+			if err != nil {
+				err = msgp.WrapError(err, "OptionalAttendees")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x400) == 0 { // if not empty
+		// write "26432331"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x33, 0x32, 0x33, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.OrganizerAlias == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.OrganizerAlias)
+			if err != nil {
+				err = msgp.WrapError(err, "OrganizerAlias")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x800) == 0 { // if not empty
+		// write "4264"
+		err = en.Append(0xa4, 0x34, 0x32, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.OwnerCriticalChange == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.OwnerCriticalChange)
+			if err != nil {
+				err = msgp.WrapError(err, "OwnerCriticalChange")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x1000) == 0 { // if not empty
+		// write "26427031"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x37, 0x30, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.OwnerName == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.OwnerName)
+			if err != nil {
+				err = msgp.WrapError(err, "OwnerName")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x2000) == 0 { // if not empty
+		// write "327813"
+		err = en.Append(0xa6, 0x33, 0x32, 0x37, 0x38, 0x31, 0x33)
+		if err != nil {
+			return
+		}
+		if z.RecurrenceDuration == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.RecurrenceDuration)
+			if err != nil {
+				err = msgp.WrapError(err, "RecurrenceDuration")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x4000) == 0 { // if not empty
+		// write "26429031"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x39, 0x30, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.RecurrencePattern == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.RecurrencePattern)
+			if err != nil {
+				err = msgp.WrapError(err, "RecurrencePattern")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x8000) == 0 { // if not empty
+		// write "2642893"
+		err = en.Append(0xa7, 0x32, 0x36, 0x34, 0x32, 0x38, 0x39, 0x33)
+		if err != nil {
+			return
+		}
+		if z.RecurrenceType == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.RecurrenceType)
+			if err != nil {
+				err = msgp.WrapError(err, "RecurrenceType")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x10000) == 0 { // if not empty
+		// write "26425911"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x35, 0x39, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.Recurring == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.Recurring)
+			if err != nil {
+				err = msgp.WrapError(err, "Recurring")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x20000) == 0 { // if not empty
+		// write "2672653"
+		err = en.Append(0xa7, 0x32, 0x36, 0x37, 0x32, 0x36, 0x35, 0x33)
+		if err != nil {
+			return
+		}
+		if z.ReminderDelta == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.ReminderDelta)
+			if err != nil {
+				err = msgp.WrapError(err, "ReminderDelta")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x40000) == 0 { // if not empty
+		// write "26731131"
+		err = en.Append(0xa8, 0x32, 0x36, 0x37, 0x33, 0x31, 0x31, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.ReminderFileParameter == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.ReminderFileParameter)
+			if err != nil {
+				err = msgp.WrapError(err, "ReminderFileParameter")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x80000) == 0 { // if not empty
+		// write "26730811"
+		err = en.Append(0xa8, 0x32, 0x36, 0x37, 0x33, 0x30, 0x38, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.ReminderOverride == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.ReminderOverride)
+			if err != nil {
+				err = msgp.WrapError(err, "ReminderOverride")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x100000) == 0 { // if not empty
+		// write "26731011"
+		err = en.Append(0xa8, 0x32, 0x36, 0x37, 0x33, 0x31, 0x30, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.ReminderPlaySound == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.ReminderPlaySound)
+			if err != nil {
+				err = msgp.WrapError(err, "ReminderPlaySound")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x200000) == 0 { // if not empty
+		// write "26726711"
+		err = en.Append(0xa8, 0x32, 0x36, 0x37, 0x32, 0x36, 0x37, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.ReminderSet == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.ReminderSet)
+			if err != nil {
+				err = msgp.WrapError(err, "ReminderSet")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x400000) == 0 { // if not empty
+		// write "26745664"
+		err = en.Append(0xa8, 0x32, 0x36, 0x37, 0x34, 0x35, 0x36, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.ReminderSignalTime == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.ReminderSignalTime)
+			if err != nil {
+				err = msgp.WrapError(err, "ReminderSignalTime")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x800000) == 0 { // if not empty
+		// write "26726664"
+		err = en.Append(0xa8, 0x32, 0x36, 0x37, 0x32, 0x36, 0x36, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.ReminderTime == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.ReminderTime)
+			if err != nil {
+				err = msgp.WrapError(err, "ReminderTime")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x1000000) == 0 { // if not empty
+		// write "26726964"
+		err = en.Append(0xa8, 0x32, 0x36, 0x37, 0x32, 0x36, 0x39, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.ReminderTimeDate == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.ReminderTimeDate)
+			if err != nil {
+				err = msgp.WrapError(err, "ReminderTimeDate")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x2000000) == 0 { // if not empty
+		// write "26726864"
+		err = en.Append(0xa8, 0x32, 0x36, 0x37, 0x32, 0x36, 0x38, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.ReminderTimeTime == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.ReminderTimeTime)
+			if err != nil {
+				err = msgp.WrapError(err, "ReminderTimeTime")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x4000000) == 0 { // if not empty
+		// write "2673093"
+		err = en.Append(0xa7, 0x32, 0x36, 0x37, 0x33, 0x30, 0x39, 0x33)
+		if err != nil {
+			return
+		}
+		if z.ReminderType == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.ReminderType)
+			if err != nil {
+				err = msgp.WrapError(err, "ReminderType")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x8000000) == 0 { // if not empty
+		// write "631"
+		err = en.Append(0xa3, 0x36, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.RequiredAttendees == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.RequiredAttendees)
+			if err != nil {
+				err = msgp.WrapError(err, "RequiredAttendees")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x10000000) == 0 { // if not empty
+		// write "831"
+		err = en.Append(0xa3, 0x38, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.ResourceAttendees == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.ResourceAttendees)
+			if err != nil {
+				err = msgp.WrapError(err, "ResourceAttendees")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x20000000) == 0 { // if not empty
+		// write "2642323"
+		err = en.Append(0xa7, 0x32, 0x36, 0x34, 0x32, 0x33, 0x32, 0x33)
+		if err != nil {
+			return
+		}
+		if z.ResponseStatus == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.ResponseStatus)
+			if err != nil {
+				err = msgp.WrapError(err, "ResponseStatus")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x40000000) == 0 { // if not empty
+		// write "26766011"
+		err = en.Append(0xa8, 0x32, 0x36, 0x37, 0x36, 0x36, 0x30, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.ServerProcessed == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.ServerProcessed)
+			if err != nil {
+				err = msgp.WrapError(err, "ServerProcessed")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x80000000) == 0 { // if not empty
+		// write "2676613"
+		err = en.Append(0xa7, 0x32, 0x36, 0x37, 0x36, 0x36, 0x31, 0x33)
+		if err != nil {
+			return
+		}
+		if z.ServerProcessingActions == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.ServerProcessingActions)
+			if err != nil {
+				err = msgp.WrapError(err, "ServerProcessingActions")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x100000000) == 0 { // if not empty
+		// write "26442711"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x34, 0x32, 0x37, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.SingleBodyiCal == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.SingleBodyiCal)
+			if err != nil {
+				err = msgp.WrapError(err, "SingleBodyiCal")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x200000000) == 0 { // if not empty
+		// write "133"
+		err = en.Append(0xa3, 0x31, 0x33, 0x33)
+		if err != nil {
+			return
+		}
+		if z.StartRecurrenceDate == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.StartRecurrenceDate)
+			if err != nil {
+				err = msgp.WrapError(err, "StartRecurrenceDate")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x400000000) == 0 { // if not empty
+		// write "143"
+		err = en.Append(0xa3, 0x31, 0x34, 0x33)
+		if err != nil {
+			return
+		}
+		if z.StartRecurrenceTime == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.StartRecurrenceTime)
+			if err != nil {
+				err = msgp.WrapError(err, "StartRecurrenceTime")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x800000000) == 0 { // if not empty
+		// write "123"
+		err = en.Append(0xa3, 0x31, 0x32, 0x33)
+		if err != nil {
+			return
+		}
+		if z.TimeZone == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.TimeZone)
+			if err != nil {
+				err = msgp.WrapError(err, "TimeZone")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x1000000000) == 0 { // if not empty
+		// write "26429231"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x39, 0x32, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.TimeZoneDescription == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.TimeZoneDescription)
+			if err != nil {
+				err = msgp.WrapError(err, "TimeZoneDescription")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x2000000000) == 0 { // if not empty
+		// write "26429931"
+		err = en.Append(0xa8, 0x32, 0x36, 0x34, 0x32, 0x39, 0x39, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.ToAttendeesString == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.ToAttendeesString)
+			if err != nil {
+				err = msgp.WrapError(err, "ToAttendeesString")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x4000000000) == 0 { // if not empty
+		// write "342"
+		err = en.Append(0xa3, 0x33, 0x34, 0x32)
+		if err != nil {
+			return
+		}
+		if z.WeekInterval == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.WeekInterval)
+			if err != nil {
+				err = msgp.WrapError(err, "WeekInterval")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x8000000000) == 0 { // if not empty
+		// write "231"
+		err = en.Append(0xa3, 0x32, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.Where == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.Where)
+			if err != nil {
+				err = msgp.WrapError(err, "Where")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x10000000000) == 0 { // if not empty
+		// write "362"
+		err = en.Append(0xa3, 0x33, 0x36, 0x32)
+		if err != nil {
+			return
+		}
+		if z.YearInterval == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.YearInterval)
+			if err != nil {
+				err = msgp.WrapError(err, "YearInterval")
+				return
+			}
 		}
 	}
 	// write "LocationUrl"
@@ -4017,225 +4709,251 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			return
 		}
 	}
-	// write "266963"
-	err = en.Append(0xa6, 0x32, 0x36, 0x36, 0x39, 0x36, 0x33)
-	if err != nil {
-		return
-	}
-	if z.FreeBusyPublishEnd == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x80000000000) == 0 { // if not empty
+		// write "266963"
+		err = en.Append(0xa6, 0x32, 0x36, 0x36, 0x39, 0x36, 0x33)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteInt32(*z.FreeBusyPublishEnd)
-		if err != nil {
-			err = msgp.WrapError(err, "FreeBusyPublishEnd")
-			return
+		if z.FreeBusyPublishEnd == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.FreeBusyPublishEnd)
+			if err != nil {
+				err = msgp.WrapError(err, "FreeBusyPublishEnd")
+				return
+			}
 		}
 	}
-	// write "266953"
-	err = en.Append(0xa6, 0x32, 0x36, 0x36, 0x39, 0x35, 0x33)
-	if err != nil {
-		return
-	}
-	if z.FreeBusyPublishStart == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.FreeBusyPublishStart)
-		if err != nil {
-			err = msgp.WrapError(err, "FreeBusyPublishStart")
-			return
-		}
-	}
-	// write "2672864"
-	err = en.Append(0xa7, 0x32, 0x36, 0x37, 0x32, 0x38, 0x36, 0x34)
-	if err != nil {
-		return
-	}
-	if z.FreeBusyRangeTimestamp == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x100000000000) == 0 { // if not empty
+		// write "266953"
+		err = en.Append(0xa6, 0x32, 0x36, 0x36, 0x39, 0x35, 0x33)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteInt64(*z.FreeBusyRangeTimestamp)
-		if err != nil {
-			err = msgp.WrapError(err, "FreeBusyRangeTimestamp")
-			return
+		if z.FreeBusyPublishStart == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.FreeBusyPublishStart)
+			if err != nil {
+				err = msgp.WrapError(err, "FreeBusyPublishStart")
+				return
+			}
 		}
 	}
-	// write "429264"
-	err = en.Append(0xa6, 0x34, 0x32, 0x39, 0x32, 0x36, 0x34)
-	if err != nil {
-		return
-	}
-	if z.ICalendarEndTime == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.ICalendarEndTime)
-		if err != nil {
-			err = msgp.WrapError(err, "ICalendarEndTime")
-			return
-		}
-	}
-	// write "429864"
-	err = en.Append(0xa6, 0x34, 0x32, 0x39, 0x38, 0x36, 0x34)
-	if err != nil {
-		return
-	}
-	if z.ICalendarReminderNextTime == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x200000000000) == 0 { // if not empty
+		// write "2672864"
+		err = en.Append(0xa7, 0x32, 0x36, 0x37, 0x32, 0x38, 0x36, 0x34)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteInt64(*z.ICalendarReminderNextTime)
-		if err != nil {
-			err = msgp.WrapError(err, "ICalendarReminderNextTime")
-			return
+		if z.FreeBusyRangeTimestamp == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.FreeBusyRangeTimestamp)
+			if err != nil {
+				err = msgp.WrapError(err, "FreeBusyRangeTimestamp")
+				return
+			}
 		}
 	}
-	// write "3200111"
-	err = en.Append(0xa7, 0x33, 0x32, 0x30, 0x30, 0x31, 0x31, 0x31)
-	if err != nil {
-		return
-	}
-	if z.Processed == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.Processed)
-		if err != nil {
-			err = msgp.WrapError(err, "Processed")
-			return
-		}
-	}
-	// write "2673311"
-	err = en.Append(0xa7, 0x32, 0x36, 0x37, 0x33, 0x33, 0x31, 0x31)
-	if err != nil {
-		return
-	}
-	if z.ScheduleInfoAutoAcceptAppointments == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x400000000000) == 0 { // if not empty
+		// write "429264"
+		err = en.Append(0xa6, 0x34, 0x32, 0x39, 0x32, 0x36, 0x34)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteBool(*z.ScheduleInfoAutoAcceptAppointments)
-		if err != nil {
-			err = msgp.WrapError(err, "ScheduleInfoAutoAcceptAppointments")
-			return
+		if z.ICalendarEndTime == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.ICalendarEndTime)
+			if err != nil {
+				err = msgp.WrapError(err, "ICalendarEndTime")
+				return
+			}
 		}
 	}
-	// write "2669011"
-	err = en.Append(0xa7, 0x32, 0x36, 0x36, 0x39, 0x30, 0x31, 0x31)
-	if err != nil {
-		return
-	}
-	if z.ScheduleInfoDelegatorWantsCopy == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.ScheduleInfoDelegatorWantsCopy)
-		if err != nil {
-			err = msgp.WrapError(err, "ScheduleInfoDelegatorWantsCopy")
-			return
-		}
-	}
-	// write "2669911"
-	err = en.Append(0xa7, 0x32, 0x36, 0x36, 0x39, 0x39, 0x31, 0x31)
-	if err != nil {
-		return
-	}
-	if z.ScheduleInfoDelegatorWantsInfo == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x800000000000) == 0 { // if not empty
+		// write "429864"
+		err = en.Append(0xa6, 0x34, 0x32, 0x39, 0x38, 0x36, 0x34)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteBool(*z.ScheduleInfoDelegatorWantsInfo)
-		if err != nil {
-			err = msgp.WrapError(err, "ScheduleInfoDelegatorWantsInfo")
-			return
+		if z.ICalendarReminderNextTime == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.ICalendarReminderNextTime)
+			if err != nil {
+				err = msgp.WrapError(err, "ICalendarReminderNextTime")
+				return
+			}
 		}
 	}
-	// write "2673511"
-	err = en.Append(0xa7, 0x32, 0x36, 0x37, 0x33, 0x35, 0x31, 0x31)
-	if err != nil {
-		return
-	}
-	if z.ScheduleInfoDisallowOverlappingAppts == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.ScheduleInfoDisallowOverlappingAppts)
-		if err != nil {
-			err = msgp.WrapError(err, "ScheduleInfoDisallowOverlappingAppts")
-			return
-		}
-	}
-	// write "2673411"
-	err = en.Append(0xa7, 0x32, 0x36, 0x37, 0x33, 0x34, 0x31, 0x31)
-	if err != nil {
-		return
-	}
-	if z.ScheduleInfoDisallowRecurringAppts == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x1000000000000) == 0 { // if not empty
+		// write "3200111"
+		err = en.Append(0xa7, 0x33, 0x32, 0x30, 0x30, 0x31, 0x31, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteBool(*z.ScheduleInfoDisallowRecurringAppts)
-		if err != nil {
-			err = msgp.WrapError(err, "ScheduleInfoDisallowRecurringAppts")
-			return
+		if z.Processed == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.Processed)
+			if err != nil {
+				err = msgp.WrapError(err, "Processed")
+				return
+			}
 		}
 	}
-	// write "2669111"
-	err = en.Append(0xa7, 0x32, 0x36, 0x36, 0x39, 0x31, 0x31, 0x31)
-	if err != nil {
-		return
-	}
-	if z.ScheduleInfoDontMailDelegates == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.ScheduleInfoDontMailDelegates)
-		if err != nil {
-			err = msgp.WrapError(err, "ScheduleInfoDontMailDelegates")
-			return
-		}
-	}
-	// write "266893"
-	err = en.Append(0xa6, 0x32, 0x36, 0x36, 0x38, 0x39, 0x33)
-	if err != nil {
-		return
-	}
-	if z.ScheduleInfoResourceType == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x2000000000000) == 0 { // if not empty
+		// write "2673311"
+		err = en.Append(0xa7, 0x32, 0x36, 0x37, 0x33, 0x33, 0x31, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteInt32(*z.ScheduleInfoResourceType)
+		if z.ScheduleInfoAutoAcceptAppointments == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.ScheduleInfoAutoAcceptAppointments)
+			if err != nil {
+				err = msgp.WrapError(err, "ScheduleInfoAutoAcceptAppointments")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x4000000000000) == 0 { // if not empty
+		// write "2669011"
+		err = en.Append(0xa7, 0x32, 0x36, 0x36, 0x39, 0x30, 0x31, 0x31)
 		if err != nil {
-			err = msgp.WrapError(err, "ScheduleInfoResourceType")
 			return
+		}
+		if z.ScheduleInfoDelegatorWantsCopy == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.ScheduleInfoDelegatorWantsCopy)
+			if err != nil {
+				err = msgp.WrapError(err, "ScheduleInfoDelegatorWantsCopy")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x8000000000000) == 0 { // if not empty
+		// write "2669911"
+		err = en.Append(0xa7, 0x32, 0x36, 0x36, 0x39, 0x39, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.ScheduleInfoDelegatorWantsInfo == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.ScheduleInfoDelegatorWantsInfo)
+			if err != nil {
+				err = msgp.WrapError(err, "ScheduleInfoDelegatorWantsInfo")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x10000000000000) == 0 { // if not empty
+		// write "2673511"
+		err = en.Append(0xa7, 0x32, 0x36, 0x37, 0x33, 0x35, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.ScheduleInfoDisallowOverlappingAppts == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.ScheduleInfoDisallowOverlappingAppts)
+			if err != nil {
+				err = msgp.WrapError(err, "ScheduleInfoDisallowOverlappingAppts")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x20000000000000) == 0 { // if not empty
+		// write "2673411"
+		err = en.Append(0xa7, 0x32, 0x36, 0x37, 0x33, 0x34, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.ScheduleInfoDisallowRecurringAppts == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.ScheduleInfoDisallowRecurringAppts)
+			if err != nil {
+				err = msgp.WrapError(err, "ScheduleInfoDisallowRecurringAppts")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x40000000000000) == 0 { // if not empty
+		// write "2669111"
+		err = en.Append(0xa7, 0x32, 0x36, 0x36, 0x39, 0x31, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.ScheduleInfoDontMailDelegates == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.ScheduleInfoDontMailDelegates)
+			if err != nil {
+				err = msgp.WrapError(err, "ScheduleInfoDontMailDelegates")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[1] & 0x80000000000000) == 0 { // if not empty
+		// write "266893"
+		err = en.Append(0xa6, 0x32, 0x36, 0x36, 0x38, 0x39, 0x33)
+		if err != nil {
+			return
+		}
+		if z.ScheduleInfoResourceType == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.ScheduleInfoResourceType)
+			if err != nil {
+				err = msgp.WrapError(err, "ScheduleInfoResourceType")
+				return
+			}
 		}
 	}
 	return
@@ -4244,741 +4962,1430 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 // MarshalMsg implements msgp.Marshaler
 func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 	o = msgp.Require(b, z.Msgsize())
-	// map header, size 120
-	// string "26429631"
-	o = append(o, 0xde, 0x0, 0x78, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x39, 0x36, 0x33, 0x31)
+	// omitempty: check for empty values
+	zb0001Len := uint32(120)
+	var zb0001Mask [2]uint64 /* 120 bits */
 	if z.AllAttendeesString == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AllAttendeesString)
+		zb0001Len--
+		zb0001Mask[0] |= 0x1
 	}
-	// string "26432611"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x33, 0x32, 0x36, 0x31, 0x31)
 	if z.AllowExternalCheck == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.AllowExternalCheck)
+		zb0001Len--
+		zb0001Mask[0] |= 0x2
 	}
-	// string "2641993"
-	o = append(o, 0xa7, 0x32, 0x36, 0x34, 0x31, 0x39, 0x39, 0x33)
 	if z.AppointmentAuxiliaryFlags == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.AppointmentAuxiliaryFlags)
+		zb0001Len--
+		zb0001Mask[0] |= 0x4
 	}
-	// string "2642283"
-	o = append(o, 0xa7, 0x32, 0x36, 0x34, 0x32, 0x32, 0x38, 0x33)
 	if z.AppointmentColor == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.AppointmentColor)
+		zb0001Len--
+		zb0001Mask[0] |= 0x8
 	}
-	// string "26435911"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x33, 0x35, 0x39, 0x31, 0x31)
 	if z.AppointmentCounterProposal == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.AppointmentCounterProposal)
+		zb0001Len--
+		zb0001Mask[0] |= 0x10
 	}
-	// string "2642273"
-	o = append(o, 0xa7, 0x32, 0x36, 0x34, 0x32, 0x32, 0x37, 0x33)
 	if z.AppointmentDuration == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.AppointmentDuration)
+		zb0001Len--
+		zb0001Mask[0] |= 0x20
 	}
-	// string "26422564"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x32, 0x35, 0x36, 0x34)
 	if z.AppointmentEndDate == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.AppointmentEndDate)
+		zb0001Len--
+		zb0001Mask[0] |= 0x40
 	}
-	// string "26422464"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x32, 0x34, 0x36, 0x34)
 	if z.AppointmentEndTime == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.AppointmentEndTime)
+		zb0001Len--
+		zb0001Mask[0] |= 0x80
 	}
-	// string "26420664"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x30, 0x36, 0x36, 0x34)
 	if z.AppointmentEndWhole == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.AppointmentEndWhole)
+		zb0001Len--
+		zb0001Mask[0] |= 0x100
 	}
-	// string "2641953"
-	o = append(o, 0xa7, 0x32, 0x36, 0x34, 0x31, 0x39, 0x35, 0x33)
 	if z.AppointmentLastSequence == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.AppointmentLastSequence)
+		zb0001Len--
+		zb0001Mask[0] |= 0x200
 	}
-	// string "6831"
-	o = append(o, 0xa4, 0x36, 0x38, 0x33, 0x31)
 	if z.AppointmentMessageClass == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AppointmentMessageClass)
+		zb0001Len--
+		zb0001Mask[0] |= 0x400
 	}
-	// string "26436211"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x33, 0x36, 0x32, 0x31, 0x31)
 	if z.AppointmentNotAllowPropose == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.AppointmentNotAllowPropose)
+		zb0001Len--
+		zb0001Mask[0] |= 0x800
 	}
-	// string "2643613"
-	o = append(o, 0xa7, 0x32, 0x36, 0x34, 0x33, 0x36, 0x31, 0x33)
 	if z.AppointmentProposalNumber == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.AppointmentProposalNumber)
+		zb0001Len--
+		zb0001Mask[0] |= 0x1000
 	}
-	// string "2643583"
-	o = append(o, 0xa7, 0x32, 0x36, 0x34, 0x33, 0x35, 0x38, 0x33)
 	if z.AppointmentProposedDuration == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.AppointmentProposedDuration)
+		zb0001Len--
+		zb0001Mask[0] |= 0x2000
 	}
-	// string "26435364"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x33, 0x35, 0x33, 0x36, 0x34)
 	if z.AppointmentProposedEndWhole == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.AppointmentProposedEndWhole)
+		zb0001Len--
+		zb0001Mask[0] |= 0x4000
 	}
-	// string "26435264"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x33, 0x35, 0x32, 0x36, 0x34)
 	if z.AppointmentProposedStartWhole == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.AppointmentProposedStartWhole)
+		zb0001Len--
+		zb0001Mask[0] |= 0x8000
 	}
-	// string "26428831"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x38, 0x38, 0x33, 0x31)
 	if z.AppointmentReplyName == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AppointmentReplyName)
+		zb0001Len--
+		zb0001Mask[0] |= 0x10000
 	}
-	// string "26425664"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x35, 0x36, 0x36, 0x34)
 	if z.AppointmentReplyTime == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.AppointmentReplyTime)
+		zb0001Len--
+		zb0001Mask[0] |= 0x20000
 	}
-	// string "2641933"
-	o = append(o, 0xa7, 0x32, 0x36, 0x34, 0x31, 0x39, 0x33, 0x33)
 	if z.AppointmentSequence == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.AppointmentSequence)
+		zb0001Len--
+		zb0001Mask[0] |= 0x40000
 	}
-	// string "26419464"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x31, 0x39, 0x34, 0x36, 0x34)
 	if z.AppointmentSequenceTime == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.AppointmentSequenceTime)
+		zb0001Len--
+		zb0001Mask[0] |= 0x80000
 	}
-	// string "26422664"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x32, 0x36, 0x36, 0x34)
 	if z.AppointmentStartDate == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.AppointmentStartDate)
+		zb0001Len--
+		zb0001Mask[0] |= 0x100000
 	}
-	// string "26420764"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x30, 0x37, 0x36, 0x34)
 	if z.AppointmentStartTime == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.AppointmentStartTime)
+		zb0001Len--
+		zb0001Mask[0] |= 0x200000
 	}
-	// string "26420564"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x30, 0x35, 0x36, 0x34)
 	if z.AppointmentStartWhole == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.AppointmentStartWhole)
+		zb0001Len--
+		zb0001Mask[0] |= 0x400000
 	}
-	// string "2642313"
-	o = append(o, 0xa7, 0x32, 0x36, 0x34, 0x32, 0x33, 0x31, 0x33)
 	if z.AppointmentStateFlags == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.AppointmentStateFlags)
+		zb0001Len--
+		zb0001Mask[0] |= 0x800000
 	}
-	// string "26422911"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x32, 0x39, 0x31, 0x31)
 	if z.AppointmentSubType == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.AppointmentSubType)
+		zb0001Len--
+		zb0001Mask[0] |= 0x1000000
 	}
-	// string "26426264"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x36, 0x32, 0x36, 0x34)
 	if z.AppointmentUpdateTime == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.AppointmentUpdateTime)
+		zb0001Len--
+		zb0001Mask[0] |= 0x2000000
 	}
-	// string "164"
-	o = append(o, 0xa3, 0x31, 0x36, 0x34)
 	if z.AttendeeCriticalChange == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.AttendeeCriticalChange)
+		zb0001Len--
+		zb0001Mask[0] |= 0x4000000
 	}
-	// string "26429811"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x39, 0x38, 0x31, 0x31)
 	if z.AutoFillLocation == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.AutoFillLocation)
+		zb0001Len--
+		zb0001Mask[0] |= 0x8000000
 	}
-	// string "26432411"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x33, 0x32, 0x34, 0x31, 0x31)
 	if z.AutoStartCheck == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.AutoStartCheck)
+		zb0001Len--
+		zb0001Mask[0] |= 0x10000000
 	}
-	// string "2641973"
-	o = append(o, 0xa7, 0x32, 0x36, 0x34, 0x31, 0x39, 0x37, 0x33)
 	if z.BusyStatus == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.BusyStatus)
+		zb0001Len--
+		zb0001Mask[0] |= 0x20000000
 	}
-	// string "443"
-	o = append(o, 0xa3, 0x34, 0x34, 0x33)
 	if z.CalendarType == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.CalendarType)
+		zb0001Len--
+		zb0001Mask[0] |= 0x40000000
 	}
-	// string "26430031"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x33, 0x30, 0x30, 0x33, 0x31)
 	if z.CcAttendeesString == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.CcAttendeesString)
+		zb0001Len--
+		zb0001Mask[0] |= 0x80000000
 	}
-	// string "2641963"
-	o = append(o, 0xa7, 0x32, 0x36, 0x34, 0x31, 0x39, 0x36, 0x33)
 	if z.ChangeHighlight == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.ChangeHighlight)
+		zb0001Len--
+		zb0001Mask[0] |= 0x100000000
 	}
-	// string "373"
-	o = append(o, 0xa3, 0x33, 0x37, 0x33)
 	if z.ClientIntent == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.ClientIntent)
+		zb0001Len--
+		zb0001Mask[0] |= 0x200000000
 	}
-	// string "26429464"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x39, 0x34, 0x36, 0x34)
 	if z.ClipEnd == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.ClipEnd)
+		zb0001Len--
+		zb0001Mask[0] |= 0x400000000
 	}
-	// string "26429364"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x39, 0x33, 0x36, 0x34)
 	if z.ClipStart == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.ClipStart)
+		zb0001Len--
+		zb0001Mask[0] |= 0x800000000
 	}
-	// string "26432731"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x33, 0x32, 0x37, 0x33, 0x31)
 	if z.CollaborateDoc == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.CollaborateDoc)
+		zb0001Len--
+		zb0001Mask[0] |= 0x1000000000
 	}
-	// string "26432011"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x33, 0x32, 0x30, 0x31, 0x31)
 	if z.ConferencingCheck == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.ConferencingCheck)
+		zb0001Len--
+		zb0001Mask[0] |= 0x2000000000
 	}
-	// string "2643213"
-	o = append(o, 0xa7, 0x32, 0x36, 0x34, 0x33, 0x32, 0x31, 0x33)
 	if z.ConferencingType == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.ConferencingType)
+		zb0001Len--
+		zb0001Mask[0] |= 0x4000000000
 	}
-	// string "332"
-	o = append(o, 0xa3, 0x33, 0x33, 0x32)
 	if z.DayInterval == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.DayInterval)
+		zb0001Len--
+		zb0001Mask[0] |= 0x8000000000
 	}
-	// string "327683"
-	o = append(o, 0xa6, 0x33, 0x32, 0x37, 0x36, 0x38, 0x33)
 	if z.DayOfMonth == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.DayOfMonth)
+		zb0001Len--
+		zb0001Mask[0] |= 0x10000000000
 	}
-	// string "911"
-	o = append(o, 0xa3, 0x39, 0x31, 0x31)
 	if z.DelegateMail == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.DelegateMail)
+		zb0001Len--
+		zb0001Mask[0] |= 0x20000000000
 	}
-	// string "26432231"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x33, 0x32, 0x32, 0x33, 0x31)
 	if z.Directory == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.Directory)
+		zb0001Len--
+		zb0001Mask[0] |= 0x40000000000
 	}
-	// string "153"
-	o = append(o, 0xa3, 0x31, 0x35, 0x33)
 	if z.EndRecurrenceDate == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.EndRecurrenceDate)
+		zb0001Len--
+		zb0001Mask[0] |= 0x80000000000
 	}
-	// string "323"
-	o = append(o, 0xa3, 0x33, 0x32, 0x33)
 	if z.EndRecurrenceTime == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.EndRecurrenceTime)
+		zb0001Len--
+		zb0001Mask[0] |= 0x100000000000
 	}
-	// string "26426464"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x36, 0x34, 0x36, 0x34)
 	if z.ExceptionReplaceTime == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.ExceptionReplaceTime)
+		zb0001Len--
+		zb0001Mask[0] |= 0x200000000000
 	}
-	// string "26426711"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x36, 0x37, 0x31, 0x31)
 	if z.FExceptionalAttendees == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.FExceptionalAttendees)
+		zb0001Len--
+		zb0001Mask[0] |= 0x400000000000
 	}
-	// string "26419811"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x31, 0x39, 0x38, 0x31, 0x31)
 	if z.FExceptionalBody == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.FExceptionalBody)
+		zb0001Len--
+		zb0001Mask[0] |= 0x800000000000
 	}
-	// string "26426511"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x36, 0x35, 0x31, 0x31)
 	if z.FInvited == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.FInvited)
+		zb0001Len--
+		zb0001Mask[0] |= 0x1000000000000
 	}
-	// string "26420211"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x30, 0x32, 0x31, 0x31)
 	if z.ForwardInstance == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.ForwardInstance)
+		zb0001Len--
+		zb0001Mask[0] |= 0x2000000000000
 	}
-	// string "26427111"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x37, 0x31, 0x31, 0x31)
 	if z.FOthersAppointment == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.FOthersAppointment)
+		zb0001Len--
+		zb0001Mask[0] |= 0x4000000000000
 	}
-	// string "327693"
-	o = append(o, 0xa6, 0x33, 0x32, 0x37, 0x36, 0x39, 0x33)
 	if z.ICalendarDayOfWeekMask == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.ICalendarDayOfWeekMask)
+		zb0001Len--
+		zb0001Mask[0] |= 0x8000000000000
 	}
-	// string "2642603"
-	o = append(o, 0xa7, 0x32, 0x36, 0x34, 0x32, 0x36, 0x30, 0x33)
 	if z.IntendedBusyStatus == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.IntendedBusyStatus)
+		zb0001Len--
+		zb0001Mask[0] |= 0x10000000000000
 	}
-	// string "1011"
-	o = append(o, 0xa4, 0x31, 0x30, 0x31, 0x31)
 	if z.IsException == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.IsException)
+		zb0001Len--
+		zb0001Mask[0] |= 0x20000000000000
 	}
-	// string "511"
-	o = append(o, 0xa3, 0x35, 0x31, 0x31)
 	if z.IsRecurring == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.IsRecurring)
+		zb0001Len--
+		zb0001Mask[0] |= 0x40000000000000
 	}
-	// string "411"
-	o = append(o, 0xa3, 0x34, 0x31, 0x31)
 	if z.IsSilent == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.IsSilent)
+		zb0001Len--
+		zb0001Mask[0] |= 0x80000000000000
 	}
-	// string "26420031"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x30, 0x30, 0x33, 0x31)
 	if z.Location == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.Location)
+		zb0001Len--
+		zb0001Mask[0] |= 0x100000000000000
 	}
-	// string "703"
-	o = append(o, 0xa3, 0x37, 0x30, 0x33)
 	if z.MeetingType == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.MeetingType)
+		zb0001Len--
+		zb0001Mask[0] |= 0x200000000000000
 	}
-	// string "26420131"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x30, 0x31, 0x33, 0x31)
 	if z.MeetingWorkspaceUrl == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.MeetingWorkspaceUrl)
+		zb0001Len--
+		zb0001Mask[0] |= 0x400000000000000
 	}
-	// string "352"
-	o = append(o, 0xa3, 0x33, 0x35, 0x32)
 	if z.MonthInterval == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.MonthInterval)
+		zb0001Len--
+		zb0001Mask[0] |= 0x800000000000000
 	}
-	// string "327743"
-	o = append(o, 0xa6, 0x33, 0x32, 0x37, 0x37, 0x34, 0x33)
 	if z.MonthOfYear == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.MonthOfYear)
+		zb0001Len--
+		zb0001Mask[0] |= 0x1000000000000000
 	}
-	// string "393"
-	o = append(o, 0xa3, 0x33, 0x39, 0x33)
 	if z.MonthOfYearMask == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.MonthOfYearMask)
+		zb0001Len--
+		zb0001Mask[0] |= 0x2000000000000000
 	}
-	// string "26432831"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x33, 0x32, 0x38, 0x33, 0x31)
 	if z.NetShowUrl == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.NetShowUrl)
+		zb0001Len--
+		zb0001Mask[0] |= 0x4000000000000000
 	}
-	// string "3277911"
-	o = append(o, 0xa7, 0x33, 0x32, 0x37, 0x37, 0x39, 0x31, 0x31)
 	if z.NoEndDateFlag == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.NoEndDateFlag)
+		zb0001Len--
+		zb0001Mask[0] |= 0x8000000000000000
 	}
-	// string "26736831"
-	o = append(o, 0xa8, 0x32, 0x36, 0x37, 0x33, 0x36, 0x38, 0x33, 0x31)
 	if z.NonSendableBcc == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.NonSendableBcc)
+		zb0001Len--
+		zb0001Mask[1] |= 0x1
 	}
-	// string "26736731"
-	o = append(o, 0xa8, 0x32, 0x36, 0x37, 0x33, 0x36, 0x37, 0x33, 0x31)
 	if z.NonSendableCc == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.NonSendableCc)
+		zb0001Len--
+		zb0001Mask[1] |= 0x2
 	}
-	// string "26736631"
-	o = append(o, 0xa8, 0x32, 0x36, 0x37, 0x33, 0x36, 0x36, 0x33, 0x31)
 	if z.NonSendableTo == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.NonSendableTo)
+		zb0001Len--
+		zb0001Mask[1] |= 0x4
 	}
-	// string "327733"
-	o = append(o, 0xa6, 0x33, 0x32, 0x37, 0x37, 0x33, 0x33)
 	if z.Occurrences == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.Occurrences)
+		zb0001Len--
+		zb0001Mask[1] |= 0x8
 	}
-	// string "7231"
-	o = append(o, 0xa4, 0x37, 0x32, 0x33, 0x31)
 	if z.OldLocation == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.OldLocation)
+		zb0001Len--
+		zb0001Mask[1] |= 0x10
 	}
-	// string "402"
-	o = append(o, 0xa3, 0x34, 0x30, 0x32)
 	if z.OldRecurrenceType == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.OldRecurrenceType)
+		zb0001Len--
+		zb0001Mask[1] |= 0x20
 	}
-	// string "7464"
-	o = append(o, 0xa4, 0x37, 0x34, 0x36, 0x34)
 	if z.OldWhenEndWhole == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.OldWhenEndWhole)
+		zb0001Len--
+		zb0001Mask[1] |= 0x40
 	}
-	// string "7364"
-	o = append(o, 0xa4, 0x37, 0x33, 0x36, 0x34)
 	if z.OldWhenStartWhole == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.OldWhenStartWhole)
+		zb0001Len--
+		zb0001Mask[1] |= 0x80
 	}
-	// string "26432931"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x33, 0x32, 0x39, 0x33, 0x31)
 	if z.OnlinePassword == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.OnlinePassword)
+		zb0001Len--
+		zb0001Mask[1] |= 0x100
 	}
-	// string "731"
-	o = append(o, 0xa3, 0x37, 0x33, 0x31)
 	if z.OptionalAttendees == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.OptionalAttendees)
+		zb0001Len--
+		zb0001Mask[1] |= 0x200
 	}
-	// string "26432331"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x33, 0x32, 0x33, 0x33, 0x31)
 	if z.OrganizerAlias == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.OrganizerAlias)
+		zb0001Len--
+		zb0001Mask[1] |= 0x400
 	}
-	// string "4264"
-	o = append(o, 0xa4, 0x34, 0x32, 0x36, 0x34)
 	if z.OwnerCriticalChange == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.OwnerCriticalChange)
+		zb0001Len--
+		zb0001Mask[1] |= 0x800
 	}
-	// string "26427031"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x37, 0x30, 0x33, 0x31)
 	if z.OwnerName == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.OwnerName)
+		zb0001Len--
+		zb0001Mask[1] |= 0x1000
 	}
-	// string "327813"
-	o = append(o, 0xa6, 0x33, 0x32, 0x37, 0x38, 0x31, 0x33)
 	if z.RecurrenceDuration == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.RecurrenceDuration)
+		zb0001Len--
+		zb0001Mask[1] |= 0x2000
 	}
-	// string "26429031"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x39, 0x30, 0x33, 0x31)
 	if z.RecurrencePattern == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.RecurrencePattern)
+		zb0001Len--
+		zb0001Mask[1] |= 0x4000
 	}
-	// string "2642893"
-	o = append(o, 0xa7, 0x32, 0x36, 0x34, 0x32, 0x38, 0x39, 0x33)
 	if z.RecurrenceType == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.RecurrenceType)
+		zb0001Len--
+		zb0001Mask[1] |= 0x8000
 	}
-	// string "26425911"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x35, 0x39, 0x31, 0x31)
 	if z.Recurring == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.Recurring)
+		zb0001Len--
+		zb0001Mask[1] |= 0x10000
 	}
-	// string "2672653"
-	o = append(o, 0xa7, 0x32, 0x36, 0x37, 0x32, 0x36, 0x35, 0x33)
 	if z.ReminderDelta == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.ReminderDelta)
+		zb0001Len--
+		zb0001Mask[1] |= 0x20000
 	}
-	// string "26731131"
-	o = append(o, 0xa8, 0x32, 0x36, 0x37, 0x33, 0x31, 0x31, 0x33, 0x31)
 	if z.ReminderFileParameter == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.ReminderFileParameter)
+		zb0001Len--
+		zb0001Mask[1] |= 0x40000
 	}
-	// string "26730811"
-	o = append(o, 0xa8, 0x32, 0x36, 0x37, 0x33, 0x30, 0x38, 0x31, 0x31)
 	if z.ReminderOverride == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.ReminderOverride)
+		zb0001Len--
+		zb0001Mask[1] |= 0x80000
 	}
-	// string "26731011"
-	o = append(o, 0xa8, 0x32, 0x36, 0x37, 0x33, 0x31, 0x30, 0x31, 0x31)
 	if z.ReminderPlaySound == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.ReminderPlaySound)
+		zb0001Len--
+		zb0001Mask[1] |= 0x100000
 	}
-	// string "26726711"
-	o = append(o, 0xa8, 0x32, 0x36, 0x37, 0x32, 0x36, 0x37, 0x31, 0x31)
 	if z.ReminderSet == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.ReminderSet)
+		zb0001Len--
+		zb0001Mask[1] |= 0x200000
 	}
-	// string "26745664"
-	o = append(o, 0xa8, 0x32, 0x36, 0x37, 0x34, 0x35, 0x36, 0x36, 0x34)
 	if z.ReminderSignalTime == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.ReminderSignalTime)
+		zb0001Len--
+		zb0001Mask[1] |= 0x400000
 	}
-	// string "26726664"
-	o = append(o, 0xa8, 0x32, 0x36, 0x37, 0x32, 0x36, 0x36, 0x36, 0x34)
 	if z.ReminderTime == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.ReminderTime)
+		zb0001Len--
+		zb0001Mask[1] |= 0x800000
 	}
-	// string "26726964"
-	o = append(o, 0xa8, 0x32, 0x36, 0x37, 0x32, 0x36, 0x39, 0x36, 0x34)
 	if z.ReminderTimeDate == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.ReminderTimeDate)
+		zb0001Len--
+		zb0001Mask[1] |= 0x1000000
 	}
-	// string "26726864"
-	o = append(o, 0xa8, 0x32, 0x36, 0x37, 0x32, 0x36, 0x38, 0x36, 0x34)
 	if z.ReminderTimeTime == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.ReminderTimeTime)
+		zb0001Len--
+		zb0001Mask[1] |= 0x2000000
 	}
-	// string "2673093"
-	o = append(o, 0xa7, 0x32, 0x36, 0x37, 0x33, 0x30, 0x39, 0x33)
 	if z.ReminderType == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.ReminderType)
+		zb0001Len--
+		zb0001Mask[1] |= 0x4000000
 	}
-	// string "631"
-	o = append(o, 0xa3, 0x36, 0x33, 0x31)
 	if z.RequiredAttendees == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.RequiredAttendees)
+		zb0001Len--
+		zb0001Mask[1] |= 0x8000000
 	}
-	// string "831"
-	o = append(o, 0xa3, 0x38, 0x33, 0x31)
 	if z.ResourceAttendees == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.ResourceAttendees)
+		zb0001Len--
+		zb0001Mask[1] |= 0x10000000
 	}
-	// string "2642323"
-	o = append(o, 0xa7, 0x32, 0x36, 0x34, 0x32, 0x33, 0x32, 0x33)
 	if z.ResponseStatus == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.ResponseStatus)
+		zb0001Len--
+		zb0001Mask[1] |= 0x20000000
 	}
-	// string "26766011"
-	o = append(o, 0xa8, 0x32, 0x36, 0x37, 0x36, 0x36, 0x30, 0x31, 0x31)
 	if z.ServerProcessed == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.ServerProcessed)
+		zb0001Len--
+		zb0001Mask[1] |= 0x40000000
 	}
-	// string "2676613"
-	o = append(o, 0xa7, 0x32, 0x36, 0x37, 0x36, 0x36, 0x31, 0x33)
 	if z.ServerProcessingActions == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.ServerProcessingActions)
+		zb0001Len--
+		zb0001Mask[1] |= 0x80000000
 	}
-	// string "26442711"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x34, 0x32, 0x37, 0x31, 0x31)
 	if z.SingleBodyiCal == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.SingleBodyiCal)
+		zb0001Len--
+		zb0001Mask[1] |= 0x100000000
 	}
-	// string "133"
-	o = append(o, 0xa3, 0x31, 0x33, 0x33)
 	if z.StartRecurrenceDate == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.StartRecurrenceDate)
+		zb0001Len--
+		zb0001Mask[1] |= 0x200000000
 	}
-	// string "143"
-	o = append(o, 0xa3, 0x31, 0x34, 0x33)
 	if z.StartRecurrenceTime == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.StartRecurrenceTime)
+		zb0001Len--
+		zb0001Mask[1] |= 0x400000000
 	}
-	// string "123"
-	o = append(o, 0xa3, 0x31, 0x32, 0x33)
 	if z.TimeZone == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.TimeZone)
+		zb0001Len--
+		zb0001Mask[1] |= 0x800000000
 	}
-	// string "26429231"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x39, 0x32, 0x33, 0x31)
 	if z.TimeZoneDescription == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.TimeZoneDescription)
+		zb0001Len--
+		zb0001Mask[1] |= 0x1000000000
 	}
-	// string "26429931"
-	o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x39, 0x39, 0x33, 0x31)
 	if z.ToAttendeesString == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.ToAttendeesString)
+		zb0001Len--
+		zb0001Mask[1] |= 0x2000000000
 	}
-	// string "342"
-	o = append(o, 0xa3, 0x33, 0x34, 0x32)
 	if z.WeekInterval == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.WeekInterval)
+		zb0001Len--
+		zb0001Mask[1] |= 0x4000000000
 	}
-	// string "231"
-	o = append(o, 0xa3, 0x32, 0x33, 0x31)
 	if z.Where == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.Where)
+		zb0001Len--
+		zb0001Mask[1] |= 0x8000000000
 	}
-	// string "362"
-	o = append(o, 0xa3, 0x33, 0x36, 0x32)
 	if z.YearInterval == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.YearInterval)
+		zb0001Len--
+		zb0001Mask[1] |= 0x10000000000
+	}
+	if z.FreeBusyPublishEnd == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x80000000000
+	}
+	if z.FreeBusyPublishStart == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x100000000000
+	}
+	if z.FreeBusyRangeTimestamp == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x200000000000
+	}
+	if z.ICalendarEndTime == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x400000000000
+	}
+	if z.ICalendarReminderNextTime == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x800000000000
+	}
+	if z.Processed == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x1000000000000
+	}
+	if z.ScheduleInfoAutoAcceptAppointments == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x2000000000000
+	}
+	if z.ScheduleInfoDelegatorWantsCopy == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x4000000000000
+	}
+	if z.ScheduleInfoDelegatorWantsInfo == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x8000000000000
+	}
+	if z.ScheduleInfoDisallowOverlappingAppts == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x10000000000000
+	}
+	if z.ScheduleInfoDisallowRecurringAppts == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x20000000000000
+	}
+	if z.ScheduleInfoDontMailDelegates == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x40000000000000
+	}
+	if z.ScheduleInfoResourceType == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x80000000000000
+	}
+	// variable map header, size zb0001Len
+	o = msgp.AppendMapHeader(o, zb0001Len)
+	if zb0001Len == 0 {
+		return
+	}
+	if (zb0001Mask[0] & 0x1) == 0 { // if not empty
+		// string "26429631"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x39, 0x36, 0x33, 0x31)
+		if z.AllAttendeesString == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AllAttendeesString)
+		}
+	}
+	if (zb0001Mask[0] & 0x2) == 0 { // if not empty
+		// string "26432611"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x33, 0x32, 0x36, 0x31, 0x31)
+		if z.AllowExternalCheck == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.AllowExternalCheck)
+		}
+	}
+	if (zb0001Mask[0] & 0x4) == 0 { // if not empty
+		// string "2641993"
+		o = append(o, 0xa7, 0x32, 0x36, 0x34, 0x31, 0x39, 0x39, 0x33)
+		if z.AppointmentAuxiliaryFlags == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.AppointmentAuxiliaryFlags)
+		}
+	}
+	if (zb0001Mask[0] & 0x8) == 0 { // if not empty
+		// string "2642283"
+		o = append(o, 0xa7, 0x32, 0x36, 0x34, 0x32, 0x32, 0x38, 0x33)
+		if z.AppointmentColor == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.AppointmentColor)
+		}
+	}
+	if (zb0001Mask[0] & 0x10) == 0 { // if not empty
+		// string "26435911"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x33, 0x35, 0x39, 0x31, 0x31)
+		if z.AppointmentCounterProposal == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.AppointmentCounterProposal)
+		}
+	}
+	if (zb0001Mask[0] & 0x20) == 0 { // if not empty
+		// string "2642273"
+		o = append(o, 0xa7, 0x32, 0x36, 0x34, 0x32, 0x32, 0x37, 0x33)
+		if z.AppointmentDuration == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.AppointmentDuration)
+		}
+	}
+	if (zb0001Mask[0] & 0x40) == 0 { // if not empty
+		// string "26422564"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x32, 0x35, 0x36, 0x34)
+		if z.AppointmentEndDate == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.AppointmentEndDate)
+		}
+	}
+	if (zb0001Mask[0] & 0x80) == 0 { // if not empty
+		// string "26422464"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x32, 0x34, 0x36, 0x34)
+		if z.AppointmentEndTime == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.AppointmentEndTime)
+		}
+	}
+	if (zb0001Mask[0] & 0x100) == 0 { // if not empty
+		// string "26420664"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x30, 0x36, 0x36, 0x34)
+		if z.AppointmentEndWhole == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.AppointmentEndWhole)
+		}
+	}
+	if (zb0001Mask[0] & 0x200) == 0 { // if not empty
+		// string "2641953"
+		o = append(o, 0xa7, 0x32, 0x36, 0x34, 0x31, 0x39, 0x35, 0x33)
+		if z.AppointmentLastSequence == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.AppointmentLastSequence)
+		}
+	}
+	if (zb0001Mask[0] & 0x400) == 0 { // if not empty
+		// string "6831"
+		o = append(o, 0xa4, 0x36, 0x38, 0x33, 0x31)
+		if z.AppointmentMessageClass == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AppointmentMessageClass)
+		}
+	}
+	if (zb0001Mask[0] & 0x800) == 0 { // if not empty
+		// string "26436211"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x33, 0x36, 0x32, 0x31, 0x31)
+		if z.AppointmentNotAllowPropose == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.AppointmentNotAllowPropose)
+		}
+	}
+	if (zb0001Mask[0] & 0x1000) == 0 { // if not empty
+		// string "2643613"
+		o = append(o, 0xa7, 0x32, 0x36, 0x34, 0x33, 0x36, 0x31, 0x33)
+		if z.AppointmentProposalNumber == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.AppointmentProposalNumber)
+		}
+	}
+	if (zb0001Mask[0] & 0x2000) == 0 { // if not empty
+		// string "2643583"
+		o = append(o, 0xa7, 0x32, 0x36, 0x34, 0x33, 0x35, 0x38, 0x33)
+		if z.AppointmentProposedDuration == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.AppointmentProposedDuration)
+		}
+	}
+	if (zb0001Mask[0] & 0x4000) == 0 { // if not empty
+		// string "26435364"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x33, 0x35, 0x33, 0x36, 0x34)
+		if z.AppointmentProposedEndWhole == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.AppointmentProposedEndWhole)
+		}
+	}
+	if (zb0001Mask[0] & 0x8000) == 0 { // if not empty
+		// string "26435264"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x33, 0x35, 0x32, 0x36, 0x34)
+		if z.AppointmentProposedStartWhole == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.AppointmentProposedStartWhole)
+		}
+	}
+	if (zb0001Mask[0] & 0x10000) == 0 { // if not empty
+		// string "26428831"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x38, 0x38, 0x33, 0x31)
+		if z.AppointmentReplyName == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AppointmentReplyName)
+		}
+	}
+	if (zb0001Mask[0] & 0x20000) == 0 { // if not empty
+		// string "26425664"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x35, 0x36, 0x36, 0x34)
+		if z.AppointmentReplyTime == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.AppointmentReplyTime)
+		}
+	}
+	if (zb0001Mask[0] & 0x40000) == 0 { // if not empty
+		// string "2641933"
+		o = append(o, 0xa7, 0x32, 0x36, 0x34, 0x31, 0x39, 0x33, 0x33)
+		if z.AppointmentSequence == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.AppointmentSequence)
+		}
+	}
+	if (zb0001Mask[0] & 0x80000) == 0 { // if not empty
+		// string "26419464"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x31, 0x39, 0x34, 0x36, 0x34)
+		if z.AppointmentSequenceTime == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.AppointmentSequenceTime)
+		}
+	}
+	if (zb0001Mask[0] & 0x100000) == 0 { // if not empty
+		// string "26422664"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x32, 0x36, 0x36, 0x34)
+		if z.AppointmentStartDate == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.AppointmentStartDate)
+		}
+	}
+	if (zb0001Mask[0] & 0x200000) == 0 { // if not empty
+		// string "26420764"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x30, 0x37, 0x36, 0x34)
+		if z.AppointmentStartTime == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.AppointmentStartTime)
+		}
+	}
+	if (zb0001Mask[0] & 0x400000) == 0 { // if not empty
+		// string "26420564"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x30, 0x35, 0x36, 0x34)
+		if z.AppointmentStartWhole == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.AppointmentStartWhole)
+		}
+	}
+	if (zb0001Mask[0] & 0x800000) == 0 { // if not empty
+		// string "2642313"
+		o = append(o, 0xa7, 0x32, 0x36, 0x34, 0x32, 0x33, 0x31, 0x33)
+		if z.AppointmentStateFlags == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.AppointmentStateFlags)
+		}
+	}
+	if (zb0001Mask[0] & 0x1000000) == 0 { // if not empty
+		// string "26422911"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x32, 0x39, 0x31, 0x31)
+		if z.AppointmentSubType == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.AppointmentSubType)
+		}
+	}
+	if (zb0001Mask[0] & 0x2000000) == 0 { // if not empty
+		// string "26426264"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x36, 0x32, 0x36, 0x34)
+		if z.AppointmentUpdateTime == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.AppointmentUpdateTime)
+		}
+	}
+	if (zb0001Mask[0] & 0x4000000) == 0 { // if not empty
+		// string "164"
+		o = append(o, 0xa3, 0x31, 0x36, 0x34)
+		if z.AttendeeCriticalChange == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.AttendeeCriticalChange)
+		}
+	}
+	if (zb0001Mask[0] & 0x8000000) == 0 { // if not empty
+		// string "26429811"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x39, 0x38, 0x31, 0x31)
+		if z.AutoFillLocation == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.AutoFillLocation)
+		}
+	}
+	if (zb0001Mask[0] & 0x10000000) == 0 { // if not empty
+		// string "26432411"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x33, 0x32, 0x34, 0x31, 0x31)
+		if z.AutoStartCheck == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.AutoStartCheck)
+		}
+	}
+	if (zb0001Mask[0] & 0x20000000) == 0 { // if not empty
+		// string "2641973"
+		o = append(o, 0xa7, 0x32, 0x36, 0x34, 0x31, 0x39, 0x37, 0x33)
+		if z.BusyStatus == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.BusyStatus)
+		}
+	}
+	if (zb0001Mask[0] & 0x40000000) == 0 { // if not empty
+		// string "443"
+		o = append(o, 0xa3, 0x34, 0x34, 0x33)
+		if z.CalendarType == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.CalendarType)
+		}
+	}
+	if (zb0001Mask[0] & 0x80000000) == 0 { // if not empty
+		// string "26430031"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x33, 0x30, 0x30, 0x33, 0x31)
+		if z.CcAttendeesString == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.CcAttendeesString)
+		}
+	}
+	if (zb0001Mask[0] & 0x100000000) == 0 { // if not empty
+		// string "2641963"
+		o = append(o, 0xa7, 0x32, 0x36, 0x34, 0x31, 0x39, 0x36, 0x33)
+		if z.ChangeHighlight == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.ChangeHighlight)
+		}
+	}
+	if (zb0001Mask[0] & 0x200000000) == 0 { // if not empty
+		// string "373"
+		o = append(o, 0xa3, 0x33, 0x37, 0x33)
+		if z.ClientIntent == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.ClientIntent)
+		}
+	}
+	if (zb0001Mask[0] & 0x400000000) == 0 { // if not empty
+		// string "26429464"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x39, 0x34, 0x36, 0x34)
+		if z.ClipEnd == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.ClipEnd)
+		}
+	}
+	if (zb0001Mask[0] & 0x800000000) == 0 { // if not empty
+		// string "26429364"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x39, 0x33, 0x36, 0x34)
+		if z.ClipStart == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.ClipStart)
+		}
+	}
+	if (zb0001Mask[0] & 0x1000000000) == 0 { // if not empty
+		// string "26432731"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x33, 0x32, 0x37, 0x33, 0x31)
+		if z.CollaborateDoc == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.CollaborateDoc)
+		}
+	}
+	if (zb0001Mask[0] & 0x2000000000) == 0 { // if not empty
+		// string "26432011"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x33, 0x32, 0x30, 0x31, 0x31)
+		if z.ConferencingCheck == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.ConferencingCheck)
+		}
+	}
+	if (zb0001Mask[0] & 0x4000000000) == 0 { // if not empty
+		// string "2643213"
+		o = append(o, 0xa7, 0x32, 0x36, 0x34, 0x33, 0x32, 0x31, 0x33)
+		if z.ConferencingType == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.ConferencingType)
+		}
+	}
+	if (zb0001Mask[0] & 0x8000000000) == 0 { // if not empty
+		// string "332"
+		o = append(o, 0xa3, 0x33, 0x33, 0x32)
+		if z.DayInterval == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.DayInterval)
+		}
+	}
+	if (zb0001Mask[0] & 0x10000000000) == 0 { // if not empty
+		// string "327683"
+		o = append(o, 0xa6, 0x33, 0x32, 0x37, 0x36, 0x38, 0x33)
+		if z.DayOfMonth == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.DayOfMonth)
+		}
+	}
+	if (zb0001Mask[0] & 0x20000000000) == 0 { // if not empty
+		// string "911"
+		o = append(o, 0xa3, 0x39, 0x31, 0x31)
+		if z.DelegateMail == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.DelegateMail)
+		}
+	}
+	if (zb0001Mask[0] & 0x40000000000) == 0 { // if not empty
+		// string "26432231"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x33, 0x32, 0x32, 0x33, 0x31)
+		if z.Directory == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.Directory)
+		}
+	}
+	if (zb0001Mask[0] & 0x80000000000) == 0 { // if not empty
+		// string "153"
+		o = append(o, 0xa3, 0x31, 0x35, 0x33)
+		if z.EndRecurrenceDate == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.EndRecurrenceDate)
+		}
+	}
+	if (zb0001Mask[0] & 0x100000000000) == 0 { // if not empty
+		// string "323"
+		o = append(o, 0xa3, 0x33, 0x32, 0x33)
+		if z.EndRecurrenceTime == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.EndRecurrenceTime)
+		}
+	}
+	if (zb0001Mask[0] & 0x200000000000) == 0 { // if not empty
+		// string "26426464"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x36, 0x34, 0x36, 0x34)
+		if z.ExceptionReplaceTime == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.ExceptionReplaceTime)
+		}
+	}
+	if (zb0001Mask[0] & 0x400000000000) == 0 { // if not empty
+		// string "26426711"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x36, 0x37, 0x31, 0x31)
+		if z.FExceptionalAttendees == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.FExceptionalAttendees)
+		}
+	}
+	if (zb0001Mask[0] & 0x800000000000) == 0 { // if not empty
+		// string "26419811"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x31, 0x39, 0x38, 0x31, 0x31)
+		if z.FExceptionalBody == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.FExceptionalBody)
+		}
+	}
+	if (zb0001Mask[0] & 0x1000000000000) == 0 { // if not empty
+		// string "26426511"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x36, 0x35, 0x31, 0x31)
+		if z.FInvited == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.FInvited)
+		}
+	}
+	if (zb0001Mask[0] & 0x2000000000000) == 0 { // if not empty
+		// string "26420211"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x30, 0x32, 0x31, 0x31)
+		if z.ForwardInstance == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.ForwardInstance)
+		}
+	}
+	if (zb0001Mask[0] & 0x4000000000000) == 0 { // if not empty
+		// string "26427111"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x37, 0x31, 0x31, 0x31)
+		if z.FOthersAppointment == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.FOthersAppointment)
+		}
+	}
+	if (zb0001Mask[0] & 0x8000000000000) == 0 { // if not empty
+		// string "327693"
+		o = append(o, 0xa6, 0x33, 0x32, 0x37, 0x36, 0x39, 0x33)
+		if z.ICalendarDayOfWeekMask == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.ICalendarDayOfWeekMask)
+		}
+	}
+	if (zb0001Mask[0] & 0x10000000000000) == 0 { // if not empty
+		// string "2642603"
+		o = append(o, 0xa7, 0x32, 0x36, 0x34, 0x32, 0x36, 0x30, 0x33)
+		if z.IntendedBusyStatus == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.IntendedBusyStatus)
+		}
+	}
+	if (zb0001Mask[0] & 0x20000000000000) == 0 { // if not empty
+		// string "1011"
+		o = append(o, 0xa4, 0x31, 0x30, 0x31, 0x31)
+		if z.IsException == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.IsException)
+		}
+	}
+	if (zb0001Mask[0] & 0x40000000000000) == 0 { // if not empty
+		// string "511"
+		o = append(o, 0xa3, 0x35, 0x31, 0x31)
+		if z.IsRecurring == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.IsRecurring)
+		}
+	}
+	if (zb0001Mask[0] & 0x80000000000000) == 0 { // if not empty
+		// string "411"
+		o = append(o, 0xa3, 0x34, 0x31, 0x31)
+		if z.IsSilent == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.IsSilent)
+		}
+	}
+	if (zb0001Mask[0] & 0x100000000000000) == 0 { // if not empty
+		// string "26420031"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x30, 0x30, 0x33, 0x31)
+		if z.Location == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.Location)
+		}
+	}
+	if (zb0001Mask[0] & 0x200000000000000) == 0 { // if not empty
+		// string "703"
+		o = append(o, 0xa3, 0x37, 0x30, 0x33)
+		if z.MeetingType == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.MeetingType)
+		}
+	}
+	if (zb0001Mask[0] & 0x400000000000000) == 0 { // if not empty
+		// string "26420131"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x30, 0x31, 0x33, 0x31)
+		if z.MeetingWorkspaceUrl == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.MeetingWorkspaceUrl)
+		}
+	}
+	if (zb0001Mask[0] & 0x800000000000000) == 0 { // if not empty
+		// string "352"
+		o = append(o, 0xa3, 0x33, 0x35, 0x32)
+		if z.MonthInterval == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.MonthInterval)
+		}
+	}
+	if (zb0001Mask[0] & 0x1000000000000000) == 0 { // if not empty
+		// string "327743"
+		o = append(o, 0xa6, 0x33, 0x32, 0x37, 0x37, 0x34, 0x33)
+		if z.MonthOfYear == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.MonthOfYear)
+		}
+	}
+	if (zb0001Mask[0] & 0x2000000000000000) == 0 { // if not empty
+		// string "393"
+		o = append(o, 0xa3, 0x33, 0x39, 0x33)
+		if z.MonthOfYearMask == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.MonthOfYearMask)
+		}
+	}
+	if (zb0001Mask[0] & 0x4000000000000000) == 0 { // if not empty
+		// string "26432831"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x33, 0x32, 0x38, 0x33, 0x31)
+		if z.NetShowUrl == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.NetShowUrl)
+		}
+	}
+	if (zb0001Mask[0] & 0x8000000000000000) == 0 { // if not empty
+		// string "3277911"
+		o = append(o, 0xa7, 0x33, 0x32, 0x37, 0x37, 0x39, 0x31, 0x31)
+		if z.NoEndDateFlag == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.NoEndDateFlag)
+		}
+	}
+	if (zb0001Mask[1] & 0x1) == 0 { // if not empty
+		// string "26736831"
+		o = append(o, 0xa8, 0x32, 0x36, 0x37, 0x33, 0x36, 0x38, 0x33, 0x31)
+		if z.NonSendableBcc == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.NonSendableBcc)
+		}
+	}
+	if (zb0001Mask[1] & 0x2) == 0 { // if not empty
+		// string "26736731"
+		o = append(o, 0xa8, 0x32, 0x36, 0x37, 0x33, 0x36, 0x37, 0x33, 0x31)
+		if z.NonSendableCc == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.NonSendableCc)
+		}
+	}
+	if (zb0001Mask[1] & 0x4) == 0 { // if not empty
+		// string "26736631"
+		o = append(o, 0xa8, 0x32, 0x36, 0x37, 0x33, 0x36, 0x36, 0x33, 0x31)
+		if z.NonSendableTo == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.NonSendableTo)
+		}
+	}
+	if (zb0001Mask[1] & 0x8) == 0 { // if not empty
+		// string "327733"
+		o = append(o, 0xa6, 0x33, 0x32, 0x37, 0x37, 0x33, 0x33)
+		if z.Occurrences == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.Occurrences)
+		}
+	}
+	if (zb0001Mask[1] & 0x10) == 0 { // if not empty
+		// string "7231"
+		o = append(o, 0xa4, 0x37, 0x32, 0x33, 0x31)
+		if z.OldLocation == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.OldLocation)
+		}
+	}
+	if (zb0001Mask[1] & 0x20) == 0 { // if not empty
+		// string "402"
+		o = append(o, 0xa3, 0x34, 0x30, 0x32)
+		if z.OldRecurrenceType == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.OldRecurrenceType)
+		}
+	}
+	if (zb0001Mask[1] & 0x40) == 0 { // if not empty
+		// string "7464"
+		o = append(o, 0xa4, 0x37, 0x34, 0x36, 0x34)
+		if z.OldWhenEndWhole == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.OldWhenEndWhole)
+		}
+	}
+	if (zb0001Mask[1] & 0x80) == 0 { // if not empty
+		// string "7364"
+		o = append(o, 0xa4, 0x37, 0x33, 0x36, 0x34)
+		if z.OldWhenStartWhole == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.OldWhenStartWhole)
+		}
+	}
+	if (zb0001Mask[1] & 0x100) == 0 { // if not empty
+		// string "26432931"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x33, 0x32, 0x39, 0x33, 0x31)
+		if z.OnlinePassword == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.OnlinePassword)
+		}
+	}
+	if (zb0001Mask[1] & 0x200) == 0 { // if not empty
+		// string "731"
+		o = append(o, 0xa3, 0x37, 0x33, 0x31)
+		if z.OptionalAttendees == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.OptionalAttendees)
+		}
+	}
+	if (zb0001Mask[1] & 0x400) == 0 { // if not empty
+		// string "26432331"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x33, 0x32, 0x33, 0x33, 0x31)
+		if z.OrganizerAlias == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.OrganizerAlias)
+		}
+	}
+	if (zb0001Mask[1] & 0x800) == 0 { // if not empty
+		// string "4264"
+		o = append(o, 0xa4, 0x34, 0x32, 0x36, 0x34)
+		if z.OwnerCriticalChange == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.OwnerCriticalChange)
+		}
+	}
+	if (zb0001Mask[1] & 0x1000) == 0 { // if not empty
+		// string "26427031"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x37, 0x30, 0x33, 0x31)
+		if z.OwnerName == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.OwnerName)
+		}
+	}
+	if (zb0001Mask[1] & 0x2000) == 0 { // if not empty
+		// string "327813"
+		o = append(o, 0xa6, 0x33, 0x32, 0x37, 0x38, 0x31, 0x33)
+		if z.RecurrenceDuration == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.RecurrenceDuration)
+		}
+	}
+	if (zb0001Mask[1] & 0x4000) == 0 { // if not empty
+		// string "26429031"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x39, 0x30, 0x33, 0x31)
+		if z.RecurrencePattern == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.RecurrencePattern)
+		}
+	}
+	if (zb0001Mask[1] & 0x8000) == 0 { // if not empty
+		// string "2642893"
+		o = append(o, 0xa7, 0x32, 0x36, 0x34, 0x32, 0x38, 0x39, 0x33)
+		if z.RecurrenceType == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.RecurrenceType)
+		}
+	}
+	if (zb0001Mask[1] & 0x10000) == 0 { // if not empty
+		// string "26425911"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x35, 0x39, 0x31, 0x31)
+		if z.Recurring == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.Recurring)
+		}
+	}
+	if (zb0001Mask[1] & 0x20000) == 0 { // if not empty
+		// string "2672653"
+		o = append(o, 0xa7, 0x32, 0x36, 0x37, 0x32, 0x36, 0x35, 0x33)
+		if z.ReminderDelta == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.ReminderDelta)
+		}
+	}
+	if (zb0001Mask[1] & 0x40000) == 0 { // if not empty
+		// string "26731131"
+		o = append(o, 0xa8, 0x32, 0x36, 0x37, 0x33, 0x31, 0x31, 0x33, 0x31)
+		if z.ReminderFileParameter == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.ReminderFileParameter)
+		}
+	}
+	if (zb0001Mask[1] & 0x80000) == 0 { // if not empty
+		// string "26730811"
+		o = append(o, 0xa8, 0x32, 0x36, 0x37, 0x33, 0x30, 0x38, 0x31, 0x31)
+		if z.ReminderOverride == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.ReminderOverride)
+		}
+	}
+	if (zb0001Mask[1] & 0x100000) == 0 { // if not empty
+		// string "26731011"
+		o = append(o, 0xa8, 0x32, 0x36, 0x37, 0x33, 0x31, 0x30, 0x31, 0x31)
+		if z.ReminderPlaySound == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.ReminderPlaySound)
+		}
+	}
+	if (zb0001Mask[1] & 0x200000) == 0 { // if not empty
+		// string "26726711"
+		o = append(o, 0xa8, 0x32, 0x36, 0x37, 0x32, 0x36, 0x37, 0x31, 0x31)
+		if z.ReminderSet == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.ReminderSet)
+		}
+	}
+	if (zb0001Mask[1] & 0x400000) == 0 { // if not empty
+		// string "26745664"
+		o = append(o, 0xa8, 0x32, 0x36, 0x37, 0x34, 0x35, 0x36, 0x36, 0x34)
+		if z.ReminderSignalTime == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.ReminderSignalTime)
+		}
+	}
+	if (zb0001Mask[1] & 0x800000) == 0 { // if not empty
+		// string "26726664"
+		o = append(o, 0xa8, 0x32, 0x36, 0x37, 0x32, 0x36, 0x36, 0x36, 0x34)
+		if z.ReminderTime == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.ReminderTime)
+		}
+	}
+	if (zb0001Mask[1] & 0x1000000) == 0 { // if not empty
+		// string "26726964"
+		o = append(o, 0xa8, 0x32, 0x36, 0x37, 0x32, 0x36, 0x39, 0x36, 0x34)
+		if z.ReminderTimeDate == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.ReminderTimeDate)
+		}
+	}
+	if (zb0001Mask[1] & 0x2000000) == 0 { // if not empty
+		// string "26726864"
+		o = append(o, 0xa8, 0x32, 0x36, 0x37, 0x32, 0x36, 0x38, 0x36, 0x34)
+		if z.ReminderTimeTime == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.ReminderTimeTime)
+		}
+	}
+	if (zb0001Mask[1] & 0x4000000) == 0 { // if not empty
+		// string "2673093"
+		o = append(o, 0xa7, 0x32, 0x36, 0x37, 0x33, 0x30, 0x39, 0x33)
+		if z.ReminderType == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.ReminderType)
+		}
+	}
+	if (zb0001Mask[1] & 0x8000000) == 0 { // if not empty
+		// string "631"
+		o = append(o, 0xa3, 0x36, 0x33, 0x31)
+		if z.RequiredAttendees == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.RequiredAttendees)
+		}
+	}
+	if (zb0001Mask[1] & 0x10000000) == 0 { // if not empty
+		// string "831"
+		o = append(o, 0xa3, 0x38, 0x33, 0x31)
+		if z.ResourceAttendees == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.ResourceAttendees)
+		}
+	}
+	if (zb0001Mask[1] & 0x20000000) == 0 { // if not empty
+		// string "2642323"
+		o = append(o, 0xa7, 0x32, 0x36, 0x34, 0x32, 0x33, 0x32, 0x33)
+		if z.ResponseStatus == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.ResponseStatus)
+		}
+	}
+	if (zb0001Mask[1] & 0x40000000) == 0 { // if not empty
+		// string "26766011"
+		o = append(o, 0xa8, 0x32, 0x36, 0x37, 0x36, 0x36, 0x30, 0x31, 0x31)
+		if z.ServerProcessed == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.ServerProcessed)
+		}
+	}
+	if (zb0001Mask[1] & 0x80000000) == 0 { // if not empty
+		// string "2676613"
+		o = append(o, 0xa7, 0x32, 0x36, 0x37, 0x36, 0x36, 0x31, 0x33)
+		if z.ServerProcessingActions == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.ServerProcessingActions)
+		}
+	}
+	if (zb0001Mask[1] & 0x100000000) == 0 { // if not empty
+		// string "26442711"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x34, 0x32, 0x37, 0x31, 0x31)
+		if z.SingleBodyiCal == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.SingleBodyiCal)
+		}
+	}
+	if (zb0001Mask[1] & 0x200000000) == 0 { // if not empty
+		// string "133"
+		o = append(o, 0xa3, 0x31, 0x33, 0x33)
+		if z.StartRecurrenceDate == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.StartRecurrenceDate)
+		}
+	}
+	if (zb0001Mask[1] & 0x400000000) == 0 { // if not empty
+		// string "143"
+		o = append(o, 0xa3, 0x31, 0x34, 0x33)
+		if z.StartRecurrenceTime == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.StartRecurrenceTime)
+		}
+	}
+	if (zb0001Mask[1] & 0x800000000) == 0 { // if not empty
+		// string "123"
+		o = append(o, 0xa3, 0x31, 0x32, 0x33)
+		if z.TimeZone == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.TimeZone)
+		}
+	}
+	if (zb0001Mask[1] & 0x1000000000) == 0 { // if not empty
+		// string "26429231"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x39, 0x32, 0x33, 0x31)
+		if z.TimeZoneDescription == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.TimeZoneDescription)
+		}
+	}
+	if (zb0001Mask[1] & 0x2000000000) == 0 { // if not empty
+		// string "26429931"
+		o = append(o, 0xa8, 0x32, 0x36, 0x34, 0x32, 0x39, 0x39, 0x33, 0x31)
+		if z.ToAttendeesString == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.ToAttendeesString)
+		}
+	}
+	if (zb0001Mask[1] & 0x4000000000) == 0 { // if not empty
+		// string "342"
+		o = append(o, 0xa3, 0x33, 0x34, 0x32)
+		if z.WeekInterval == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.WeekInterval)
+		}
+	}
+	if (zb0001Mask[1] & 0x8000000000) == 0 { // if not empty
+		// string "231"
+		o = append(o, 0xa3, 0x32, 0x33, 0x31)
+		if z.Where == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.Where)
+		}
+	}
+	if (zb0001Mask[1] & 0x10000000000) == 0 { // if not empty
+		// string "362"
+		o = append(o, 0xa3, 0x33, 0x36, 0x32)
+		if z.YearInterval == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.YearInterval)
+		}
 	}
 	// string "LocationUrl"
 	o = append(o, 0xab, 0x4c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x55, 0x72, 0x6c)
@@ -4994,96 +6401,122 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 	} else {
 		o = msgp.AppendBool(o, *z.MeetingDoNotForward)
 	}
-	// string "266963"
-	o = append(o, 0xa6, 0x32, 0x36, 0x36, 0x39, 0x36, 0x33)
-	if z.FreeBusyPublishEnd == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.FreeBusyPublishEnd)
+	if (zb0001Mask[1] & 0x80000000000) == 0 { // if not empty
+		// string "266963"
+		o = append(o, 0xa6, 0x32, 0x36, 0x36, 0x39, 0x36, 0x33)
+		if z.FreeBusyPublishEnd == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.FreeBusyPublishEnd)
+		}
 	}
-	// string "266953"
-	o = append(o, 0xa6, 0x32, 0x36, 0x36, 0x39, 0x35, 0x33)
-	if z.FreeBusyPublishStart == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.FreeBusyPublishStart)
+	if (zb0001Mask[1] & 0x100000000000) == 0 { // if not empty
+		// string "266953"
+		o = append(o, 0xa6, 0x32, 0x36, 0x36, 0x39, 0x35, 0x33)
+		if z.FreeBusyPublishStart == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.FreeBusyPublishStart)
+		}
 	}
-	// string "2672864"
-	o = append(o, 0xa7, 0x32, 0x36, 0x37, 0x32, 0x38, 0x36, 0x34)
-	if z.FreeBusyRangeTimestamp == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.FreeBusyRangeTimestamp)
+	if (zb0001Mask[1] & 0x200000000000) == 0 { // if not empty
+		// string "2672864"
+		o = append(o, 0xa7, 0x32, 0x36, 0x37, 0x32, 0x38, 0x36, 0x34)
+		if z.FreeBusyRangeTimestamp == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.FreeBusyRangeTimestamp)
+		}
 	}
-	// string "429264"
-	o = append(o, 0xa6, 0x34, 0x32, 0x39, 0x32, 0x36, 0x34)
-	if z.ICalendarEndTime == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.ICalendarEndTime)
+	if (zb0001Mask[1] & 0x400000000000) == 0 { // if not empty
+		// string "429264"
+		o = append(o, 0xa6, 0x34, 0x32, 0x39, 0x32, 0x36, 0x34)
+		if z.ICalendarEndTime == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.ICalendarEndTime)
+		}
 	}
-	// string "429864"
-	o = append(o, 0xa6, 0x34, 0x32, 0x39, 0x38, 0x36, 0x34)
-	if z.ICalendarReminderNextTime == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.ICalendarReminderNextTime)
+	if (zb0001Mask[1] & 0x800000000000) == 0 { // if not empty
+		// string "429864"
+		o = append(o, 0xa6, 0x34, 0x32, 0x39, 0x38, 0x36, 0x34)
+		if z.ICalendarReminderNextTime == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.ICalendarReminderNextTime)
+		}
 	}
-	// string "3200111"
-	o = append(o, 0xa7, 0x33, 0x32, 0x30, 0x30, 0x31, 0x31, 0x31)
-	if z.Processed == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.Processed)
+	if (zb0001Mask[1] & 0x1000000000000) == 0 { // if not empty
+		// string "3200111"
+		o = append(o, 0xa7, 0x33, 0x32, 0x30, 0x30, 0x31, 0x31, 0x31)
+		if z.Processed == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.Processed)
+		}
 	}
-	// string "2673311"
-	o = append(o, 0xa7, 0x32, 0x36, 0x37, 0x33, 0x33, 0x31, 0x31)
-	if z.ScheduleInfoAutoAcceptAppointments == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.ScheduleInfoAutoAcceptAppointments)
+	if (zb0001Mask[1] & 0x2000000000000) == 0 { // if not empty
+		// string "2673311"
+		o = append(o, 0xa7, 0x32, 0x36, 0x37, 0x33, 0x33, 0x31, 0x31)
+		if z.ScheduleInfoAutoAcceptAppointments == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.ScheduleInfoAutoAcceptAppointments)
+		}
 	}
-	// string "2669011"
-	o = append(o, 0xa7, 0x32, 0x36, 0x36, 0x39, 0x30, 0x31, 0x31)
-	if z.ScheduleInfoDelegatorWantsCopy == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.ScheduleInfoDelegatorWantsCopy)
+	if (zb0001Mask[1] & 0x4000000000000) == 0 { // if not empty
+		// string "2669011"
+		o = append(o, 0xa7, 0x32, 0x36, 0x36, 0x39, 0x30, 0x31, 0x31)
+		if z.ScheduleInfoDelegatorWantsCopy == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.ScheduleInfoDelegatorWantsCopy)
+		}
 	}
-	// string "2669911"
-	o = append(o, 0xa7, 0x32, 0x36, 0x36, 0x39, 0x39, 0x31, 0x31)
-	if z.ScheduleInfoDelegatorWantsInfo == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.ScheduleInfoDelegatorWantsInfo)
+	if (zb0001Mask[1] & 0x8000000000000) == 0 { // if not empty
+		// string "2669911"
+		o = append(o, 0xa7, 0x32, 0x36, 0x36, 0x39, 0x39, 0x31, 0x31)
+		if z.ScheduleInfoDelegatorWantsInfo == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.ScheduleInfoDelegatorWantsInfo)
+		}
 	}
-	// string "2673511"
-	o = append(o, 0xa7, 0x32, 0x36, 0x37, 0x33, 0x35, 0x31, 0x31)
-	if z.ScheduleInfoDisallowOverlappingAppts == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.ScheduleInfoDisallowOverlappingAppts)
+	if (zb0001Mask[1] & 0x10000000000000) == 0 { // if not empty
+		// string "2673511"
+		o = append(o, 0xa7, 0x32, 0x36, 0x37, 0x33, 0x35, 0x31, 0x31)
+		if z.ScheduleInfoDisallowOverlappingAppts == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.ScheduleInfoDisallowOverlappingAppts)
+		}
 	}
-	// string "2673411"
-	o = append(o, 0xa7, 0x32, 0x36, 0x37, 0x33, 0x34, 0x31, 0x31)
-	if z.ScheduleInfoDisallowRecurringAppts == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.ScheduleInfoDisallowRecurringAppts)
+	if (zb0001Mask[1] & 0x20000000000000) == 0 { // if not empty
+		// string "2673411"
+		o = append(o, 0xa7, 0x32, 0x36, 0x37, 0x33, 0x34, 0x31, 0x31)
+		if z.ScheduleInfoDisallowRecurringAppts == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.ScheduleInfoDisallowRecurringAppts)
+		}
 	}
-	// string "2669111"
-	o = append(o, 0xa7, 0x32, 0x36, 0x36, 0x39, 0x31, 0x31, 0x31)
-	if z.ScheduleInfoDontMailDelegates == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.ScheduleInfoDontMailDelegates)
+	if (zb0001Mask[1] & 0x40000000000000) == 0 { // if not empty
+		// string "2669111"
+		o = append(o, 0xa7, 0x32, 0x36, 0x36, 0x39, 0x31, 0x31, 0x31)
+		if z.ScheduleInfoDontMailDelegates == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.ScheduleInfoDontMailDelegates)
+		}
 	}
-	// string "266893"
-	o = append(o, 0xa6, 0x32, 0x36, 0x36, 0x38, 0x39, 0x33)
-	if z.ScheduleInfoResourceType == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.ScheduleInfoResourceType)
+	if (zb0001Mask[1] & 0x80000000000000) == 0 { // if not empty
+		// string "266893"
+		o = append(o, 0xa6, 0x32, 0x36, 0x36, 0x38, 0x39, 0x33)
+		if z.ScheduleInfoResourceType == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.ScheduleInfoResourceType)
+		}
 	}
 	return
 }

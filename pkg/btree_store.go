@@ -36,5 +36,7 @@ type BTreeStore interface {
 
 // NewBTreeStoreInMemory creates a new b-tree store using google/btree.
 func NewBTreeStoreInMemory() *btree.BTreeG[BTreeNode] {
-	return btree.NewBTreeG(BTreeNodeLessFunc)
+	return btree.NewBTreeGOptions(BTreeNodeLessFunc, btree.Options{
+		Degree: 255, // PST files use one byte to represent the node level which is uint8 (255).
+	})
 }

@@ -19,20 +19,19 @@ package pst
 
 import (
 	_ "embed"
-	"encoding/csv"
 	"fmt"
 	"github.com/mooijtech/go-pst/v5/pkg/properties"
-	"github.com/pkg/errors"
-	"strings"
+	"github.com/rotisserie/eris"
+	"github.com/tinylib/msgp/msgp"
 )
 
 // Message represents a message.
 type Message struct {
+	File                   *File
 	PropertyContext        *PropertyContext
 	AttachmentTableContext *TableContext
 	LocalDescriptors       []LocalDescriptor // Used by the PropertyContext and TableContext.
-	File                   *File
-	properties.Message
+	Properties             msgp.Decodable    // Type properties.Message, properties.Appointment, properties.Contact
 }
 
 // GetMessageTableContext returns the message table context of this folder which contains references to all messages.
@@ -43,32 +42,32 @@ func (folder *Folder) GetMessageTableContext() (TableContext, error) {
 	emailsNode, err := folder.File.GetNodeBTreeNode(emailsIdentifier)
 
 	if err != nil {
-		return TableContext{}, errors.WithStack(err)
+		return TableContext{}, eris.Wrap(err, "failed to find node b-tree node")
 	}
 
 	localDescriptors, err := folder.File.GetLocalDescriptors(emailsNode)
 
 	if err != nil {
-		return TableContext{}, errors.WithStack(err)
+		return TableContext{}, eris.Wrap(err, "failed to find local descriptors")
 	}
 
 	emailsDataNode, err := folder.File.GetDataBTreeNode(emailsIdentifier)
 
 	if err != nil {
-		return TableContext{}, errors.WithStack(err)
+		return TableContext{}, eris.Wrap(err, "failed to find data b-tree node")
 	}
 
 	emailsHeapOnNode, err := folder.File.GetHeapOnNode(emailsDataNode)
 
 	if err != nil {
-		return TableContext{}, errors.WithStack(err)
+		return TableContext{}, eris.Wrap(err, "failed to get Heap-on-Node")
 	}
 
 	// 26610 is a message property HNID.
 	tableContext, err := folder.File.GetTableContext(emailsHeapOnNode, localDescriptors, 26610)
 
 	if err != nil {
-		return TableContext{}, errors.WithStack(err)
+		return TableContext{}, eris.Wrap(err, "failed to get table context")
 	}
 
 	return tableContext, nil
@@ -106,21 +105,21 @@ func (messageIterator *MessageIterator) Next() bool {
 		propertyReader, err := messageIterator.messageTableContext.GetPropertyReader(property)
 
 		if err != nil {
-			messageIterator.err = errors.WithStack(err)
+			messageIterator.err = eris.Wrap(err, "failed to get property reader")
 			return false
 		}
 
 		messageIdentifier, err := propertyReader.GetInteger32()
 
 		if err != nil {
-			messageIterator.err = errors.WithStack(err)
+			messageIterator.err = eris.Wrap(err, "failed to get message identifier")
 			return false
 		}
 
 		message, err := messageIterator.file.GetMessage(Identifier(messageIdentifier))
 
 		if err != nil {
-			messageIterator.err = errors.WithStack(err)
+			messageIterator.err = eris.Wrapf(err, "failed to find message: %d", messageIdentifier)
 			return false
 		}
 
@@ -158,7 +157,7 @@ func (folder *Folder) GetMessageIterator() (MessageIterator, error) {
 	messageTableContext, err := folder.GetMessageTableContext()
 
 	if err != nil {
-		return MessageIterator{}, errors.WithStack(err)
+		return MessageIterator{}, eris.Wrap(err, "failed to get message table context")
 	}
 
 	return MessageIterator{
@@ -188,68 +187,87 @@ func (folder *Folder) GetAllMessages() ([]*Message, error) {
 // GetMessage returns the message of the identifier.
 func (file *File) GetMessage(identifier Identifier) (*Message, error) {
 	if identifier.GetType() != IdentifierTypeNormalMessage {
-		return nil, errors.WithStack(errors.WithMessage(ErrMessageIdentifierTypeInvalid, fmt.Sprintf("Identifier type: %d", identifier.GetType())))
+		return nil, ErrMessageIdentifierTypeInvalid
 	}
 
 	messageNode, err := file.GetNodeBTreeNode(identifier)
 
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, eris.Wrap(err, "failed to find node b-tree node")
 	}
 
 	messageDataNode, err := file.GetBlockBTreeNode(messageNode.DataIdentifier)
 
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, eris.Wrap(err, "failed to find block b-tree node")
 	}
 
 	messageHeapOnNode, err := file.GetHeapOnNode(messageDataNode)
 
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, eris.Wrap(err, "failed to get Heap-on-Node")
 	}
 
 	localDescriptors, err := file.GetLocalDescriptors(messageNode)
 
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, eris.Wrap(err, "failed to find local descriptors")
 	}
 
 	propertyContext, err := file.GetPropertyContext(messageHeapOnNode)
 
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, eris.Wrap(err, "failed to get property context")
 	}
 
-	message := &Message{
+	var messageProperties msgp.Decodable
+
+	messageClassPropertyReader, err := propertyContext.GetPropertyReader(26, localDescriptors)
+
+	if err != nil {
+		fmt.Printf("Failed to get message class property reader, falling back to properties.Message: %+v\n", eris.New(err.Error()))
+		messageProperties = &properties.Message{}
+	} else {
+		messageClass, err := messageClassPropertyReader.GetString()
+
+		if err != nil {
+			fmt.Printf("Failed to get message class, falling back to properties.Message: %+v\n", eris.New(err.Error()))
+			messageProperties = &properties.Message{}
+		} else {
+			// https://learn.microsoft.com/en-us/office/vba/outlook/concepts/forms/item-types-and-message-classes
+			if messageClass == "IPM.Note" || messageClass == "IPM.Note.SMIME.MultipartSigned" {
+				messageProperties = &properties.Message{}
+			} else if messageClass == "IPM.Appointment" || messageClass == "IPM.Schedule.Meeting" || messageClass == "IPM.Schedule.Meeting.Request" || messageClass == "IPM.OLE.CLASS.{00061055-0000-0000-C000-000000000046}" {
+				messageProperties = &properties.Appointment{}
+			} else if messageClass == "IPM.Contact" || messageClass == "IPM.AbchPerson" {
+				messageProperties = &properties.Contact{}
+			} else if messageClass == "IPM.Task" {
+				messageProperties = &properties.Task{}
+			} else if messageClass == "IPM.Activity" {
+				messageProperties = &properties.Journal{}
+			} else if messageClass == "IPM.Post.Rss" {
+				messageProperties = &properties.RSS{}
+			} else if messageClass == "IPM.DistList" {
+				messageProperties = &properties.AddressBook{}
+			} else {
+				fmt.Printf("Unmapped message class \"%s\", falling back to properties.Message...\n", messageClass)
+				messageProperties = &properties.Message{}
+			}
+		}
+	}
+
+	if err := propertyContext.Populate(messageProperties, localDescriptors); err != nil {
+		return nil, eris.Wrap(err, "failed to populate message properties")
+	}
+
+	return &Message{
 		File:             file,
 		PropertyContext:  propertyContext,
 		LocalDescriptors: localDescriptors,
-	}
-
-	if err := propertyContext.Populate(message, localDescriptors); err != nil {
-		return nil, errors.WithStack(err)
-	}
-
-	return message, nil
+		Properties:       messageProperties,
+	}, nil
 }
 
-//go:embed properties.csv
-var PropertyMapCSV string
-
-// PropertyMap maps the property ID to the struct JSON name.
-var PropertyMap = make(map[string]string)
-
-func init() {
-	propertyMapReader := csv.NewReader(strings.NewReader(PropertyMapCSV))
-
-	csvProperties, err := propertyMapReader.ReadAll()
-
-	if err != nil {
-		panic("go-pst: failed to initialize property map")
-	}
-
-	for _, row := range csvProperties {
-		PropertyMap[row[0]] = row[1]
-	}
+func (message *Message) GetBodyRTF() {
+	// TODO -
 }

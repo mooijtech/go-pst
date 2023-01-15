@@ -45,245 +45,245 @@ type Appointment struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Specifies a list of all the attendees except for the organizer, including resources and unsendable attendees.
-	AllAttendeesString *string `protobuf:"bytes,1,opt,name=all_attendees_string,json=allAttendeesString,proto3,oneof" json:"all_attendees_string,omitempty" msg:"26429631"` // @gotags: msg:"26429631"
+	AllAttendeesString *string `protobuf:"bytes,1,opt,name=all_attendees_string,json=allAttendeesString,proto3,oneof" json:"all_attendees_string,omitempty" msg:"26429631,omitempty"`
 	// This property is set to TRUE.
-	AllowExternalCheck *bool `protobuf:"varint,2,opt,name=allow_external_check,json=allowExternalCheck,proto3,oneof" json:"allow_external_check,omitempty" msg:"26432611"` // @gotags: msg:"26432611"
+	AllowExternalCheck *bool `protobuf:"varint,2,opt,name=allow_external_check,json=allowExternalCheck,proto3,oneof" json:"allow_external_check,omitempty" msg:"26432611,omitempty"`
 	// Specifies a bit field that describes the auxiliary state of the object.
-	AppointmentAuxiliaryFlags *int32 `protobuf:"varint,3,opt,name=appointment_auxiliary_flags,json=appointmentAuxiliaryFlags,proto3,oneof" json:"appointment_auxiliary_flags,omitempty" msg:"2641993"` // @gotags: msg:"2641993"
+	AppointmentAuxiliaryFlags *int32 `protobuf:"varint,3,opt,name=appointment_auxiliary_flags,json=appointmentAuxiliaryFlags,proto3,oneof" json:"appointment_auxiliary_flags,omitempty" msg:"2641993,omitempty"`
 	// Specifies the color to be used when displaying the Calendar object.
-	AppointmentColor *int32 `protobuf:"varint,4,opt,name=appointment_color,json=appointmentColor,proto3,oneof" json:"appointment_color,omitempty" msg:"2642283"` // @gotags: msg:"2642283"
+	AppointmentColor *int32 `protobuf:"varint,4,opt,name=appointment_color,json=appointmentColor,proto3,oneof" json:"appointment_color,omitempty" msg:"2642283,omitempty"`
 	// Indicates whether a Meeting Response object is a counter proposal.
-	AppointmentCounterProposal *bool `protobuf:"varint,5,opt,name=appointment_counter_proposal,json=appointmentCounterProposal,proto3,oneof" json:"appointment_counter_proposal,omitempty" msg:"26435911"` // @gotags: msg:"26435911"
+	AppointmentCounterProposal *bool `protobuf:"varint,5,opt,name=appointment_counter_proposal,json=appointmentCounterProposal,proto3,oneof" json:"appointment_counter_proposal,omitempty" msg:"26435911,omitempty"`
 	// Specifies the length of the event, in minutes.
-	AppointmentDuration *int32 `protobuf:"varint,6,opt,name=appointment_duration,json=appointmentDuration,proto3,oneof" json:"appointment_duration,omitempty" msg:"2642273"` // @gotags: msg:"2642273"
+	AppointmentDuration *int32 `protobuf:"varint,6,opt,name=appointment_duration,json=appointmentDuration,proto3,oneof" json:"appointment_duration,omitempty" msg:"2642273,omitempty"`
 	// Indicates the date that the appointment ends.
-	AppointmentEndDate *int64 `protobuf:"varint,7,opt,name=appointment_end_date,json=appointmentEndDate,proto3,oneof" json:"appointment_end_date,omitempty" msg:"26422564"` // @gotags: msg:"26422564"
+	AppointmentEndDate *int64 `protobuf:"varint,7,opt,name=appointment_end_date,json=appointmentEndDate,proto3,oneof" json:"appointment_end_date,omitempty" msg:"26422564,omitempty"`
 	// Indicates the time that the appointment ends.
-	AppointmentEndTime *int64 `protobuf:"varint,8,opt,name=appointment_end_time,json=appointmentEndTime,proto3,oneof" json:"appointment_end_time,omitempty" msg:"26422464"` // @gotags: msg:"26422464"
+	AppointmentEndTime *int64 `protobuf:"varint,8,opt,name=appointment_end_time,json=appointmentEndTime,proto3,oneof" json:"appointment_end_time,omitempty" msg:"26422464,omitempty"`
 	// Specifies the end date and time for the event.
-	AppointmentEndWhole *int64 `protobuf:"varint,9,opt,name=appointment_end_whole,json=appointmentEndWhole,proto3,oneof" json:"appointment_end_whole,omitempty" msg:"26420664"` // @gotags: msg:"26420664"
+	AppointmentEndWhole *int64 `protobuf:"varint,9,opt,name=appointment_end_whole,json=appointmentEndWhole,proto3,oneof" json:"appointment_end_whole,omitempty" msg:"26420664,omitempty"`
 	// Indicates to the organizer the last sequence number that was sent to any attendee.
-	AppointmentLastSequence *int32 `protobuf:"varint,10,opt,name=appointment_last_sequence,json=appointmentLastSequence,proto3,oneof" json:"appointment_last_sequence,omitempty" msg:"2641953"` // @gotags: msg:"2641953"
+	AppointmentLastSequence *int32 `protobuf:"varint,10,opt,name=appointment_last_sequence,json=appointmentLastSequence,proto3,oneof" json:"appointment_last_sequence,omitempty" msg:"2641953,omitempty"`
 	// Indicates the message class of the Meeting object to be generated from the Meeting Request object.
-	AppointmentMessageClass *string `protobuf:"bytes,11,opt,name=appointment_message_class,json=appointmentMessageClass,proto3,oneof" json:"appointment_message_class,omitempty" msg:"6831"` // @gotags: msg:"6831"
+	AppointmentMessageClass *string `protobuf:"bytes,11,opt,name=appointment_message_class,json=appointmentMessageClass,proto3,oneof" json:"appointment_message_class,omitempty" msg:"6831,omitempty"`
 	// Indicates whether attendees are not allowed to propose a new date and/or time for the meeting.
-	AppointmentNotAllowPropose *bool `protobuf:"varint,12,opt,name=appointment_not_allow_propose,json=appointmentNotAllowPropose,proto3,oneof" json:"appointment_not_allow_propose,omitempty" msg:"26436211"` // @gotags: msg:"26436211"
+	AppointmentNotAllowPropose *bool `protobuf:"varint,12,opt,name=appointment_not_allow_propose,json=appointmentNotAllowPropose,proto3,oneof" json:"appointment_not_allow_propose,omitempty" msg:"26436211,omitempty"`
 	// Specifies the number of attendees who have sent counter proposals that have not been accepted or rejected by the organizer.
-	AppointmentProposalNumber *int32 `protobuf:"varint,13,opt,name=appointment_proposal_number,json=appointmentProposalNumber,proto3,oneof" json:"appointment_proposal_number,omitempty" msg:"2643613"` // @gotags: msg:"2643613"
+	AppointmentProposalNumber *int32 `protobuf:"varint,13,opt,name=appointment_proposal_number,json=appointmentProposalNumber,proto3,oneof" json:"appointment_proposal_number,omitempty" msg:"2643613,omitempty"`
 	// Indicates the proposed value for the PidLidAppointmentDuration property (section 2.11) for a counter proposal.
-	AppointmentProposedDuration *int32 `protobuf:"varint,14,opt,name=appointment_proposed_duration,json=appointmentProposedDuration,proto3,oneof" json:"appointment_proposed_duration,omitempty" msg:"2643583"` // @gotags: msg:"2643583"
+	AppointmentProposedDuration *int32 `protobuf:"varint,14,opt,name=appointment_proposed_duration,json=appointmentProposedDuration,proto3,oneof" json:"appointment_proposed_duration,omitempty" msg:"2643583,omitempty"`
 	// Specifies the proposed value for the PidLidAppointmentEndWhole property (section 2.14) for a counter proposal.
-	AppointmentProposedEndWhole *int64 `protobuf:"varint,15,opt,name=appointment_proposed_end_whole,json=appointmentProposedEndWhole,proto3,oneof" json:"appointment_proposed_end_whole,omitempty" msg:"26435364"` // @gotags: msg:"26435364"
+	AppointmentProposedEndWhole *int64 `protobuf:"varint,15,opt,name=appointment_proposed_end_whole,json=appointmentProposedEndWhole,proto3,oneof" json:"appointment_proposed_end_whole,omitempty" msg:"26435364,omitempty"`
 	// Specifies the proposed value for the PidLidAppointmentStartWhole property (section 2.29) for a counter proposal.
-	AppointmentProposedStartWhole *int64 `protobuf:"varint,16,opt,name=appointment_proposed_start_whole,json=appointmentProposedStartWhole,proto3,oneof" json:"appointment_proposed_start_whole,omitempty" msg:"26435264"` // @gotags: msg:"26435264"
+	AppointmentProposedStartWhole *int64 `protobuf:"varint,16,opt,name=appointment_proposed_start_whole,json=appointmentProposedStartWhole,proto3,oneof" json:"appointment_proposed_start_whole,omitempty" msg:"26435264,omitempty"`
 	// Specifies the user who last replied to the meeting request or meeting update.
-	AppointmentReplyName *string `protobuf:"bytes,18,opt,name=appointment_reply_name,json=appointmentReplyName,proto3,oneof" json:"appointment_reply_name,omitempty" msg:"26428831"` // @gotags: msg:"26428831"
+	AppointmentReplyName *string `protobuf:"bytes,18,opt,name=appointment_reply_name,json=appointmentReplyName,proto3,oneof" json:"appointment_reply_name,omitempty" msg:"26428831,omitempty"`
 	// Specifies the date and time at which the attendee responded to a received meeting request or Meeting Update object.
-	AppointmentReplyTime *int64 `protobuf:"varint,19,opt,name=appointment_reply_time,json=appointmentReplyTime,proto3,oneof" json:"appointment_reply_time,omitempty" msg:"26425664"` // @gotags: msg:"26425664"
+	AppointmentReplyTime *int64 `protobuf:"varint,19,opt,name=appointment_reply_time,json=appointmentReplyTime,proto3,oneof" json:"appointment_reply_time,omitempty" msg:"26425664,omitempty"`
 	// Specifies the sequence number of a Meeting object.
-	AppointmentSequence *int32 `protobuf:"varint,20,opt,name=appointment_sequence,json=appointmentSequence,proto3,oneof" json:"appointment_sequence,omitempty" msg:"2641933"` // @gotags: msg:"2641933"
+	AppointmentSequence *int32 `protobuf:"varint,20,opt,name=appointment_sequence,json=appointmentSequence,proto3,oneof" json:"appointment_sequence,omitempty" msg:"2641933,omitempty"`
 	// Indicates the date and time at which the PidLidAppointmentSequence property (section 2.25) was last modified.
-	AppointmentSequenceTime *int64 `protobuf:"varint,21,opt,name=appointment_sequence_time,json=appointmentSequenceTime,proto3,oneof" json:"appointment_sequence_time,omitempty" msg:"26419464"` // @gotags: msg:"26419464"
+	AppointmentSequenceTime *int64 `protobuf:"varint,21,opt,name=appointment_sequence_time,json=appointmentSequenceTime,proto3,oneof" json:"appointment_sequence_time,omitempty" msg:"26419464,omitempty"`
 	// Identifies the date that the appointment starts.
-	AppointmentStartDate *int64 `protobuf:"varint,22,opt,name=appointment_start_date,json=appointmentStartDate,proto3,oneof" json:"appointment_start_date,omitempty" msg:"26422664"` // @gotags: msg:"26422664"
+	AppointmentStartDate *int64 `protobuf:"varint,22,opt,name=appointment_start_date,json=appointmentStartDate,proto3,oneof" json:"appointment_start_date,omitempty" msg:"26422664,omitempty"`
 	// Identifies the time that the appointment starts.
-	AppointmentStartTime *int64 `protobuf:"varint,23,opt,name=appointment_start_time,json=appointmentStartTime,proto3,oneof" json:"appointment_start_time,omitempty" msg:"26420764"` // @gotags: msg:"26420764"
+	AppointmentStartTime *int64 `protobuf:"varint,23,opt,name=appointment_start_time,json=appointmentStartTime,proto3,oneof" json:"appointment_start_time,omitempty" msg:"26420764,omitempty"`
 	// Specifies the start date and time of the appointment.
-	AppointmentStartWhole *int64 `protobuf:"varint,24,opt,name=appointment_start_whole,json=appointmentStartWhole,proto3,oneof" json:"appointment_start_whole,omitempty" msg:"26420564"` // @gotags: msg:"26420564"
+	AppointmentStartWhole *int64 `protobuf:"varint,24,opt,name=appointment_start_whole,json=appointmentStartWhole,proto3,oneof" json:"appointment_start_whole,omitempty" msg:"26420564,omitempty"`
 	// Specifies a bit field that describes the state of the object.
-	AppointmentStateFlags *int32 `protobuf:"varint,25,opt,name=appointment_state_flags,json=appointmentStateFlags,proto3,oneof" json:"appointment_state_flags,omitempty" msg:"2642313"` // @gotags: msg:"2642313"
+	AppointmentStateFlags *int32 `protobuf:"varint,25,opt,name=appointment_state_flags,json=appointmentStateFlags,proto3,oneof" json:"appointment_state_flags,omitempty" msg:"2642313,omitempty"`
 	// Specifies whether the event is an all-day event.
-	AppointmentSubType *bool `protobuf:"varint,26,opt,name=appointment_sub_type,json=appointmentSubType,proto3,oneof" json:"appointment_sub_type,omitempty" msg:"26422911"` // @gotags: msg:"26422911"
+	AppointmentSubType *bool `protobuf:"varint,26,opt,name=appointment_sub_type,json=appointmentSubType,proto3,oneof" json:"appointment_sub_type,omitempty" msg:"26422911,omitempty"`
 	// Indicates the time at which the appointment was last updated.
-	AppointmentUpdateTime *int64 `protobuf:"varint,31,opt,name=appointment_update_time,json=appointmentUpdateTime,proto3,oneof" json:"appointment_update_time,omitempty" msg:"26426264"` // @gotags: msg:"26426264"
+	AppointmentUpdateTime *int64 `protobuf:"varint,31,opt,name=appointment_update_time,json=appointmentUpdateTime,proto3,oneof" json:"appointment_update_time,omitempty" msg:"26426264,omitempty"`
 	// Specifies the date and time at which the meeting-related object was sent.
-	AttendeeCriticalChange *int64 `protobuf:"varint,32,opt,name=attendee_critical_change,json=attendeeCriticalChange,proto3,oneof" json:"attendee_critical_change,omitempty" msg:"164"` // @gotags: msg:"164"
+	AttendeeCriticalChange *int64 `protobuf:"varint,32,opt,name=attendee_critical_change,json=attendeeCriticalChange,proto3,oneof" json:"attendee_critical_change,omitempty" msg:"164,omitempty"`
 	// Indicates whether the value of the PidLidLocation property (section 2.159) is set to the PidTagDisplayName property (section 2.676).
-	AutoFillLocation *bool `protobuf:"varint,33,opt,name=auto_fill_location,json=autoFillLocation,proto3,oneof" json:"auto_fill_location,omitempty" msg:"26429811"` // @gotags: msg:"26429811"
+	AutoFillLocation *bool `protobuf:"varint,33,opt,name=auto_fill_location,json=autoFillLocation,proto3,oneof" json:"auto_fill_location,omitempty" msg:"26429811,omitempty"`
 	// Specifies whether to automatically start the conferencing application when a reminder for the start of a meeting is executed.
-	AutoStartCheck *bool `protobuf:"varint,34,opt,name=auto_start_check,json=autoStartCheck,proto3,oneof" json:"auto_start_check,omitempty" msg:"26432411"` // @gotags: msg:"26432411"
+	AutoStartCheck *bool `protobuf:"varint,34,opt,name=auto_start_check,json=autoStartCheck,proto3,oneof" json:"auto_start_check,omitempty" msg:"26432411,omitempty"`
 	// Specifies the availability of a user for the event described by the object.
-	BusyStatus *int32 `protobuf:"varint,35,opt,name=busy_status,json=busyStatus,proto3,oneof" json:"busy_status,omitempty" msg:"2641973"` // @gotags: msg:"2641973"
+	BusyStatus *int32 `protobuf:"varint,35,opt,name=busy_status,json=busyStatus,proto3,oneof" json:"busy_status,omitempty" msg:"2641973,omitempty"`
 	// Contains the value of the CalendarType field from the PidLidAppointmentRecur property (section 2.22).
-	CalendarType *int32 `protobuf:"varint,36,opt,name=calendar_type,json=calendarType,proto3,oneof" json:"calendar_type,omitempty" msg:"443"` // @gotags: msg:"443"
+	CalendarType *int32 `protobuf:"varint,36,opt,name=calendar_type,json=calendarType,proto3,oneof" json:"calendar_type,omitempty" msg:"443,omitempty"`
 	// Contains a list of all the sendable attendees who are also optional attendees.
-	CcAttendeesString *string `protobuf:"bytes,37,opt,name=cc_attendees_string,json=ccAttendeesString,proto3,oneof" json:"cc_attendees_string,omitempty" msg:"26430031"` // @gotags: msg:"26430031"
+	CcAttendeesString *string `protobuf:"bytes,37,opt,name=cc_attendees_string,json=ccAttendeesString,proto3,oneof" json:"cc_attendees_string,omitempty" msg:"26430031,omitempty"`
 	// Specifies a bit field that indicates how the Meeting object has changed.
-	ChangeHighlight *int32 `protobuf:"varint,38,opt,name=change_highlight,json=changeHighlight,proto3,oneof" json:"change_highlight,omitempty" msg:"2641963"` // @gotags: msg:"2641963"
+	ChangeHighlight *int32 `protobuf:"varint,38,opt,name=change_highlight,json=changeHighlight,proto3,oneof" json:"change_highlight,omitempty" msg:"2641963,omitempty"`
 	//  Indicates what actions the user has taken on this Meeting object.
-	ClientIntent *int32 `protobuf:"varint,40,opt,name=client_intent,json=clientIntent,proto3,oneof" json:"client_intent,omitempty" msg:"373"` // @gotags: msg:"373"
+	ClientIntent *int32 `protobuf:"varint,40,opt,name=client_intent,json=clientIntent,proto3,oneof" json:"client_intent,omitempty" msg:"373,omitempty"`
 	// Specifies the end date and time of the event in UTC.
-	ClipEnd *int64 `protobuf:"varint,41,opt,name=clip_end,json=clipEnd,proto3,oneof" json:"clip_end,omitempty" msg:"26429464"` // @gotags: msg:"26429464"
+	ClipEnd *int64 `protobuf:"varint,41,opt,name=clip_end,json=clipEnd,proto3,oneof" json:"clip_end,omitempty" msg:"26429464,omitempty"`
 	// Specifies the start date and time of the event in UTC.
-	ClipStart *int64 `protobuf:"varint,42,opt,name=clip_start,json=clipStart,proto3,oneof" json:"clip_start,omitempty" msg:"26429364"` // @gotags: msg:"26429364"
+	ClipStart *int64 `protobuf:"varint,42,opt,name=clip_start,json=clipStart,proto3,oneof" json:"clip_start,omitempty" msg:"26429364,omitempty"`
 	// Specifies the document to be launched when the user joins the meeting.
-	CollaborateDoc *string `protobuf:"bytes,43,opt,name=collaborate_doc,json=collaborateDoc,proto3,oneof" json:"collaborate_doc,omitempty" msg:"26432731"` // @gotags: msg:"26432731"
+	CollaborateDoc *string `protobuf:"bytes,43,opt,name=collaborate_doc,json=collaborateDoc,proto3,oneof" json:"collaborate_doc,omitempty" msg:"26432731,omitempty"`
 	// When set to TRUE (0x00000001), the PidLidConferencingCheck property indicates that the associated meeting is one of the following types:
-	ConferencingCheck *bool `protobuf:"varint,44,opt,name=conferencing_check,json=conferencingCheck,proto3,oneof" json:"conferencing_check,omitempty" msg:"26432011"` // @gotags: msg:"26432011"
+	ConferencingCheck *bool `protobuf:"varint,44,opt,name=conferencing_check,json=conferencingCheck,proto3,oneof" json:"conferencing_check,omitempty" msg:"26432011,omitempty"`
 	// Specifies the type of the meeting.
-	ConferencingType *int32 `protobuf:"varint,45,opt,name=conferencing_type,json=conferencingType,proto3,oneof" json:"conferencing_type,omitempty" msg:"2643213"` // @gotags: msg:"2643213"
+	ConferencingType *int32 `protobuf:"varint,45,opt,name=conferencing_type,json=conferencingType,proto3,oneof" json:"conferencing_type,omitempty" msg:"2643213,omitempty"`
 	// Identifies the day interval for the recurrence pattern.
-	DayInterval *int32 `protobuf:"varint,46,opt,name=day_interval,json=dayInterval,proto3,oneof" json:"day_interval,omitempty" msg:"332"` // @gotags: msg:"332"
+	DayInterval *int32 `protobuf:"varint,46,opt,name=day_interval,json=dayInterval,proto3,oneof" json:"day_interval,omitempty" msg:"332,omitempty"`
 	// Identifies the day of the month for the appointment or meeting.
-	DayOfMonth *int32 `protobuf:"varint,47,opt,name=day_of_month,json=dayOfMonth,proto3,oneof" json:"day_of_month,omitempty" msg:"327683"` // @gotags: msg:"327683"
+	DayOfMonth *int32 `protobuf:"varint,47,opt,name=day_of_month,json=dayOfMonth,proto3,oneof" json:"day_of_month,omitempty" msg:"327683,omitempty"`
 	// Indicates whether a delegate responded to the meeting request.
-	DelegateMail *bool `protobuf:"varint,48,opt,name=delegate_mail,json=delegateMail,proto3,oneof" json:"delegate_mail,omitempty" msg:"911"` // @gotags: msg:"911"
+	DelegateMail *bool `protobuf:"varint,48,opt,name=delegate_mail,json=delegateMail,proto3,oneof" json:"delegate_mail,omitempty" msg:"911,omitempty"`
 	// Specifies the directory server to be used.
-	Directory *string `protobuf:"bytes,49,opt,name=directory,proto3,oneof" json:"directory,omitempty" msg:"26432231"` // @gotags: msg:"26432231"
+	Directory *string `protobuf:"bytes,49,opt,name=directory,proto3,oneof" json:"directory,omitempty" msg:"26432231,omitempty"`
 	// Identifies the end date of the recurrence range.
-	EndRecurrenceDate *int32 `protobuf:"varint,50,opt,name=end_recurrence_date,json=endRecurrenceDate,proto3,oneof" json:"end_recurrence_date,omitempty" msg:"153"` // @gotags: msg:"153"
+	EndRecurrenceDate *int32 `protobuf:"varint,50,opt,name=end_recurrence_date,json=endRecurrenceDate,proto3,oneof" json:"end_recurrence_date,omitempty" msg:"153,omitempty"`
 	// Identifies the end time of the recurrence range.
-	EndRecurrenceTime *int32 `protobuf:"varint,51,opt,name=end_recurrence_time,json=endRecurrenceTime,proto3,oneof" json:"end_recurrence_time,omitempty" msg:"323"` // @gotags: msg:"323"
+	EndRecurrenceTime *int32 `protobuf:"varint,51,opt,name=end_recurrence_time,json=endRecurrenceTime,proto3,oneof" json:"end_recurrence_time,omitempty" msg:"323,omitempty"`
 	// Specifies the date and time, in UTC, within a recurrence pattern that an exception will replace.
-	ExceptionReplaceTime *int64 `protobuf:"varint,52,opt,name=exception_replace_time,json=exceptionReplaceTime,proto3,oneof" json:"exception_replace_time,omitempty" msg:"26426464"` // @gotags: msg:"26426464"
+	ExceptionReplaceTime *int64 `protobuf:"varint,52,opt,name=exception_replace_time,json=exceptionReplaceTime,proto3,oneof" json:"exception_replace_time,omitempty" msg:"26426464,omitempty"`
 	// Indicates that the object is a Recurring Calendar object with one or more exceptions, and that at least one of the Exception Embedded Message objects has at least one RecipientRow structure, as described in [MS-OXCDATA] section 2.8.3.
-	FExceptionalAttendees *bool `protobuf:"varint,53,opt,name=f_exceptional_attendees,json=fExceptionalAttendees,proto3,oneof" json:"f_exceptional_attendees,omitempty" msg:"26426711"` // @gotags: msg:"26426711"
+	FExceptionalAttendees *bool `protobuf:"varint,53,opt,name=f_exceptional_attendees,json=fExceptionalAttendees,proto3,oneof" json:"f_exceptional_attendees,omitempty" msg:"26426711,omitempty"`
 	// Indicates that the Exception Embedded Message object has a body that differs from the Recurring Calendar object.
-	FExceptionalBody *bool `protobuf:"varint,54,opt,name=f_exceptional_body,json=fExceptionalBody,proto3,oneof" json:"f_exceptional_body,omitempty" msg:"26419811"` // @gotags: msg:"26419811"
+	FExceptionalBody *bool `protobuf:"varint,54,opt,name=f_exceptional_body,json=fExceptionalBody,proto3,oneof" json:"f_exceptional_body,omitempty" msg:"26419811,omitempty"`
 	// Indicates whether invitations have been sent for the meeting that this Meeting object represents.
-	FInvited *bool `protobuf:"varint,55,opt,name=f_invited,json=fInvited,proto3,oneof" json:"f_invited,omitempty" msg:"26426511"` // @gotags: msg:"26426511"
+	FInvited *bool `protobuf:"varint,55,opt,name=f_invited,json=fInvited,proto3,oneof" json:"f_invited,omitempty" msg:"26426511,omitempty"`
 	// Indicates whether the Meeting Request object represents an exception to a recurring series, and whether it was forwarded (even when forwarded by the organizer) rather than being an invitation sent by the organizer.
-	ForwardInstance *bool `protobuf:"varint,56,opt,name=forward_instance,json=forwardInstance,proto3,oneof" json:"forward_instance,omitempty" msg:"26420211"` // @gotags: msg:"26420211"
+	ForwardInstance *bool `protobuf:"varint,56,opt,name=forward_instance,json=forwardInstance,proto3,oneof" json:"forward_instance,omitempty" msg:"26420211,omitempty"`
 	// Indicates whether the Calendar folder from which the meeting was opened is another user's calendar.
-	FOthersAppointment *bool `protobuf:"varint,58,opt,name=f_others_appointment,json=fOthersAppointment,proto3,oneof" json:"f_others_appointment,omitempty" msg:"26427111"` // @gotags: msg:"26427111"
+	FOthersAppointment *bool `protobuf:"varint,58,opt,name=f_others_appointment,json=fOthersAppointment,proto3,oneof" json:"f_others_appointment,omitempty" msg:"26427111,omitempty"`
 	// Identifies the day of the week for the appointment or meeting.
-	ICalendarDayOfWeekMask *int32 `protobuf:"varint,60,opt,name=i_calendar_day_of_week_mask,json=iCalendarDayOfWeekMask,proto3,oneof" json:"i_calendar_day_of_week_mask,omitempty" msg:"327693"` // @gotags: msg:"327693"
+	ICalendarDayOfWeekMask *int32 `protobuf:"varint,60,opt,name=i_calendar_day_of_week_mask,json=iCalendarDayOfWeekMask,proto3,oneof" json:"i_calendar_day_of_week_mask,omitempty" msg:"327693,omitempty"`
 	// Contains the value of the PidLidBusyStatus property (section 2.47) on the Meeting object in the organizer's calendar at the time that the Meeting Request object or Meeting Update object was sent.
-	IntendedBusyStatus *int32 `protobuf:"varint,62,opt,name=intended_busy_status,json=intendedBusyStatus,proto3,oneof" json:"intended_busy_status,omitempty" msg:"2642603"` // @gotags: msg:"2642603"
+	IntendedBusyStatus *int32 `protobuf:"varint,62,opt,name=intended_busy_status,json=intendedBusyStatus,proto3,oneof" json:"intended_busy_status,omitempty" msg:"2642603,omitempty"`
 	// Indicates whether the object represents an exception (including an orphan instance).
-	IsException *bool `protobuf:"varint,63,opt,name=is_exception,json=isException,proto3,oneof" json:"is_exception,omitempty" msg:"1011"` // @gotags: msg:"1011"
+	IsException *bool `protobuf:"varint,63,opt,name=is_exception,json=isException,proto3,oneof" json:"is_exception,omitempty" msg:"1011,omitempty"`
 	// Specifies whether the object is associated with a recurring series.
-	IsRecurring *bool `protobuf:"varint,64,opt,name=is_recurring,json=isRecurring,proto3,oneof" json:"is_recurring,omitempty" msg:"511"` // @gotags: msg:"511"
+	IsRecurring *bool `protobuf:"varint,64,opt,name=is_recurring,json=isRecurring,proto3,oneof" json:"is_recurring,omitempty" msg:"511,omitempty"`
 	// Indicates whether the user did not include any text in the body of the Meeting Response object.
-	IsSilent *bool `protobuf:"varint,65,opt,name=is_silent,json=isSilent,proto3,oneof" json:"is_silent,omitempty" msg:"411"` // @gotags: msg:"411"
+	IsSilent *bool `protobuf:"varint,65,opt,name=is_silent,json=isSilent,proto3,oneof" json:"is_silent,omitempty" msg:"411,omitempty"`
 	// Specifies the location of the event.
-	Location *string `protobuf:"bytes,66,opt,name=location,proto3,oneof" json:"location,omitempty" msg:"26420031"` // @gotags: msg:"26420031"
+	Location *string `protobuf:"bytes,66,opt,name=location,proto3,oneof" json:"location,omitempty" msg:"26420031,omitempty"`
 	// Indicates the type of Meeting Request object or Meeting Update object.
-	MeetingType *int32 `protobuf:"varint,67,opt,name=meeting_type,json=meetingType,proto3,oneof" json:"meeting_type,omitempty" msg:"703"` // @gotags: msg:"703"
+	MeetingType *int32 `protobuf:"varint,67,opt,name=meeting_type,json=meetingType,proto3,oneof" json:"meeting_type,omitempty" msg:"703,omitempty"`
 	// Specifies the URL of the Meeting Workspace that is associated with a Calendar object.
-	MeetingWorkspaceUrl *string `protobuf:"bytes,68,opt,name=meeting_workspace_url,json=meetingWorkspaceUrl,proto3,oneof" json:"meeting_workspace_url,omitempty" msg:"26420131"` // @gotags: msg:"26420131"
+	MeetingWorkspaceUrl *string `protobuf:"bytes,68,opt,name=meeting_workspace_url,json=meetingWorkspaceUrl,proto3,oneof" json:"meeting_workspace_url,omitempty" msg:"26420131,omitempty"`
 	// Indicates the monthly interval of the appointment or meeting.
-	MonthInterval *int32 `protobuf:"varint,69,opt,name=month_interval,json=monthInterval,proto3,oneof" json:"month_interval,omitempty" msg:"352"` // @gotags: msg:"352"
+	MonthInterval *int32 `protobuf:"varint,69,opt,name=month_interval,json=monthInterval,proto3,oneof" json:"month_interval,omitempty" msg:"352,omitempty"`
 	// Indicates the month of the year in which the appointment or meeting occurs.
-	MonthOfYear *int32 `protobuf:"varint,70,opt,name=month_of_year,json=monthOfYear,proto3,oneof" json:"month_of_year,omitempty" msg:"327743"` // @gotags: msg:"327743"
+	MonthOfYear *int32 `protobuf:"varint,70,opt,name=month_of_year,json=monthOfYear,proto3,oneof" json:"month_of_year,omitempty" msg:"327743,omitempty"`
 	// Indicates the calculated month of the year in which the appointment or meeting occurs.
-	MonthOfYearMask *int32 `protobuf:"varint,71,opt,name=month_of_year_mask,json=monthOfYearMask,proto3,oneof" json:"month_of_year_mask,omitempty" msg:"393"` // @gotags: msg:"393"
+	MonthOfYearMask *int32 `protobuf:"varint,71,opt,name=month_of_year_mask,json=monthOfYearMask,proto3,oneof" json:"month_of_year_mask,omitempty" msg:"393,omitempty"`
 	// Specifies the URL to be launched when the user joins the meeting.
-	NetShowUrl *string `protobuf:"bytes,72,opt,name=net_show_url,json=netShowUrl,proto3,oneof" json:"net_show_url,omitempty" msg:"26432831"` // @gotags: msg:"26432831"
+	NetShowUrl *string `protobuf:"bytes,72,opt,name=net_show_url,json=netShowUrl,proto3,oneof" json:"net_show_url,omitempty" msg:"26432831,omitempty"`
 	// Indicates whether the recurrence pattern has an end date.
-	NoEndDateFlag *bool `protobuf:"varint,73,opt,name=no_end_date_flag,json=noEndDateFlag,proto3,oneof" json:"no_end_date_flag,omitempty" msg:"3277911"` // @gotags: msg:"3277911"
+	NoEndDateFlag *bool `protobuf:"varint,73,opt,name=no_end_date_flag,json=noEndDateFlag,proto3,oneof" json:"no_end_date_flag,omitempty" msg:"3277911,omitempty"`
 	// Contains a list of all of the unsendable attendees who are also resources.
-	NonSendableBcc *string `protobuf:"bytes,74,opt,name=non_sendable_bcc,json=nonSendableBcc,proto3,oneof" json:"non_sendable_bcc,omitempty" msg:"26736831"` // @gotags: msg:"26736831"
+	NonSendableBcc *string `protobuf:"bytes,74,opt,name=non_sendable_bcc,json=nonSendableBcc,proto3,oneof" json:"non_sendable_bcc,omitempty" msg:"26736831,omitempty"`
 	// Contains a list of all of the unsendable attendees who are also optional attendees.
-	NonSendableCc *string `protobuf:"bytes,75,opt,name=non_sendable_cc,json=nonSendableCc,proto3,oneof" json:"non_sendable_cc,omitempty" msg:"26736731"` // @gotags: msg:"26736731"
+	NonSendableCc *string `protobuf:"bytes,75,opt,name=non_sendable_cc,json=nonSendableCc,proto3,oneof" json:"non_sendable_cc,omitempty" msg:"26736731,omitempty"`
 	// Contains a list of all of the unsendable attendees who are also required attendees.
-	NonSendableTo *string `protobuf:"bytes,76,opt,name=non_sendable_to,json=nonSendableTo,proto3,oneof" json:"non_sendable_to,omitempty" msg:"26736631"` // @gotags: msg:"26736631"
+	NonSendableTo *string `protobuf:"bytes,76,opt,name=non_sendable_to,json=nonSendableTo,proto3,oneof" json:"non_sendable_to,omitempty" msg:"26736631,omitempty"`
 	// Indicates the number of occurrences in the recurring appointment or meeting.
-	Occurrences *int32 `protobuf:"varint,77,opt,name=occurrences,proto3,oneof" json:"occurrences,omitempty" msg:"327733"` // @gotags: msg:"327733"
+	Occurrences *int32 `protobuf:"varint,77,opt,name=occurrences,proto3,oneof" json:"occurrences,omitempty" msg:"327733,omitempty"`
 	// Indicates the original value of the PidLidLocation property (section 2.159) before a meeting update.
-	OldLocation *string `protobuf:"bytes,78,opt,name=old_location,json=oldLocation,proto3,oneof" json:"old_location,omitempty" msg:"7231"` // @gotags: msg:"7231"
+	OldLocation *string `protobuf:"bytes,78,opt,name=old_location,json=oldLocation,proto3,oneof" json:"old_location,omitempty" msg:"7231,omitempty"`
 	// Indicates the recurrence pattern for the appointment or meeting.
-	OldRecurrenceType *int32 `protobuf:"varint,79,opt,name=old_recurrence_type,json=oldRecurrenceType,proto3,oneof" json:"old_recurrence_type,omitempty" msg:"402"` // @gotags: msg:"402"
+	OldRecurrenceType *int32 `protobuf:"varint,79,opt,name=old_recurrence_type,json=oldRecurrenceType,proto3,oneof" json:"old_recurrence_type,omitempty" msg:"402,omitempty"`
 	// Indicates the original value of the PidLidAppointmentEndWhole property (section 2.14) before a meeting update.
-	OldWhenEndWhole *int64 `protobuf:"varint,80,opt,name=old_when_end_whole,json=oldWhenEndWhole,proto3,oneof" json:"old_when_end_whole,omitempty" msg:"7464"` // @gotags: msg:"7464"
+	OldWhenEndWhole *int64 `protobuf:"varint,80,opt,name=old_when_end_whole,json=oldWhenEndWhole,proto3,oneof" json:"old_when_end_whole,omitempty" msg:"7464,omitempty"`
 	// Indicates the original value of the PidLidAppointmentStartWhole property (section 2.29) before a meeting update.
-	OldWhenStartWhole *int64 `protobuf:"varint,81,opt,name=old_when_start_whole,json=oldWhenStartWhole,proto3,oneof" json:"old_when_start_whole,omitempty" msg:"7364"` // @gotags: msg:"7364"
+	OldWhenStartWhole *int64 `protobuf:"varint,81,opt,name=old_when_start_whole,json=oldWhenStartWhole,proto3,oneof" json:"old_when_start_whole,omitempty" msg:"7364,omitempty"`
 	// Specifies the password for a meeting on which the PidLidConferencingType property (section 2.66) has the value 0x00000002.
-	OnlinePassword *string `protobuf:"bytes,82,opt,name=online_password,json=onlinePassword,proto3,oneof" json:"online_password,omitempty" msg:"26432931"` // @gotags: msg:"26432931"
+	OnlinePassword *string `protobuf:"bytes,82,opt,name=online_password,json=onlinePassword,proto3,oneof" json:"online_password,omitempty" msg:"26432931,omitempty"`
 	// Specifies optional attendees.
-	OptionalAttendees *string `protobuf:"bytes,83,opt,name=optional_attendees,json=optionalAttendees,proto3,oneof" json:"optional_attendees,omitempty" msg:"731"` // @gotags: msg:"731"
+	OptionalAttendees *string `protobuf:"bytes,83,opt,name=optional_attendees,json=optionalAttendees,proto3,oneof" json:"optional_attendees,omitempty" msg:"731,omitempty"`
 	// Specifies the email address of the organizer.
-	OrganizerAlias *string `protobuf:"bytes,84,opt,name=organizer_alias,json=organizerAlias,proto3,oneof" json:"organizer_alias,omitempty" msg:"26432331"` // @gotags: msg:"26432331"
+	OrganizerAlias *string `protobuf:"bytes,84,opt,name=organizer_alias,json=organizerAlias,proto3,oneof" json:"organizer_alias,omitempty" msg:"26432331,omitempty"`
 	// Specifies the date and time at which a Meeting Request object was sent by the organizer.
-	OwnerCriticalChange *int64 `protobuf:"varint,86,opt,name=owner_critical_change,json=ownerCriticalChange,proto3,oneof" json:"owner_critical_change,omitempty" msg:"4264"` // @gotags: msg:"4264"
+	OwnerCriticalChange *int64 `protobuf:"varint,86,opt,name=owner_critical_change,json=ownerCriticalChange,proto3,oneof" json:"owner_critical_change,omitempty" msg:"4264,omitempty"`
 	// Indicates the name of the owner of the mailbox.
-	OwnerName *string `protobuf:"bytes,87,opt,name=owner_name,json=ownerName,proto3,oneof" json:"owner_name,omitempty" msg:"26427031"` // @gotags: msg:"26427031"
+	OwnerName *string `protobuf:"bytes,87,opt,name=owner_name,json=ownerName,proto3,oneof" json:"owner_name,omitempty" msg:"26427031,omitempty"`
 	// Identifies the length, in minutes, of the appointment or meeting.
-	RecurrenceDuration *int32 `protobuf:"varint,88,opt,name=recurrence_duration,json=recurrenceDuration,proto3,oneof" json:"recurrence_duration,omitempty" msg:"327813"` // @gotags: msg:"327813"
+	RecurrenceDuration *int32 `protobuf:"varint,88,opt,name=recurrence_duration,json=recurrenceDuration,proto3,oneof" json:"recurrence_duration,omitempty" msg:"327813,omitempty"`
 	// Specifies a description of the recurrence pattern of the Calendar object.
-	RecurrencePattern *string `protobuf:"bytes,89,opt,name=recurrence_pattern,json=recurrencePattern,proto3,oneof" json:"recurrence_pattern,omitempty" msg:"26429031"` // @gotags: msg:"26429031"
+	RecurrencePattern *string `protobuf:"bytes,89,opt,name=recurrence_pattern,json=recurrencePattern,proto3,oneof" json:"recurrence_pattern,omitempty" msg:"26429031,omitempty"`
 	// Specifies the recurrence type of the recurring series.
-	RecurrenceType *int32 `protobuf:"varint,90,opt,name=recurrence_type,json=recurrenceType,proto3,oneof" json:"recurrence_type,omitempty" msg:"2642893"` // @gotags: msg:"2642893"
+	RecurrenceType *int32 `protobuf:"varint,90,opt,name=recurrence_type,json=recurrenceType,proto3,oneof" json:"recurrence_type,omitempty" msg:"2642893,omitempty"`
 	// Specifies whether the object represents a recurring series.
-	Recurring *bool `protobuf:"varint,91,opt,name=recurring,proto3,oneof" json:"recurring,omitempty" msg:"26425911"` // @gotags: msg:"26425911"
+	Recurring *bool `protobuf:"varint,91,opt,name=recurring,proto3,oneof" json:"recurring,omitempty" msg:"26425911,omitempty"`
 	// Specifies the interval, in minutes, between the time at which the reminder first becomes overdue and the start time of the Calendar object.
-	ReminderDelta *int32 `protobuf:"varint,92,opt,name=reminder_delta,json=reminderDelta,proto3,oneof" json:"reminder_delta,omitempty" msg:"2672653"` // @gotags: msg:"2672653"
+	ReminderDelta *int32 `protobuf:"varint,92,opt,name=reminder_delta,json=reminderDelta,proto3,oneof" json:"reminder_delta,omitempty" msg:"2672653,omitempty"`
 	// Specifies the filename of the sound that a client is to play when the reminder for that object becomes overdue.
-	ReminderFileParameter *string `protobuf:"bytes,93,opt,name=reminder_file_parameter,json=reminderFileParameter,proto3,oneof" json:"reminder_file_parameter,omitempty" msg:"26731131"` // @gotags: msg:"26731131"
+	ReminderFileParameter *string `protobuf:"bytes,93,opt,name=reminder_file_parameter,json=reminderFileParameter,proto3,oneof" json:"reminder_file_parameter,omitempty" msg:"26731131,omitempty"`
 	// Specifies whether the client is to respect the current values of the  PidLidReminderPlaySound property (section 2.221) and the PidLidReminderFileParameter property (section 2.219), or use the default values for those properties.
-	ReminderOverride *bool `protobuf:"varint,94,opt,name=reminder_override,json=reminderOverride,proto3,oneof" json:"reminder_override,omitempty" msg:"26730811"` // @gotags: msg:"26730811"
+	ReminderOverride *bool `protobuf:"varint,94,opt,name=reminder_override,json=reminderOverride,proto3,oneof" json:"reminder_override,omitempty" msg:"26730811,omitempty"`
 	// Specifies whether the client is to play a sound when the reminder becomes overdue.
-	ReminderPlaySound *bool `protobuf:"varint,95,opt,name=reminder_play_sound,json=reminderPlaySound,proto3,oneof" json:"reminder_play_sound,omitempty" msg:"26731011"` // @gotags: msg:"26731011"
+	ReminderPlaySound *bool `protobuf:"varint,95,opt,name=reminder_play_sound,json=reminderPlaySound,proto3,oneof" json:"reminder_play_sound,omitempty" msg:"26731011,omitempty"`
 	// Specifies whether a reminder is set on the object.
-	ReminderSet *bool `protobuf:"varint,96,opt,name=reminder_set,json=reminderSet,proto3,oneof" json:"reminder_set,omitempty" msg:"26726711"` // @gotags: msg:"26726711"
+	ReminderSet *bool `protobuf:"varint,96,opt,name=reminder_set,json=reminderSet,proto3,oneof" json:"reminder_set,omitempty" msg:"26726711,omitempty"`
 	// Specifies the point in time when a reminder transitions from pending to overdue.
-	ReminderSignalTime *int64 `protobuf:"varint,97,opt,name=reminder_signal_time,json=reminderSignalTime,proto3,oneof" json:"reminder_signal_time,omitempty" msg:"26745664"` // @gotags: msg:"26745664"
+	ReminderSignalTime *int64 `protobuf:"varint,97,opt,name=reminder_signal_time,json=reminderSignalTime,proto3,oneof" json:"reminder_signal_time,omitempty" msg:"26745664,omitempty"`
 	// Specifies the initial signal time for objects that are not Calendar objects.
-	ReminderTime *int64 `protobuf:"varint,98,opt,name=reminder_time,json=reminderTime,proto3,oneof" json:"reminder_time,omitempty" msg:"26726664"` // @gotags: msg:"26726664"
+	ReminderTime *int64 `protobuf:"varint,98,opt,name=reminder_time,json=reminderTime,proto3,oneof" json:"reminder_time,omitempty" msg:"26726664,omitempty"`
 	// Indicates the time and date of the reminder for the appointment or meeting.
-	ReminderTimeDate *int64 `protobuf:"varint,99,opt,name=reminder_time_date,json=reminderTimeDate,proto3,oneof" json:"reminder_time_date,omitempty" msg:"26726964"` // @gotags: msg:"26726964"
+	ReminderTimeDate *int64 `protobuf:"varint,99,opt,name=reminder_time_date,json=reminderTimeDate,proto3,oneof" json:"reminder_time_date,omitempty" msg:"26726964,omitempty"`
 	// Indicates the time of the reminder for the appointment or meeting.
-	ReminderTimeTime *int64 `protobuf:"varint,100,opt,name=reminder_time_time,json=reminderTimeTime,proto3,oneof" json:"reminder_time_time,omitempty" msg:"26726864"` // @gotags: msg:"26726864"
+	ReminderTimeTime *int64 `protobuf:"varint,100,opt,name=reminder_time_time,json=reminderTimeTime,proto3,oneof" json:"reminder_time_time,omitempty" msg:"26726864,omitempty"`
 	// This property is not set and, if set, is ignored.
-	ReminderType *int32 `protobuf:"varint,101,opt,name=reminder_type,json=reminderType,proto3,oneof" json:"reminder_type,omitempty" msg:"2673093"` // @gotags: msg:"2673093"
+	ReminderType *int32 `protobuf:"varint,101,opt,name=reminder_type,json=reminderType,proto3,oneof" json:"reminder_type,omitempty" msg:"2673093,omitempty"`
 	// Identifies required attendees for the appointment or meeting.
-	RequiredAttendees *string `protobuf:"bytes,102,opt,name=required_attendees,json=requiredAttendees,proto3,oneof" json:"required_attendees,omitempty" msg:"631"` // @gotags: msg:"631"
+	RequiredAttendees *string `protobuf:"bytes,102,opt,name=required_attendees,json=requiredAttendees,proto3,oneof" json:"required_attendees,omitempty" msg:"631,omitempty"`
 	// Identifies resource attendees for the appointment or meeting.
-	ResourceAttendees *string `protobuf:"bytes,103,opt,name=resource_attendees,json=resourceAttendees,proto3,oneof" json:"resource_attendees,omitempty" msg:"831"` // @gotags: msg:"831"
+	ResourceAttendees *string `protobuf:"bytes,103,opt,name=resource_attendees,json=resourceAttendees,proto3,oneof" json:"resource_attendees,omitempty" msg:"831,omitempty"`
 	// Specifies the response status of an attendee.
-	ResponseStatus *int32 `protobuf:"varint,104,opt,name=response_status,json=responseStatus,proto3,oneof" json:"response_status,omitempty" msg:"2642323"` // @gotags: msg:"2642323"
+	ResponseStatus *int32 `protobuf:"varint,104,opt,name=response_status,json=responseStatus,proto3,oneof" json:"response_status,omitempty" msg:"2642323,omitempty"`
 	// Indicates whether the Meeting Request object or Meeting Update object has been processed.
-	ServerProcessed *bool `protobuf:"varint,105,opt,name=server_processed,json=serverProcessed,proto3,oneof" json:"server_processed,omitempty" msg:"26766011"` // @gotags: msg:"26766011"
+	ServerProcessed *bool `protobuf:"varint,105,opt,name=server_processed,json=serverProcessed,proto3,oneof" json:"server_processed,omitempty" msg:"26766011,omitempty"`
 	// Indicates what processing actions have been taken on this Meeting Request object or Meeting Update object.
-	ServerProcessingActions *int32 `protobuf:"varint,106,opt,name=server_processing_actions,json=serverProcessingActions,proto3,oneof" json:"server_processing_actions,omitempty" msg:"2676613"` // @gotags: msg:"2676613"
+	ServerProcessingActions *int32 `protobuf:"varint,106,opt,name=server_processing_actions,json=serverProcessingActions,proto3,oneof" json:"server_processing_actions,omitempty" msg:"2676613,omitempty"`
 	// Indicates that the original MIME message contained a single MIME part.
-	SingleBodyiCal *bool `protobuf:"varint,107,opt,name=single_bodyi_cal,json=singleBodyiCal,proto3,oneof" json:"single_bodyi_cal,omitempty" msg:"26442711"` // @gotags: msg:"26442711"
+	SingleBodyiCal *bool `protobuf:"varint,107,opt,name=single_bodyi_cal,json=singleBodyiCal,proto3,oneof" json:"single_bodyi_cal,omitempty" msg:"26442711,omitempty"`
 	// Identifies the start date of the recurrence pattern.
-	StartRecurrenceDate *int32 `protobuf:"varint,108,opt,name=start_recurrence_date,json=startRecurrenceDate,proto3,oneof" json:"start_recurrence_date,omitempty" msg:"133"` // @gotags: msg:"133"
+	StartRecurrenceDate *int32 `protobuf:"varint,108,opt,name=start_recurrence_date,json=startRecurrenceDate,proto3,oneof" json:"start_recurrence_date,omitempty" msg:"133,omitempty"`
 	// Identifies the start time of the recurrence pattern.
-	StartRecurrenceTime *int32 `protobuf:"varint,109,opt,name=start_recurrence_time,json=startRecurrenceTime,proto3,oneof" json:"start_recurrence_time,omitempty" msg:"143"` // @gotags: msg:"143"
+	StartRecurrenceTime *int32 `protobuf:"varint,109,opt,name=start_recurrence_time,json=startRecurrenceTime,proto3,oneof" json:"start_recurrence_time,omitempty" msg:"143,omitempty"`
 	// Specifies information about the time zone of a recurring meeting.
-	TimeZone *int32 `protobuf:"varint,110,opt,name=time_zone,json=timeZone,proto3,oneof" json:"time_zone,omitempty" msg:"123"` // @gotags: msg:"123"
+	TimeZone *int32 `protobuf:"varint,110,opt,name=time_zone,json=timeZone,proto3,oneof" json:"time_zone,omitempty" msg:"123,omitempty"`
 	// Specifies a human-readable description of the time zone that is represented by the data in the PidLidTimeZoneStruct property (section 2.342).
-	TimeZoneDescription *string `protobuf:"bytes,111,opt,name=time_zone_description,json=timeZoneDescription,proto3,oneof" json:"time_zone_description,omitempty" msg:"26429231"` // @gotags: msg:"26429231"
+	TimeZoneDescription *string `protobuf:"bytes,111,opt,name=time_zone_description,json=timeZoneDescription,proto3,oneof" json:"time_zone_description,omitempty" msg:"26429231,omitempty"`
 	// Contains a list of all of the sendable attendees who are also required attendees.
-	ToAttendeesString *string `protobuf:"bytes,113,opt,name=to_attendees_string,json=toAttendeesString,proto3,oneof" json:"to_attendees_string,omitempty" msg:"26429931"` // @gotags: msg:"26429931"
+	ToAttendeesString *string `protobuf:"bytes,113,opt,name=to_attendees_string,json=toAttendeesString,proto3,oneof" json:"to_attendees_string,omitempty" msg:"26429931,omitempty"`
 	// Identifies the number of weeks that occur between each meeting.
-	WeekInterval *int32 `protobuf:"varint,114,opt,name=week_interval,json=weekInterval,proto3,oneof" json:"week_interval,omitempty" msg:"342"` // @gotags: msg:"342"
+	WeekInterval *int32 `protobuf:"varint,114,opt,name=week_interval,json=weekInterval,proto3,oneof" json:"week_interval,omitempty" msg:"342,omitempty"`
 	// Contains the value of the PidLidLocation property (section 2.159) from the associated Meeting object.
-	Where *string `protobuf:"bytes,115,opt,name=where,proto3,oneof" json:"where,omitempty" msg:"231"` // @gotags: msg:"231"
+	Where *string `protobuf:"bytes,115,opt,name=where,proto3,oneof" json:"where,omitempty" msg:"231,omitempty"`
 	// Indicates the yearly interval of the appointment or meeting.
-	YearInterval *int32 `protobuf:"varint,116,opt,name=year_interval,json=yearInterval,proto3,oneof" json:"year_interval,omitempty" msg:"362"` // @gotags: msg:"362"
+	YearInterval *int32 `protobuf:"varint,116,opt,name=year_interval,json=yearInterval,proto3,oneof" json:"year_interval,omitempty" msg:"362,omitempty"`
 	//
 	LocationUrl *string `protobuf:"bytes,117,opt,name=location_url,json=locationUrl,proto3,oneof" json:"location_url,omitempty"`
 	// Specifies whether to allow the meeting to be forwarded.
 	MeetingDoNotForward *bool `protobuf:"varint,118,opt,name=meeting_do_not_forward,json=meetingDoNotForward,proto3,oneof" json:"meeting_do_not_forward,omitempty"`
 	// Specifies the end time, in UTC, of the publishing range.
-	FreeBusyPublishEnd *int32 `protobuf:"varint,119,opt,name=free_busy_publish_end,json=freeBusyPublishEnd,proto3,oneof" json:"free_busy_publish_end,omitempty" msg:"266963"` // @gotags: msg:"266963"
+	FreeBusyPublishEnd *int32 `protobuf:"varint,119,opt,name=free_busy_publish_end,json=freeBusyPublishEnd,proto3,oneof" json:"free_busy_publish_end,omitempty" msg:"266963,omitempty"`
 	// Specifies the start time, in UTC, of the publishing range.
-	FreeBusyPublishStart *int32 `protobuf:"varint,120,opt,name=free_busy_publish_start,json=freeBusyPublishStart,proto3,oneof" json:"free_busy_publish_start,omitempty" msg:"266953"` // @gotags: msg:"266953"
+	FreeBusyPublishStart *int32 `protobuf:"varint,120,opt,name=free_busy_publish_start,json=freeBusyPublishStart,proto3,oneof" json:"free_busy_publish_start,omitempty" msg:"266953,omitempty"`
 	// Specifies the time, in UTC, that the data was published.
-	FreeBusyRangeTimestamp *int64 `protobuf:"varint,121,opt,name=free_busy_range_timestamp,json=freeBusyRangeTimestamp,proto3,oneof" json:"free_busy_range_timestamp,omitempty" msg:"2672864"` // @gotags: msg:"2672864"
+	FreeBusyRangeTimestamp *int64 `protobuf:"varint,121,opt,name=free_busy_range_timestamp,json=freeBusyRangeTimestamp,proto3,oneof" json:"free_busy_range_timestamp,omitempty" msg:"2672864,omitempty"`
 	// Contains the date and time, in UTC, when an appointment or meeting ends.
-	ICalendarEndTime *int64 `protobuf:"varint,122,opt,name=i_calendar_end_time,json=iCalendarEndTime,proto3,oneof" json:"i_calendar_end_time,omitempty" msg:"429264"` // @gotags: msg:"429264"
+	ICalendarEndTime *int64 `protobuf:"varint,122,opt,name=i_calendar_end_time,json=iCalendarEndTime,proto3,oneof" json:"i_calendar_end_time,omitempty" msg:"429264,omitempty"`
 	// Contains the date and time, in UTC, for the activation of the next reminder.
-	ICalendarReminderNextTime *int64 `protobuf:"varint,123,opt,name=i_calendar_reminder_next_time,json=iCalendarReminderNextTime,proto3,oneof" json:"i_calendar_reminder_next_time,omitempty" msg:"429864"` // @gotags: msg:"429864"
+	ICalendarReminderNextTime *int64 `protobuf:"varint,123,opt,name=i_calendar_reminder_next_time,json=iCalendarReminderNextTime,proto3,oneof" json:"i_calendar_reminder_next_time,omitempty" msg:"429864,omitempty"`
 	// Indicates whether a client has already processed a received task communication.
-	Processed *bool `protobuf:"varint,124,opt,name=processed,proto3,oneof" json:"processed,omitempty" msg:"3200111"` // @gotags: msg:"3200111"
+	Processed *bool `protobuf:"varint,124,opt,name=processed,proto3,oneof" json:"processed,omitempty" msg:"3200111,omitempty"`
 	// Indicates whether a client or server is to automatically respond to all meeting requests for the attendee or resource.
-	ScheduleInfoAutoAcceptAppointments *bool `protobuf:"varint,126,opt,name=schedule_info_auto_accept_appointments,json=scheduleInfoAutoAcceptAppointments,proto3,oneof" json:"schedule_info_auto_accept_appointments,omitempty" msg:"2673311"` // @gotags: msg:"2673311"
+	ScheduleInfoAutoAcceptAppointments *bool `protobuf:"varint,126,opt,name=schedule_info_auto_accept_appointments,json=scheduleInfoAutoAcceptAppointments,proto3,oneof" json:"schedule_info_auto_accept_appointments,omitempty" msg:"2673311,omitempty"`
 	// Indicates whether the delegator wants to receive copies of the meeting-related objects that are sent to the delegate.
-	ScheduleInfoDelegatorWantsCopy *bool `protobuf:"varint,130,opt,name=schedule_info_delegator_wants_copy,json=scheduleInfoDelegatorWantsCopy,proto3,oneof" json:"schedule_info_delegator_wants_copy,omitempty" msg:"2669011"` // @gotags: msg:"2669011"
+	ScheduleInfoDelegatorWantsCopy *bool `protobuf:"varint,130,opt,name=schedule_info_delegator_wants_copy,json=scheduleInfoDelegatorWantsCopy,proto3,oneof" json:"schedule_info_delegator_wants_copy,omitempty" msg:"2669011,omitempty"`
 	// Indicates whether the delegator wants to receive informational updates.
-	ScheduleInfoDelegatorWantsInfo *bool `protobuf:"varint,131,opt,name=schedule_info_delegator_wants_info,json=scheduleInfoDelegatorWantsInfo,proto3,oneof" json:"schedule_info_delegator_wants_info,omitempty" msg:"2669911"` // @gotags: msg:"2669911"
+	ScheduleInfoDelegatorWantsInfo *bool `protobuf:"varint,131,opt,name=schedule_info_delegator_wants_info,json=scheduleInfoDelegatorWantsInfo,proto3,oneof" json:"schedule_info_delegator_wants_info,omitempty" msg:"2669911,omitempty"`
 	// Indicates whether a client or server, when automatically responding to meeting requests, is to decline Meeting Request objects that overlap with previously scheduled events.
-	ScheduleInfoDisallowOverlappingAppts *bool `protobuf:"varint,132,opt,name=schedule_info_disallow_overlapping_appts,json=scheduleInfoDisallowOverlappingAppts,proto3,oneof" json:"schedule_info_disallow_overlapping_appts,omitempty" msg:"2673511"` // @gotags: msg:"2673511"
+	ScheduleInfoDisallowOverlappingAppts *bool `protobuf:"varint,132,opt,name=schedule_info_disallow_overlapping_appts,json=scheduleInfoDisallowOverlappingAppts,proto3,oneof" json:"schedule_info_disallow_overlapping_appts,omitempty" msg:"2673511,omitempty"`
 	// Indicates whether a client or server, when automatically responding to meeting requests, is to decline Meeting Request objects that represent a recurring series.
-	ScheduleInfoDisallowRecurringAppts *bool `protobuf:"varint,133,opt,name=schedule_info_disallow_recurring_appts,json=scheduleInfoDisallowRecurringAppts,proto3,oneof" json:"schedule_info_disallow_recurring_appts,omitempty" msg:"2673411"` // @gotags: msg:"2673411"
+	ScheduleInfoDisallowRecurringAppts *bool `protobuf:"varint,133,opt,name=schedule_info_disallow_recurring_appts,json=scheduleInfoDisallowRecurringAppts,proto3,oneof" json:"schedule_info_disallow_recurring_appts,omitempty" msg:"2673411,omitempty"`
 	// Contains a value set to TRUE by the client, regardless of user input.
-	ScheduleInfoDontMailDelegates *bool `protobuf:"varint,134,opt,name=schedule_info_dont_mail_delegates,json=scheduleInfoDontMailDelegates,proto3,oneof" json:"schedule_info_dont_mail_delegates,omitempty" msg:"2669111"` // @gotags: msg:"2669111"
+	ScheduleInfoDontMailDelegates *bool `protobuf:"varint,134,opt,name=schedule_info_dont_mail_delegates,json=scheduleInfoDontMailDelegates,proto3,oneof" json:"schedule_info_dont_mail_delegates,omitempty" msg:"2669111,omitempty"`
 	// Set to 0x00000000 when sending and is ignored on receipt.
-	ScheduleInfoResourceType *int32 `protobuf:"varint,144,opt,name=schedule_info_resource_type,json=scheduleInfoResourceType,proto3,oneof" json:"schedule_info_resource_type,omitempty" msg:"266893"` // @gotags: msg:"266893"
+	ScheduleInfoResourceType *int32 `protobuf:"varint,144,opt,name=schedule_info_resource_type,json=scheduleInfoResourceType,proto3,oneof" json:"schedule_info_resource_type,omitempty" msg:"266893,omitempty"`
 }
 
 func (x *Appointment) Reset() {

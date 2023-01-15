@@ -24,7 +24,7 @@ import (
 	"math"
 	"time"
 
-	"github.com/pkg/errors"
+	"github.com/rotisserie/eris"
 	"golang.org/x/text/encoding/ianaindex"
 	"golang.org/x/text/encoding/unicode"
 )
@@ -40,20 +40,20 @@ type PropertyReader struct {
 }
 
 // NewPropertyReader creates a new property reader.
-func NewPropertyReader(property Property, heapOnNode *HeapOnNode, file *File, localDescriptors ...LocalDescriptor) (PropertyReader, error) {
+func NewPropertyReader(property Property, heapOnNode *HeapOnNode, file *File, localDescriptors []LocalDescriptor) (PropertyReader, error) {
 	switch {
 	case property.HNID != 0 && len(property.Data) == 0:
 		heapOnNodeReader, err := file.GetHeapOnNodeReaderFromHNID(property.HNID, *heapOnNode.Reader, localDescriptors...)
 
 		if err != nil {
-			return PropertyReader{}, errors.WithStack(err)
+			return PropertyReader{}, eris.Wrap(err, "failed to get Heap-on-Node reader")
 		}
 
 		return PropertyReader{property, heapOnNodeReader, localDescriptors, file}, nil
 	case len(property.Data) != 0:
 		return PropertyReader{property, nil, localDescriptors, file}, nil
 	default:
-		return PropertyReader{}, errors.WithStack(errors.WithMessage(ErrPropertyNoData, fmt.Sprintf("Property ID: %x", property.ID)))
+		return PropertyReader{}, eris.Wrap(ErrPropertyNoData, fmt.Sprintf("Property ID: %x", property.ID))
 	}
 }
 
@@ -67,13 +67,13 @@ func (propertyReader *PropertyReader) WriteMessagePackValue(writer *msgp.Writer)
 		value, err := propertyReader.GetString()
 
 		if err != nil {
-			return errors.WithStack(err)
+			return eris.Wrap(err, "failed to get string")
 		}
 
 		if err := writer.WriteString(key); err != nil {
-			return errors.WithStack(err)
+			return eris.Wrap(err, "failed to write key")
 		} else if err := writer.WriteString(value); err != nil {
-			return errors.WithStack(err)
+			return eris.Wrap(err, "failed to write value")
 		}
 
 		return nil
@@ -81,13 +81,13 @@ func (propertyReader *PropertyReader) WriteMessagePackValue(writer *msgp.Writer)
 		value, err := propertyReader.GetString8(65001) // TODO - Get from called, this is UTF-8 for now.
 
 		if err != nil {
-			return errors.WithStack(err)
+			return eris.Wrap(err, "failed to get string8")
 		}
 
 		if err := writer.WriteString(key); err != nil {
-			return errors.WithStack(err)
+			return eris.Wrap(err, "failed to write key")
 		} else if err := writer.WriteString(value); err != nil {
-			return errors.WithStack(err)
+			return eris.Wrap(err, "failed to write value")
 		}
 
 		return nil
@@ -95,13 +95,13 @@ func (propertyReader *PropertyReader) WriteMessagePackValue(writer *msgp.Writer)
 		value, err := propertyReader.GetDate()
 
 		if err != nil {
-			return errors.WithStack(err)
+			return eris.Wrap(err, "failed to get date")
 		}
 
 		if err := writer.WriteString(key); err != nil {
-			return errors.WithStack(err)
+			return eris.Wrap(err, "failed to write key")
 		} else if err := writer.WriteInt64(value); err != nil {
-			return errors.WithStack(err)
+			return eris.Wrap(err, "failed to write value")
 		}
 
 		return nil
@@ -109,13 +109,13 @@ func (propertyReader *PropertyReader) WriteMessagePackValue(writer *msgp.Writer)
 		value, err := propertyReader.GetInteger16()
 
 		if err != nil {
-			return errors.WithStack(err)
+			return eris.Wrap(err, "failed to get integer16")
 		}
 
 		if err := writer.WriteString(key); err != nil {
-			return errors.WithStack(err)
+			return eris.Wrap(err, "failed to write key")
 		} else if err := writer.WriteInt16(value); err != nil {
-			return errors.WithStack(err)
+			return eris.Wrap(err, "failed to write value")
 		}
 
 		return nil
@@ -123,13 +123,13 @@ func (propertyReader *PropertyReader) WriteMessagePackValue(writer *msgp.Writer)
 		value, err := propertyReader.GetInteger32()
 
 		if err != nil {
-			return errors.WithStack(err)
+			return eris.Wrap(err, "failed to write integer32")
 		}
 
 		if err := writer.WriteString(key); err != nil {
-			return errors.WithStack(err)
+			return eris.Wrap(err, "failed to write key")
 		} else if err := writer.WriteInt32(value); err != nil {
-			return errors.WithStack(err)
+			return eris.Wrap(err, "failed to write value")
 		}
 
 		return nil
@@ -137,13 +137,13 @@ func (propertyReader *PropertyReader) WriteMessagePackValue(writer *msgp.Writer)
 		value, err := propertyReader.GetInteger64()
 
 		if err != nil {
-			return errors.WithStack(err)
+			return eris.Wrap(err, "failed to get integer64")
 		}
 
 		if err := writer.WriteString(key); err != nil {
-			return errors.WithStack(err)
+			return eris.Wrap(err, "failed to write key")
 		} else if err := writer.WriteInt64(value); err != nil {
-			return errors.WithStack(err)
+			return eris.Wrap(err, "failed to write value")
 		}
 
 		return nil
@@ -156,15 +156,15 @@ func (propertyReader *PropertyReader) WriteMessagePackValue(writer *msgp.Writer)
 // GetString returns the string value of the property.
 func (propertyReader *PropertyReader) GetString() (string, error) {
 	if propertyReader.Property.Type != PropertyTypeString {
-		return "", errors.WithStack(ErrPropertyTypeMismatch)
+		return "", ErrPropertyTypeMismatch
 	} else if propertyReader.HeapOnNodeReader == nil || propertyReader.Property.HNID == 0 {
-		return "", errors.WithStack(ErrPropertyNoData)
+		return "", ErrPropertyNoData
 	}
 
 	data := make([]byte, propertyReader.Size())
 
 	if _, err := propertyReader.ReadAt(data, 0); err != nil {
-		return "", errors.WithStack(err)
+		return "", eris.Wrap(err, "failed to read data")
 	}
 
 	return propertyReader.DecodeString(data)
@@ -173,15 +173,15 @@ func (propertyReader *PropertyReader) GetString() (string, error) {
 // GetString8 returns the string using the external encoding.
 func (propertyReader *PropertyReader) GetString8(codepageIdentifier int) (string, error) {
 	if propertyReader.Property.Type != PropertyTypeString8 {
-		return "", errors.WithStack(ErrPropertyTypeMismatch)
+		return "", ErrPropertyTypeMismatch
 	} else if propertyReader.HeapOnNodeReader == nil || propertyReader.Property.HNID == 0 {
-		return "", errors.WithStack(ErrPropertyNoData)
+		return "", ErrPropertyNoData
 	}
 
 	data := make([]byte, propertyReader.Size())
 
 	if _, err := propertyReader.ReadAt(data, 0); err != nil {
-		return "", errors.WithStack(err)
+		return "", eris.Wrap(err, "failed to read data")
 	}
 
 	return propertyReader.DecodeString8(data, codepageIdentifier)
@@ -191,9 +191,9 @@ func (propertyReader *PropertyReader) GetString8(codepageIdentifier int) (string
 func (propertyReader *PropertyReader) GetInteger16() (int16, error) {
 	switch {
 	case propertyReader.Property.Type != PropertyTypeInteger16:
-		return 0, errors.WithStack(errors.WithMessage(ErrPropertyTypeMismatch, fmt.Sprintf("Property type: %d", propertyReader.Property.Type)))
+		return 0, ErrPropertyTypeMismatch
 	case len(propertyReader.Property.Data) == 0:
-		return 0, errors.WithStack(ErrPropertyNoData)
+		return 0, ErrPropertyNoData
 	default:
 		return int16(binary.LittleEndian.Uint16(propertyReader.Property.Data)), nil
 	}
@@ -203,9 +203,9 @@ func (propertyReader *PropertyReader) GetInteger16() (int16, error) {
 func (propertyReader *PropertyReader) GetInteger32() (int32, error) {
 	switch {
 	case propertyReader.Property.Type != PropertyTypeInteger32:
-		return 0, errors.WithStack(ErrPropertyTypeMismatch)
+		return 0, ErrPropertyTypeMismatch
 	case len(propertyReader.Property.Data) == 0:
-		return 0, errors.WithStack(ErrPropertyNoData)
+		return 0, ErrPropertyNoData
 	default:
 		return int32(binary.LittleEndian.Uint32(propertyReader.Property.Data)), nil
 	}
@@ -215,25 +215,19 @@ func (propertyReader *PropertyReader) GetInteger32() (int32, error) {
 func (propertyReader *PropertyReader) GetInteger64() (int64, error) {
 	switch {
 	case propertyReader.Property.Type != PropertyTypeInteger64:
-		return 0, errors.WithStack(ErrPropertyTypeMismatch)
+		return 0, ErrPropertyTypeMismatch
 	case len(propertyReader.Property.Data) != 0:
 		return int64(binary.LittleEndian.Uint64(propertyReader.Property.Data)), nil
 	case propertyReader.Property.HNID != 0:
-		//heapOnNodeReader, err := propertyReader.File.GetHeapOnNodeReaderFromHNID(propertyReader.Property.HNID, *propertyReader.HeapOnNodeReader, propertyReader.LocalDescriptors...)
-		//
-		//if err != nil {
-		//	return 0, errors.WithStack(err)
-		//}
-
 		value := make([]byte, 8)
 
 		if _, err := propertyReader.ReadAt(value, 0); err != nil {
-			return 0, errors.WithStack(err)
+			return 0, eris.Wrap(err, "failed to read integer64")
 		}
 
 		return int64(binary.LittleEndian.Uint64(value)), nil
 	default:
-		return 0, errors.WithStack(ErrPropertyNoData)
+		return 0, ErrPropertyNoData
 	}
 }
 
@@ -250,66 +244,24 @@ func (propertyReader *PropertyReader) DecodeString8(data []byte, codePageIdentif
 	encoding, err := ianaindex.IANA.Encoding(CodePageIdentifierToEncoding[codePageIdentifier])
 
 	if err != nil {
-		return "", errors.WithStack(err)
+		return "", eris.Wrapf(err, "failed to find IANA encoding: %d", codePageIdentifier)
 	}
 
 	return encoding.NewDecoder().String(string(data))
 }
 
-// // GetEncoding returns the encoding of the message.
-// TODO -
-// func (message *Message) GetEncoding() (Encoding, error) {
-// 	encoding, err := message.GetInteger(16381) // PidTagMessageCodepage
-
-// 	if err != nil {
-// 		encoding, err = message.GetInteger(26307) // PidTagCodepage
-
-// 		if err != nil {
-// 			encoding, err = message.GetInteger(16350) // PidTagInternetCodepage
-
-// 			if err != nil {
-// 				// Encoding is set to -1
-// 			}
-// 		}
-// 	}
-
-// 	if encoding != -1 {
-// 		// Found the encoding identifier.
-// 		foundEncoding, err := FindEncoding(encoding)
-
-// 		if err != nil {
-// 			fmt.Printf("Unsupported encoding (%d), please open an issue on GitHub to support this encoding. Defaulting to UTF-8.\n", encoding)
-
-// 			return Encoding{
-// 				Identifier: 65001,
-// 				Name:       "utf-8",
-// 			}, nil
-// 		}
-
-// 		return foundEncoding, nil
-// 	} else {
-// 		// TODO - Lookup the global encoding in the Message Store.
-// 		fmt.Printf("Failed to find message encoding, defaulting to UTF-8.\n")
-
-// 		return Encoding{
-// 			Identifier: 65001,
-// 			Name:       "utf-8",
-// 		}, nil
-// 	}
-// }
-
 // GetDate returns the date value (Unix Nano epoch) of the property context item.
 func (propertyReader *PropertyReader) GetDate() (int64, error) {
 	if propertyReader.Property.Type != PropertyTypeTime {
-		return 0, errors.WithStack(ErrPropertyTypeMismatch)
+		return 0, ErrPropertyTypeMismatch
 	} else if propertyReader.Size() == 0 {
-		return 0, errors.WithStack(ErrPropertyNoData)
+		return 0, ErrPropertyNoData
 	}
 
 	outputBuffer := make([]byte, 8)
 
 	if _, err := propertyReader.ReadAt(outputBuffer, 0); err != nil {
-		return 0, errors.WithStack(err)
+		return 0, eris.Wrap(err, "failed to read date")
 	}
 
 	// References https://stackoverflow.com/a/57903746
@@ -336,7 +288,7 @@ func (propertyReader *PropertyReader) GetDate() (int64, error) {
 // GetBoolean returns the boolean value of this property.
 func (propertyReader *PropertyReader) GetBoolean() (bool, error) {
 	if propertyReader.Property.Type != PropertyTypeBoolean {
-		return false, errors.WithStack(ErrPropertyTypeMismatch)
+		return false, ErrPropertyTypeMismatch
 	}
 
 	return propertyReader.Property.Data[0] == 1, nil

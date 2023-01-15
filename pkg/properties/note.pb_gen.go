@@ -127,90 +127,130 @@ func (z *Note) DecodeMsg(dc *msgp.Reader) (err error) {
 
 // EncodeMsg implements msgp.Encodable
 func (z *Note) EncodeMsg(en *msgp.Writer) (err error) {
-	// map header, size 5
-	// write "2734083"
-	err = en.Append(0x85, 0xa7, 0x32, 0x37, 0x33, 0x34, 0x30, 0x38, 0x33)
-	if err != nil {
-		return
-	}
+	// omitempty: check for empty values
+	zb0001Len := uint32(5)
+	var zb0001Mask uint8 /* 5 bits */
 	if z.NoteColor == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.NoteColor)
-		if err != nil {
-			err = msgp.WrapError(err, "NoteColor")
-			return
-		}
-	}
-	// write "2734113"
-	err = en.Append(0xa7, 0x32, 0x37, 0x33, 0x34, 0x31, 0x31, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x1
 	}
 	if z.NoteHeight == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.NoteHeight)
-		if err != nil {
-			err = msgp.WrapError(err, "NoteHeight")
-			return
-		}
-	}
-	// write "2734103"
-	err = en.Append(0xa7, 0x32, 0x37, 0x33, 0x34, 0x31, 0x30, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x2
 	}
 	if z.NoteWidth == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.NoteWidth)
-		if err != nil {
-			err = msgp.WrapError(err, "NoteWidth")
-			return
-		}
-	}
-	// write "2734123"
-	err = en.Append(0xa7, 0x32, 0x37, 0x33, 0x34, 0x31, 0x32, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x4
 	}
 	if z.NoteX == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.NoteX)
-		if err != nil {
-			err = msgp.WrapError(err, "NoteX")
-			return
-		}
+		zb0001Len--
+		zb0001Mask |= 0x8
 	}
-	// write "2734133"
-	err = en.Append(0xa7, 0x32, 0x37, 0x33, 0x34, 0x31, 0x33, 0x33)
+	if z.NoteY == nil {
+		zb0001Len--
+		zb0001Mask |= 0x10
+	}
+	// variable map header, size zb0001Len
+	err = en.Append(0x80 | uint8(zb0001Len))
 	if err != nil {
 		return
 	}
-	if z.NoteY == nil {
-		err = en.WriteNil()
+	if zb0001Len == 0 {
+		return
+	}
+	if (zb0001Mask & 0x1) == 0 { // if not empty
+		// write "2734083"
+		err = en.Append(0xa7, 0x32, 0x37, 0x33, 0x34, 0x30, 0x38, 0x33)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteInt32(*z.NoteY)
+		if z.NoteColor == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.NoteColor)
+			if err != nil {
+				err = msgp.WrapError(err, "NoteColor")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x2) == 0 { // if not empty
+		// write "2734113"
+		err = en.Append(0xa7, 0x32, 0x37, 0x33, 0x34, 0x31, 0x31, 0x33)
 		if err != nil {
-			err = msgp.WrapError(err, "NoteY")
 			return
+		}
+		if z.NoteHeight == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.NoteHeight)
+			if err != nil {
+				err = msgp.WrapError(err, "NoteHeight")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x4) == 0 { // if not empty
+		// write "2734103"
+		err = en.Append(0xa7, 0x32, 0x37, 0x33, 0x34, 0x31, 0x30, 0x33)
+		if err != nil {
+			return
+		}
+		if z.NoteWidth == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.NoteWidth)
+			if err != nil {
+				err = msgp.WrapError(err, "NoteWidth")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x8) == 0 { // if not empty
+		// write "2734123"
+		err = en.Append(0xa7, 0x32, 0x37, 0x33, 0x34, 0x31, 0x32, 0x33)
+		if err != nil {
+			return
+		}
+		if z.NoteX == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.NoteX)
+			if err != nil {
+				err = msgp.WrapError(err, "NoteX")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x10) == 0 { // if not empty
+		// write "2734133"
+		err = en.Append(0xa7, 0x32, 0x37, 0x33, 0x34, 0x31, 0x33, 0x33)
+		if err != nil {
+			return
+		}
+		if z.NoteY == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.NoteY)
+			if err != nil {
+				err = msgp.WrapError(err, "NoteY")
+				return
+			}
 		}
 	}
 	return
@@ -219,41 +259,78 @@ func (z *Note) EncodeMsg(en *msgp.Writer) (err error) {
 // MarshalMsg implements msgp.Marshaler
 func (z *Note) MarshalMsg(b []byte) (o []byte, err error) {
 	o = msgp.Require(b, z.Msgsize())
-	// map header, size 5
-	// string "2734083"
-	o = append(o, 0x85, 0xa7, 0x32, 0x37, 0x33, 0x34, 0x30, 0x38, 0x33)
+	// omitempty: check for empty values
+	zb0001Len := uint32(5)
+	var zb0001Mask uint8 /* 5 bits */
 	if z.NoteColor == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.NoteColor)
+		zb0001Len--
+		zb0001Mask |= 0x1
 	}
-	// string "2734113"
-	o = append(o, 0xa7, 0x32, 0x37, 0x33, 0x34, 0x31, 0x31, 0x33)
 	if z.NoteHeight == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.NoteHeight)
+		zb0001Len--
+		zb0001Mask |= 0x2
 	}
-	// string "2734103"
-	o = append(o, 0xa7, 0x32, 0x37, 0x33, 0x34, 0x31, 0x30, 0x33)
 	if z.NoteWidth == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.NoteWidth)
+		zb0001Len--
+		zb0001Mask |= 0x4
 	}
-	// string "2734123"
-	o = append(o, 0xa7, 0x32, 0x37, 0x33, 0x34, 0x31, 0x32, 0x33)
 	if z.NoteX == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.NoteX)
+		zb0001Len--
+		zb0001Mask |= 0x8
 	}
-	// string "2734133"
-	o = append(o, 0xa7, 0x32, 0x37, 0x33, 0x34, 0x31, 0x33, 0x33)
 	if z.NoteY == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.NoteY)
+		zb0001Len--
+		zb0001Mask |= 0x10
+	}
+	// variable map header, size zb0001Len
+	o = append(o, 0x80|uint8(zb0001Len))
+	if zb0001Len == 0 {
+		return
+	}
+	if (zb0001Mask & 0x1) == 0 { // if not empty
+		// string "2734083"
+		o = append(o, 0xa7, 0x32, 0x37, 0x33, 0x34, 0x30, 0x38, 0x33)
+		if z.NoteColor == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.NoteColor)
+		}
+	}
+	if (zb0001Mask & 0x2) == 0 { // if not empty
+		// string "2734113"
+		o = append(o, 0xa7, 0x32, 0x37, 0x33, 0x34, 0x31, 0x31, 0x33)
+		if z.NoteHeight == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.NoteHeight)
+		}
+	}
+	if (zb0001Mask & 0x4) == 0 { // if not empty
+		// string "2734103"
+		o = append(o, 0xa7, 0x32, 0x37, 0x33, 0x34, 0x31, 0x30, 0x33)
+		if z.NoteWidth == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.NoteWidth)
+		}
+	}
+	if (zb0001Mask & 0x8) == 0 { // if not empty
+		// string "2734123"
+		o = append(o, 0xa7, 0x32, 0x37, 0x33, 0x34, 0x31, 0x32, 0x33)
+		if z.NoteX == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.NoteX)
+		}
+	}
+	if (zb0001Mask & 0x10) == 0 { // if not empty
+		// string "2734133"
+		o = append(o, 0xa7, 0x32, 0x37, 0x33, 0x34, 0x31, 0x33, 0x33)
+		if z.NoteY == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.NoteY)
+		}
 	}
 	return
 }

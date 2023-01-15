@@ -18,7 +18,7 @@
 package pst
 
 import (
-	"github.com/pkg/errors"
+	"github.com/rotisserie/eris"
 )
 
 // Folder represents a folder.
@@ -36,19 +36,19 @@ func (file *File) GetRootFolder() (Folder, error) {
 	rootFolderDataNode, err := file.GetDataBTreeNode(IdentifierRootFolder)
 
 	if err != nil {
-		return Folder{}, errors.WithStack(err)
+		return Folder{}, eris.Wrap(err, "failed to get data b-tree node")
 	}
 
 	rootFolderHeapOnNode, err := file.GetHeapOnNode(rootFolderDataNode)
 
 	if err != nil {
-		return Folder{}, errors.WithStack(err)
+		return Folder{}, eris.Wrap(err, "failed to get Heap-on-Node")
 	}
 
 	propertyContext, err := file.GetPropertyContext(rootFolderHeapOnNode)
 
 	if err != nil {
-		return Folder{}, errors.WithStack(err)
+		return Folder{}, eris.Wrap(err, "failed to get property context")
 	}
 
 	return Folder{
@@ -64,34 +64,34 @@ func (file *File) GetRootFolder() (Folder, error) {
 // GetSubFoldersTableContext returns the TableContext for the sub-folders of this folder.
 // Note this limits the returned properties to the ones we use in the Folder struct.
 func (folder *Folder) GetSubFoldersTableContext() (TableContext, error) {
-	nodeBTreeNode, err := folder.File.GetNodeBTreeNode(folder.Identifier + 11) // +11 returns the identifier of the sub-folders.
+	nodeBTreeNode, err := folder.File.GetNodeBTreeNode(folder.Identifier + 11) // +11 is the identifier of the sub-folders.
 
 	if err != nil {
-		return TableContext{}, errors.WithStack(err)
+		return TableContext{}, eris.Wrap(err, "failed to get node b-tree node")
 	}
 
 	localDescriptors, err := folder.File.GetLocalDescriptors(nodeBTreeNode)
 
 	if err != nil {
-		return TableContext{}, errors.WithStack(err)
+		return TableContext{}, eris.Wrap(err, "failed to get local descriptors")
 	}
 
 	blockBTreeNode, err := folder.File.GetBlockBTreeNode(nodeBTreeNode.DataIdentifier)
 
 	if err != nil {
-		return TableContext{}, errors.WithStack(err)
+		return TableContext{}, eris.Wrap(err, "failed to get block b-tree node")
 	}
 
 	subFoldersDataNodeHeapOnNode, err := folder.File.GetHeapOnNode(blockBTreeNode)
 
 	if err != nil {
-		return TableContext{}, errors.WithStack(err)
+		return TableContext{}, eris.Wrap(err, "failed to get Heap-on-Node")
 	}
 
 	tableContext, err := folder.File.GetTableContext(subFoldersDataNodeHeapOnNode, localDescriptors, 12289, 13834, 26610, 13826)
 
 	if err != nil {
-		return TableContext{}, errors.WithStack(err)
+		return TableContext{}, eris.Wrap(err, "failed to get table context")
 	}
 
 	return tableContext, nil
@@ -109,7 +109,7 @@ func (folder *Folder) GetSubFolders() ([]Folder, error) {
 	tableContext, err := folder.GetSubFoldersTableContext()
 
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, eris.Wrap(err, "failed to get sub folders table context")
 	}
 
 	subFolders := make([]Folder, len(tableContext.Properties))
@@ -123,7 +123,7 @@ func (folder *Folder) GetSubFolders() ([]Folder, error) {
 			propertyReader, err := tableContext.GetPropertyReader(property)
 
 			if err != nil {
-				return nil, errors.WithStack(err)
+				return nil, eris.Wrap(err, "failed to get property reader")
 			}
 
 			switch {
@@ -132,7 +132,7 @@ func (folder *Folder) GetSubFolders() ([]Folder, error) {
 				folderName, err := propertyReader.GetString()
 
 				if err != nil {
-					return nil, errors.WithStack(err)
+					return nil, eris.Wrap(err, "failed to get folder name")
 				}
 
 				subFolder.Name = folderName
@@ -140,7 +140,7 @@ func (folder *Folder) GetSubFolders() ([]Folder, error) {
 				identifier, err := propertyReader.GetInteger32()
 
 				if err != nil {
-					return nil, errors.WithStack(err)
+					return nil, eris.Wrap(err, "failed to get identifier")
 				}
 
 				subFolder.Identifier = Identifier(identifier)
@@ -148,7 +148,7 @@ func (folder *Folder) GetSubFolders() ([]Folder, error) {
 				messageCount, err := propertyReader.GetInteger32()
 
 				if err != nil {
-					return nil, errors.WithStack(err)
+					return nil, eris.Wrap(err, "failed to get message count")
 				}
 
 				subFolder.MessageCount = messageCount
@@ -156,7 +156,7 @@ func (folder *Folder) GetSubFolders() ([]Folder, error) {
 				hasSubFolders, err := propertyReader.GetBoolean()
 
 				if err != nil {
-					return nil, errors.WithStack(err)
+					return nil, eris.Wrap(err, "failed to get has sub folders")
 				}
 
 				subFolder.HasSubFolders = hasSubFolders
@@ -170,14 +170,14 @@ func (folder *Folder) GetSubFolders() ([]Folder, error) {
 }
 
 // WalkFolderFunc is the type of the function called by WalkFolders when visiting each folder.
-type WalkFolderFunc = func(folder Folder) error
+type WalkFolderFunc = func(folder *Folder) error
 
 // WalkFolders walks all folders recursively.
 func (file *File) WalkFolders(walkFolderFunc WalkFolderFunc) error {
 	rootFolder, err := file.GetRootFolder()
 
 	if err != nil {
-		return errors.WithStack(err)
+		return eris.Wrap(err, "failed to get root folder")
 	}
 
 	return rootFolder.WalkFolders(walkFolderFunc)
@@ -185,19 +185,19 @@ func (file *File) WalkFolders(walkFolderFunc WalkFolderFunc) error {
 
 // WalkFolders recursively walks the sub-folders of this folder.
 func (folder *Folder) WalkFolders(walkFolderFunc WalkFolderFunc) error {
-	if err := walkFolderFunc(*folder); err != nil {
-		return errors.WithStack(err)
+	if err := walkFolderFunc(folder); err != nil {
+		return eris.Wrap(err, "failed during calling walk folder function")
 	}
 
 	subFolders, err := folder.GetSubFolders()
 
 	if err != nil {
-		return errors.WithStack(err)
+		return eris.Wrap(err, "failed to get sub folders")
 	}
 
 	for _, subFolder := range subFolders {
 		if err := subFolder.WalkFolders(walkFolderFunc); err != nil {
-			return errors.WithStack(err)
+			return eris.Wrap(err, "failed to walk folders")
 		}
 	}
 

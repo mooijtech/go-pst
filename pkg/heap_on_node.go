@@ -21,7 +21,7 @@ import (
 	"encoding/binary"
 	"io"
 
-	"github.com/pkg/errors"
+	"github.com/rotisserie/eris"
 )
 
 // HeapOnNode represents a Heap-on-Node.
@@ -35,7 +35,7 @@ func (heapOnNode *HeapOnNode) IsValidSignature() (bool, error) {
 	signature := make([]byte, 1)
 
 	if _, err := heapOnNode.Reader.ReadAt(signature, 2); err != nil {
-		return false, errors.WithStack(err)
+		return false, eris.Wrap(err, "failed to read signature")
 	}
 
 	return signature[0] == 236, nil
@@ -47,7 +47,7 @@ func (heapOnNode *HeapOnNode) GetTableType() (uint8, error) {
 	tableType := make([]byte, 1)
 
 	if _, err := heapOnNode.Reader.ReadAt(tableType, 3); err != nil {
-		return 0, errors.WithStack(err)
+		return 0, eris.Wrap(err, "failed to read table type")
 	}
 
 	return tableType[0], nil
@@ -59,7 +59,7 @@ func (heapOnNode *HeapOnNode) GetHIDUserRoot() (Identifier, error) {
 	hidUserRoot := make([]byte, 4)
 
 	if _, err := heapOnNode.Reader.ReadAt(hidUserRoot, 4); err != nil {
-		return 0, errors.WithStack(err)
+		return 0, eris.Wrap(err, "failed to read HID user root")
 	}
 
 	return Identifier(binary.LittleEndian.Uint32(hidUserRoot)), nil
@@ -75,13 +75,13 @@ func (file *File) GetHeapOnNode(btreeNode BTreeNode) (*HeapOnNode, error) {
 		blocks, err := file.GetBlocks(btreeNode.FileOffset)
 
 		if err != nil {
-			return nil, errors.WithStack(err)
+			return nil, eris.Wrap(err, "failed to get blocks")
 		}
 
 		blocksTotalSize, err := file.GetBlocksTotalSize(btreeNode.FileOffset)
 
 		if err != nil {
-			return nil, errors.WithStack(err)
+			return nil, eris.Wrap(err, "failed to get total blocks size")
 		}
 
 		blockReaders := make([]io.SectionReader, len(blocks))
@@ -89,17 +89,17 @@ func (file *File) GetHeapOnNode(btreeNode BTreeNode) (*HeapOnNode, error) {
 
 		for i, block := range blocks {
 			blockReaderTotalSize += int(block.Size)
-			blockReaders[i] = *NewBTreeNodeReader(block, file)
+			blockReaders[i] = *NewBTreeNodeReader(block, file.Reader)
 		}
 
 		if blocksTotalSize != uint32(blockReaderTotalSize) {
-			return nil, errors.New("go-pst: block total size mismatch")
+			return nil, ErrTotalBlocksSizeMismatch
 		}
 
 		return &HeapOnNode{Reader: NewHeapOnNodeReader(file.EncryptionType, blockReaders...)}, nil
 	}
 
-	return &HeapOnNode{Reader: NewHeapOnNodeReader(file.EncryptionType, *io.NewSectionReader(file, btreeNode.FileOffset, int64(btreeNode.Size)))}, nil
+	return &HeapOnNode{Reader: NewHeapOnNodeReader(file.EncryptionType, *io.NewSectionReader(file.Reader, btreeNode.FileOffset, int64(btreeNode.Size)))}, nil
 }
 
 // GetHeapOnNodeReaderFromHNID returns the Heap-on-Node reader from the specified HNID (heap or node identifier).
@@ -112,7 +112,7 @@ func (file *File) GetHeapOnNodeReaderFromHNID(hnid Identifier, heapOnNodeReader 
 			localDescriptorHeapOnNode, err := file.GetHeapOnNodeFromLocalDescriptor(localDescriptor)
 
 			if err != nil {
-				return nil, errors.WithStack(err)
+				return nil, eris.Wrap(err, "failed to get Heap-on-Node from local descriptor")
 			}
 
 			return localDescriptorHeapOnNode.Reader, nil
@@ -128,7 +128,7 @@ func (file *File) GetHeapOnNodeReaderFromHID(hid Identifier, heapOnNodeReader He
 		// The data is in the local descriptors (when the HNID matches a local descriptor identifier).
 		// This gives us a data identifier that points to a node in the block b-tree (another Heap-on-Node).
 		// Maybe there were no local descriptors specified in GetHeapOnNodeReaderFromHNID?
-		return nil, errors.WithStack(ErrHeapOnNodeExternalNode)
+		return nil, ErrHeapOnNodeExternalNode
 	}
 
 	blockIndex := int(hid) >> 16
@@ -136,7 +136,7 @@ func (file *File) GetHeapOnNodeReaderFromHID(hid Identifier, heapOnNodeReader He
 
 	if blockIndex > 0 {
 		if blockIndex > len(heapOnNodeReader.Blocks) {
-			return nil, errors.WithStack(ErrBlockIndexNotFound)
+			return nil, ErrBlockIndexNotFound
 		}
 
 		blockOffset = heapOnNodeReader.BlockOffsets[blockIndex]
@@ -145,7 +145,7 @@ func (file *File) GetHeapOnNodeReaderFromHID(hid Identifier, heapOnNodeReader He
 	pageMapOffset := make([]byte, 2)
 
 	if _, err := heapOnNodeReader.ReadAt(pageMapOffset, blockOffset); err != nil {
-		return nil, errors.WithStack(err)
+		return nil, eris.Wrap(err, "failed to read page map offset")
 	}
 
 	allocationIndex := int64((hid & 0xFFFF) >> 5)
@@ -154,13 +154,13 @@ func (file *File) GetHeapOnNodeReaderFromHID(hid Identifier, heapOnNodeReader He
 	startOffset := make([]byte, 2)
 
 	if _, err := heapOnNodeReader.ReadAt(startOffset, allocationOffset); err != nil {
-		return nil, errors.WithStack(err)
+		return nil, eris.Wrap(err, "failed to read start offset")
 	}
 
 	endOffset := make([]byte, 2)
 
 	if _, err := heapOnNodeReader.ReadAt(endOffset, allocationOffset+2); err != nil {
-		return nil, errors.WithStack(err)
+		return nil, eris.Wrap(err, "failed to read end offset")
 	}
 
 	// Note that the block start offset is only for this singular block, not across all blocks.
@@ -175,7 +175,7 @@ func (file *File) GetHeapOnNodeFromLocalDescriptor(localDescriptor LocalDescript
 	localDescriptorDataNode, err := file.GetBlockBTreeNode(localDescriptor.DataIdentifier)
 
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, eris.Wrap(err, "failed to get block b-tree node")
 	}
 
 	return file.GetHeapOnNode(localDescriptorDataNode)

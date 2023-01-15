@@ -22,35 +22,35 @@ option go_package = "github.com/mooijtech/go-pst;properties";
 
 message Message {
   // Specifies the options used in the automatic processing of email messages.
-  optional int32 auto_process_state = 1; // @gotags: msg:"2673063"
+  optional int32 auto_process_state = 1; // @gotags: msg:"2673063,omitempty"
   // Specifies billing information for the contact.
-  optional string billing = 2; // @gotags: msg:"26736531"
+  optional string billing = 2; // @gotags: msg:"26736531,omitempty"
   // Contains a list of the classification categories to which the associated Message object has been assigned.
-  optional string classification = 3; // @gotags: msg:"26762231"
+  optional string classification = 3; // @gotags: msg:"26762231,omitempty"
   // Contains a human-readable summary of each of the classification categories included in the PidLidClassification property (section 2.53).
-  optional string classification_description = 4; // @gotags: msg:"26762331"
+  optional string classification_description = 4; // @gotags: msg:"26762331,omitempty"
   // Contains the GUID that identifies the list of email classification categories used by a Message object.
-  optional string classification_guid = 5; // @gotags: msg:"26762431"
+  optional string classification_guid = 5; // @gotags: msg:"26762431,omitempty"
   // Indicates whether the message uses any classification categories.
-  optional bool classification_keep = 6; // @gotags: msg:"26762611"
+  optional bool classification_keep = 6; // @gotags: msg:"26762611,omitempty"
   // Indicates whether the contents of this message are regarded as classified information.
-  optional bool classified = 7; // @gotags: msg:"26762111"
+  optional bool classified = 7; // @gotags: msg:"26762111,omitempty"
   // Indicates the end time for the Message object.
-  optional int64 common_end = 8; // @gotags: msg:"26730364"
+  optional int64 common_end = 8; // @gotags: msg:"26730364,omitempty"
   // Indicates the start time for the Message object.
-  optional int64 common_start = 9; // @gotags: msg:"26730264"
+  optional int64 common_start = 9; // @gotags: msg:"26730264,omitempty"
   // Specifies the build number of the client application that sent the message.
-  optional int32 current_version = 12; // @gotags: msg:"2674263"
+  optional int32 current_version = 12; // @gotags: msg:"2674263,omitempty"
   // Specifies the name of the client application that sent the message.
-  optional string current_version_name = 13; // @gotags: msg:"26742831"
+  optional string current_version_name = 13; // @gotags: msg:"26742831,omitempty"
   // Specifies the user-visible email account name through which the email message is sent.
-  optional string internet_account_name = 14; // @gotags: msg:"26752031"
+  optional string internet_account_name = 14; // @gotags: msg:"26752031,omitempty"
   // Specifies the email account ID through which the email message is sent.
-  optional string internet_account_stamp = 15; // @gotags: msg:"26752131"
+  optional string internet_account_stamp = 15; // @gotags: msg:"26752131,omitempty"
   // Indicates whether the end user wishes for this Message object to be hidden from other users who have access to the Message object.
-  optional bool private = 19; // @gotags: msg:"26727011"
+  optional bool private = 19; // @gotags: msg:"26727011,omitempty"
   // Specifies the voting option that a respondent has selected.
-  optional string verb_response = 20; // @gotags: msg:"26733231"
+  optional string verb_response = 20; // @gotags: msg:"26733231,omitempty"
   // Contains the value of the MIME Accept-Language header.
   optional string accept_language = 21; 
   // Specifies the value of the MIME Content-Base header, which defines the base URI for resolving relative URLs contained within the message body.
@@ -72,225 +72,225 @@ message Message {
   // Indicates whether a message is likely to be phishing.
   optional int32 phishing_stamp = 31; 
   // Contains the email address type of a Message object.
-  optional string address_type = 33; // @gotags: msg:"1229031"
+  optional string address_type = 33; // @gotags: msg:"1229031,omitempty"
   // Specifies whether the sender permits the message to be auto-forwarded.
-  optional bool alternate_recipient_allowed = 34; // @gotags: msg:"211"
+  optional bool alternate_recipient_allowed = 34; // @gotags: msg:"211,omitempty"
   // Specifies the date, in UTC, after which a Message object is archived by the server.
-  optional int64 archive_date = 35; // @gotags: msg:"1231964"
+  optional int64 archive_date = 35; // @gotags: msg:"1231964,omitempty"
   // Specifies the number of days that a Message object can remain unarchived.
-  optional int32 archive_period = 36; // @gotags: msg:"123183"
+  optional int32 archive_period = 36; // @gotags: msg:"123183,omitempty"
   // Contains the name of the mail user's administrative assistant.
-  optional string assistant = 38; // @gotags: msg:"1489631"
+  optional string assistant = 38; // @gotags: msg:"1489631,omitempty"
   // Contains the telephone number of the mail user's administrative assistant.
-  optional string assistant_telephone_number = 39; // @gotags: msg:"1489431"
+  optional string assistant_telephone_number = 39; // @gotags: msg:"1489431,omitempty"
   // Specifies whether a client or server application will forego sending automated replies in response to this message.
-  optional int32 auto_response_suppress = 40; // @gotags: msg:"163513"
+  optional int32 auto_response_suppress = 40; // @gotags: msg:"163513,omitempty"
   // Indicates the user's preference for viewing external content (such as links to images on an HTTP server) in the message body.
-  optional int32 block_status = 41; // @gotags: msg:"42463"
+  optional int32 block_status = 41; // @gotags: msg:"42463,omitempty"
   // Contains message body text in plain text format.
-  optional string body = 42; // @gotags: msg:"409631"
+  optional string body = 42; // @gotags: msg:"409631,omitempty"
   // Contains a globally unique Uniform Resource Identifier (URI) that serves as a label for the current message body.
-  optional string body_content_location = 43; // @gotags: msg:"411631"
+  optional string body_content_location = 43; // @gotags: msg:"411631,omitempty"
   // Contains the HTML body of the Message object.
-  optional string body_html = 44; // @gotags: msg:"411531"
+  optional string body_html = 44; // @gotags: msg:"411531,omitempty"
   // Contains the current time, in UTC, when the email message is submitted.
-  optional int64 client_submit_time = 45; // @gotags: msg:"5764"
+  optional int64 client_submit_time = 45; // @gotags: msg:"5764,omitempty"
   // Indicates a confidence level that the message is spam.
-  optional int32 content_filter_spam_confidence_level = 46; // @gotags: msg:"165023"
+  optional int32 content_filter_spam_confidence_level = 46; // @gotags: msg:"165023,omitempty"
   // Contains an unchanging copy of the original subject.
-  optional string conversation_topic = 48; // @gotags: msg:"11231"
+  optional string conversation_topic = 48; // @gotags: msg:"11231,omitempty"
   // Contains the time, in UTC, that the object was created.
-  optional int64 creation_time = 49; // @gotags: msg:"1229564"
+  optional int64 creation_time = 49; // @gotags: msg:"1229564,omitempty"
   // Contains the name of the creator of a Message object.
-  optional string creator_name = 50; // @gotags: msg:"1637631"
+  optional string creator_name = 50; // @gotags: msg:"1637631,omitempty"
   // Contains the delivery time for a delivery status notification, as specified [RFC3464], or a message disposition notification, as specified in [RFC3798].
-  optional int64 deliver_time = 51; // @gotags: msg:"1664"
+  optional int64 deliver_time = 51; // @gotags: msg:"1664,omitempty"
   // Contains a list of blind carbon copy (Bcc) recipient display names.
-  optional string display_bcc = 52; // @gotags: msg:"358631"
+  optional string display_bcc = 52; // @gotags: msg:"358631,omitempty"
   // Contains a list of carbon copy (Cc) recipient display names.
-  optional string display_cc = 53; // @gotags: msg:"358731"
+  optional string display_cc = 53; // @gotags: msg:"358731,omitempty"
   // Contains a list of the primary recipient display names, separated by semicolons, when an email message has primary recipients .
-  optional string display_to = 54; // @gotags: msg:"358831"
+  optional string display_to = 54; // @gotags: msg:"358831,omitempty"
   // Specifies which icon is to be used by a user interface when displaying a group of Message objects.
-  optional int32 icon_index = 56; // @gotags: msg:"42243"
+  optional int32 icon_index = 56; // @gotags: msg:"42243,omitempty"
   // Indicates the level of importance assigned by the end user to the Message object.
-  optional int32 importance = 57; // @gotags: msg:"233"
+  optional int32 importance = 57; // @gotags: msg:"233,omitempty"
   // Contains the initials for parts of the full name of the mail user.
-  optional string initials = 58; // @gotags: msg:"1485831"
+  optional string initials = 58; // @gotags: msg:"1485831,omitempty"
   // Contains the value of the original message's PidTagInternetMessageId property (section 2.748) value.
-  optional string in_reply_to_id = 59; // @gotags: msg:"416231"
+  optional string in_reply_to_id = 59; // @gotags: msg:"416231,omitempty"
   // Indicates the encoding method and HTML inclusion for attachments.
-  optional int32 internet_mail_override_format = 60; // @gotags: msg:"227863"
+  optional int32 internet_mail_override_format = 60; // @gotags: msg:"227863,omitempty"
   // Corresponds to the message-id field.
-  optional string internet_message_id = 61; // @gotags: msg:"414931"
+  optional string internet_message_id = 61; // @gotags: msg:"414931,omitempty"
   // Contains a list of message IDs that specify the messages to which this reply is related.
-  optional string internet_references = 62; // @gotags: msg:"415331"
+  optional string internet_references = 62; // @gotags: msg:"415331,omitempty"
   // Contains the Integrated Services Digital Network (ISDN) telephone number of the mail user.
-  optional string isdn_number = 63; // @gotags: msg:"1489331"
+  optional string isdn_number = 63; // @gotags: msg:"1489331,omitempty"
   // Contains a keyword that identifies the mail user to the mail user's system administrator.
-  optional string keyword = 64; // @gotags: msg:"1485931"
+  optional string keyword = 64; // @gotags: msg:"1485931,omitempty"
   // Contains a value that indicates the language in which the messaging user is writing messages.
-  optional string language = 65; // @gotags: msg:"1486031"
+  optional string language = 65; // @gotags: msg:"1486031,omitempty"
   // Contains the time, in UTC, of the last modification to the object.
-  optional int64 last_modification_time = 66; // @gotags: msg:"1229664"
+  optional int64 last_modification_time = 66; // @gotags: msg:"1229664,omitempty"
   // Contains the name of the mail user's locality, such as the town or city.
-  optional string locality = 67; // @gotags: msg:"1488731"
+  optional string locality = 67; // @gotags: msg:"1488731,omitempty"
   // Contains the location of the mail user.
-  optional string location = 68; // @gotags: msg:"1486131"
+  optional string location = 68; // @gotags: msg:"1486131,omitempty"
   // Contains the name of the mail user's manager.
-  optional string manager_name = 69; // @gotags: msg:"1492631"
+  optional string manager_name = 69; // @gotags: msg:"1492631,omitempty"
   // 
-  optional bool message_cc_me = 70; // @gotags: msg:"8811"
+  optional bool message_cc_me = 70; // @gotags: msg:"8811,omitempty"
   // Specifies the time (in UTC) when the server received the message.
-  optional int64 message_delivery_time = 71; // @gotags: msg:"359064"
+  optional int64 message_delivery_time = 71; // @gotags: msg:"359064,omitempty"
   // Specifies the status of the Message object.
-  optional int32 message_flags = 72; // @gotags: msg:"35913"
+  optional int32 message_flags = 72; // @gotags: msg:"35913,omitempty"
   // Contains the common name of a messaging user for use in a message header.
-  optional string message_handling_system_common_name = 73; // @gotags: msg:"1486331"
+  optional string message_handling_system_common_name = 73; // @gotags: msg:"1486331,omitempty"
   // Indicates that the receiving mailbox owner is a primary or a carbon copy (Cc) recipient of this email message.
-  optional bool message_recipient_me = 74; // @gotags: msg:"8911"
+  optional bool message_recipient_me = 74; // @gotags: msg:"8911,omitempty"
   // Contains the size, in bytes, consumed by the Message object on the server.
-  optional int32 message_size = 76; // @gotags: msg:"35923"
+  optional int32 message_size = 76; // @gotags: msg:"35923,omitempty"
   // Specifies the 64-bit version of the PidTagMessageSize property (section 2.796).
-  optional double message_size_extended = 77; // @gotags: msg:"359220"
+  optional double message_size_extended = 77; // @gotags: msg:"359220,omitempty"
   // Specifies the status of a message in a contents table.
-  optional int32 message_status = 78; // @gotags: msg:"36073"
+  optional int32 message_status = 78; // @gotags: msg:"36073,omitempty"
   // Indicates that the receiving mailbox owner is one of the primary recipients of this email message.
-  optional bool message_to_me = 80; // @gotags: msg:"8711"
+  optional bool message_to_me = 80; // @gotags: msg:"8711,omitempty"
   // Specifies the middle name(s) of the contact.
-  optional string middle_name = 81; // @gotags: msg:"1491631"
+  optional string middle_name = 81; // @gotags: msg:"1491631,omitempty"
   // Contains the mail user's cellular telephone number.
-  optional string mobile_telephone_number = 82; // @gotags: msg:"1487631"
+  optional string mobile_telephone_number = 82; // @gotags: msg:"1487631,omitempty"
   // Contains the mail user's nickname.
-  optional string nickname = 83; // @gotags: msg:"1492731"
+  optional string nickname = 83; // @gotags: msg:"1492731,omitempty"
   // Contains the diagnostic code for a delivery status notification, as specified in [RFC3464].
-  optional int32 non_delivery_report_diag_code = 84; // @gotags: msg:"30773"
+  optional int32 non_delivery_report_diag_code = 84; // @gotags: msg:"30773,omitempty"
   // Contains an integer value that indicates a reason for delivery failure.
-  optional int32 non_delivery_report_reason_code = 85; // @gotags: msg:"30763"
+  optional int32 non_delivery_report_reason_code = 85; // @gotags: msg:"30763,omitempty"
   // Specifies whether the client sends a non-read receipt.
-  optional int32 non_delivery_report_status_code = 86; // @gotags: msg:"30783"
+  optional int32 non_delivery_report_status_code = 86; // @gotags: msg:"30783,omitempty"
   // Contains the normalized subject of the message.
-  optional string normalized_subject = 87; // @gotags: msg:"361331"
+  optional string normalized_subject = 87; // @gotags: msg:"361331,omitempty"
   // Contains the mail user's office location.
-  optional string office_location = 88; // @gotags: msg:"1487331"
+  optional string office_location = 88; // @gotags: msg:"1487331,omitempty"
   // Contains an identifier for the mail user used within the mail user's organization.
-  optional string organizational_id_number = 89; // @gotags: msg:"1486431"
+  optional string organizational_id_number = 89; // @gotags: msg:"1486431,omitempty"
   // Contains the display name of the sender of the original message referenced by a report message.
-  optional string original_author_name = 91; // @gotags: msg:"7731"
+  optional string original_author_name = 91; // @gotags: msg:"7731,omitempty"
   // Contains the delivery time, in UTC, from the original message.
-  optional int64 original_delivery_time = 92; // @gotags: msg:"8564"
+  optional int64 original_delivery_time = 92; // @gotags: msg:"8564,omitempty"
   // Contains the value of the PidTagDisplayBcc property (section 2.674) from the original message.
-  optional string original_display_bcc = 93; // @gotags: msg:"11431"
+  optional string original_display_bcc = 93; // @gotags: msg:"11431,omitempty"
   // Contains the value of the PidTagDisplayCc property(section 2.675) from the original message.
-  optional string original_display_cc = 94; // @gotags: msg:"11531"
+  optional string original_display_cc = 94; // @gotags: msg:"11531,omitempty"
   // Contains the value of the PidTagDisplayTo property (section 2.678) from the original message.
-  optional string original_display_to = 95; // @gotags: msg:"11631"
+  optional string original_display_to = 95; // @gotags: msg:"11631,omitempty"
   // Designates the PidTagMessageClass property ([MS-OXCMSG] section 2.2.1.3) from the original message.
-  optional string original_message_class = 97; // @gotags: msg:"7531"
+  optional string original_message_class = 97; // @gotags: msg:"7531,omitempty"
   // Contains the value of the original message sender's PidTagSenderAddressType property (section 2.1000).
-  optional string original_sender_address_type = 98; // @gotags: msg:"10231"
+  optional string original_sender_address_type = 98; // @gotags: msg:"10231,omitempty"
   // Contains the value of the original message sender's PidTagSenderEmailAddress property (section 2.1001).
-  optional string original_sender_email_address = 99; // @gotags: msg:"10331"
+  optional string original_sender_email_address = 99; // @gotags: msg:"10331,omitempty"
   // Contains the value of the original message sender's PidTagSenderName property (section 2.1004), and is set on delivery report messages.
-  optional string original_sender_name = 101; // @gotags: msg:"9031"
+  optional string original_sender_name = 101; // @gotags: msg:"9031,omitempty"
   // Contains the sensitivity value of the original email message.
-  optional int32 original_sensitivity = 103; // @gotags: msg:"463"
+  optional int32 original_sensitivity = 103; // @gotags: msg:"463,omitempty"
   // Contains the address type of the end user who is represented by the original email message sender.
-  optional string original_sent_representing_address_type = 104; // @gotags: msg:"10431"
+  optional string original_sent_representing_address_type = 104; // @gotags: msg:"10431,omitempty"
   // Contains the email address of the end user who is represented by the original email message sender.
-  optional string original_sent_representing_email_address = 105; // @gotags: msg:"10531"
+  optional string original_sent_representing_email_address = 105; // @gotags: msg:"10531,omitempty"
   // Contains the display name of the end user who is represented by the original email message sender.
-  optional string original_sent_representing_name = 107; // @gotags: msg:"9331"
+  optional string original_sent_representing_name = 107; // @gotags: msg:"9331,omitempty"
   // Specifies the subject of the original message.
-  optional string original_subject = 109; // @gotags: msg:"7331"
+  optional string original_subject = 109; // @gotags: msg:"7331,omitempty"
   // Specifies the original email message's submission date and time, in UTC.
-  optional int64 original_submit_time = 110; // @gotags: msg:"7864"
+  optional int64 original_submit_time = 110; // @gotags: msg:"7864,omitempty"
   // Indicates whether an email sender requests an email delivery receipt from the messaging system.
-  optional bool originator_delivery_report_requested = 111; // @gotags: msg:"3511"
+  optional bool originator_delivery_report_requested = 111; // @gotags: msg:"3511,omitempty"
   // Specifies whether an email sender requests suppression of nondelivery receipts.
-  optional bool originator_non_delivery_report_requested = 112; // @gotags: msg:"308011"
+  optional bool originator_non_delivery_report_requested = 112; // @gotags: msg:"308011,omitempty"
   // Contains the name of the mail user's other locality, such as the town or city.
-  optional string other_address_city = 113; // @gotags: msg:"1494331"
+  optional string other_address_city = 113; // @gotags: msg:"1494331,omitempty"
   // Contains the name of the mail user's other country/region.
-  optional string other_address_country = 114; // @gotags: msg:"1494431"
+  optional string other_address_country = 114; // @gotags: msg:"1494431,omitempty"
   // Contains the postal code for the mail user's other postal address.
-  optional string other_address_postal_code = 115; // @gotags: msg:"1494531"
+  optional string other_address_postal_code = 115; // @gotags: msg:"1494531,omitempty"
   // Contains the number or identifier of the mail user's other post office box.
-  optional string other_address_post_office_box = 116; // @gotags: msg:"1494831"
+  optional string other_address_post_office_box = 116; // @gotags: msg:"1494831,omitempty"
   // Contains the name of the mail user's other state or province.
-  optional string other_address_state_or_province = 117; // @gotags: msg:"1494631"
+  optional string other_address_state_or_province = 117; // @gotags: msg:"1494631,omitempty"
   // Contains the mail user's other street address.
-  optional string other_address_street = 118; // @gotags: msg:"1494731"
+  optional string other_address_street = 118; // @gotags: msg:"1494731,omitempty"
   // Contains an alternate telephone number for the mail user.
-  optional string other_telephone_number = 119; // @gotags: msg:"1487931"
+  optional string other_telephone_number = 119; // @gotags: msg:"1487931,omitempty"
   // Contains the mail user's pager telephone number.
-  optional string pager_telephone_number = 120; // @gotags: msg:"1488131"
+  optional string pager_telephone_number = 120; // @gotags: msg:"1488131,omitempty"
   // Indicates the client's request for the priority with which the message is to be sent by the messaging system.
-  optional int32 priority = 122; // @gotags: msg:"383"
+  optional int32 priority = 122; // @gotags: msg:"383,omitempty"
   // Specifies whether the email sender requests a read receipt from all recipients when this email message is read or opened.
-  optional bool read_receipt_requested = 123; // @gotags: msg:"4111"
+  optional bool read_receipt_requested = 123; // @gotags: msg:"4111,omitempty"
   // Contains the sent time for a message disposition notification, as specified in [RFC3798].
-  optional int64 receipt_time = 124; // @gotags: msg:"4264"
+  optional int64 receipt_time = 124; // @gotags: msg:"4264,omitempty"
   // Contains the email message receiver's email address.
-  optional string received_by_email_address = 125; // @gotags: msg:"11831"
+  optional string received_by_email_address = 125; // @gotags: msg:"11831,omitempty"
   // Contains the email message receiver's display name.
-  optional string received_by_name = 127; // @gotags: msg:"6431"
+  optional string received_by_name = 127; // @gotags: msg:"6431,omitempty"
   // Contains the email address type for the end user represented by the receiving mailbox owner.
-  optional string received_representing_address_type = 129; // @gotags: msg:"11931"
+  optional string received_representing_address_type = 129; // @gotags: msg:"11931,omitempty"
   // Contains the email address for the end user represented by the receiving mailbox owner.
-  optional string received_representing_email_address = 130; // @gotags: msg:"12031"
+  optional string received_representing_email_address = 130; // @gotags: msg:"12031,omitempty"
   // Contains the display name for the end user represented by the receiving mailbox owner.
-  optional string received_representing_name = 132; // @gotags: msg:"6831"
+  optional string received_representing_name = 132; // @gotags: msg:"6831,omitempty"
   // Represents the recipient type of a recipient on the message.
-  optional int32 recipient_type = 134; // @gotags: msg:"30933"
+  optional int32 recipient_type = 134; // @gotags: msg:"30933,omitempty"
   // Contains the value of the Remote-MTA field for a delivery status notification, as specified in [RFC3464].
-  optional string remote_message_transfer_agent = 135; // @gotags: msg:"310531"
+  optional string remote_message_transfer_agent = 135; // @gotags: msg:"310531,omitempty"
   // Indicates whether a reply is requested to a Message object.
-  optional bool reply_requested = 136; // @gotags: msg:"309511"
+  optional bool reply_requested = 136; // @gotags: msg:"309511,omitempty"
   // Contains a string indicating whether the original message was displayed to the user or deleted (report messages only).
-  optional string report_disposition = 137; // @gotags: msg:"12831"
+  optional string report_disposition = 137; // @gotags: msg:"12831,omitempty"
   // Contains a description of the action that a client has performed on behalf of a user (report messages only).
-  optional string report_disposition_mode = 138; // @gotags: msg:"12931"
+  optional string report_disposition_mode = 138; // @gotags: msg:"12931,omitempty"
   // Contains the value of the Reporting-MTA field for a delivery status notification, as specified in [RFC3464].
-  optional string reporting_message_transfer_agent = 139; // @gotags: msg:"2665631"
+  optional string reporting_message_transfer_agent = 139; // @gotags: msg:"2665631,omitempty"
   // Specifies the date, in UTC, after which a Message object is expired by the server.
-  optional int64 retention_date = 140; // @gotags: msg:"1231664"
+  optional int64 retention_date = 140; // @gotags: msg:"1231664,omitempty"
   // Contains flags that specify the status or nature of an item's retention tag or archive tag.
-  optional int32 retention_flags = 141; // @gotags: msg:"123173"
+  optional int32 retention_flags = 141; // @gotags: msg:"123173,omitempty"
   // Specifies the number of days that a Message object can remain unarchived.
-  optional int32 retention_period = 142; // @gotags: msg:"123143"
+  optional int32 retention_period = 142; // @gotags: msg:"123143,omitempty"
   // Indicates whether the PidTagBody property (section 2.618) and the PidTagRtfCompressed property (section 2.941) contain the same text (ignoring formatting).
-  optional bool rtf_in_sync = 144; // @gotags: msg:"361511"
+  optional bool rtf_in_sync = 144; // @gotags: msg:"361511,omitempty"
   // Contains the email address type of the sending mailbox owner.
-  optional string sender_address_type = 145; // @gotags: msg:"310231"
+  optional string sender_address_type = 145; // @gotags: msg:"310231,omitempty"
   // Contains the email address of the sending mailbox owner.
-  optional string sender_email_address = 146; // @gotags: msg:"310331"
+  optional string sender_email_address = 146; // @gotags: msg:"310331,omitempty"
   // Reports the results of a Sender-ID check.
-  optional int32 sender_id_status = 148; // @gotags: msg:"165053"
+  optional int32 sender_id_status = 148; // @gotags: msg:"165053,omitempty"
   // Contains the display name of the sending mailbox owner.
-  optional string sender_name = 149; // @gotags: msg:"309831"
+  optional string sender_name = 149; // @gotags: msg:"309831,omitempty"
   // Contains a bitmask of message encoding preferences for email sent to an email-enabled entity that is represented by this Address Book object.
-  optional int32 send_internet_encoding = 151; // @gotags: msg:"149613"
+  optional int32 send_internet_encoding = 151; // @gotags: msg:"149613,omitempty"
   // Indicates whether the email-enabled entity represented by the Address Book object can receive all message content, including Rich Text Format (RTF) and other embedded objects.
-  optional bool send_rich_info = 152; // @gotags: msg:"1491211"
+  optional bool send_rich_info = 152; // @gotags: msg:"1491211,omitempty"
   // Indicates the sender's assessment of the sensitivity of the Message object.
-  optional int32 sensitivity = 153; // @gotags: msg:"543"
+  optional int32 sensitivity = 153; // @gotags: msg:"543,omitempty"
   // Contains an email address type.
-  optional string sent_representing_address_type = 154; // @gotags: msg:"10031"
+  optional string sent_representing_address_type = 154; // @gotags: msg:"10031,omitempty"
   // Contains an email address for the end user who is represented by the sending mailbox owner.
-  optional string sent_representing_email_address = 155; // @gotags: msg:"10131"
+  optional string sent_representing_email_address = 155; // @gotags: msg:"10131,omitempty"
   // Contains the display name for the end user who is represented by the sending mailbox owner.
-  optional string sent_representing_name = 157; // @gotags: msg:"6631"
+  optional string sent_representing_name = 157; // @gotags: msg:"6631,omitempty"
   // Contains the SMTP address of the Message object.
-  optional string smtp_address = 159; // @gotags: msg:"1484631"
+  optional string smtp_address = 159; // @gotags: msg:"1484631,omitempty"
   // Contains the subject of the email message.
-  optional string subject = 161; // @gotags: msg:"5531"
+  optional string subject = 161; // @gotags: msg:"5531,omitempty"
   // Contains the prefix for the subject of the message.
-  optional string subject_prefix = 162; // @gotags: msg:"6131"
+  optional string subject_prefix = 162; // @gotags: msg:"6131,omitempty"
   // Contains supplementary information about a delivery status notification, as specified in [RFC3464].
-  optional string supplementary_info = 163; // @gotags: msg:"309931"
+  optional string supplementary_info = 163; // @gotags: msg:"309931,omitempty"
   // Contains an Address Book object's display name that is transmitted with the message.
-  optional string transmittable_display_name = 164; // @gotags: msg:"1488031"
+  optional string transmittable_display_name = 164; // @gotags: msg:"1488031,omitempty"
   // Contains transport-specific message envelope information for email.
-  optional string transport_message_headers = 165; // @gotags: msg:"12531"
+  optional string transport_message_headers = 165; // @gotags: msg:"12531,omitempty"
 }

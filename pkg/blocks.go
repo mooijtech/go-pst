@@ -20,7 +20,7 @@ package pst
 import (
 	"encoding/binary"
 
-	"github.com/pkg/errors"
+	"github.com/rotisserie/eris"
 )
 
 // GetBlockSize returns the size of a block.
@@ -34,7 +34,7 @@ func (file *File) GetBlockSize() (int, error) {
 	case FormatTypeANSI:
 		return 8192, nil
 	default:
-		return 0, errors.WithStack(ErrFormatTypeUnsupported)
+		return 0, ErrFormatTypeUnsupported
 	}
 }
 
@@ -49,7 +49,7 @@ func (file *File) GetBlockTrailerSize() (int, error) {
 	case FormatTypeANSI:
 		return 12, nil
 	default:
-		return 0, errors.WithStack(ErrFormatTypeUnsupported)
+		return 0, ErrFormatTypeUnsupported
 	}
 }
 
@@ -62,85 +62,77 @@ const (
 	BlockTypeXXBlock BlockType = 2
 )
 
-// GetBlocks returns all blocks (XBlock/XXBlock) from a Heap-on-Node.
+// GetBlocks returns all blocks (XBlock/XXBlock) from a Heap-on-Node along with the total blocks size.
 // Internal identifiers have blocks.
 //
 // References:
 // - https://github.com/mooijtech/go-pst/tree/master/docs#xblock
 // - https://github.com/mooijtech/go-pst/tree/master/docs#xxblock
 func (file *File) GetBlocks(btreeNodeHeapOnNodeOffset int64) ([]BTreeNode, error) {
-	blockSignature := make([]byte, 1)
+	data := make([]byte, 4)
 
-	if _, err := file.ReadAt(blockSignature, btreeNodeHeapOnNodeOffset); err != nil {
-		return nil, errors.WithStack(err)
-	} else if blockSignature[0] != 1 {
-		return nil, errors.WithStack(ErrBlockSignatureInvalid)
+	if _, err := file.Reader.ReadAt(data, btreeNodeHeapOnNodeOffset); err != nil {
+		return nil, eris.Wrap(err, "failed to read block data")
 	}
 
-	// The number of block b-tree identifiers in this XBlock or XXBlock.
-	entryCount := make([]byte, 2)
+	blockSignature := data[0]                                // Must indicate 1.
+	blockLevel := data[1]                                    // 1 indicates XBlock, 2 indicates XXBlock.
+	entryCount := int(binary.LittleEndian.Uint16(data[2:4])) // The number of block b-tree identifiers in this XBlock or XXBlock.
 
-	if _, err := file.ReadAt(entryCount, btreeNodeHeapOnNodeOffset+2); err != nil {
-		return nil, errors.WithStack(err)
+	if blockSignature != 1 {
+		return nil, ErrBlockSignatureInvalid
 	}
 
-	blockLevel := make([]byte, 1)
-
-	if _, err := file.ReadAt(blockLevel, btreeNodeHeapOnNodeOffset+1); err != nil {
-		return nil, errors.WithStack(err)
-	}
+	identifierSize := int(GetIdentifierSize(file.FormatType))
 
 	var blocks []BTreeNode
 
-	switch BlockType(blockLevel[0]) {
+	switch BlockType(blockLevel) {
 	case BlockTypeXBlock:
 		// XBlock
-		blockIdentifierOffset := int64(8)
+		blockIdentifiers := make([]byte, entryCount*identifierSize)
 
-		for i := 0; i < int(binary.LittleEndian.Uint16(entryCount)); i++ {
-			blockIdentifier := make([]byte, GetIdentifierSize(file.FormatType))
+		if _, err := file.Reader.ReadAt(blockIdentifiers, btreeNodeHeapOnNodeOffset+8); err != nil {
+			return nil, eris.Wrap(err, "failed to read block identifiers")
+		}
 
-			if _, err := file.ReadAt(blockIdentifier, btreeNodeHeapOnNodeOffset+blockIdentifierOffset); err != nil {
-				return nil, errors.WithStack(err)
-			}
-
-			blockBTreeNode, err := file.GetBlockBTreeNode(GetIdentifierFromBytes(blockIdentifier, file.FormatType))
+		for i := 0; i < entryCount; i++ {
+			blockIdentifier := GetIdentifierFromBytes(blockIdentifiers[i*identifierSize:(i*identifierSize)+identifierSize], file.FormatType)
+			blockBTreeNode, err := file.GetBlockBTreeNode(blockIdentifier) // TODO - Async then wait for the block b-tree node lookups.
 
 			if err != nil {
-				return nil, errors.WithStack(err)
+				return nil, eris.Wrap(err, "failed to find block b-tree node")
 			}
 
 			blocks = append(blocks, blockBTreeNode)
-			blockIdentifierOffset += int64(GetIdentifierSize(file.FormatType))
 		}
 	case BlockTypeXXBlock:
 		// XXBlock
-		blockIdentifierOffset := int64(8)
+		blockIdentifiers := make([]byte, entryCount*int(GetIdentifierSize(file.FormatType)))
 
-		for i := 0; i < int(binary.LittleEndian.Uint16(entryCount)); i++ {
-			blockIdentifier := make([]byte, GetIdentifierSize(file.FormatType))
+		if _, err := file.Reader.ReadAt(blockIdentifiers, btreeNodeHeapOnNodeOffset+8); err != nil {
+			return nil, eris.Wrap(err, "failed to read block identifiers")
+		}
 
-			if _, err := file.ReadAt(blockIdentifier, btreeNodeHeapOnNodeOffset+blockIdentifierOffset); err != nil {
-				return nil, errors.WithStack(err)
-			}
-
-			blockBTreeNode, err := file.GetBlockBTreeNode(GetIdentifierFromBytes(blockIdentifier, file.FormatType))
+		for i := 0; i < entryCount; i++ {
+			blockIdentifier := GetIdentifierFromBytes(blockIdentifiers[i*identifierSize:(i*identifierSize)+identifierSize], file.FormatType)
+			blockBTreeNode, err := file.GetBlockBTreeNode(blockIdentifier) // TODO - Async then wait for the block b-tree node lookups.
 
 			if err != nil {
-				return nil, errors.WithStack(err)
+				return nil, eris.Wrap(err, "failed to find block b-tree node")
 			}
 
+			// Recursive.
 			blockBTreeNodeBlocks, err := file.GetBlocks(blockBTreeNode.FileOffset)
 
 			if err != nil {
-				return nil, errors.WithStack(err)
+				return nil, eris.Wrap(err, "failed to get blocks")
 			}
 
 			blocks = append(blocks, blockBTreeNodeBlocks...)
-			blockIdentifierOffset += int64(GetIdentifierSize(file.FormatType))
 		}
 	default:
-		return nil, errors.WithStack(ErrBlockTypeInvalid)
+		return nil, ErrBlockTypeInvalid
 	}
 
 	return blocks, nil
@@ -150,8 +142,8 @@ func (file *File) GetBlocks(btreeNodeHeapOnNodeOffset int64) ([]BTreeNode, error
 func (file *File) GetBlocksTotalSize(nodeEntryHeapOnNodeOffset int64) (uint32, error) {
 	blocksTotalSize := make([]byte, 4)
 
-	if _, err := file.ReadAt(blocksTotalSize, nodeEntryHeapOnNodeOffset+4); err != nil {
-		return 0, errors.WithStack(err)
+	if _, err := file.Reader.ReadAt(blocksTotalSize, nodeEntryHeapOnNodeOffset+4); err != nil {
+		return 0, eris.Wrap(err, "failed to read total blocks size")
 	}
 
 	return binary.LittleEndian.Uint32(blocksTotalSize), nil

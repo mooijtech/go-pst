@@ -21,9 +21,11 @@ import (
 	"bytes"
 	_ "embed"
 	"encoding/binary"
-	"github.com/pkg/errors"
+	"encoding/csv"
+	"github.com/rotisserie/eris"
 	"github.com/tinylib/msgp/msgp"
 	"io"
+	"strings"
 )
 
 // PropertyContext represents the property context.
@@ -41,18 +43,18 @@ func (propertyContext *PropertyContext) GetPropertyByID(propertyID uint16) (Prop
 		}
 	}
 
-	return Property{}, errors.WithStack(ErrPropertyNotFound)
+	return Property{}, ErrPropertyNotFound
 }
 
 // GetPropertyReader returns the reader for the property.
-func (propertyContext *PropertyContext) GetPropertyReader(propertyID uint16, localDescriptors ...LocalDescriptor) (PropertyReader, error) {
+func (propertyContext *PropertyContext) GetPropertyReader(propertyID uint16, localDescriptors []LocalDescriptor) (PropertyReader, error) {
 	property, err := propertyContext.GetPropertyByID(propertyID)
 
 	if err != nil {
-		return PropertyReader{}, errors.WithStack(err)
+		return PropertyReader{}, eris.Wrap(err, "failed to get property by ID")
 	}
 
-	return NewPropertyReader(property, propertyContext.HeapOnNode, propertyContext.File, localDescriptors...)
+	return NewPropertyReader(property, propertyContext.HeapOnNode, propertyContext.File, localDescriptors)
 }
 
 // GetPropertyContext returns the property context (BC Table).
@@ -61,22 +63,22 @@ func (file *File) GetPropertyContext(heapOnNode *HeapOnNode) (*PropertyContext, 
 	tableType, err := heapOnNode.GetTableType()
 
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, eris.Wrap(err, "failed to get table type")
 	} else if tableType != 188 {
 		// Must be Property Context.
-		return nil, errors.WithStack(ErrTableTypeInvalid)
+		return nil, ErrTableTypeInvalid
 	}
 
 	btreeOnHeapHeader, err := file.GetBTreeOnHeapHeader(heapOnNode)
 
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, eris.Wrap(err, "failed to get b-tree-on-heap header")
 	}
 
 	keyTableReader, err := file.GetHeapOnNodeReaderFromHNID(btreeOnHeapHeader.HIDRoot, *heapOnNode.Reader)
 
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, eris.Wrap(err, "failed to get key table reader")
 	}
 
 	keyCount := int(keyTableReader.Size()) / int(btreeOnHeapHeader.KeySize+btreeOnHeapHeader.ValueSize)
@@ -90,22 +92,23 @@ func (file *File) GetPropertyContext(heapOnNode *HeapOnNode) (*PropertyContext, 
 		// References [MS-PDF]: 2.3.3.3 PC BTH Record
 		var property Property
 
+		// TODO - We can merge into a single ReadAt again.
 		propertyID := make([]byte, 2)
 
 		if _, err := keyTableReader.ReadAt(propertyID, offset); err != nil {
-			return nil, errors.WithStack(err)
+			return nil, eris.Wrap(err, "failed to read property ID")
 		}
 
 		propertyType := make([]byte, 2)
 
 		if _, err := keyTableReader.ReadAt(propertyType, offset+2); err != nil {
-			return nil, errors.WithStack(err)
+			return nil, eris.Wrap(err, "failed to read property type")
 		}
 
 		data := make([]byte, 4)
 
 		if _, err := keyTableReader.ReadAt(data, offset+4); err != nil {
-			return nil, errors.WithStack(err)
+			return nil, eris.Wrap(err, "failed to read data")
 		}
 
 		property.ID = binary.LittleEndian.Uint16(propertyID)
@@ -139,32 +142,94 @@ func (propertyContext *PropertyContext) Populate(decodable msgp.Decodable, local
 	messagePackWriter := msgp.NewWriter(messagePackBuffer)
 
 	if err := messagePackWriter.WriteMapHeader(uint32(len(propertyContext.Properties))); err != nil {
-		return errors.WithStack(err)
+		return eris.Wrap(err, "failed to write MessagePack header")
 	}
 
 	for _, property := range propertyContext.Properties {
-		propertyReader, err := propertyContext.GetPropertyReader(property.ID, localDescriptors...)
+		propertyID := property.ID
+		//propertyMap := PropertyMap[strconv.Itoa(int(propertyID))]
+		//
+		//if len(propertyMap) == 2 && propertyMap[1] != "" {
+		//	// Get the propertyID from the Name-To-ID map.
+		//	//propertyIDFromNameToIDMap, err := propertyContext.File.NameToIDMap.GetPropertyID(int(propertyID), PropertySet(propertyMap[1]))
+		//	//
+		//	//if err != nil {
+		//	//	return eris.WithStack(err)
+		//	//}
+		//	//
+		//	//fmt.Printf("Got: %d\n", propertyIDFromNameToIDMap)
+		//
+		//	fmt.Printf("Got: %s\n", propertyMap[1])
+		//
+		//	// TODO - !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		//	// TODO - properties.csv keep track of PidLid, PidTag, PidName etc
+		//	// TODO - logic based on that to lookup in Name-To-ID or not.
+		//
+		//	for propertySetIndex, propertySet := range PropertySets {
+		//		if propertySet == propertyMap[1] {
+		//			fmt.Printf("Finding: %s - %d\n", propertyMap[0], propertySetIndex)
+		//
+		//			propertyIDFromNameToIDMap, err := propertyContext.File.NameToIDMap.GetPropertyID(int(property.ID), PropertySet(propertySetIndex))
+		//
+		//			if err != nil {
+		//				fromNameToID = true
+		//				break
+		//				//return eris.WithStack(err)
+		//			}
+		//		}
+		//	}
+		//
+		//	//for t, _ := range propertyContext.File.NameToIDMap. {
+		//	//	fmt.Printf("Got1: %s\n", t)
+		//	//}
+		//
+		//	// TODO - NameToID has the GUID (string) -  PropertySet(propertyMap[1] to PropertyID
+		//}
 
-		if err != nil && !errors.Is(err, ErrPropertyNoData) {
-			return errors.WithStack(err)
+		// TODO - Map using JSON name instead of propertyID.
+		propertyReader, err := propertyContext.GetPropertyReader(propertyID, localDescriptors)
+
+		if err != nil && !eris.Is(err, ErrPropertyNoData) {
+			return eris.Wrap(err, "failed to get property reader")
 		}
 
+		// TODO - This is a hot-path, optimize this.
 		err = propertyReader.WriteMessagePackValue(messagePackWriter)
 
-		if err != nil && !errors.Is(err, ErrPropertyNoData) {
-			return errors.WithStack(err)
+		if err != nil && !eris.Is(err, ErrPropertyNoData) {
+			return eris.Wrap(err, "failed to write MessagePack value")
 		}
 	}
 
 	if err := messagePackWriter.Flush(); err != nil {
-		return errors.WithStack(err)
+		return eris.Wrap(err, "failed to flush MessagePack writer")
 	}
 
 	err := decodable.DecodeMsg(msgp.NewReader(messagePackBuffer))
 
-	if err != nil && !errors.Is(err, io.EOF) {
-		return errors.WithStack(err)
+	if err != nil && !eris.Is(err, io.EOF) {
+		return eris.Wrap(err, "failed to decode message")
 	}
 
 	return nil
+}
+
+//go:embed properties.csv
+var PropertyMapCSV string
+
+// PropertyMap maps the property ID to the struct tag and property set (if any).
+var PropertyMap = make(map[string][]string)
+
+func init() {
+	propertyMapReader := csv.NewReader(strings.NewReader(PropertyMapCSV))
+
+	csvProperties, err := propertyMapReader.ReadAll()
+
+	if err != nil {
+		panic(eris.Wrap(err, "failed to initialize property map"))
+	}
+
+	for _, row := range csvProperties {
+		PropertyMap[row[0]] = row[1:]
+	}
 }

@@ -847,770 +847,1050 @@ func (z *AddressBook) DecodeMsg(dc *msgp.Reader) (err error) {
 
 // EncodeMsg implements msgp.Encodable
 func (z *AddressBook) EncodeMsg(en *msgp.Writer) (err error) {
-	// map header, size 45
-	// write "1484831"
-	err = en.Append(0xde, 0x0, 0x2d, 0xa7, 0x31, 0x34, 0x38, 0x34, 0x38, 0x33, 0x31)
-	if err != nil {
-		return
-	}
+	// omitempty: check for empty values
+	zb0001Len := uint32(45)
+	var zb0001Mask uint64 /* 45 bits */
 	if z.Account == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.Account)
-		if err != nil {
-			err = msgp.WrapError(err, "Account")
-			return
-		}
-	}
-	// write "655333"
-	err = en.Append(0xa6, 0x36, 0x35, 0x35, 0x33, 0x33, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x1
 	}
 	if z.AddressBookContainerId == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.AddressBookContainerId)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookContainerId")
-			return
-		}
-	}
-	// write "328743"
-	err = en.Append(0xa6, 0x33, 0x32, 0x38, 0x37, 0x34, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x2
 	}
 	if z.AddressBookDeliveryContentLength == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.AddressBookDeliveryContentLength)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookDeliveryContentLength")
-			return
-		}
-	}
-	// write "1484731"
-	err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x34, 0x37, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x4
 	}
 	if z.AddressBookDisplayNamePrintable == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.AddressBookDisplayNamePrintable)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookDisplayNamePrintable")
-			return
-		}
-	}
-	// write "359873"
-	err = en.Append(0xa6, 0x33, 0x35, 0x39, 0x38, 0x37, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x8
 	}
 	if z.AddressBookDisplayTypeExtended == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.AddressBookDisplayTypeExtended)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookDisplayTypeExtended")
-			return
-		}
-	}
-	// write "360673"
-	err = en.Append(0xa6, 0x33, 0x36, 0x30, 0x36, 0x37, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x10
 	}
 	if z.AddressBookDistributionListExternalMemberCount == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.AddressBookDistributionListExternalMemberCount)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookDistributionListExternalMemberCount")
-			return
-		}
-	}
-	// write "360663"
-	err = en.Append(0xa6, 0x33, 0x36, 0x30, 0x36, 0x36, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x20
 	}
 	if z.AddressBookDistributionListMemberCount == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.AddressBookDistributionListMemberCount)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookDistributionListMemberCount")
-			return
-		}
-	}
-	// write "3281331"
-	err = en.Append(0xa7, 0x33, 0x32, 0x38, 0x31, 0x33, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x40
 	}
 	if z.AddressBookExtensionAttribute1 == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.AddressBookExtensionAttribute1)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookExtensionAttribute1")
-			return
-		}
-	}
-	// write "3282231"
-	err = en.Append(0xa7, 0x33, 0x32, 0x38, 0x32, 0x32, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x80
 	}
 	if z.AddressBookExtensionAttribute10 == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.AddressBookExtensionAttribute10)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookExtensionAttribute10")
-			return
-		}
-	}
-	// write "3592731"
-	err = en.Append(0xa7, 0x33, 0x35, 0x39, 0x32, 0x37, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x100
 	}
 	if z.AddressBookExtensionAttribute11 == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.AddressBookExtensionAttribute11)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookExtensionAttribute11")
-			return
-		}
-	}
-	// write "3592831"
-	err = en.Append(0xa7, 0x33, 0x35, 0x39, 0x32, 0x38, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x200
 	}
 	if z.AddressBookExtensionAttribute12 == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.AddressBookExtensionAttribute12)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookExtensionAttribute12")
-			return
-		}
-	}
-	// write "3592931"
-	err = en.Append(0xa7, 0x33, 0x35, 0x39, 0x32, 0x39, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x400
 	}
 	if z.AddressBookExtensionAttribute13 == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.AddressBookExtensionAttribute13)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookExtensionAttribute13")
-			return
-		}
-	}
-	// write "3593631"
-	err = en.Append(0xa7, 0x33, 0x35, 0x39, 0x33, 0x36, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x800
 	}
 	if z.AddressBookExtensionAttribute14 == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.AddressBookExtensionAttribute14)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookExtensionAttribute14")
-			return
-		}
-	}
-	// write "3593731"
-	err = en.Append(0xa7, 0x33, 0x35, 0x39, 0x33, 0x37, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x1000
 	}
 	if z.AddressBookExtensionAttribute15 == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.AddressBookExtensionAttribute15)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookExtensionAttribute15")
-			return
-		}
-	}
-	// write "3281431"
-	err = en.Append(0xa7, 0x33, 0x32, 0x38, 0x31, 0x34, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x2000
 	}
 	if z.AddressBookExtensionAttribute2 == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.AddressBookExtensionAttribute2)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookExtensionAttribute2")
-			return
-		}
-	}
-	// write "3281531"
-	err = en.Append(0xa7, 0x33, 0x32, 0x38, 0x31, 0x35, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x4000
 	}
 	if z.AddressBookExtensionAttribute3 == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.AddressBookExtensionAttribute3)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookExtensionAttribute3")
-			return
-		}
-	}
-	// write "3281631"
-	err = en.Append(0xa7, 0x33, 0x32, 0x38, 0x31, 0x36, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x8000
 	}
 	if z.AddressBookExtensionAttribute4 == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.AddressBookExtensionAttribute4)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookExtensionAttribute4")
-			return
-		}
-	}
-	// write "3281731"
-	err = en.Append(0xa7, 0x33, 0x32, 0x38, 0x31, 0x37, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x10000
 	}
 	if z.AddressBookExtensionAttribute5 == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.AddressBookExtensionAttribute5)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookExtensionAttribute5")
-			return
-		}
-	}
-	// write "3281831"
-	err = en.Append(0xa7, 0x33, 0x32, 0x38, 0x31, 0x38, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x20000
 	}
 	if z.AddressBookExtensionAttribute6 == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.AddressBookExtensionAttribute6)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookExtensionAttribute6")
-			return
-		}
-	}
-	// write "3281931"
-	err = en.Append(0xa7, 0x33, 0x32, 0x38, 0x31, 0x39, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x40000
 	}
 	if z.AddressBookExtensionAttribute7 == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.AddressBookExtensionAttribute7)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookExtensionAttribute7")
-			return
-		}
-	}
-	// write "3282031"
-	err = en.Append(0xa7, 0x33, 0x32, 0x38, 0x32, 0x30, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x80000
 	}
 	if z.AddressBookExtensionAttribute8 == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.AddressBookExtensionAttribute8)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookExtensionAttribute8")
-			return
-		}
-	}
-	// write "3282131"
-	err = en.Append(0xa7, 0x33, 0x32, 0x38, 0x32, 0x31, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x100000
 	}
 	if z.AddressBookExtensionAttribute9 == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.AddressBookExtensionAttribute9)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookExtensionAttribute9")
-			return
-		}
-	}
-	// write "3277231"
-	err = en.Append(0xa7, 0x33, 0x32, 0x37, 0x37, 0x32, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x200000
 	}
 	if z.AddressBookFolderPathname == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.AddressBookFolderPathname)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookFolderPathname")
-			return
-		}
-	}
-	// write "3606111"
-	err = en.Append(0xa7, 0x33, 0x36, 0x30, 0x36, 0x31, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x400000
 	}
 	if z.AddressBookHierarchicalIsHierarchicalGroup == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.AddressBookHierarchicalIsHierarchicalGroup)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookHierarchicalIsHierarchicalGroup")
-			return
-		}
-	}
-	// write "3599230"
-	err = en.Append(0xa7, 0x33, 0x35, 0x39, 0x39, 0x32, 0x33, 0x30)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x800000
 	}
 	if z.AddressBookHierarchicalRootDepartment == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.AddressBookHierarchicalRootDepartment)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookHierarchicalRootDepartment")
-			return
-		}
-	}
-	// write "3277430"
-	err = en.Append(0xa7, 0x33, 0x32, 0x37, 0x37, 0x34, 0x33, 0x30)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x1000000
 	}
 	if z.AddressBookHomeMessageDatabase == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.AddressBookHomeMessageDatabase)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookHomeMessageDatabase")
-			return
-		}
-	}
-	// write "6553111"
-	err = en.Append(0xa7, 0x36, 0x35, 0x35, 0x33, 0x31, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x2000000
 	}
 	if z.AddressBookIsMaster == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.AddressBookIsMaster)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookIsMaster")
-			return
-		}
-	}
-	// write "3277630"
-	err = en.Append(0xa7, 0x33, 0x32, 0x37, 0x37, 0x36, 0x33, 0x30)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x4000000
 	}
 	if z.AddressBookIsMemberOfDistributionList == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.AddressBookIsMemberOfDistributionList)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookIsMemberOfDistributionList")
-			return
-		}
-	}
-	// write "3277331"
-	err = en.Append(0xa7, 0x33, 0x32, 0x37, 0x37, 0x33, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x8000000
 	}
 	if z.AddressBookManagerDistinguishedName == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.AddressBookManagerDistinguishedName)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookManagerDistinguishedName")
-			return
-		}
-	}
-	// write "3602111"
-	err = en.Append(0xa7, 0x33, 0x36, 0x30, 0x32, 0x31, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x10000000
 	}
 	if z.AddressBookModerationEnabled == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.AddressBookModerationEnabled)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookModerationEnabled")
-			return
-		}
-	}
-	// write "3282831"
-	err = en.Append(0xa7, 0x33, 0x32, 0x38, 0x32, 0x38, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x20000000
 	}
 	if z.AddressBookObjectDistinguishedName == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.AddressBookObjectDistinguishedName)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookObjectDistinguishedName")
-			return
-		}
-	}
-	// write "3600831"
-	err = en.Append(0xa7, 0x33, 0x36, 0x30, 0x30, 0x38, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x40000000
 	}
 	if z.AddressBookOrganizationalUnitRootDistinguishedName == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.AddressBookOrganizationalUnitRootDistinguishedName)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookOrganizationalUnitRootDistinguishedName")
-			return
-		}
-	}
-	// write "3598531"
-	err = en.Append(0xa7, 0x33, 0x35, 0x39, 0x38, 0x35, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x80000000
 	}
 	if z.AddressBookPhoneticCompanyName == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.AddressBookPhoneticCompanyName)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookPhoneticCompanyName")
-			return
-		}
-	}
-	// write "3598431"
-	err = en.Append(0xa7, 0x33, 0x35, 0x39, 0x38, 0x34, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x100000000
 	}
 	if z.AddressBookPhoneticDepartmentName == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.AddressBookPhoneticDepartmentName)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookPhoneticDepartmentName")
-			return
-		}
-	}
-	// write "3598631"
-	err = en.Append(0xa7, 0x33, 0x35, 0x39, 0x38, 0x36, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x200000000
 	}
 	if z.AddressBookPhoneticDisplayName == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.AddressBookPhoneticDisplayName)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookPhoneticDisplayName")
-			return
-		}
-	}
-	// write "3598231"
-	err = en.Append(0xa7, 0x33, 0x35, 0x39, 0x38, 0x32, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x400000000
 	}
 	if z.AddressBookPhoneticGivenName == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.AddressBookPhoneticGivenName)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookPhoneticGivenName")
-			return
-		}
-	}
-	// write "3598331"
-	err = en.Append(0xa7, 0x33, 0x35, 0x39, 0x38, 0x33, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x800000000
 	}
 	if z.AddressBookPhoneticSurname == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.AddressBookPhoneticSurname)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookPhoneticSurname")
-			return
-		}
-	}
-	// write "20553"
-	err = en.Append(0xa5, 0x32, 0x30, 0x35, 0x35, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x1000000000
 	}
 	if z.AddressBookRoomCapacity == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.AddressBookRoomCapacity)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookRoomCapacity")
-			return
-		}
-	}
-	// write "205731"
-	err = en.Append(0xa6, 0x32, 0x30, 0x35, 0x37, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x2000000000
 	}
 	if z.AddressBookRoomDescription == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.AddressBookRoomDescription)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookRoomDescription")
-			return
-		}
-	}
-	// write "360003"
-	err = en.Append(0xa6, 0x33, 0x36, 0x30, 0x30, 0x30, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x4000000000
 	}
 	if z.AddressBookSeniorityIndex == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.AddressBookSeniorityIndex)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookSeniorityIndex")
-			return
-		}
-	}
-	// write "3278531"
-	err = en.Append(0xa7, 0x33, 0x32, 0x37, 0x38, 0x35, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x8000000000
 	}
 	if z.AddressBookTargetAddress == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.AddressBookTargetAddress)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookTargetAddress")
-			return
-		}
-	}
-	// write "1383631"
-	err = en.Append(0xa7, 0x31, 0x33, 0x38, 0x33, 0x36, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x10000000000
 	}
 	if z.Anr == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.Anr)
-		if err != nil {
-			err = msgp.WrapError(err, "Anr")
-			return
-		}
-	}
-	// write "138243"
-	err = en.Append(0xa6, 0x31, 0x33, 0x38, 0x32, 0x34, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x20000000000
 	}
 	if z.ContainerFlags == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.ContainerFlags)
-		if err != nil {
-			err = msgp.WrapError(err, "ContainerFlags")
-			return
-		}
-	}
-	// write "145923"
-	err = en.Append(0xa6, 0x31, 0x34, 0x35, 0x39, 0x32, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x40000000000
 	}
 	if z.DisplayType == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.DisplayType)
-		if err != nil {
-			err = msgp.WrapError(err, "DisplayType")
-			return
-		}
+		zb0001Len--
+		zb0001Mask |= 0x80000000000
 	}
-	// write "145973"
-	err = en.Append(0xa6, 0x31, 0x34, 0x35, 0x39, 0x37, 0x33)
+	if z.DisplayTypeEx == nil {
+		zb0001Len--
+		zb0001Mask |= 0x100000000000
+	}
+	// variable map header, size zb0001Len
+	err = en.WriteMapHeader(zb0001Len)
 	if err != nil {
 		return
 	}
-	if z.DisplayTypeEx == nil {
-		err = en.WriteNil()
+	if zb0001Len == 0 {
+		return
+	}
+	if (zb0001Mask & 0x1) == 0 { // if not empty
+		// write "1484831"
+		err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x34, 0x38, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteInt32(*z.DisplayTypeEx)
+		if z.Account == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.Account)
+			if err != nil {
+				err = msgp.WrapError(err, "Account")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x2) == 0 { // if not empty
+		// write "655333"
+		err = en.Append(0xa6, 0x36, 0x35, 0x35, 0x33, 0x33, 0x33)
 		if err != nil {
-			err = msgp.WrapError(err, "DisplayTypeEx")
 			return
+		}
+		if z.AddressBookContainerId == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.AddressBookContainerId)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookContainerId")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x4) == 0 { // if not empty
+		// write "328743"
+		err = en.Append(0xa6, 0x33, 0x32, 0x38, 0x37, 0x34, 0x33)
+		if err != nil {
+			return
+		}
+		if z.AddressBookDeliveryContentLength == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.AddressBookDeliveryContentLength)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookDeliveryContentLength")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x8) == 0 { // if not empty
+		// write "1484731"
+		err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x34, 0x37, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AddressBookDisplayNamePrintable == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AddressBookDisplayNamePrintable)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookDisplayNamePrintable")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x10) == 0 { // if not empty
+		// write "359873"
+		err = en.Append(0xa6, 0x33, 0x35, 0x39, 0x38, 0x37, 0x33)
+		if err != nil {
+			return
+		}
+		if z.AddressBookDisplayTypeExtended == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.AddressBookDisplayTypeExtended)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookDisplayTypeExtended")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x20) == 0 { // if not empty
+		// write "360673"
+		err = en.Append(0xa6, 0x33, 0x36, 0x30, 0x36, 0x37, 0x33)
+		if err != nil {
+			return
+		}
+		if z.AddressBookDistributionListExternalMemberCount == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.AddressBookDistributionListExternalMemberCount)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookDistributionListExternalMemberCount")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x40) == 0 { // if not empty
+		// write "360663"
+		err = en.Append(0xa6, 0x33, 0x36, 0x30, 0x36, 0x36, 0x33)
+		if err != nil {
+			return
+		}
+		if z.AddressBookDistributionListMemberCount == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.AddressBookDistributionListMemberCount)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookDistributionListMemberCount")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x80) == 0 { // if not empty
+		// write "3281331"
+		err = en.Append(0xa7, 0x33, 0x32, 0x38, 0x31, 0x33, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AddressBookExtensionAttribute1 == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AddressBookExtensionAttribute1)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookExtensionAttribute1")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x100) == 0 { // if not empty
+		// write "3282231"
+		err = en.Append(0xa7, 0x33, 0x32, 0x38, 0x32, 0x32, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AddressBookExtensionAttribute10 == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AddressBookExtensionAttribute10)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookExtensionAttribute10")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x200) == 0 { // if not empty
+		// write "3592731"
+		err = en.Append(0xa7, 0x33, 0x35, 0x39, 0x32, 0x37, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AddressBookExtensionAttribute11 == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AddressBookExtensionAttribute11)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookExtensionAttribute11")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x400) == 0 { // if not empty
+		// write "3592831"
+		err = en.Append(0xa7, 0x33, 0x35, 0x39, 0x32, 0x38, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AddressBookExtensionAttribute12 == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AddressBookExtensionAttribute12)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookExtensionAttribute12")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x800) == 0 { // if not empty
+		// write "3592931"
+		err = en.Append(0xa7, 0x33, 0x35, 0x39, 0x32, 0x39, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AddressBookExtensionAttribute13 == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AddressBookExtensionAttribute13)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookExtensionAttribute13")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x1000) == 0 { // if not empty
+		// write "3593631"
+		err = en.Append(0xa7, 0x33, 0x35, 0x39, 0x33, 0x36, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AddressBookExtensionAttribute14 == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AddressBookExtensionAttribute14)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookExtensionAttribute14")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x2000) == 0 { // if not empty
+		// write "3593731"
+		err = en.Append(0xa7, 0x33, 0x35, 0x39, 0x33, 0x37, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AddressBookExtensionAttribute15 == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AddressBookExtensionAttribute15)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookExtensionAttribute15")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x4000) == 0 { // if not empty
+		// write "3281431"
+		err = en.Append(0xa7, 0x33, 0x32, 0x38, 0x31, 0x34, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AddressBookExtensionAttribute2 == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AddressBookExtensionAttribute2)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookExtensionAttribute2")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x8000) == 0 { // if not empty
+		// write "3281531"
+		err = en.Append(0xa7, 0x33, 0x32, 0x38, 0x31, 0x35, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AddressBookExtensionAttribute3 == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AddressBookExtensionAttribute3)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookExtensionAttribute3")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x10000) == 0 { // if not empty
+		// write "3281631"
+		err = en.Append(0xa7, 0x33, 0x32, 0x38, 0x31, 0x36, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AddressBookExtensionAttribute4 == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AddressBookExtensionAttribute4)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookExtensionAttribute4")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x20000) == 0 { // if not empty
+		// write "3281731"
+		err = en.Append(0xa7, 0x33, 0x32, 0x38, 0x31, 0x37, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AddressBookExtensionAttribute5 == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AddressBookExtensionAttribute5)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookExtensionAttribute5")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x40000) == 0 { // if not empty
+		// write "3281831"
+		err = en.Append(0xa7, 0x33, 0x32, 0x38, 0x31, 0x38, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AddressBookExtensionAttribute6 == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AddressBookExtensionAttribute6)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookExtensionAttribute6")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x80000) == 0 { // if not empty
+		// write "3281931"
+		err = en.Append(0xa7, 0x33, 0x32, 0x38, 0x31, 0x39, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AddressBookExtensionAttribute7 == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AddressBookExtensionAttribute7)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookExtensionAttribute7")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x100000) == 0 { // if not empty
+		// write "3282031"
+		err = en.Append(0xa7, 0x33, 0x32, 0x38, 0x32, 0x30, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AddressBookExtensionAttribute8 == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AddressBookExtensionAttribute8)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookExtensionAttribute8")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x200000) == 0 { // if not empty
+		// write "3282131"
+		err = en.Append(0xa7, 0x33, 0x32, 0x38, 0x32, 0x31, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AddressBookExtensionAttribute9 == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AddressBookExtensionAttribute9)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookExtensionAttribute9")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x400000) == 0 { // if not empty
+		// write "3277231"
+		err = en.Append(0xa7, 0x33, 0x32, 0x37, 0x37, 0x32, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AddressBookFolderPathname == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AddressBookFolderPathname)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookFolderPathname")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x800000) == 0 { // if not empty
+		// write "3606111"
+		err = en.Append(0xa7, 0x33, 0x36, 0x30, 0x36, 0x31, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AddressBookHierarchicalIsHierarchicalGroup == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.AddressBookHierarchicalIsHierarchicalGroup)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookHierarchicalIsHierarchicalGroup")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x1000000) == 0 { // if not empty
+		// write "3599230"
+		err = en.Append(0xa7, 0x33, 0x35, 0x39, 0x39, 0x32, 0x33, 0x30)
+		if err != nil {
+			return
+		}
+		if z.AddressBookHierarchicalRootDepartment == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AddressBookHierarchicalRootDepartment)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookHierarchicalRootDepartment")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x2000000) == 0 { // if not empty
+		// write "3277430"
+		err = en.Append(0xa7, 0x33, 0x32, 0x37, 0x37, 0x34, 0x33, 0x30)
+		if err != nil {
+			return
+		}
+		if z.AddressBookHomeMessageDatabase == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AddressBookHomeMessageDatabase)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookHomeMessageDatabase")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x4000000) == 0 { // if not empty
+		// write "6553111"
+		err = en.Append(0xa7, 0x36, 0x35, 0x35, 0x33, 0x31, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AddressBookIsMaster == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.AddressBookIsMaster)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookIsMaster")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x8000000) == 0 { // if not empty
+		// write "3277630"
+		err = en.Append(0xa7, 0x33, 0x32, 0x37, 0x37, 0x36, 0x33, 0x30)
+		if err != nil {
+			return
+		}
+		if z.AddressBookIsMemberOfDistributionList == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AddressBookIsMemberOfDistributionList)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookIsMemberOfDistributionList")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x10000000) == 0 { // if not empty
+		// write "3277331"
+		err = en.Append(0xa7, 0x33, 0x32, 0x37, 0x37, 0x33, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AddressBookManagerDistinguishedName == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AddressBookManagerDistinguishedName)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookManagerDistinguishedName")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x20000000) == 0 { // if not empty
+		// write "3602111"
+		err = en.Append(0xa7, 0x33, 0x36, 0x30, 0x32, 0x31, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AddressBookModerationEnabled == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.AddressBookModerationEnabled)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookModerationEnabled")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x40000000) == 0 { // if not empty
+		// write "3282831"
+		err = en.Append(0xa7, 0x33, 0x32, 0x38, 0x32, 0x38, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AddressBookObjectDistinguishedName == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AddressBookObjectDistinguishedName)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookObjectDistinguishedName")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x80000000) == 0 { // if not empty
+		// write "3600831"
+		err = en.Append(0xa7, 0x33, 0x36, 0x30, 0x30, 0x38, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AddressBookOrganizationalUnitRootDistinguishedName == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AddressBookOrganizationalUnitRootDistinguishedName)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookOrganizationalUnitRootDistinguishedName")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x100000000) == 0 { // if not empty
+		// write "3598531"
+		err = en.Append(0xa7, 0x33, 0x35, 0x39, 0x38, 0x35, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AddressBookPhoneticCompanyName == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AddressBookPhoneticCompanyName)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookPhoneticCompanyName")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x200000000) == 0 { // if not empty
+		// write "3598431"
+		err = en.Append(0xa7, 0x33, 0x35, 0x39, 0x38, 0x34, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AddressBookPhoneticDepartmentName == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AddressBookPhoneticDepartmentName)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookPhoneticDepartmentName")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x400000000) == 0 { // if not empty
+		// write "3598631"
+		err = en.Append(0xa7, 0x33, 0x35, 0x39, 0x38, 0x36, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AddressBookPhoneticDisplayName == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AddressBookPhoneticDisplayName)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookPhoneticDisplayName")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x800000000) == 0 { // if not empty
+		// write "3598231"
+		err = en.Append(0xa7, 0x33, 0x35, 0x39, 0x38, 0x32, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AddressBookPhoneticGivenName == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AddressBookPhoneticGivenName)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookPhoneticGivenName")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x1000000000) == 0 { // if not empty
+		// write "3598331"
+		err = en.Append(0xa7, 0x33, 0x35, 0x39, 0x38, 0x33, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AddressBookPhoneticSurname == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AddressBookPhoneticSurname)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookPhoneticSurname")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x2000000000) == 0 { // if not empty
+		// write "20553"
+		err = en.Append(0xa5, 0x32, 0x30, 0x35, 0x35, 0x33)
+		if err != nil {
+			return
+		}
+		if z.AddressBookRoomCapacity == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.AddressBookRoomCapacity)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookRoomCapacity")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x4000000000) == 0 { // if not empty
+		// write "205731"
+		err = en.Append(0xa6, 0x32, 0x30, 0x35, 0x37, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AddressBookRoomDescription == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AddressBookRoomDescription)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookRoomDescription")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x8000000000) == 0 { // if not empty
+		// write "360003"
+		err = en.Append(0xa6, 0x33, 0x36, 0x30, 0x30, 0x30, 0x33)
+		if err != nil {
+			return
+		}
+		if z.AddressBookSeniorityIndex == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.AddressBookSeniorityIndex)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookSeniorityIndex")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x10000000000) == 0 { // if not empty
+		// write "3278531"
+		err = en.Append(0xa7, 0x33, 0x32, 0x37, 0x38, 0x35, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AddressBookTargetAddress == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AddressBookTargetAddress)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookTargetAddress")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x20000000000) == 0 { // if not empty
+		// write "1383631"
+		err = en.Append(0xa7, 0x31, 0x33, 0x38, 0x33, 0x36, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.Anr == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.Anr)
+			if err != nil {
+				err = msgp.WrapError(err, "Anr")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x40000000000) == 0 { // if not empty
+		// write "138243"
+		err = en.Append(0xa6, 0x31, 0x33, 0x38, 0x32, 0x34, 0x33)
+		if err != nil {
+			return
+		}
+		if z.ContainerFlags == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.ContainerFlags)
+			if err != nil {
+				err = msgp.WrapError(err, "ContainerFlags")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x80000000000) == 0 { // if not empty
+		// write "145923"
+		err = en.Append(0xa6, 0x31, 0x34, 0x35, 0x39, 0x32, 0x33)
+		if err != nil {
+			return
+		}
+		if z.DisplayType == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.DisplayType)
+			if err != nil {
+				err = msgp.WrapError(err, "DisplayType")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x100000000000) == 0 { // if not empty
+		// write "145973"
+		err = en.Append(0xa6, 0x31, 0x34, 0x35, 0x39, 0x37, 0x33)
+		if err != nil {
+			return
+		}
+		if z.DisplayTypeEx == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.DisplayTypeEx)
+			if err != nil {
+				err = msgp.WrapError(err, "DisplayTypeEx")
+				return
+			}
 		}
 	}
 	return
@@ -1619,321 +1899,598 @@ func (z *AddressBook) EncodeMsg(en *msgp.Writer) (err error) {
 // MarshalMsg implements msgp.Marshaler
 func (z *AddressBook) MarshalMsg(b []byte) (o []byte, err error) {
 	o = msgp.Require(b, z.Msgsize())
-	// map header, size 45
-	// string "1484831"
-	o = append(o, 0xde, 0x0, 0x2d, 0xa7, 0x31, 0x34, 0x38, 0x34, 0x38, 0x33, 0x31)
+	// omitempty: check for empty values
+	zb0001Len := uint32(45)
+	var zb0001Mask uint64 /* 45 bits */
 	if z.Account == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.Account)
+		zb0001Len--
+		zb0001Mask |= 0x1
 	}
-	// string "655333"
-	o = append(o, 0xa6, 0x36, 0x35, 0x35, 0x33, 0x33, 0x33)
 	if z.AddressBookContainerId == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.AddressBookContainerId)
+		zb0001Len--
+		zb0001Mask |= 0x2
 	}
-	// string "328743"
-	o = append(o, 0xa6, 0x33, 0x32, 0x38, 0x37, 0x34, 0x33)
 	if z.AddressBookDeliveryContentLength == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.AddressBookDeliveryContentLength)
+		zb0001Len--
+		zb0001Mask |= 0x4
 	}
-	// string "1484731"
-	o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x34, 0x37, 0x33, 0x31)
 	if z.AddressBookDisplayNamePrintable == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AddressBookDisplayNamePrintable)
+		zb0001Len--
+		zb0001Mask |= 0x8
 	}
-	// string "359873"
-	o = append(o, 0xa6, 0x33, 0x35, 0x39, 0x38, 0x37, 0x33)
 	if z.AddressBookDisplayTypeExtended == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.AddressBookDisplayTypeExtended)
+		zb0001Len--
+		zb0001Mask |= 0x10
 	}
-	// string "360673"
-	o = append(o, 0xa6, 0x33, 0x36, 0x30, 0x36, 0x37, 0x33)
 	if z.AddressBookDistributionListExternalMemberCount == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.AddressBookDistributionListExternalMemberCount)
+		zb0001Len--
+		zb0001Mask |= 0x20
 	}
-	// string "360663"
-	o = append(o, 0xa6, 0x33, 0x36, 0x30, 0x36, 0x36, 0x33)
 	if z.AddressBookDistributionListMemberCount == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.AddressBookDistributionListMemberCount)
+		zb0001Len--
+		zb0001Mask |= 0x40
 	}
-	// string "3281331"
-	o = append(o, 0xa7, 0x33, 0x32, 0x38, 0x31, 0x33, 0x33, 0x31)
 	if z.AddressBookExtensionAttribute1 == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AddressBookExtensionAttribute1)
+		zb0001Len--
+		zb0001Mask |= 0x80
 	}
-	// string "3282231"
-	o = append(o, 0xa7, 0x33, 0x32, 0x38, 0x32, 0x32, 0x33, 0x31)
 	if z.AddressBookExtensionAttribute10 == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AddressBookExtensionAttribute10)
+		zb0001Len--
+		zb0001Mask |= 0x100
 	}
-	// string "3592731"
-	o = append(o, 0xa7, 0x33, 0x35, 0x39, 0x32, 0x37, 0x33, 0x31)
 	if z.AddressBookExtensionAttribute11 == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AddressBookExtensionAttribute11)
+		zb0001Len--
+		zb0001Mask |= 0x200
 	}
-	// string "3592831"
-	o = append(o, 0xa7, 0x33, 0x35, 0x39, 0x32, 0x38, 0x33, 0x31)
 	if z.AddressBookExtensionAttribute12 == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AddressBookExtensionAttribute12)
+		zb0001Len--
+		zb0001Mask |= 0x400
 	}
-	// string "3592931"
-	o = append(o, 0xa7, 0x33, 0x35, 0x39, 0x32, 0x39, 0x33, 0x31)
 	if z.AddressBookExtensionAttribute13 == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AddressBookExtensionAttribute13)
+		zb0001Len--
+		zb0001Mask |= 0x800
 	}
-	// string "3593631"
-	o = append(o, 0xa7, 0x33, 0x35, 0x39, 0x33, 0x36, 0x33, 0x31)
 	if z.AddressBookExtensionAttribute14 == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AddressBookExtensionAttribute14)
+		zb0001Len--
+		zb0001Mask |= 0x1000
 	}
-	// string "3593731"
-	o = append(o, 0xa7, 0x33, 0x35, 0x39, 0x33, 0x37, 0x33, 0x31)
 	if z.AddressBookExtensionAttribute15 == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AddressBookExtensionAttribute15)
+		zb0001Len--
+		zb0001Mask |= 0x2000
 	}
-	// string "3281431"
-	o = append(o, 0xa7, 0x33, 0x32, 0x38, 0x31, 0x34, 0x33, 0x31)
 	if z.AddressBookExtensionAttribute2 == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AddressBookExtensionAttribute2)
+		zb0001Len--
+		zb0001Mask |= 0x4000
 	}
-	// string "3281531"
-	o = append(o, 0xa7, 0x33, 0x32, 0x38, 0x31, 0x35, 0x33, 0x31)
 	if z.AddressBookExtensionAttribute3 == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AddressBookExtensionAttribute3)
+		zb0001Len--
+		zb0001Mask |= 0x8000
 	}
-	// string "3281631"
-	o = append(o, 0xa7, 0x33, 0x32, 0x38, 0x31, 0x36, 0x33, 0x31)
 	if z.AddressBookExtensionAttribute4 == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AddressBookExtensionAttribute4)
+		zb0001Len--
+		zb0001Mask |= 0x10000
 	}
-	// string "3281731"
-	o = append(o, 0xa7, 0x33, 0x32, 0x38, 0x31, 0x37, 0x33, 0x31)
 	if z.AddressBookExtensionAttribute5 == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AddressBookExtensionAttribute5)
+		zb0001Len--
+		zb0001Mask |= 0x20000
 	}
-	// string "3281831"
-	o = append(o, 0xa7, 0x33, 0x32, 0x38, 0x31, 0x38, 0x33, 0x31)
 	if z.AddressBookExtensionAttribute6 == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AddressBookExtensionAttribute6)
+		zb0001Len--
+		zb0001Mask |= 0x40000
 	}
-	// string "3281931"
-	o = append(o, 0xa7, 0x33, 0x32, 0x38, 0x31, 0x39, 0x33, 0x31)
 	if z.AddressBookExtensionAttribute7 == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AddressBookExtensionAttribute7)
+		zb0001Len--
+		zb0001Mask |= 0x80000
 	}
-	// string "3282031"
-	o = append(o, 0xa7, 0x33, 0x32, 0x38, 0x32, 0x30, 0x33, 0x31)
 	if z.AddressBookExtensionAttribute8 == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AddressBookExtensionAttribute8)
+		zb0001Len--
+		zb0001Mask |= 0x100000
 	}
-	// string "3282131"
-	o = append(o, 0xa7, 0x33, 0x32, 0x38, 0x32, 0x31, 0x33, 0x31)
 	if z.AddressBookExtensionAttribute9 == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AddressBookExtensionAttribute9)
+		zb0001Len--
+		zb0001Mask |= 0x200000
 	}
-	// string "3277231"
-	o = append(o, 0xa7, 0x33, 0x32, 0x37, 0x37, 0x32, 0x33, 0x31)
 	if z.AddressBookFolderPathname == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AddressBookFolderPathname)
+		zb0001Len--
+		zb0001Mask |= 0x400000
 	}
-	// string "3606111"
-	o = append(o, 0xa7, 0x33, 0x36, 0x30, 0x36, 0x31, 0x31, 0x31)
 	if z.AddressBookHierarchicalIsHierarchicalGroup == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.AddressBookHierarchicalIsHierarchicalGroup)
+		zb0001Len--
+		zb0001Mask |= 0x800000
 	}
-	// string "3599230"
-	o = append(o, 0xa7, 0x33, 0x35, 0x39, 0x39, 0x32, 0x33, 0x30)
 	if z.AddressBookHierarchicalRootDepartment == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AddressBookHierarchicalRootDepartment)
+		zb0001Len--
+		zb0001Mask |= 0x1000000
 	}
-	// string "3277430"
-	o = append(o, 0xa7, 0x33, 0x32, 0x37, 0x37, 0x34, 0x33, 0x30)
 	if z.AddressBookHomeMessageDatabase == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AddressBookHomeMessageDatabase)
+		zb0001Len--
+		zb0001Mask |= 0x2000000
 	}
-	// string "6553111"
-	o = append(o, 0xa7, 0x36, 0x35, 0x35, 0x33, 0x31, 0x31, 0x31)
 	if z.AddressBookIsMaster == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.AddressBookIsMaster)
+		zb0001Len--
+		zb0001Mask |= 0x4000000
 	}
-	// string "3277630"
-	o = append(o, 0xa7, 0x33, 0x32, 0x37, 0x37, 0x36, 0x33, 0x30)
 	if z.AddressBookIsMemberOfDistributionList == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AddressBookIsMemberOfDistributionList)
+		zb0001Len--
+		zb0001Mask |= 0x8000000
 	}
-	// string "3277331"
-	o = append(o, 0xa7, 0x33, 0x32, 0x37, 0x37, 0x33, 0x33, 0x31)
 	if z.AddressBookManagerDistinguishedName == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AddressBookManagerDistinguishedName)
+		zb0001Len--
+		zb0001Mask |= 0x10000000
 	}
-	// string "3602111"
-	o = append(o, 0xa7, 0x33, 0x36, 0x30, 0x32, 0x31, 0x31, 0x31)
 	if z.AddressBookModerationEnabled == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.AddressBookModerationEnabled)
+		zb0001Len--
+		zb0001Mask |= 0x20000000
 	}
-	// string "3282831"
-	o = append(o, 0xa7, 0x33, 0x32, 0x38, 0x32, 0x38, 0x33, 0x31)
 	if z.AddressBookObjectDistinguishedName == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AddressBookObjectDistinguishedName)
+		zb0001Len--
+		zb0001Mask |= 0x40000000
 	}
-	// string "3600831"
-	o = append(o, 0xa7, 0x33, 0x36, 0x30, 0x30, 0x38, 0x33, 0x31)
 	if z.AddressBookOrganizationalUnitRootDistinguishedName == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AddressBookOrganizationalUnitRootDistinguishedName)
+		zb0001Len--
+		zb0001Mask |= 0x80000000
 	}
-	// string "3598531"
-	o = append(o, 0xa7, 0x33, 0x35, 0x39, 0x38, 0x35, 0x33, 0x31)
 	if z.AddressBookPhoneticCompanyName == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AddressBookPhoneticCompanyName)
+		zb0001Len--
+		zb0001Mask |= 0x100000000
 	}
-	// string "3598431"
-	o = append(o, 0xa7, 0x33, 0x35, 0x39, 0x38, 0x34, 0x33, 0x31)
 	if z.AddressBookPhoneticDepartmentName == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AddressBookPhoneticDepartmentName)
+		zb0001Len--
+		zb0001Mask |= 0x200000000
 	}
-	// string "3598631"
-	o = append(o, 0xa7, 0x33, 0x35, 0x39, 0x38, 0x36, 0x33, 0x31)
 	if z.AddressBookPhoneticDisplayName == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AddressBookPhoneticDisplayName)
+		zb0001Len--
+		zb0001Mask |= 0x400000000
 	}
-	// string "3598231"
-	o = append(o, 0xa7, 0x33, 0x35, 0x39, 0x38, 0x32, 0x33, 0x31)
 	if z.AddressBookPhoneticGivenName == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AddressBookPhoneticGivenName)
+		zb0001Len--
+		zb0001Mask |= 0x800000000
 	}
-	// string "3598331"
-	o = append(o, 0xa7, 0x33, 0x35, 0x39, 0x38, 0x33, 0x33, 0x31)
 	if z.AddressBookPhoneticSurname == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AddressBookPhoneticSurname)
+		zb0001Len--
+		zb0001Mask |= 0x1000000000
 	}
-	// string "20553"
-	o = append(o, 0xa5, 0x32, 0x30, 0x35, 0x35, 0x33)
 	if z.AddressBookRoomCapacity == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.AddressBookRoomCapacity)
+		zb0001Len--
+		zb0001Mask |= 0x2000000000
 	}
-	// string "205731"
-	o = append(o, 0xa6, 0x32, 0x30, 0x35, 0x37, 0x33, 0x31)
 	if z.AddressBookRoomDescription == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AddressBookRoomDescription)
+		zb0001Len--
+		zb0001Mask |= 0x4000000000
 	}
-	// string "360003"
-	o = append(o, 0xa6, 0x33, 0x36, 0x30, 0x30, 0x30, 0x33)
 	if z.AddressBookSeniorityIndex == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.AddressBookSeniorityIndex)
+		zb0001Len--
+		zb0001Mask |= 0x8000000000
 	}
-	// string "3278531"
-	o = append(o, 0xa7, 0x33, 0x32, 0x37, 0x38, 0x35, 0x33, 0x31)
 	if z.AddressBookTargetAddress == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AddressBookTargetAddress)
+		zb0001Len--
+		zb0001Mask |= 0x10000000000
 	}
-	// string "1383631"
-	o = append(o, 0xa7, 0x31, 0x33, 0x38, 0x33, 0x36, 0x33, 0x31)
 	if z.Anr == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.Anr)
+		zb0001Len--
+		zb0001Mask |= 0x20000000000
 	}
-	// string "138243"
-	o = append(o, 0xa6, 0x31, 0x33, 0x38, 0x32, 0x34, 0x33)
 	if z.ContainerFlags == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.ContainerFlags)
+		zb0001Len--
+		zb0001Mask |= 0x40000000000
 	}
-	// string "145923"
-	o = append(o, 0xa6, 0x31, 0x34, 0x35, 0x39, 0x32, 0x33)
 	if z.DisplayType == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.DisplayType)
+		zb0001Len--
+		zb0001Mask |= 0x80000000000
 	}
-	// string "145973"
-	o = append(o, 0xa6, 0x31, 0x34, 0x35, 0x39, 0x37, 0x33)
 	if z.DisplayTypeEx == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.DisplayTypeEx)
+		zb0001Len--
+		zb0001Mask |= 0x100000000000
+	}
+	// variable map header, size zb0001Len
+	o = msgp.AppendMapHeader(o, zb0001Len)
+	if zb0001Len == 0 {
+		return
+	}
+	if (zb0001Mask & 0x1) == 0 { // if not empty
+		// string "1484831"
+		o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x34, 0x38, 0x33, 0x31)
+		if z.Account == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.Account)
+		}
+	}
+	if (zb0001Mask & 0x2) == 0 { // if not empty
+		// string "655333"
+		o = append(o, 0xa6, 0x36, 0x35, 0x35, 0x33, 0x33, 0x33)
+		if z.AddressBookContainerId == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.AddressBookContainerId)
+		}
+	}
+	if (zb0001Mask & 0x4) == 0 { // if not empty
+		// string "328743"
+		o = append(o, 0xa6, 0x33, 0x32, 0x38, 0x37, 0x34, 0x33)
+		if z.AddressBookDeliveryContentLength == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.AddressBookDeliveryContentLength)
+		}
+	}
+	if (zb0001Mask & 0x8) == 0 { // if not empty
+		// string "1484731"
+		o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x34, 0x37, 0x33, 0x31)
+		if z.AddressBookDisplayNamePrintable == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AddressBookDisplayNamePrintable)
+		}
+	}
+	if (zb0001Mask & 0x10) == 0 { // if not empty
+		// string "359873"
+		o = append(o, 0xa6, 0x33, 0x35, 0x39, 0x38, 0x37, 0x33)
+		if z.AddressBookDisplayTypeExtended == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.AddressBookDisplayTypeExtended)
+		}
+	}
+	if (zb0001Mask & 0x20) == 0 { // if not empty
+		// string "360673"
+		o = append(o, 0xa6, 0x33, 0x36, 0x30, 0x36, 0x37, 0x33)
+		if z.AddressBookDistributionListExternalMemberCount == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.AddressBookDistributionListExternalMemberCount)
+		}
+	}
+	if (zb0001Mask & 0x40) == 0 { // if not empty
+		// string "360663"
+		o = append(o, 0xa6, 0x33, 0x36, 0x30, 0x36, 0x36, 0x33)
+		if z.AddressBookDistributionListMemberCount == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.AddressBookDistributionListMemberCount)
+		}
+	}
+	if (zb0001Mask & 0x80) == 0 { // if not empty
+		// string "3281331"
+		o = append(o, 0xa7, 0x33, 0x32, 0x38, 0x31, 0x33, 0x33, 0x31)
+		if z.AddressBookExtensionAttribute1 == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AddressBookExtensionAttribute1)
+		}
+	}
+	if (zb0001Mask & 0x100) == 0 { // if not empty
+		// string "3282231"
+		o = append(o, 0xa7, 0x33, 0x32, 0x38, 0x32, 0x32, 0x33, 0x31)
+		if z.AddressBookExtensionAttribute10 == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AddressBookExtensionAttribute10)
+		}
+	}
+	if (zb0001Mask & 0x200) == 0 { // if not empty
+		// string "3592731"
+		o = append(o, 0xa7, 0x33, 0x35, 0x39, 0x32, 0x37, 0x33, 0x31)
+		if z.AddressBookExtensionAttribute11 == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AddressBookExtensionAttribute11)
+		}
+	}
+	if (zb0001Mask & 0x400) == 0 { // if not empty
+		// string "3592831"
+		o = append(o, 0xa7, 0x33, 0x35, 0x39, 0x32, 0x38, 0x33, 0x31)
+		if z.AddressBookExtensionAttribute12 == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AddressBookExtensionAttribute12)
+		}
+	}
+	if (zb0001Mask & 0x800) == 0 { // if not empty
+		// string "3592931"
+		o = append(o, 0xa7, 0x33, 0x35, 0x39, 0x32, 0x39, 0x33, 0x31)
+		if z.AddressBookExtensionAttribute13 == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AddressBookExtensionAttribute13)
+		}
+	}
+	if (zb0001Mask & 0x1000) == 0 { // if not empty
+		// string "3593631"
+		o = append(o, 0xa7, 0x33, 0x35, 0x39, 0x33, 0x36, 0x33, 0x31)
+		if z.AddressBookExtensionAttribute14 == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AddressBookExtensionAttribute14)
+		}
+	}
+	if (zb0001Mask & 0x2000) == 0 { // if not empty
+		// string "3593731"
+		o = append(o, 0xa7, 0x33, 0x35, 0x39, 0x33, 0x37, 0x33, 0x31)
+		if z.AddressBookExtensionAttribute15 == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AddressBookExtensionAttribute15)
+		}
+	}
+	if (zb0001Mask & 0x4000) == 0 { // if not empty
+		// string "3281431"
+		o = append(o, 0xa7, 0x33, 0x32, 0x38, 0x31, 0x34, 0x33, 0x31)
+		if z.AddressBookExtensionAttribute2 == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AddressBookExtensionAttribute2)
+		}
+	}
+	if (zb0001Mask & 0x8000) == 0 { // if not empty
+		// string "3281531"
+		o = append(o, 0xa7, 0x33, 0x32, 0x38, 0x31, 0x35, 0x33, 0x31)
+		if z.AddressBookExtensionAttribute3 == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AddressBookExtensionAttribute3)
+		}
+	}
+	if (zb0001Mask & 0x10000) == 0 { // if not empty
+		// string "3281631"
+		o = append(o, 0xa7, 0x33, 0x32, 0x38, 0x31, 0x36, 0x33, 0x31)
+		if z.AddressBookExtensionAttribute4 == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AddressBookExtensionAttribute4)
+		}
+	}
+	if (zb0001Mask & 0x20000) == 0 { // if not empty
+		// string "3281731"
+		o = append(o, 0xa7, 0x33, 0x32, 0x38, 0x31, 0x37, 0x33, 0x31)
+		if z.AddressBookExtensionAttribute5 == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AddressBookExtensionAttribute5)
+		}
+	}
+	if (zb0001Mask & 0x40000) == 0 { // if not empty
+		// string "3281831"
+		o = append(o, 0xa7, 0x33, 0x32, 0x38, 0x31, 0x38, 0x33, 0x31)
+		if z.AddressBookExtensionAttribute6 == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AddressBookExtensionAttribute6)
+		}
+	}
+	if (zb0001Mask & 0x80000) == 0 { // if not empty
+		// string "3281931"
+		o = append(o, 0xa7, 0x33, 0x32, 0x38, 0x31, 0x39, 0x33, 0x31)
+		if z.AddressBookExtensionAttribute7 == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AddressBookExtensionAttribute7)
+		}
+	}
+	if (zb0001Mask & 0x100000) == 0 { // if not empty
+		// string "3282031"
+		o = append(o, 0xa7, 0x33, 0x32, 0x38, 0x32, 0x30, 0x33, 0x31)
+		if z.AddressBookExtensionAttribute8 == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AddressBookExtensionAttribute8)
+		}
+	}
+	if (zb0001Mask & 0x200000) == 0 { // if not empty
+		// string "3282131"
+		o = append(o, 0xa7, 0x33, 0x32, 0x38, 0x32, 0x31, 0x33, 0x31)
+		if z.AddressBookExtensionAttribute9 == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AddressBookExtensionAttribute9)
+		}
+	}
+	if (zb0001Mask & 0x400000) == 0 { // if not empty
+		// string "3277231"
+		o = append(o, 0xa7, 0x33, 0x32, 0x37, 0x37, 0x32, 0x33, 0x31)
+		if z.AddressBookFolderPathname == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AddressBookFolderPathname)
+		}
+	}
+	if (zb0001Mask & 0x800000) == 0 { // if not empty
+		// string "3606111"
+		o = append(o, 0xa7, 0x33, 0x36, 0x30, 0x36, 0x31, 0x31, 0x31)
+		if z.AddressBookHierarchicalIsHierarchicalGroup == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.AddressBookHierarchicalIsHierarchicalGroup)
+		}
+	}
+	if (zb0001Mask & 0x1000000) == 0 { // if not empty
+		// string "3599230"
+		o = append(o, 0xa7, 0x33, 0x35, 0x39, 0x39, 0x32, 0x33, 0x30)
+		if z.AddressBookHierarchicalRootDepartment == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AddressBookHierarchicalRootDepartment)
+		}
+	}
+	if (zb0001Mask & 0x2000000) == 0 { // if not empty
+		// string "3277430"
+		o = append(o, 0xa7, 0x33, 0x32, 0x37, 0x37, 0x34, 0x33, 0x30)
+		if z.AddressBookHomeMessageDatabase == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AddressBookHomeMessageDatabase)
+		}
+	}
+	if (zb0001Mask & 0x4000000) == 0 { // if not empty
+		// string "6553111"
+		o = append(o, 0xa7, 0x36, 0x35, 0x35, 0x33, 0x31, 0x31, 0x31)
+		if z.AddressBookIsMaster == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.AddressBookIsMaster)
+		}
+	}
+	if (zb0001Mask & 0x8000000) == 0 { // if not empty
+		// string "3277630"
+		o = append(o, 0xa7, 0x33, 0x32, 0x37, 0x37, 0x36, 0x33, 0x30)
+		if z.AddressBookIsMemberOfDistributionList == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AddressBookIsMemberOfDistributionList)
+		}
+	}
+	if (zb0001Mask & 0x10000000) == 0 { // if not empty
+		// string "3277331"
+		o = append(o, 0xa7, 0x33, 0x32, 0x37, 0x37, 0x33, 0x33, 0x31)
+		if z.AddressBookManagerDistinguishedName == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AddressBookManagerDistinguishedName)
+		}
+	}
+	if (zb0001Mask & 0x20000000) == 0 { // if not empty
+		// string "3602111"
+		o = append(o, 0xa7, 0x33, 0x36, 0x30, 0x32, 0x31, 0x31, 0x31)
+		if z.AddressBookModerationEnabled == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.AddressBookModerationEnabled)
+		}
+	}
+	if (zb0001Mask & 0x40000000) == 0 { // if not empty
+		// string "3282831"
+		o = append(o, 0xa7, 0x33, 0x32, 0x38, 0x32, 0x38, 0x33, 0x31)
+		if z.AddressBookObjectDistinguishedName == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AddressBookObjectDistinguishedName)
+		}
+	}
+	if (zb0001Mask & 0x80000000) == 0 { // if not empty
+		// string "3600831"
+		o = append(o, 0xa7, 0x33, 0x36, 0x30, 0x30, 0x38, 0x33, 0x31)
+		if z.AddressBookOrganizationalUnitRootDistinguishedName == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AddressBookOrganizationalUnitRootDistinguishedName)
+		}
+	}
+	if (zb0001Mask & 0x100000000) == 0 { // if not empty
+		// string "3598531"
+		o = append(o, 0xa7, 0x33, 0x35, 0x39, 0x38, 0x35, 0x33, 0x31)
+		if z.AddressBookPhoneticCompanyName == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AddressBookPhoneticCompanyName)
+		}
+	}
+	if (zb0001Mask & 0x200000000) == 0 { // if not empty
+		// string "3598431"
+		o = append(o, 0xa7, 0x33, 0x35, 0x39, 0x38, 0x34, 0x33, 0x31)
+		if z.AddressBookPhoneticDepartmentName == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AddressBookPhoneticDepartmentName)
+		}
+	}
+	if (zb0001Mask & 0x400000000) == 0 { // if not empty
+		// string "3598631"
+		o = append(o, 0xa7, 0x33, 0x35, 0x39, 0x38, 0x36, 0x33, 0x31)
+		if z.AddressBookPhoneticDisplayName == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AddressBookPhoneticDisplayName)
+		}
+	}
+	if (zb0001Mask & 0x800000000) == 0 { // if not empty
+		// string "3598231"
+		o = append(o, 0xa7, 0x33, 0x35, 0x39, 0x38, 0x32, 0x33, 0x31)
+		if z.AddressBookPhoneticGivenName == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AddressBookPhoneticGivenName)
+		}
+	}
+	if (zb0001Mask & 0x1000000000) == 0 { // if not empty
+		// string "3598331"
+		o = append(o, 0xa7, 0x33, 0x35, 0x39, 0x38, 0x33, 0x33, 0x31)
+		if z.AddressBookPhoneticSurname == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AddressBookPhoneticSurname)
+		}
+	}
+	if (zb0001Mask & 0x2000000000) == 0 { // if not empty
+		// string "20553"
+		o = append(o, 0xa5, 0x32, 0x30, 0x35, 0x35, 0x33)
+		if z.AddressBookRoomCapacity == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.AddressBookRoomCapacity)
+		}
+	}
+	if (zb0001Mask & 0x4000000000) == 0 { // if not empty
+		// string "205731"
+		o = append(o, 0xa6, 0x32, 0x30, 0x35, 0x37, 0x33, 0x31)
+		if z.AddressBookRoomDescription == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AddressBookRoomDescription)
+		}
+	}
+	if (zb0001Mask & 0x8000000000) == 0 { // if not empty
+		// string "360003"
+		o = append(o, 0xa6, 0x33, 0x36, 0x30, 0x30, 0x30, 0x33)
+		if z.AddressBookSeniorityIndex == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.AddressBookSeniorityIndex)
+		}
+	}
+	if (zb0001Mask & 0x10000000000) == 0 { // if not empty
+		// string "3278531"
+		o = append(o, 0xa7, 0x33, 0x32, 0x37, 0x38, 0x35, 0x33, 0x31)
+		if z.AddressBookTargetAddress == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AddressBookTargetAddress)
+		}
+	}
+	if (zb0001Mask & 0x20000000000) == 0 { // if not empty
+		// string "1383631"
+		o = append(o, 0xa7, 0x31, 0x33, 0x38, 0x33, 0x36, 0x33, 0x31)
+		if z.Anr == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.Anr)
+		}
+	}
+	if (zb0001Mask & 0x40000000000) == 0 { // if not empty
+		// string "138243"
+		o = append(o, 0xa6, 0x31, 0x33, 0x38, 0x32, 0x34, 0x33)
+		if z.ContainerFlags == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.ContainerFlags)
+		}
+	}
+	if (zb0001Mask & 0x80000000000) == 0 { // if not empty
+		// string "145923"
+		o = append(o, 0xa6, 0x31, 0x34, 0x35, 0x39, 0x32, 0x33)
+		if z.DisplayType == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.DisplayType)
+		}
+	}
+	if (zb0001Mask & 0x100000000000) == 0 { // if not empty
+		// string "145973"
+		o = append(o, 0xa6, 0x31, 0x34, 0x35, 0x39, 0x37, 0x33)
+		if z.DisplayTypeEx == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.DisplayTypeEx)
+		}
 	}
 	return
 }

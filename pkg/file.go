@@ -19,16 +19,16 @@ package pst
 
 import (
 	"bytes"
+	"context"
 	"encoding/binary"
+	"github.com/rotisserie/eris"
+	"golang.org/x/sync/errgroup"
 	"io"
-	"os"
-
-	"github.com/pkg/errors"
 )
 
 // File represents a PST file.
 type File struct {
-	Reader         io.ReadSeekCloser
+	Reader         Reader
 	FormatType     FormatType
 	EncryptionType EncryptionType
 	NodeBTree      BTreeStore
@@ -36,39 +36,38 @@ type File struct {
 	NameToIDMap    *NameToIDMap
 }
 
-// NewFromFile is a constructor for creating PST files from a file path.
-func NewFromFile(name string) (*File, error) {
-	inputFile, err := os.Open(name)
-
-	if err != nil {
-		return nil, errors.WithStack(err)
-	}
-
-	return NewFromReader(inputFile)
+// Reader defines the file reader used by go-pst to support asynchronous I/O.
+// Non-linux systems will fall back to DefaultReader.
+// See AsyncReader.
+type Reader interface {
+	ReadAtAsync(outputBuffer []byte, offset uint64, callback func(err error)) (uint64, error)
+	io.ReaderAt // Blocking call.
 }
 
-// NewFromReader is a constructor for creating PST files from an io.ReadSeekCloser.
-func NewFromReader(reader io.ReadSeekCloser) (*File, error) {
-	return NewFromReaderWithBTrees(reader, NewBTreeStoreInMemory(), NewBTreeStoreInMemory())
+// DefaultReader implements Reader using io.ReaderAt.
+type DefaultReader struct {
+	reader io.ReaderAt
 }
 
-// NewFromFileWithBTrees is a constructor for creating PST files from a file path using the b-tree stores.
-// Initialization of the b-tree stores will be skipped respectively if not empty.
-func NewFromFileWithBTrees(filePath string, nodeBTree BTreeStore, blockBTree BTreeStore) (*File, error) {
-	inputFile, err := os.Open(filePath)
-
-	if err != nil {
-		return nil, errors.WithStack(err)
+func NewDefaultReader(reader io.ReaderAt) *DefaultReader {
+	return &DefaultReader{
+		reader: reader,
 	}
+}
 
-	return NewFromReaderWithBTrees(inputFile, nodeBTree, blockBTree)
+// New is a constructor for creating PST files.
+// See also NewAsync.
+func New(reader io.ReaderAt) (*File, error) {
+	return NewFromReaderWithBTrees(NewDefaultReader(reader), NewBTreeStoreInMemory(), NewBTreeStoreInMemory())
 }
 
 // NewFromReaderWithBTrees is a constructor for creating PST files from a reader using the specified b-tree stores.
 // Initialization of the b-tree stores will be skipped respectively if not empty.
-func NewFromReaderWithBTrees(reader io.ReadSeekCloser, nodeBTree BTreeStore, blockBTree BTreeStore) (*File, error) {
+func NewFromReaderWithBTrees(reader Reader, nodeBTree BTreeStore, blockBTree BTreeStore) (*File, error) {
 	pstFile := &File{
-		Reader:     reader,
+		Reader: &DefaultReader{
+			reader: reader,
+		},
 		NodeBTree:  nodeBTree,
 		BlockBTree: blockBTree,
 	}
@@ -76,42 +75,46 @@ func NewFromReaderWithBTrees(reader io.ReadSeekCloser, nodeBTree BTreeStore, blo
 	isValidSignature, err := pstFile.IsValidSignature()
 
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, err
 	} else if !isValidSignature {
-		return nil, errors.WithStack(ErrFileSignatureInvalid)
+		return nil, ErrFileSignatureInvalid
 	}
 
 	formatType, err := pstFile.GetFormatType()
 
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, err
 	}
 
 	pstFile.FormatType = formatType
 
 	if _, err := pstFile.GetContentType(); err != nil {
-		return nil, errors.WithStack(err)
+		return nil, err
 	}
 
 	encryptionType, err := pstFile.GetEncryptionType()
 
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, err
 	}
 
 	pstFile.EncryptionType = encryptionType
+
+	walkGroup, _ := errgroup.WithContext(context.Background())
+
+	walkGroup.SetLimit(8)
 
 	if pstFile.NodeBTree.Len() == 0 {
 		nodeBTreeOffset, err := pstFile.GetNodeBTreeOffset()
 
 		if err != nil {
-			return nil, errors.WithStack(err)
+			return nil, err
 		}
 
-		err = pstFile.WalkAndCreateBTree(nodeBTreeOffset, BTreeTypeNode, pstFile.NodeBTree)
+		pstFile.WalkAndCreateBTree(nodeBTreeOffset, BTreeTypeNode, pstFile.NodeBTree, walkGroup)
 
 		if err != nil {
-			return nil, errors.WithStack(err)
+			return nil, err
 		}
 	}
 
@@ -119,20 +122,25 @@ func NewFromReaderWithBTrees(reader io.ReadSeekCloser, nodeBTree BTreeStore, blo
 		blockBTreeOffset, err := pstFile.GetBlockBTreeOffset()
 
 		if err != nil {
-			return nil, errors.WithStack(err)
+			return nil, err
 		}
 
-		err = pstFile.WalkAndCreateBTree(blockBTreeOffset, BTreeTypeBlock, pstFile.BlockBTree)
+		pstFile.WalkAndCreateBTree(blockBTreeOffset, BTreeTypeBlock, pstFile.BlockBTree, walkGroup)
 
 		if err != nil {
-			return nil, errors.WithStack(err)
+			return nil, err
 		}
+	}
+
+	// Wait for walking of the b-trees to complete.
+	if err := walkGroup.Wait(); err != nil {
+		return nil, eris.Wrap(err, "failed to walk b-trees")
 	}
 
 	nameToIDMap, err := pstFile.GetNameToIDMap()
 
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, err
 	}
 
 	pstFile.NameToIDMap = nameToIDMap
@@ -145,8 +153,8 @@ func NewFromReaderWithBTrees(reader io.ReadSeekCloser, nodeBTree BTreeStore, blo
 func (file *File) IsValidSignature() (bool, error) {
 	signature := make([]byte, 4)
 
-	if _, err := file.ReadAt(signature, 0); err != nil {
-		return false, errors.WithStack(err)
+	if _, err := file.Reader.ReadAt(signature, 0); err != nil {
+		return false, eris.Wrap(err, "failed to read signature")
 	}
 
 	return bytes.Equal(signature, []byte("!BDN")), nil
@@ -168,8 +176,8 @@ const (
 func (file *File) GetContentType() (ContentType, error) {
 	contentType := make([]byte, 2)
 
-	if _, err := file.ReadAt(contentType, 8); err != nil {
-		return 0, errors.WithStack(err)
+	if _, err := file.Reader.ReadAt(contentType, 8); err != nil {
+		return 0, eris.Wrap(err, "failed to get content type")
 	}
 
 	if bytes.Equal(contentType, []byte("SM")) {
@@ -179,7 +187,7 @@ func (file *File) GetContentType() (ContentType, error) {
 	} else if bytes.Equal(contentType, []byte("AB")) {
 		return ContentTypePAB, nil
 	} else {
-		return 0, errors.WithStack(ErrContentTypeUnsupported)
+		return 0, ErrContentTypeUnsupported
 	}
 }
 
@@ -199,8 +207,8 @@ const (
 func (file *File) GetFormatType() (FormatType, error) {
 	formatType := make([]byte, 2)
 
-	if _, err := file.ReadAt(formatType, 10); err != nil {
-		return 0, errors.WithStack(err)
+	if _, err := file.Reader.ReadAt(formatType, 10); err != nil {
+		return 0, eris.Wrap(err, "failed to read format type")
 	}
 
 	switch binary.LittleEndian.Uint16(formatType) {
@@ -215,7 +223,7 @@ func (file *File) GetFormatType() (FormatType, error) {
 	case 36:
 		return FormatTypeUnicode4k, nil
 	default:
-		return 0, errors.WithStack(ErrFormatTypeUnsupported)
+		return 0, ErrFormatTypeUnsupported
 	}
 }
 
@@ -242,8 +250,8 @@ func (file *File) GetEncryptionType() (EncryptionType, error) {
 		offset = 513
 	}
 
-	if _, err := file.ReadAt(outputBuffer, offset); err != nil {
-		return 0, errors.WithStack(err)
+	if _, err := file.Reader.ReadAt(outputBuffer, offset); err != nil {
+		return 0, eris.Wrap(err, "failed to read encryption type")
 	}
 
 	switch outputBuffer[0] {
@@ -252,29 +260,27 @@ func (file *File) GetEncryptionType() (EncryptionType, error) {
 	case 1:
 		return EncryptionTypePermute, nil
 	default:
-		return 0, errors.WithStack(ErrEncryptionTypeUnsupported)
+		return 0, ErrEncryptionTypeUnsupported
 	}
 }
 
-// Close closes the PST file.
-func (file *File) Close() error {
+// Cleanup clears the node and block b-trees.
+func (file *File) Cleanup() {
 	file.NodeBTree.Clear()
 	file.BlockBTree.Clear()
-
-	return file.Reader.Close()
 }
 
-// ReadAt implements io.ReadAt for the PST file.
-func (file *File) ReadAt(outputBuffer []byte, offset int64) (int, error) {
-	if _, err := file.Reader.Seek(offset, 0); err != nil {
-		return 0, errors.WithStack(err)
-	}
+// ReadAt calls the underlying io.ReaderAt.
+func (defaultReader *DefaultReader) ReadAt(outputBuffer []byte, offset int64) (int, error) {
+	return defaultReader.reader.ReadAt(outputBuffer, offset)
+}
 
-	written, err := file.Reader.Read(outputBuffer)
+// ReadAtAsync is a fall-back which calls io.ReaderAt.
+// See AsyncReader for Linux io_uring support.
+func (defaultReader *DefaultReader) ReadAtAsync(outputBuffer []byte, offset uint64, callback func(err error)) (uint64, error) {
+	_, err := defaultReader.reader.ReadAt(outputBuffer, int64(offset))
 
-	if err != nil {
-		return written, errors.WithStack(err)
-	}
+	callback(err)
 
-	return written, nil
+	return 0, err
 }

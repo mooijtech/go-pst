@@ -45,15 +45,15 @@ type Note struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Specifies the suggested background color of the Note object.
-	NoteColor *int32 `protobuf:"varint,1,opt,name=note_color,json=noteColor,proto3,oneof" json:"note_color,omitempty" msg:"2734083"` // @gotags: msg:"2734083"
+	NoteColor *int32 `protobuf:"varint,1,opt,name=note_color,json=noteColor,proto3,oneof" json:"note_color,omitempty" msg:"2734083,omitempty"`
 	// Specifies the height of the visible message window in pixels.
-	NoteHeight *int32 `protobuf:"varint,2,opt,name=note_height,json=noteHeight,proto3,oneof" json:"note_height,omitempty" msg:"2734113"` // @gotags: msg:"2734113"
+	NoteHeight *int32 `protobuf:"varint,2,opt,name=note_height,json=noteHeight,proto3,oneof" json:"note_height,omitempty" msg:"2734113,omitempty"`
 	// Specifies the width of the visible message window in pixels.
-	NoteWidth *int32 `protobuf:"varint,3,opt,name=note_width,json=noteWidth,proto3,oneof" json:"note_width,omitempty" msg:"2734103"` // @gotags: msg:"2734103"
+	NoteWidth *int32 `protobuf:"varint,3,opt,name=note_width,json=noteWidth,proto3,oneof" json:"note_width,omitempty" msg:"2734103,omitempty"`
 	// Specifies the distance, in pixels, from the left edge of the screen that a user interface displays a Note object.
-	NoteX *int32 `protobuf:"varint,4,opt,name=note_x,json=noteX,proto3,oneof" json:"note_x,omitempty" msg:"2734123"` // @gotags: msg:"2734123"
+	NoteX *int32 `protobuf:"varint,4,opt,name=note_x,json=noteX,proto3,oneof" json:"note_x,omitempty" msg:"2734123,omitempty"`
 	// Specifies the distance, in pixels, from the top edge of the screen that a user interface displays a Note object.
-	NoteY *int32 `protobuf:"varint,5,opt,name=note_y,json=noteY,proto3,oneof" json:"note_y,omitempty" msg:"2734133"` // @gotags: msg:"2734133"
+	NoteY *int32 `protobuf:"varint,5,opt,name=note_y,json=noteY,proto3,oneof" json:"note_y,omitempty" msg:"2734133,omitempty"`
 }
 
 func (x *Note) Reset() {

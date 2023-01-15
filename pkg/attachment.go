@@ -21,7 +21,7 @@ import (
 	"github.com/mooijtech/go-pst/v5/pkg/properties"
 	"io"
 
-	"github.com/pkg/errors"
+	"github.com/rotisserie/eris"
 )
 
 // Attachment represents a message attachment.
@@ -33,16 +33,16 @@ type Attachment struct {
 
 // HasAttachments returns true if this message has attachments.
 func (message *Message) HasAttachments() (bool, error) {
-	reader, err := message.PropertyContext.GetPropertyReader(3591, message.LocalDescriptors...)
+	reader, err := message.PropertyContext.GetPropertyReader(3591, message.LocalDescriptors)
 
 	if err != nil {
-		return false, errors.WithStack(err)
+		return false, eris.Wrap(err, "failed to get property reader")
 	}
 
 	value, err := reader.GetInteger32()
 
 	if err != nil {
-		return false, errors.WithStack(err)
+		return false, eris.Wrap(err, "failed to read int32")
 	}
 
 	return value&0x10 != 0, nil
@@ -54,11 +54,11 @@ func (message *Message) GetAttachmentTableContext() (*TableContext, error) {
 	hasAttachments, err := message.HasAttachments()
 
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, eris.Wrap(err, "failed to check if there are attachments")
 	}
 
 	if !hasAttachments {
-		return nil, errors.WithStack(ErrAttachmentsNotFound)
+		return nil, ErrAttachmentsNotFound
 	}
 
 	if message.AttachmentTableContext == nil {
@@ -66,25 +66,25 @@ func (message *Message) GetAttachmentTableContext() (*TableContext, error) {
 		attachmentLocalDescriptor, err := FindLocalDescriptor(1649, message.LocalDescriptors)
 
 		if err != nil {
-			return nil, errors.WithStack(err)
+			return nil, eris.Wrap(err, "failed to find attachment local descriptor")
 		}
 
 		attachmentHeapOnNode, err := message.File.GetHeapOnNodeFromLocalDescriptor(attachmentLocalDescriptor)
 
 		if err != nil {
-			return nil, errors.WithStack(err)
+			return nil, eris.Wrap(err, "failed to get attachment Heap-on-Node")
 		}
 
 		attachmentLocalDescriptors, err := message.File.GetLocalDescriptorsFromIdentifier(attachmentLocalDescriptor.LocalDescriptorsIdentifier)
 
 		if err != nil {
-			return nil, errors.WithStack(err)
+			return nil, eris.Wrap(err, "failed to get attachment local descriptors")
 		}
 
 		attachmentTableContext, err := message.File.GetTableContext(attachmentHeapOnNode, attachmentLocalDescriptors, 26610)
 
 		if err != nil {
-			return nil, errors.WithStack(err)
+			return nil, eris.Wrap(err, "failed to get attachment table context")
 		}
 
 		message.AttachmentTableContext = &attachmentTableContext
@@ -97,10 +97,10 @@ func (message *Message) GetAttachmentTableContext() (*TableContext, error) {
 func (message *Message) GetAttachmentCount() (int, error) {
 	attachmentTableContext, err := message.GetAttachmentTableContext()
 
-	if errors.Is(err, ErrAttachmentsNotFound) {
+	if eris.Is(err, ErrAttachmentsNotFound) {
 		return 0, nil
 	} else if err != nil {
-		return 0, errors.WithStack(err)
+		return 0, eris.Wrap(err, "failed to get attachment table context")
 	}
 
 	return len(attachmentTableContext.Properties), nil
@@ -111,9 +111,9 @@ func (message *Message) GetAttachment(attachmentIndex int) (*Attachment, error) 
 	attachmentsTableContext, err := message.GetAttachmentTableContext()
 
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, eris.Wrap(err, "failed to get attachments table context")
 	} else if attachmentIndex > len(attachmentsTableContext.Properties)-1 {
-		return nil, errors.WithStack(ErrAttachmentIndexInvalid)
+		return nil, ErrAttachmentIndexInvalid
 	}
 
 	var attachmentHNID Identifier
@@ -123,44 +123,44 @@ func (message *Message) GetAttachment(attachmentIndex int) (*Attachment, error) 
 		propertyReader, err := attachmentsTableContext.GetPropertyReader(attachmentProperty)
 
 		if err != nil {
-			return nil, errors.WithStack(err)
+			return nil, eris.Wrap(err, "failed to get attachments table context property reader")
 		}
 
 		identifier, err := propertyReader.GetInteger32()
 
 		if err != nil {
-			return nil, errors.WithStack(err)
+			return nil, eris.Wrap(err, "failed to read identifier")
 		}
 
 		attachmentHNID = Identifier(identifier)
 	}
 
 	if attachmentHNID == 0 {
-		return nil, errors.WithStack(errors.New("go-pst: failed to get attachment HNID"))
+		return nil, eris.New("failed to get attachment HNID")
 	}
 
 	attachmentLocalDescriptor, err := FindLocalDescriptor(attachmentHNID, message.LocalDescriptors)
 
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, eris.Wrap(err, "failed to find attachment local descriptor")
 	}
 
 	attachmentLocalDescriptors, err := message.File.GetLocalDescriptorsFromIdentifier(attachmentLocalDescriptor.LocalDescriptorsIdentifier)
 
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, eris.Wrap(err, "failed to get local descriptors from identifier")
 	}
 
 	attachmentHeapOnNode, err := message.File.GetHeapOnNodeFromLocalDescriptor(attachmentLocalDescriptor)
 
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, eris.Wrap(err, "failed to get attachment Heap-on-Node")
 	}
 
 	attachmentPropertyContext, err := message.File.GetPropertyContext(attachmentHeapOnNode)
 
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, eris.Wrap(err, "failed to get attachment property context")
 	}
 
 	attachment := &Attachment{
@@ -169,7 +169,7 @@ func (message *Message) GetAttachment(attachmentIndex int) (*Attachment, error) 
 	}
 
 	if err := attachmentPropertyContext.Populate(attachment, attachmentLocalDescriptors); err != nil {
-		return nil, errors.WithStack(err)
+		return nil, eris.Wrap(err, "failed to populate attachment property context")
 	}
 
 	return attachment, nil
@@ -180,10 +180,10 @@ func (message *Message) GetAttachment(attachmentIndex int) (*Attachment, error) 
 func (message *Message) GetAllAttachments() ([]*Attachment, error) {
 	attachmentCount, err := message.GetAttachmentCount()
 
-	if errors.Is(err, ErrAttachmentsNotFound) {
+	if eris.Is(err, ErrAttachmentsNotFound) {
 		return nil, nil
 	} else if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, eris.Wrap(err, "failed to get attachment count")
 	}
 
 	attachments := make([]*Attachment, attachmentCount)
@@ -192,7 +192,7 @@ func (message *Message) GetAllAttachments() ([]*Attachment, error) {
 		attachment, err := message.GetAttachment(i)
 
 		if err != nil {
-			return nil, errors.WithStack(err)
+			return nil, eris.Wrap(err, "failed to get attachment")
 		}
 
 		attachments[i] = attachment
@@ -227,7 +227,7 @@ func (attachmentIterator *AttachmentIterator) Next() bool {
 	attachment, err := attachmentIterator.message.GetAttachment(attachmentIterator.currentIndex)
 
 	if err != nil {
-		attachmentIterator.err = errors.WithStack(err)
+		attachmentIterator.err = eris.Wrap(err, "failed to get attachment")
 		return false
 	}
 
@@ -255,8 +255,9 @@ func (attachmentIterator *AttachmentIterator) CurrentIndex() int {
 func (message *Message) GetAttachmentIterator() (AttachmentIterator, error) {
 	attachmentCount, err := message.GetAttachmentCount()
 
+	// TODO - Return an empty iterator instead of an error.
 	if err != nil {
-		return AttachmentIterator{}, errors.WithStack(err)
+		return AttachmentIterator{}, eris.Wrap(err, "failed to get attachment count")
 	} else if attachmentCount == 0 {
 		return AttachmentIterator{}, ErrAttachmentsNotFound
 	}
@@ -268,12 +269,12 @@ func (message *Message) GetAttachmentIterator() (AttachmentIterator, error) {
 
 // WriteTo writes the attachment to the specified io.Writer.
 func (attachment *Attachment) WriteTo(writer io.Writer) (int64, error) {
-	attachmentReader, err := attachment.PropertyContext.GetPropertyReader(14081, attachment.LocalDescriptors...)
+	attachmentReader, err := attachment.PropertyContext.GetPropertyReader(14081, attachment.LocalDescriptors)
 
-	if errors.Is(err, ErrPropertyNoData) {
+	if eris.Is(err, ErrPropertyNoData) {
 		return 0, nil
 	} else if err != nil {
-		return 0, errors.WithStack(err)
+		return 0, eris.Wrap(err, "failed to get attachment property reader")
 	}
 
 	sectionReader := io.NewSectionReader(&attachmentReader, 0, attachmentReader.Size())
@@ -281,7 +282,7 @@ func (attachment *Attachment) WriteTo(writer io.Writer) (int64, error) {
 	written, err := io.CopyN(writer, sectionReader, sectionReader.Size())
 
 	if err != nil {
-		return written, errors.WithStack(err)
+		return written, eris.Wrap(err, "failed to write attachment")
 	}
 
 	return written, nil

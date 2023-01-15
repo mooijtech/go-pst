@@ -739,668 +739,912 @@ func (z *Task) DecodeMsg(dc *msgp.Reader) (err error) {
 
 // EncodeMsg implements msgp.Encodable
 func (z *Task) EncodeMsg(en *msgp.Writer) (err error) {
-	// map header, size 39
-	// write "2676483"
-	err = en.Append(0xde, 0x0, 0x27, 0xa7, 0x32, 0x36, 0x37, 0x36, 0x34, 0x38, 0x33)
-	if err != nil {
-		return
-	}
+	// omitempty: check for empty values
+	zb0001Len := uint32(39)
+	var zb0001Mask uint64 /* 39 bits */
 	if z.FlagString == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.FlagString)
-		if err != nil {
-			err = msgp.WrapError(err, "FlagString")
-			return
-		}
-	}
-	// write "2631705"
-	err = en.Append(0xa7, 0x32, 0x36, 0x33, 0x31, 0x37, 0x30, 0x35)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x1
 	}
 	if z.PercentComplete == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteFloat64(*z.PercentComplete)
-		if err != nil {
-			err = msgp.WrapError(err, "PercentComplete")
-			return
-		}
-	}
-	// write "2632423"
-	err = en.Append(0xa7, 0x32, 0x36, 0x33, 0x32, 0x34, 0x32, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x2
 	}
 	if z.TaskAcceptanceState == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.TaskAcceptanceState)
-		if err != nil {
-			err = msgp.WrapError(err, "TaskAcceptanceState")
-			return
-		}
-	}
-	// write "26317611"
-	err = en.Append(0xa8, 0x32, 0x36, 0x33, 0x31, 0x37, 0x36, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x4
 	}
 	if z.TaskAccepted == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.TaskAccepted)
-		if err != nil {
-			err = msgp.WrapError(err, "TaskAccepted")
-			return
-		}
-	}
-	// write "2632003"
-	err = en.Append(0xa7, 0x32, 0x36, 0x33, 0x32, 0x30, 0x30, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x8
 	}
 	if z.TaskActualEffort == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.TaskActualEffort)
-		if err != nil {
-			err = msgp.WrapError(err, "TaskActualEffort")
-			return
-		}
-	}
-	// write "26323331"
-	err = en.Append(0xa8, 0x32, 0x36, 0x33, 0x32, 0x33, 0x33, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x10
 	}
 	if z.TaskAssigner == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.TaskAssigner)
-		if err != nil {
-			err = msgp.WrapError(err, "TaskAssigner")
-			return
-		}
-	}
-	// write "26321211"
-	err = en.Append(0xa8, 0x32, 0x36, 0x33, 0x32, 0x31, 0x32, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x20
 	}
 	if z.TaskComplete == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.TaskComplete)
-		if err != nil {
-			err = msgp.WrapError(err, "TaskComplete")
-			return
-		}
-	}
-	// write "2632733"
-	err = en.Append(0xa7, 0x32, 0x36, 0x33, 0x32, 0x37, 0x33, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x40
 	}
 	if z.TaskCustomFlags == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.TaskCustomFlags)
-		if err != nil {
-			err = msgp.WrapError(err, "TaskCustomFlags")
-			return
-		}
-	}
-	// write "26318364"
-	err = en.Append(0xa8, 0x32, 0x36, 0x33, 0x31, 0x38, 0x33, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x80
 	}
 	if z.TaskDateCompleted == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.TaskDateCompleted)
-		if err != nil {
-			err = msgp.WrapError(err, "TaskDateCompleted")
-			return
-		}
-	}
-	// write "26317711"
-	err = en.Append(0xa8, 0x32, 0x36, 0x33, 0x31, 0x37, 0x37, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x100
 	}
 	if z.TaskDeadOccurrence == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.TaskDeadOccurrence)
-		if err != nil {
-			err = msgp.WrapError(err, "TaskDeadOccurrence")
-			return
-		}
-	}
-	// write "26317364"
-	err = en.Append(0xa8, 0x32, 0x36, 0x33, 0x31, 0x37, 0x33, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x200
 	}
 	if z.TaskDueDate == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.TaskDueDate)
-		if err != nil {
-			err = msgp.WrapError(err, "TaskDueDate")
-			return
-		}
-	}
-	// write "2632013"
-	err = en.Append(0xa7, 0x32, 0x36, 0x33, 0x32, 0x30, 0x31, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x400
 	}
 	if z.TaskEstimatedEffort == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.TaskEstimatedEffort)
-		if err != nil {
-			err = msgp.WrapError(err, "TaskEstimatedEffort")
-			return
-		}
-	}
-	// write "26321411"
-	err = en.Append(0xa8, 0x32, 0x36, 0x33, 0x32, 0x31, 0x34, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x800
 	}
 	if z.TaskfCreator == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.TaskfCreator)
-		if err != nil {
-			err = msgp.WrapError(err, "TaskfCreator")
-			return
-		}
-	}
-	// write "26324411"
-	err = en.Append(0xa8, 0x32, 0x36, 0x33, 0x32, 0x34, 0x34, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x1000
 	}
 	if z.TaskfFixOffline == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.TaskfFixOffline)
-		if err != nil {
-			err = msgp.WrapError(err, "TaskfFixOffline")
-			return
-		}
-	}
-	// write "26323811"
-	err = en.Append(0xa8, 0x32, 0x36, 0x33, 0x32, 0x33, 0x38, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x2000
 	}
 	if z.TaskfRecurring == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.TaskfRecurring)
-		if err != nil {
-			err = msgp.WrapError(err, "TaskfRecurring")
-			return
-		}
-	}
-	// write "2632103"
-	err = en.Append(0xa7, 0x32, 0x36, 0x33, 0x32, 0x31, 0x30, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x4000
 	}
 	if z.TaskHistory == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.TaskHistory)
-		if err != nil {
-			err = msgp.WrapError(err, "TaskHistory")
-			return
-		}
-	}
-	// write "26323731"
-	err = en.Append(0xa8, 0x32, 0x36, 0x33, 0x32, 0x33, 0x37, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x8000
 	}
 	if z.TaskLastDelegate == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.TaskLastDelegate)
-		if err != nil {
-			err = msgp.WrapError(err, "TaskLastDelegate")
-			return
-		}
-	}
-	// write "26320564"
-	err = en.Append(0xa8, 0x32, 0x36, 0x33, 0x32, 0x30, 0x35, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x10000
 	}
 	if z.TaskLastUpdate == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.TaskLastUpdate)
-		if err != nil {
-			err = msgp.WrapError(err, "TaskLastUpdate")
-			return
-		}
-	}
-	// write "26323431"
-	err = en.Append(0xa8, 0x32, 0x36, 0x33, 0x32, 0x33, 0x34, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x20000
 	}
 	if z.TaskLastUser == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.TaskLastUser)
-		if err != nil {
-			err = msgp.WrapError(err, "TaskLastUser")
-			return
-		}
-	}
-	// write "2673043"
-	err = en.Append(0xa7, 0x32, 0x36, 0x37, 0x33, 0x30, 0x34, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x40000
 	}
 	if z.TaskMode == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.TaskMode)
-		if err != nil {
-			err = msgp.WrapError(err, "TaskMode")
-			return
-		}
-	}
-	// write "2632323"
-	err = en.Append(0xa7, 0x32, 0x36, 0x33, 0x32, 0x33, 0x32, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x80000
 	}
 	if z.TaskMultipleRecipients == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.TaskMultipleRecipients)
-		if err != nil {
-			err = msgp.WrapError(err, "TaskMultipleRecipients")
-			return
-		}
-	}
-	// write "26323611"
-	err = en.Append(0xa8, 0x32, 0x36, 0x33, 0x32, 0x33, 0x36, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x100000
 	}
 	if z.TaskNoCompute == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.TaskNoCompute)
-		if err != nil {
-			err = msgp.WrapError(err, "TaskNoCompute")
-			return
-		}
-	}
-	// write "2632353"
-	err = en.Append(0xa7, 0x32, 0x36, 0x33, 0x32, 0x33, 0x35, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x200000
 	}
 	if z.TaskOrdinal == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.TaskOrdinal)
-		if err != nil {
-			err = msgp.WrapError(err, "TaskOrdinal")
-			return
-		}
-	}
-	// write "26321531"
-	err = en.Append(0xa8, 0x32, 0x36, 0x33, 0x32, 0x31, 0x35, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x400000
 	}
 	if z.TaskOwner == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.TaskOwner)
-		if err != nil {
-			err = msgp.WrapError(err, "TaskOwner")
-			return
-		}
-	}
-	// write "2632413"
-	err = en.Append(0xa7, 0x32, 0x36, 0x33, 0x32, 0x34, 0x31, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x800000
 	}
 	if z.TaskOwnership == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.TaskOwnership)
-		if err != nil {
-			err = msgp.WrapError(err, "TaskOwnership")
-			return
-		}
-	}
-	// write "26317511"
-	err = en.Append(0xa8, 0x32, 0x36, 0x33, 0x31, 0x37, 0x35, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x1000000
 	}
 	if z.TaskResetReminder == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.TaskResetReminder)
-		if err != nil {
-			err = msgp.WrapError(err, "TaskResetReminder")
-			return
-		}
-	}
-	// write "26323931"
-	err = en.Append(0xa8, 0x32, 0x36, 0x33, 0x32, 0x33, 0x39, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x2000000
 	}
 	if z.TaskRole == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.TaskRole)
-		if err != nil {
-			err = msgp.WrapError(err, "TaskRole")
-			return
-		}
-	}
-	// write "26317264"
-	err = en.Append(0xa8, 0x32, 0x36, 0x33, 0x31, 0x37, 0x32, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x4000000
 	}
 	if z.TaskStartDate == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.TaskStartDate)
-		if err != nil {
-			err = msgp.WrapError(err, "TaskStartDate")
-			return
-		}
-	}
-	// write "2632033"
-	err = en.Append(0xa7, 0x32, 0x36, 0x33, 0x32, 0x30, 0x33, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x8000000
 	}
 	if z.TaskState == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.TaskState)
-		if err != nil {
-			err = msgp.WrapError(err, "TaskState")
-			return
-		}
-	}
-	// write "2631693"
-	err = en.Append(0xa7, 0x32, 0x36, 0x33, 0x31, 0x36, 0x39, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x10000000
 	}
 	if z.TaskStatus == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.TaskStatus)
-		if err != nil {
-			err = msgp.WrapError(err, "TaskStatus")
-			return
-		}
-	}
-	// write "26320911"
-	err = en.Append(0xa8, 0x32, 0x36, 0x33, 0x32, 0x30, 0x39, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x20000000
 	}
 	if z.TaskStatusOnComplete == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.TaskStatusOnComplete)
-		if err != nil {
-			err = msgp.WrapError(err, "TaskStatusOnComplete")
-			return
-		}
-	}
-	// write "26321111"
-	err = en.Append(0xa8, 0x32, 0x36, 0x33, 0x32, 0x31, 0x31, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x40000000
 	}
 	if z.TaskUpdates == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.TaskUpdates)
-		if err != nil {
-			err = msgp.WrapError(err, "TaskUpdates")
-			return
-		}
-	}
-	// write "2632023"
-	err = en.Append(0xa7, 0x32, 0x36, 0x33, 0x32, 0x30, 0x32, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x80000000
 	}
 	if z.TaskVersion == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.TaskVersion)
-		if err != nil {
-			err = msgp.WrapError(err, "TaskVersion")
-			return
-		}
-	}
-	// write "26317111"
-	err = en.Append(0xa8, 0x32, 0x36, 0x33, 0x31, 0x37, 0x31, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x100000000
 	}
 	if z.TeamTask == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.TeamTask)
-		if err != nil {
-			err = msgp.WrapError(err, "TeamTask")
-			return
-		}
-	}
-	// write "26758464"
-	err = en.Append(0xa8, 0x32, 0x36, 0x37, 0x35, 0x38, 0x34, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x200000000
 	}
 	if z.ToDoOrdinalDate == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.ToDoOrdinalDate)
-		if err != nil {
-			err = msgp.WrapError(err, "ToDoOrdinalDate")
-			return
-		}
-	}
-	// write "26758531"
-	err = en.Append(0xa8, 0x32, 0x36, 0x37, 0x35, 0x38, 0x35, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x400000000
 	}
 	if z.ToDoSubOrdinal == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.ToDoSubOrdinal)
-		if err != nil {
-			err = msgp.WrapError(err, "ToDoSubOrdinal")
-			return
-		}
-	}
-	// write "26758831"
-	err = en.Append(0xa8, 0x32, 0x36, 0x37, 0x35, 0x38, 0x38, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x800000000
 	}
 	if z.ToDoTitle == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.ToDoTitle)
-		if err != nil {
-			err = msgp.WrapError(err, "ToDoTitle")
-			return
-		}
-	}
-	// write "26763164"
-	err = en.Append(0xa8, 0x32, 0x36, 0x37, 0x36, 0x33, 0x31, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x1000000000
 	}
 	if z.ValidFlagStringProof == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.ValidFlagStringProof)
-		if err != nil {
-			err = msgp.WrapError(err, "ValidFlagStringProof")
-			return
-		}
+		zb0001Len--
+		zb0001Mask |= 0x2000000000
 	}
-	// write "140503"
-	err = en.Append(0xa6, 0x31, 0x34, 0x30, 0x35, 0x30, 0x33)
+	if z.OrdinalMost == nil {
+		zb0001Len--
+		zb0001Mask |= 0x4000000000
+	}
+	// variable map header, size zb0001Len
+	err = en.WriteMapHeader(zb0001Len)
 	if err != nil {
 		return
 	}
-	if z.OrdinalMost == nil {
-		err = en.WriteNil()
+	if zb0001Len == 0 {
+		return
+	}
+	if (zb0001Mask & 0x1) == 0 { // if not empty
+		// write "2676483"
+		err = en.Append(0xa7, 0x32, 0x36, 0x37, 0x36, 0x34, 0x38, 0x33)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteInt32(*z.OrdinalMost)
+		if z.FlagString == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.FlagString)
+			if err != nil {
+				err = msgp.WrapError(err, "FlagString")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x2) == 0 { // if not empty
+		// write "2631705"
+		err = en.Append(0xa7, 0x32, 0x36, 0x33, 0x31, 0x37, 0x30, 0x35)
 		if err != nil {
-			err = msgp.WrapError(err, "OrdinalMost")
 			return
+		}
+		if z.PercentComplete == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteFloat64(*z.PercentComplete)
+			if err != nil {
+				err = msgp.WrapError(err, "PercentComplete")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x4) == 0 { // if not empty
+		// write "2632423"
+		err = en.Append(0xa7, 0x32, 0x36, 0x33, 0x32, 0x34, 0x32, 0x33)
+		if err != nil {
+			return
+		}
+		if z.TaskAcceptanceState == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.TaskAcceptanceState)
+			if err != nil {
+				err = msgp.WrapError(err, "TaskAcceptanceState")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x8) == 0 { // if not empty
+		// write "26317611"
+		err = en.Append(0xa8, 0x32, 0x36, 0x33, 0x31, 0x37, 0x36, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.TaskAccepted == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.TaskAccepted)
+			if err != nil {
+				err = msgp.WrapError(err, "TaskAccepted")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x10) == 0 { // if not empty
+		// write "2632003"
+		err = en.Append(0xa7, 0x32, 0x36, 0x33, 0x32, 0x30, 0x30, 0x33)
+		if err != nil {
+			return
+		}
+		if z.TaskActualEffort == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.TaskActualEffort)
+			if err != nil {
+				err = msgp.WrapError(err, "TaskActualEffort")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x20) == 0 { // if not empty
+		// write "26323331"
+		err = en.Append(0xa8, 0x32, 0x36, 0x33, 0x32, 0x33, 0x33, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.TaskAssigner == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.TaskAssigner)
+			if err != nil {
+				err = msgp.WrapError(err, "TaskAssigner")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x40) == 0 { // if not empty
+		// write "26321211"
+		err = en.Append(0xa8, 0x32, 0x36, 0x33, 0x32, 0x31, 0x32, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.TaskComplete == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.TaskComplete)
+			if err != nil {
+				err = msgp.WrapError(err, "TaskComplete")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x80) == 0 { // if not empty
+		// write "2632733"
+		err = en.Append(0xa7, 0x32, 0x36, 0x33, 0x32, 0x37, 0x33, 0x33)
+		if err != nil {
+			return
+		}
+		if z.TaskCustomFlags == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.TaskCustomFlags)
+			if err != nil {
+				err = msgp.WrapError(err, "TaskCustomFlags")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x100) == 0 { // if not empty
+		// write "26318364"
+		err = en.Append(0xa8, 0x32, 0x36, 0x33, 0x31, 0x38, 0x33, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.TaskDateCompleted == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.TaskDateCompleted)
+			if err != nil {
+				err = msgp.WrapError(err, "TaskDateCompleted")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x200) == 0 { // if not empty
+		// write "26317711"
+		err = en.Append(0xa8, 0x32, 0x36, 0x33, 0x31, 0x37, 0x37, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.TaskDeadOccurrence == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.TaskDeadOccurrence)
+			if err != nil {
+				err = msgp.WrapError(err, "TaskDeadOccurrence")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x400) == 0 { // if not empty
+		// write "26317364"
+		err = en.Append(0xa8, 0x32, 0x36, 0x33, 0x31, 0x37, 0x33, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.TaskDueDate == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.TaskDueDate)
+			if err != nil {
+				err = msgp.WrapError(err, "TaskDueDate")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x800) == 0 { // if not empty
+		// write "2632013"
+		err = en.Append(0xa7, 0x32, 0x36, 0x33, 0x32, 0x30, 0x31, 0x33)
+		if err != nil {
+			return
+		}
+		if z.TaskEstimatedEffort == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.TaskEstimatedEffort)
+			if err != nil {
+				err = msgp.WrapError(err, "TaskEstimatedEffort")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x1000) == 0 { // if not empty
+		// write "26321411"
+		err = en.Append(0xa8, 0x32, 0x36, 0x33, 0x32, 0x31, 0x34, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.TaskfCreator == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.TaskfCreator)
+			if err != nil {
+				err = msgp.WrapError(err, "TaskfCreator")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x2000) == 0 { // if not empty
+		// write "26324411"
+		err = en.Append(0xa8, 0x32, 0x36, 0x33, 0x32, 0x34, 0x34, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.TaskfFixOffline == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.TaskfFixOffline)
+			if err != nil {
+				err = msgp.WrapError(err, "TaskfFixOffline")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x4000) == 0 { // if not empty
+		// write "26323811"
+		err = en.Append(0xa8, 0x32, 0x36, 0x33, 0x32, 0x33, 0x38, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.TaskfRecurring == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.TaskfRecurring)
+			if err != nil {
+				err = msgp.WrapError(err, "TaskfRecurring")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x8000) == 0 { // if not empty
+		// write "2632103"
+		err = en.Append(0xa7, 0x32, 0x36, 0x33, 0x32, 0x31, 0x30, 0x33)
+		if err != nil {
+			return
+		}
+		if z.TaskHistory == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.TaskHistory)
+			if err != nil {
+				err = msgp.WrapError(err, "TaskHistory")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x10000) == 0 { // if not empty
+		// write "26323731"
+		err = en.Append(0xa8, 0x32, 0x36, 0x33, 0x32, 0x33, 0x37, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.TaskLastDelegate == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.TaskLastDelegate)
+			if err != nil {
+				err = msgp.WrapError(err, "TaskLastDelegate")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x20000) == 0 { // if not empty
+		// write "26320564"
+		err = en.Append(0xa8, 0x32, 0x36, 0x33, 0x32, 0x30, 0x35, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.TaskLastUpdate == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.TaskLastUpdate)
+			if err != nil {
+				err = msgp.WrapError(err, "TaskLastUpdate")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x40000) == 0 { // if not empty
+		// write "26323431"
+		err = en.Append(0xa8, 0x32, 0x36, 0x33, 0x32, 0x33, 0x34, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.TaskLastUser == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.TaskLastUser)
+			if err != nil {
+				err = msgp.WrapError(err, "TaskLastUser")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x80000) == 0 { // if not empty
+		// write "2673043"
+		err = en.Append(0xa7, 0x32, 0x36, 0x37, 0x33, 0x30, 0x34, 0x33)
+		if err != nil {
+			return
+		}
+		if z.TaskMode == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.TaskMode)
+			if err != nil {
+				err = msgp.WrapError(err, "TaskMode")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x100000) == 0 { // if not empty
+		// write "2632323"
+		err = en.Append(0xa7, 0x32, 0x36, 0x33, 0x32, 0x33, 0x32, 0x33)
+		if err != nil {
+			return
+		}
+		if z.TaskMultipleRecipients == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.TaskMultipleRecipients)
+			if err != nil {
+				err = msgp.WrapError(err, "TaskMultipleRecipients")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x200000) == 0 { // if not empty
+		// write "26323611"
+		err = en.Append(0xa8, 0x32, 0x36, 0x33, 0x32, 0x33, 0x36, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.TaskNoCompute == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.TaskNoCompute)
+			if err != nil {
+				err = msgp.WrapError(err, "TaskNoCompute")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x400000) == 0 { // if not empty
+		// write "2632353"
+		err = en.Append(0xa7, 0x32, 0x36, 0x33, 0x32, 0x33, 0x35, 0x33)
+		if err != nil {
+			return
+		}
+		if z.TaskOrdinal == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.TaskOrdinal)
+			if err != nil {
+				err = msgp.WrapError(err, "TaskOrdinal")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x800000) == 0 { // if not empty
+		// write "26321531"
+		err = en.Append(0xa8, 0x32, 0x36, 0x33, 0x32, 0x31, 0x35, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.TaskOwner == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.TaskOwner)
+			if err != nil {
+				err = msgp.WrapError(err, "TaskOwner")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x1000000) == 0 { // if not empty
+		// write "2632413"
+		err = en.Append(0xa7, 0x32, 0x36, 0x33, 0x32, 0x34, 0x31, 0x33)
+		if err != nil {
+			return
+		}
+		if z.TaskOwnership == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.TaskOwnership)
+			if err != nil {
+				err = msgp.WrapError(err, "TaskOwnership")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x2000000) == 0 { // if not empty
+		// write "26317511"
+		err = en.Append(0xa8, 0x32, 0x36, 0x33, 0x31, 0x37, 0x35, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.TaskResetReminder == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.TaskResetReminder)
+			if err != nil {
+				err = msgp.WrapError(err, "TaskResetReminder")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x4000000) == 0 { // if not empty
+		// write "26323931"
+		err = en.Append(0xa8, 0x32, 0x36, 0x33, 0x32, 0x33, 0x39, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.TaskRole == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.TaskRole)
+			if err != nil {
+				err = msgp.WrapError(err, "TaskRole")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x8000000) == 0 { // if not empty
+		// write "26317264"
+		err = en.Append(0xa8, 0x32, 0x36, 0x33, 0x31, 0x37, 0x32, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.TaskStartDate == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.TaskStartDate)
+			if err != nil {
+				err = msgp.WrapError(err, "TaskStartDate")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x10000000) == 0 { // if not empty
+		// write "2632033"
+		err = en.Append(0xa7, 0x32, 0x36, 0x33, 0x32, 0x30, 0x33, 0x33)
+		if err != nil {
+			return
+		}
+		if z.TaskState == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.TaskState)
+			if err != nil {
+				err = msgp.WrapError(err, "TaskState")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x20000000) == 0 { // if not empty
+		// write "2631693"
+		err = en.Append(0xa7, 0x32, 0x36, 0x33, 0x31, 0x36, 0x39, 0x33)
+		if err != nil {
+			return
+		}
+		if z.TaskStatus == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.TaskStatus)
+			if err != nil {
+				err = msgp.WrapError(err, "TaskStatus")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x40000000) == 0 { // if not empty
+		// write "26320911"
+		err = en.Append(0xa8, 0x32, 0x36, 0x33, 0x32, 0x30, 0x39, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.TaskStatusOnComplete == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.TaskStatusOnComplete)
+			if err != nil {
+				err = msgp.WrapError(err, "TaskStatusOnComplete")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x80000000) == 0 { // if not empty
+		// write "26321111"
+		err = en.Append(0xa8, 0x32, 0x36, 0x33, 0x32, 0x31, 0x31, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.TaskUpdates == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.TaskUpdates)
+			if err != nil {
+				err = msgp.WrapError(err, "TaskUpdates")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x100000000) == 0 { // if not empty
+		// write "2632023"
+		err = en.Append(0xa7, 0x32, 0x36, 0x33, 0x32, 0x30, 0x32, 0x33)
+		if err != nil {
+			return
+		}
+		if z.TaskVersion == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.TaskVersion)
+			if err != nil {
+				err = msgp.WrapError(err, "TaskVersion")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x200000000) == 0 { // if not empty
+		// write "26317111"
+		err = en.Append(0xa8, 0x32, 0x36, 0x33, 0x31, 0x37, 0x31, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.TeamTask == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.TeamTask)
+			if err != nil {
+				err = msgp.WrapError(err, "TeamTask")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x400000000) == 0 { // if not empty
+		// write "26758464"
+		err = en.Append(0xa8, 0x32, 0x36, 0x37, 0x35, 0x38, 0x34, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.ToDoOrdinalDate == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.ToDoOrdinalDate)
+			if err != nil {
+				err = msgp.WrapError(err, "ToDoOrdinalDate")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x800000000) == 0 { // if not empty
+		// write "26758531"
+		err = en.Append(0xa8, 0x32, 0x36, 0x37, 0x35, 0x38, 0x35, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.ToDoSubOrdinal == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.ToDoSubOrdinal)
+			if err != nil {
+				err = msgp.WrapError(err, "ToDoSubOrdinal")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x1000000000) == 0 { // if not empty
+		// write "26758831"
+		err = en.Append(0xa8, 0x32, 0x36, 0x37, 0x35, 0x38, 0x38, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.ToDoTitle == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.ToDoTitle)
+			if err != nil {
+				err = msgp.WrapError(err, "ToDoTitle")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x2000000000) == 0 { // if not empty
+		// write "26763164"
+		err = en.Append(0xa8, 0x32, 0x36, 0x37, 0x36, 0x33, 0x31, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.ValidFlagStringProof == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.ValidFlagStringProof)
+			if err != nil {
+				err = msgp.WrapError(err, "ValidFlagStringProof")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x4000000000) == 0 { // if not empty
+		// write "140503"
+		err = en.Append(0xa6, 0x31, 0x34, 0x30, 0x35, 0x30, 0x33)
+		if err != nil {
+			return
+		}
+		if z.OrdinalMost == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.OrdinalMost)
+			if err != nil {
+				err = msgp.WrapError(err, "OrdinalMost")
+				return
+			}
 		}
 	}
 	return
@@ -1409,279 +1653,520 @@ func (z *Task) EncodeMsg(en *msgp.Writer) (err error) {
 // MarshalMsg implements msgp.Marshaler
 func (z *Task) MarshalMsg(b []byte) (o []byte, err error) {
 	o = msgp.Require(b, z.Msgsize())
-	// map header, size 39
-	// string "2676483"
-	o = append(o, 0xde, 0x0, 0x27, 0xa7, 0x32, 0x36, 0x37, 0x36, 0x34, 0x38, 0x33)
+	// omitempty: check for empty values
+	zb0001Len := uint32(39)
+	var zb0001Mask uint64 /* 39 bits */
 	if z.FlagString == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.FlagString)
+		zb0001Len--
+		zb0001Mask |= 0x1
 	}
-	// string "2631705"
-	o = append(o, 0xa7, 0x32, 0x36, 0x33, 0x31, 0x37, 0x30, 0x35)
 	if z.PercentComplete == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendFloat64(o, *z.PercentComplete)
+		zb0001Len--
+		zb0001Mask |= 0x2
 	}
-	// string "2632423"
-	o = append(o, 0xa7, 0x32, 0x36, 0x33, 0x32, 0x34, 0x32, 0x33)
 	if z.TaskAcceptanceState == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.TaskAcceptanceState)
+		zb0001Len--
+		zb0001Mask |= 0x4
 	}
-	// string "26317611"
-	o = append(o, 0xa8, 0x32, 0x36, 0x33, 0x31, 0x37, 0x36, 0x31, 0x31)
 	if z.TaskAccepted == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.TaskAccepted)
+		zb0001Len--
+		zb0001Mask |= 0x8
 	}
-	// string "2632003"
-	o = append(o, 0xa7, 0x32, 0x36, 0x33, 0x32, 0x30, 0x30, 0x33)
 	if z.TaskActualEffort == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.TaskActualEffort)
+		zb0001Len--
+		zb0001Mask |= 0x10
 	}
-	// string "26323331"
-	o = append(o, 0xa8, 0x32, 0x36, 0x33, 0x32, 0x33, 0x33, 0x33, 0x31)
 	if z.TaskAssigner == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.TaskAssigner)
+		zb0001Len--
+		zb0001Mask |= 0x20
 	}
-	// string "26321211"
-	o = append(o, 0xa8, 0x32, 0x36, 0x33, 0x32, 0x31, 0x32, 0x31, 0x31)
 	if z.TaskComplete == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.TaskComplete)
+		zb0001Len--
+		zb0001Mask |= 0x40
 	}
-	// string "2632733"
-	o = append(o, 0xa7, 0x32, 0x36, 0x33, 0x32, 0x37, 0x33, 0x33)
 	if z.TaskCustomFlags == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.TaskCustomFlags)
+		zb0001Len--
+		zb0001Mask |= 0x80
 	}
-	// string "26318364"
-	o = append(o, 0xa8, 0x32, 0x36, 0x33, 0x31, 0x38, 0x33, 0x36, 0x34)
 	if z.TaskDateCompleted == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.TaskDateCompleted)
+		zb0001Len--
+		zb0001Mask |= 0x100
 	}
-	// string "26317711"
-	o = append(o, 0xa8, 0x32, 0x36, 0x33, 0x31, 0x37, 0x37, 0x31, 0x31)
 	if z.TaskDeadOccurrence == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.TaskDeadOccurrence)
+		zb0001Len--
+		zb0001Mask |= 0x200
 	}
-	// string "26317364"
-	o = append(o, 0xa8, 0x32, 0x36, 0x33, 0x31, 0x37, 0x33, 0x36, 0x34)
 	if z.TaskDueDate == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.TaskDueDate)
+		zb0001Len--
+		zb0001Mask |= 0x400
 	}
-	// string "2632013"
-	o = append(o, 0xa7, 0x32, 0x36, 0x33, 0x32, 0x30, 0x31, 0x33)
 	if z.TaskEstimatedEffort == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.TaskEstimatedEffort)
+		zb0001Len--
+		zb0001Mask |= 0x800
 	}
-	// string "26321411"
-	o = append(o, 0xa8, 0x32, 0x36, 0x33, 0x32, 0x31, 0x34, 0x31, 0x31)
 	if z.TaskfCreator == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.TaskfCreator)
+		zb0001Len--
+		zb0001Mask |= 0x1000
 	}
-	// string "26324411"
-	o = append(o, 0xa8, 0x32, 0x36, 0x33, 0x32, 0x34, 0x34, 0x31, 0x31)
 	if z.TaskfFixOffline == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.TaskfFixOffline)
+		zb0001Len--
+		zb0001Mask |= 0x2000
 	}
-	// string "26323811"
-	o = append(o, 0xa8, 0x32, 0x36, 0x33, 0x32, 0x33, 0x38, 0x31, 0x31)
 	if z.TaskfRecurring == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.TaskfRecurring)
+		zb0001Len--
+		zb0001Mask |= 0x4000
 	}
-	// string "2632103"
-	o = append(o, 0xa7, 0x32, 0x36, 0x33, 0x32, 0x31, 0x30, 0x33)
 	if z.TaskHistory == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.TaskHistory)
+		zb0001Len--
+		zb0001Mask |= 0x8000
 	}
-	// string "26323731"
-	o = append(o, 0xa8, 0x32, 0x36, 0x33, 0x32, 0x33, 0x37, 0x33, 0x31)
 	if z.TaskLastDelegate == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.TaskLastDelegate)
+		zb0001Len--
+		zb0001Mask |= 0x10000
 	}
-	// string "26320564"
-	o = append(o, 0xa8, 0x32, 0x36, 0x33, 0x32, 0x30, 0x35, 0x36, 0x34)
 	if z.TaskLastUpdate == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.TaskLastUpdate)
+		zb0001Len--
+		zb0001Mask |= 0x20000
 	}
-	// string "26323431"
-	o = append(o, 0xa8, 0x32, 0x36, 0x33, 0x32, 0x33, 0x34, 0x33, 0x31)
 	if z.TaskLastUser == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.TaskLastUser)
+		zb0001Len--
+		zb0001Mask |= 0x40000
 	}
-	// string "2673043"
-	o = append(o, 0xa7, 0x32, 0x36, 0x37, 0x33, 0x30, 0x34, 0x33)
 	if z.TaskMode == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.TaskMode)
+		zb0001Len--
+		zb0001Mask |= 0x80000
 	}
-	// string "2632323"
-	o = append(o, 0xa7, 0x32, 0x36, 0x33, 0x32, 0x33, 0x32, 0x33)
 	if z.TaskMultipleRecipients == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.TaskMultipleRecipients)
+		zb0001Len--
+		zb0001Mask |= 0x100000
 	}
-	// string "26323611"
-	o = append(o, 0xa8, 0x32, 0x36, 0x33, 0x32, 0x33, 0x36, 0x31, 0x31)
 	if z.TaskNoCompute == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.TaskNoCompute)
+		zb0001Len--
+		zb0001Mask |= 0x200000
 	}
-	// string "2632353"
-	o = append(o, 0xa7, 0x32, 0x36, 0x33, 0x32, 0x33, 0x35, 0x33)
 	if z.TaskOrdinal == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.TaskOrdinal)
+		zb0001Len--
+		zb0001Mask |= 0x400000
 	}
-	// string "26321531"
-	o = append(o, 0xa8, 0x32, 0x36, 0x33, 0x32, 0x31, 0x35, 0x33, 0x31)
 	if z.TaskOwner == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.TaskOwner)
+		zb0001Len--
+		zb0001Mask |= 0x800000
 	}
-	// string "2632413"
-	o = append(o, 0xa7, 0x32, 0x36, 0x33, 0x32, 0x34, 0x31, 0x33)
 	if z.TaskOwnership == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.TaskOwnership)
+		zb0001Len--
+		zb0001Mask |= 0x1000000
 	}
-	// string "26317511"
-	o = append(o, 0xa8, 0x32, 0x36, 0x33, 0x31, 0x37, 0x35, 0x31, 0x31)
 	if z.TaskResetReminder == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.TaskResetReminder)
+		zb0001Len--
+		zb0001Mask |= 0x2000000
 	}
-	// string "26323931"
-	o = append(o, 0xa8, 0x32, 0x36, 0x33, 0x32, 0x33, 0x39, 0x33, 0x31)
 	if z.TaskRole == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.TaskRole)
+		zb0001Len--
+		zb0001Mask |= 0x4000000
 	}
-	// string "26317264"
-	o = append(o, 0xa8, 0x32, 0x36, 0x33, 0x31, 0x37, 0x32, 0x36, 0x34)
 	if z.TaskStartDate == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.TaskStartDate)
+		zb0001Len--
+		zb0001Mask |= 0x8000000
 	}
-	// string "2632033"
-	o = append(o, 0xa7, 0x32, 0x36, 0x33, 0x32, 0x30, 0x33, 0x33)
 	if z.TaskState == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.TaskState)
+		zb0001Len--
+		zb0001Mask |= 0x10000000
 	}
-	// string "2631693"
-	o = append(o, 0xa7, 0x32, 0x36, 0x33, 0x31, 0x36, 0x39, 0x33)
 	if z.TaskStatus == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.TaskStatus)
+		zb0001Len--
+		zb0001Mask |= 0x20000000
 	}
-	// string "26320911"
-	o = append(o, 0xa8, 0x32, 0x36, 0x33, 0x32, 0x30, 0x39, 0x31, 0x31)
 	if z.TaskStatusOnComplete == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.TaskStatusOnComplete)
+		zb0001Len--
+		zb0001Mask |= 0x40000000
 	}
-	// string "26321111"
-	o = append(o, 0xa8, 0x32, 0x36, 0x33, 0x32, 0x31, 0x31, 0x31, 0x31)
 	if z.TaskUpdates == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.TaskUpdates)
+		zb0001Len--
+		zb0001Mask |= 0x80000000
 	}
-	// string "2632023"
-	o = append(o, 0xa7, 0x32, 0x36, 0x33, 0x32, 0x30, 0x32, 0x33)
 	if z.TaskVersion == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.TaskVersion)
+		zb0001Len--
+		zb0001Mask |= 0x100000000
 	}
-	// string "26317111"
-	o = append(o, 0xa8, 0x32, 0x36, 0x33, 0x31, 0x37, 0x31, 0x31, 0x31)
 	if z.TeamTask == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.TeamTask)
+		zb0001Len--
+		zb0001Mask |= 0x200000000
 	}
-	// string "26758464"
-	o = append(o, 0xa8, 0x32, 0x36, 0x37, 0x35, 0x38, 0x34, 0x36, 0x34)
 	if z.ToDoOrdinalDate == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.ToDoOrdinalDate)
+		zb0001Len--
+		zb0001Mask |= 0x400000000
 	}
-	// string "26758531"
-	o = append(o, 0xa8, 0x32, 0x36, 0x37, 0x35, 0x38, 0x35, 0x33, 0x31)
 	if z.ToDoSubOrdinal == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.ToDoSubOrdinal)
+		zb0001Len--
+		zb0001Mask |= 0x800000000
 	}
-	// string "26758831"
-	o = append(o, 0xa8, 0x32, 0x36, 0x37, 0x35, 0x38, 0x38, 0x33, 0x31)
 	if z.ToDoTitle == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.ToDoTitle)
+		zb0001Len--
+		zb0001Mask |= 0x1000000000
 	}
-	// string "26763164"
-	o = append(o, 0xa8, 0x32, 0x36, 0x37, 0x36, 0x33, 0x31, 0x36, 0x34)
 	if z.ValidFlagStringProof == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.ValidFlagStringProof)
+		zb0001Len--
+		zb0001Mask |= 0x2000000000
 	}
-	// string "140503"
-	o = append(o, 0xa6, 0x31, 0x34, 0x30, 0x35, 0x30, 0x33)
 	if z.OrdinalMost == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.OrdinalMost)
+		zb0001Len--
+		zb0001Mask |= 0x4000000000
+	}
+	// variable map header, size zb0001Len
+	o = msgp.AppendMapHeader(o, zb0001Len)
+	if zb0001Len == 0 {
+		return
+	}
+	if (zb0001Mask & 0x1) == 0 { // if not empty
+		// string "2676483"
+		o = append(o, 0xa7, 0x32, 0x36, 0x37, 0x36, 0x34, 0x38, 0x33)
+		if z.FlagString == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.FlagString)
+		}
+	}
+	if (zb0001Mask & 0x2) == 0 { // if not empty
+		// string "2631705"
+		o = append(o, 0xa7, 0x32, 0x36, 0x33, 0x31, 0x37, 0x30, 0x35)
+		if z.PercentComplete == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendFloat64(o, *z.PercentComplete)
+		}
+	}
+	if (zb0001Mask & 0x4) == 0 { // if not empty
+		// string "2632423"
+		o = append(o, 0xa7, 0x32, 0x36, 0x33, 0x32, 0x34, 0x32, 0x33)
+		if z.TaskAcceptanceState == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.TaskAcceptanceState)
+		}
+	}
+	if (zb0001Mask & 0x8) == 0 { // if not empty
+		// string "26317611"
+		o = append(o, 0xa8, 0x32, 0x36, 0x33, 0x31, 0x37, 0x36, 0x31, 0x31)
+		if z.TaskAccepted == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.TaskAccepted)
+		}
+	}
+	if (zb0001Mask & 0x10) == 0 { // if not empty
+		// string "2632003"
+		o = append(o, 0xa7, 0x32, 0x36, 0x33, 0x32, 0x30, 0x30, 0x33)
+		if z.TaskActualEffort == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.TaskActualEffort)
+		}
+	}
+	if (zb0001Mask & 0x20) == 0 { // if not empty
+		// string "26323331"
+		o = append(o, 0xa8, 0x32, 0x36, 0x33, 0x32, 0x33, 0x33, 0x33, 0x31)
+		if z.TaskAssigner == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.TaskAssigner)
+		}
+	}
+	if (zb0001Mask & 0x40) == 0 { // if not empty
+		// string "26321211"
+		o = append(o, 0xa8, 0x32, 0x36, 0x33, 0x32, 0x31, 0x32, 0x31, 0x31)
+		if z.TaskComplete == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.TaskComplete)
+		}
+	}
+	if (zb0001Mask & 0x80) == 0 { // if not empty
+		// string "2632733"
+		o = append(o, 0xa7, 0x32, 0x36, 0x33, 0x32, 0x37, 0x33, 0x33)
+		if z.TaskCustomFlags == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.TaskCustomFlags)
+		}
+	}
+	if (zb0001Mask & 0x100) == 0 { // if not empty
+		// string "26318364"
+		o = append(o, 0xa8, 0x32, 0x36, 0x33, 0x31, 0x38, 0x33, 0x36, 0x34)
+		if z.TaskDateCompleted == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.TaskDateCompleted)
+		}
+	}
+	if (zb0001Mask & 0x200) == 0 { // if not empty
+		// string "26317711"
+		o = append(o, 0xa8, 0x32, 0x36, 0x33, 0x31, 0x37, 0x37, 0x31, 0x31)
+		if z.TaskDeadOccurrence == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.TaskDeadOccurrence)
+		}
+	}
+	if (zb0001Mask & 0x400) == 0 { // if not empty
+		// string "26317364"
+		o = append(o, 0xa8, 0x32, 0x36, 0x33, 0x31, 0x37, 0x33, 0x36, 0x34)
+		if z.TaskDueDate == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.TaskDueDate)
+		}
+	}
+	if (zb0001Mask & 0x800) == 0 { // if not empty
+		// string "2632013"
+		o = append(o, 0xa7, 0x32, 0x36, 0x33, 0x32, 0x30, 0x31, 0x33)
+		if z.TaskEstimatedEffort == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.TaskEstimatedEffort)
+		}
+	}
+	if (zb0001Mask & 0x1000) == 0 { // if not empty
+		// string "26321411"
+		o = append(o, 0xa8, 0x32, 0x36, 0x33, 0x32, 0x31, 0x34, 0x31, 0x31)
+		if z.TaskfCreator == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.TaskfCreator)
+		}
+	}
+	if (zb0001Mask & 0x2000) == 0 { // if not empty
+		// string "26324411"
+		o = append(o, 0xa8, 0x32, 0x36, 0x33, 0x32, 0x34, 0x34, 0x31, 0x31)
+		if z.TaskfFixOffline == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.TaskfFixOffline)
+		}
+	}
+	if (zb0001Mask & 0x4000) == 0 { // if not empty
+		// string "26323811"
+		o = append(o, 0xa8, 0x32, 0x36, 0x33, 0x32, 0x33, 0x38, 0x31, 0x31)
+		if z.TaskfRecurring == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.TaskfRecurring)
+		}
+	}
+	if (zb0001Mask & 0x8000) == 0 { // if not empty
+		// string "2632103"
+		o = append(o, 0xa7, 0x32, 0x36, 0x33, 0x32, 0x31, 0x30, 0x33)
+		if z.TaskHistory == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.TaskHistory)
+		}
+	}
+	if (zb0001Mask & 0x10000) == 0 { // if not empty
+		// string "26323731"
+		o = append(o, 0xa8, 0x32, 0x36, 0x33, 0x32, 0x33, 0x37, 0x33, 0x31)
+		if z.TaskLastDelegate == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.TaskLastDelegate)
+		}
+	}
+	if (zb0001Mask & 0x20000) == 0 { // if not empty
+		// string "26320564"
+		o = append(o, 0xa8, 0x32, 0x36, 0x33, 0x32, 0x30, 0x35, 0x36, 0x34)
+		if z.TaskLastUpdate == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.TaskLastUpdate)
+		}
+	}
+	if (zb0001Mask & 0x40000) == 0 { // if not empty
+		// string "26323431"
+		o = append(o, 0xa8, 0x32, 0x36, 0x33, 0x32, 0x33, 0x34, 0x33, 0x31)
+		if z.TaskLastUser == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.TaskLastUser)
+		}
+	}
+	if (zb0001Mask & 0x80000) == 0 { // if not empty
+		// string "2673043"
+		o = append(o, 0xa7, 0x32, 0x36, 0x37, 0x33, 0x30, 0x34, 0x33)
+		if z.TaskMode == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.TaskMode)
+		}
+	}
+	if (zb0001Mask & 0x100000) == 0 { // if not empty
+		// string "2632323"
+		o = append(o, 0xa7, 0x32, 0x36, 0x33, 0x32, 0x33, 0x32, 0x33)
+		if z.TaskMultipleRecipients == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.TaskMultipleRecipients)
+		}
+	}
+	if (zb0001Mask & 0x200000) == 0 { // if not empty
+		// string "26323611"
+		o = append(o, 0xa8, 0x32, 0x36, 0x33, 0x32, 0x33, 0x36, 0x31, 0x31)
+		if z.TaskNoCompute == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.TaskNoCompute)
+		}
+	}
+	if (zb0001Mask & 0x400000) == 0 { // if not empty
+		// string "2632353"
+		o = append(o, 0xa7, 0x32, 0x36, 0x33, 0x32, 0x33, 0x35, 0x33)
+		if z.TaskOrdinal == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.TaskOrdinal)
+		}
+	}
+	if (zb0001Mask & 0x800000) == 0 { // if not empty
+		// string "26321531"
+		o = append(o, 0xa8, 0x32, 0x36, 0x33, 0x32, 0x31, 0x35, 0x33, 0x31)
+		if z.TaskOwner == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.TaskOwner)
+		}
+	}
+	if (zb0001Mask & 0x1000000) == 0 { // if not empty
+		// string "2632413"
+		o = append(o, 0xa7, 0x32, 0x36, 0x33, 0x32, 0x34, 0x31, 0x33)
+		if z.TaskOwnership == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.TaskOwnership)
+		}
+	}
+	if (zb0001Mask & 0x2000000) == 0 { // if not empty
+		// string "26317511"
+		o = append(o, 0xa8, 0x32, 0x36, 0x33, 0x31, 0x37, 0x35, 0x31, 0x31)
+		if z.TaskResetReminder == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.TaskResetReminder)
+		}
+	}
+	if (zb0001Mask & 0x4000000) == 0 { // if not empty
+		// string "26323931"
+		o = append(o, 0xa8, 0x32, 0x36, 0x33, 0x32, 0x33, 0x39, 0x33, 0x31)
+		if z.TaskRole == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.TaskRole)
+		}
+	}
+	if (zb0001Mask & 0x8000000) == 0 { // if not empty
+		// string "26317264"
+		o = append(o, 0xa8, 0x32, 0x36, 0x33, 0x31, 0x37, 0x32, 0x36, 0x34)
+		if z.TaskStartDate == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.TaskStartDate)
+		}
+	}
+	if (zb0001Mask & 0x10000000) == 0 { // if not empty
+		// string "2632033"
+		o = append(o, 0xa7, 0x32, 0x36, 0x33, 0x32, 0x30, 0x33, 0x33)
+		if z.TaskState == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.TaskState)
+		}
+	}
+	if (zb0001Mask & 0x20000000) == 0 { // if not empty
+		// string "2631693"
+		o = append(o, 0xa7, 0x32, 0x36, 0x33, 0x31, 0x36, 0x39, 0x33)
+		if z.TaskStatus == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.TaskStatus)
+		}
+	}
+	if (zb0001Mask & 0x40000000) == 0 { // if not empty
+		// string "26320911"
+		o = append(o, 0xa8, 0x32, 0x36, 0x33, 0x32, 0x30, 0x39, 0x31, 0x31)
+		if z.TaskStatusOnComplete == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.TaskStatusOnComplete)
+		}
+	}
+	if (zb0001Mask & 0x80000000) == 0 { // if not empty
+		// string "26321111"
+		o = append(o, 0xa8, 0x32, 0x36, 0x33, 0x32, 0x31, 0x31, 0x31, 0x31)
+		if z.TaskUpdates == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.TaskUpdates)
+		}
+	}
+	if (zb0001Mask & 0x100000000) == 0 { // if not empty
+		// string "2632023"
+		o = append(o, 0xa7, 0x32, 0x36, 0x33, 0x32, 0x30, 0x32, 0x33)
+		if z.TaskVersion == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.TaskVersion)
+		}
+	}
+	if (zb0001Mask & 0x200000000) == 0 { // if not empty
+		// string "26317111"
+		o = append(o, 0xa8, 0x32, 0x36, 0x33, 0x31, 0x37, 0x31, 0x31, 0x31)
+		if z.TeamTask == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.TeamTask)
+		}
+	}
+	if (zb0001Mask & 0x400000000) == 0 { // if not empty
+		// string "26758464"
+		o = append(o, 0xa8, 0x32, 0x36, 0x37, 0x35, 0x38, 0x34, 0x36, 0x34)
+		if z.ToDoOrdinalDate == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.ToDoOrdinalDate)
+		}
+	}
+	if (zb0001Mask & 0x800000000) == 0 { // if not empty
+		// string "26758531"
+		o = append(o, 0xa8, 0x32, 0x36, 0x37, 0x35, 0x38, 0x35, 0x33, 0x31)
+		if z.ToDoSubOrdinal == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.ToDoSubOrdinal)
+		}
+	}
+	if (zb0001Mask & 0x1000000000) == 0 { // if not empty
+		// string "26758831"
+		o = append(o, 0xa8, 0x32, 0x36, 0x37, 0x35, 0x38, 0x38, 0x33, 0x31)
+		if z.ToDoTitle == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.ToDoTitle)
+		}
+	}
+	if (zb0001Mask & 0x2000000000) == 0 { // if not empty
+		// string "26763164"
+		o = append(o, 0xa8, 0x32, 0x36, 0x37, 0x36, 0x33, 0x31, 0x36, 0x34)
+		if z.ValidFlagStringProof == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.ValidFlagStringProof)
+		}
+	}
+	if (zb0001Mask & 0x4000000000) == 0 { // if not empty
+		// string "140503"
+		o = append(o, 0xa6, 0x31, 0x34, 0x30, 0x35, 0x30, 0x33)
+		if z.OrdinalMost == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.OrdinalMost)
+		}
 	}
 	return
 }

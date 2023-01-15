@@ -451,9 +451,95 @@ func (z *Attachment) DecodeMsg(dc *msgp.Reader) (err error) {
 
 // EncodeMsg implements msgp.Encodable
 func (z *Attachment) EncodeMsg(en *msgp.Writer) (err error) {
-	// map header, size 23
+	// omitempty: check for empty values
+	zb0001Len := uint32(23)
+	var zb0001Mask uint32 /* 23 bits */
+	if z.AttachContentBase == nil {
+		zb0001Len--
+		zb0001Mask |= 0x10
+	}
+	if z.AttachContentId == nil {
+		zb0001Len--
+		zb0001Mask |= 0x20
+	}
+	if z.AttachContentLocation == nil {
+		zb0001Len--
+		zb0001Mask |= 0x40
+	}
+	if z.AttachExtension == nil {
+		zb0001Len--
+		zb0001Mask |= 0x80
+	}
+	if z.AttachFilename == nil {
+		zb0001Len--
+		zb0001Mask |= 0x100
+	}
+	if z.AttachFlags == nil {
+		zb0001Len--
+		zb0001Mask |= 0x200
+	}
+	if z.AttachLongFilename == nil {
+		zb0001Len--
+		zb0001Mask |= 0x400
+	}
+	if z.AttachLongPathname == nil {
+		zb0001Len--
+		zb0001Mask |= 0x800
+	}
+	if z.AttachmentContactPhoto == nil {
+		zb0001Len--
+		zb0001Mask |= 0x1000
+	}
+	if z.AttachmentFlags == nil {
+		zb0001Len--
+		zb0001Mask |= 0x2000
+	}
+	if z.AttachmentHidden == nil {
+		zb0001Len--
+		zb0001Mask |= 0x4000
+	}
+	if z.AttachmentLinkId == nil {
+		zb0001Len--
+		zb0001Mask |= 0x8000
+	}
+	if z.AttachMethod == nil {
+		zb0001Len--
+		zb0001Mask |= 0x10000
+	}
+	if z.AttachMimeTag == nil {
+		zb0001Len--
+		zb0001Mask |= 0x20000
+	}
+	if z.AttachNumber == nil {
+		zb0001Len--
+		zb0001Mask |= 0x40000
+	}
+	if z.AttachPathname == nil {
+		zb0001Len--
+		zb0001Mask |= 0x80000
+	}
+	if z.AttachSize == nil {
+		zb0001Len--
+		zb0001Mask |= 0x100000
+	}
+	if z.AttachTransportName == nil {
+		zb0001Len--
+		zb0001Mask |= 0x200000
+	}
+	if z.TextAttachmentCharset == nil {
+		zb0001Len--
+		zb0001Mask |= 0x400000
+	}
+	// variable map header, size zb0001Len
+	err = en.WriteMapHeader(zb0001Len)
+	if err != nil {
+		return
+	}
+	if zb0001Len == 0 {
+		return
+	}
 	// write "AttachmentMacContentType"
-	err = en.Append(0xde, 0x0, 0x17, 0xb8, 0x41, 0x74, 0x74, 0x61, 0x63, 0x68, 0x6d, 0x65, 0x6e, 0x74, 0x4d, 0x61, 0x63, 0x43, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x54, 0x79, 0x70, 0x65)
+	err = en.Append(0xb8, 0x41, 0x74, 0x74, 0x61, 0x63, 0x68, 0x6d, 0x65, 0x6e, 0x74, 0x4d, 0x61, 0x63, 0x43, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x54, 0x79, 0x70, 0x65)
 	if err != nil {
 		return
 	}
@@ -520,327 +606,365 @@ func (z *Attachment) EncodeMsg(en *msgp.Writer) (err error) {
 			return
 		}
 	}
-	// write "1409731"
-	err = en.Append(0xa7, 0x31, 0x34, 0x30, 0x39, 0x37, 0x33, 0x31)
-	if err != nil {
-		return
-	}
-	if z.AttachContentBase == nil {
-		err = en.WriteNil()
+	if (zb0001Mask & 0x10) == 0 { // if not empty
+		// write "1409731"
+		err = en.Append(0xa7, 0x31, 0x34, 0x30, 0x39, 0x37, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.AttachContentBase)
-		if err != nil {
-			err = msgp.WrapError(err, "AttachContentBase")
-			return
+		if z.AttachContentBase == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AttachContentBase)
+			if err != nil {
+				err = msgp.WrapError(err, "AttachContentBase")
+				return
+			}
 		}
 	}
-	// write "1409831"
-	err = en.Append(0xa7, 0x31, 0x34, 0x30, 0x39, 0x38, 0x33, 0x31)
-	if err != nil {
-		return
-	}
-	if z.AttachContentId == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.AttachContentId)
-		if err != nil {
-			err = msgp.WrapError(err, "AttachContentId")
-			return
-		}
-	}
-	// write "1409931"
-	err = en.Append(0xa7, 0x31, 0x34, 0x30, 0x39, 0x39, 0x33, 0x31)
-	if err != nil {
-		return
-	}
-	if z.AttachContentLocation == nil {
-		err = en.WriteNil()
+	if (zb0001Mask & 0x20) == 0 { // if not empty
+		// write "1409831"
+		err = en.Append(0xa7, 0x31, 0x34, 0x30, 0x39, 0x38, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.AttachContentLocation)
-		if err != nil {
-			err = msgp.WrapError(err, "AttachContentLocation")
-			return
+		if z.AttachContentId == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AttachContentId)
+			if err != nil {
+				err = msgp.WrapError(err, "AttachContentId")
+				return
+			}
 		}
 	}
-	// write "1408331"
-	err = en.Append(0xa7, 0x31, 0x34, 0x30, 0x38, 0x33, 0x33, 0x31)
-	if err != nil {
-		return
-	}
-	if z.AttachExtension == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.AttachExtension)
-		if err != nil {
-			err = msgp.WrapError(err, "AttachExtension")
-			return
-		}
-	}
-	// write "1408431"
-	err = en.Append(0xa7, 0x31, 0x34, 0x30, 0x38, 0x34, 0x33, 0x31)
-	if err != nil {
-		return
-	}
-	if z.AttachFilename == nil {
-		err = en.WriteNil()
+	if (zb0001Mask & 0x40) == 0 { // if not empty
+		// write "1409931"
+		err = en.Append(0xa7, 0x31, 0x34, 0x30, 0x39, 0x39, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.AttachFilename)
-		if err != nil {
-			err = msgp.WrapError(err, "AttachFilename")
-			return
+		if z.AttachContentLocation == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AttachContentLocation)
+			if err != nil {
+				err = msgp.WrapError(err, "AttachContentLocation")
+				return
+			}
 		}
 	}
-	// write "141003"
-	err = en.Append(0xa6, 0x31, 0x34, 0x31, 0x30, 0x30, 0x33)
-	if err != nil {
-		return
-	}
-	if z.AttachFlags == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.AttachFlags)
-		if err != nil {
-			err = msgp.WrapError(err, "AttachFlags")
-			return
-		}
-	}
-	// write "1408731"
-	err = en.Append(0xa7, 0x31, 0x34, 0x30, 0x38, 0x37, 0x33, 0x31)
-	if err != nil {
-		return
-	}
-	if z.AttachLongFilename == nil {
-		err = en.WriteNil()
+	if (zb0001Mask & 0x80) == 0 { // if not empty
+		// write "1408331"
+		err = en.Append(0xa7, 0x31, 0x34, 0x30, 0x38, 0x33, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.AttachLongFilename)
-		if err != nil {
-			err = msgp.WrapError(err, "AttachLongFilename")
-			return
+		if z.AttachExtension == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AttachExtension)
+			if err != nil {
+				err = msgp.WrapError(err, "AttachExtension")
+				return
+			}
 		}
 	}
-	// write "1409331"
-	err = en.Append(0xa7, 0x31, 0x34, 0x30, 0x39, 0x33, 0x33, 0x31)
-	if err != nil {
-		return
-	}
-	if z.AttachLongPathname == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.AttachLongPathname)
-		if err != nil {
-			err = msgp.WrapError(err, "AttachLongPathname")
-			return
-		}
-	}
-	// write "3276711"
-	err = en.Append(0xa7, 0x33, 0x32, 0x37, 0x36, 0x37, 0x31, 0x31)
-	if err != nil {
-		return
-	}
-	if z.AttachmentContactPhoto == nil {
-		err = en.WriteNil()
+	if (zb0001Mask & 0x100) == 0 { // if not empty
+		// write "1408431"
+		err = en.Append(0xa7, 0x31, 0x34, 0x30, 0x38, 0x34, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteBool(*z.AttachmentContactPhoto)
-		if err != nil {
-			err = msgp.WrapError(err, "AttachmentContactPhoto")
-			return
+		if z.AttachFilename == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AttachFilename)
+			if err != nil {
+				err = msgp.WrapError(err, "AttachFilename")
+				return
+			}
 		}
 	}
-	// write "327653"
-	err = en.Append(0xa6, 0x33, 0x32, 0x37, 0x36, 0x35, 0x33)
-	if err != nil {
-		return
-	}
-	if z.AttachmentFlags == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.AttachmentFlags)
-		if err != nil {
-			err = msgp.WrapError(err, "AttachmentFlags")
-			return
-		}
-	}
-	// write "3276611"
-	err = en.Append(0xa7, 0x33, 0x32, 0x37, 0x36, 0x36, 0x31, 0x31)
-	if err != nil {
-		return
-	}
-	if z.AttachmentHidden == nil {
-		err = en.WriteNil()
+	if (zb0001Mask & 0x200) == 0 { // if not empty
+		// write "141003"
+		err = en.Append(0xa6, 0x31, 0x34, 0x31, 0x30, 0x30, 0x33)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteBool(*z.AttachmentHidden)
-		if err != nil {
-			err = msgp.WrapError(err, "AttachmentHidden")
-			return
+		if z.AttachFlags == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.AttachFlags)
+			if err != nil {
+				err = msgp.WrapError(err, "AttachFlags")
+				return
+			}
 		}
 	}
-	// write "327623"
-	err = en.Append(0xa6, 0x33, 0x32, 0x37, 0x36, 0x32, 0x33)
-	if err != nil {
-		return
-	}
-	if z.AttachmentLinkId == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.AttachmentLinkId)
-		if err != nil {
-			err = msgp.WrapError(err, "AttachmentLinkId")
-			return
-		}
-	}
-	// write "140853"
-	err = en.Append(0xa6, 0x31, 0x34, 0x30, 0x38, 0x35, 0x33)
-	if err != nil {
-		return
-	}
-	if z.AttachMethod == nil {
-		err = en.WriteNil()
+	if (zb0001Mask & 0x400) == 0 { // if not empty
+		// write "1408731"
+		err = en.Append(0xa7, 0x31, 0x34, 0x30, 0x38, 0x37, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteInt32(*z.AttachMethod)
-		if err != nil {
-			err = msgp.WrapError(err, "AttachMethod")
-			return
+		if z.AttachLongFilename == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AttachLongFilename)
+			if err != nil {
+				err = msgp.WrapError(err, "AttachLongFilename")
+				return
+			}
 		}
 	}
-	// write "1409431"
-	err = en.Append(0xa7, 0x31, 0x34, 0x30, 0x39, 0x34, 0x33, 0x31)
-	if err != nil {
-		return
-	}
-	if z.AttachMimeTag == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.AttachMimeTag)
-		if err != nil {
-			err = msgp.WrapError(err, "AttachMimeTag")
-			return
-		}
-	}
-	// write "36173"
-	err = en.Append(0xa5, 0x33, 0x36, 0x31, 0x37, 0x33)
-	if err != nil {
-		return
-	}
-	if z.AttachNumber == nil {
-		err = en.WriteNil()
+	if (zb0001Mask & 0x800) == 0 { // if not empty
+		// write "1409331"
+		err = en.Append(0xa7, 0x31, 0x34, 0x30, 0x39, 0x33, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteInt32(*z.AttachNumber)
-		if err != nil {
-			err = msgp.WrapError(err, "AttachNumber")
-			return
+		if z.AttachLongPathname == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AttachLongPathname)
+			if err != nil {
+				err = msgp.WrapError(err, "AttachLongPathname")
+				return
+			}
 		}
 	}
-	// write "1408831"
-	err = en.Append(0xa7, 0x31, 0x34, 0x30, 0x38, 0x38, 0x33, 0x31)
-	if err != nil {
-		return
-	}
-	if z.AttachPathname == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.AttachPathname)
-		if err != nil {
-			err = msgp.WrapError(err, "AttachPathname")
-			return
-		}
-	}
-	// write "36163"
-	err = en.Append(0xa5, 0x33, 0x36, 0x31, 0x36, 0x33)
-	if err != nil {
-		return
-	}
-	if z.AttachSize == nil {
-		err = en.WriteNil()
+	if (zb0001Mask & 0x1000) == 0 { // if not empty
+		// write "3276711"
+		err = en.Append(0xa7, 0x33, 0x32, 0x37, 0x36, 0x37, 0x31, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteInt32(*z.AttachSize)
-		if err != nil {
-			err = msgp.WrapError(err, "AttachSize")
-			return
+		if z.AttachmentContactPhoto == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.AttachmentContactPhoto)
+			if err != nil {
+				err = msgp.WrapError(err, "AttachmentContactPhoto")
+				return
+			}
 		}
 	}
-	// write "1409231"
-	err = en.Append(0xa7, 0x31, 0x34, 0x30, 0x39, 0x32, 0x33, 0x31)
-	if err != nil {
-		return
-	}
-	if z.AttachTransportName == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.AttachTransportName)
-		if err != nil {
-			err = msgp.WrapError(err, "AttachTransportName")
-			return
-		}
-	}
-	// write "1410731"
-	err = en.Append(0xa7, 0x31, 0x34, 0x31, 0x30, 0x37, 0x33, 0x31)
-	if err != nil {
-		return
-	}
-	if z.TextAttachmentCharset == nil {
-		err = en.WriteNil()
+	if (zb0001Mask & 0x2000) == 0 { // if not empty
+		// write "327653"
+		err = en.Append(0xa6, 0x33, 0x32, 0x37, 0x36, 0x35, 0x33)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.TextAttachmentCharset)
+		if z.AttachmentFlags == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.AttachmentFlags)
+			if err != nil {
+				err = msgp.WrapError(err, "AttachmentFlags")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x4000) == 0 { // if not empty
+		// write "3276611"
+		err = en.Append(0xa7, 0x33, 0x32, 0x37, 0x36, 0x36, 0x31, 0x31)
 		if err != nil {
-			err = msgp.WrapError(err, "TextAttachmentCharset")
 			return
+		}
+		if z.AttachmentHidden == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.AttachmentHidden)
+			if err != nil {
+				err = msgp.WrapError(err, "AttachmentHidden")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x8000) == 0 { // if not empty
+		// write "327623"
+		err = en.Append(0xa6, 0x33, 0x32, 0x37, 0x36, 0x32, 0x33)
+		if err != nil {
+			return
+		}
+		if z.AttachmentLinkId == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.AttachmentLinkId)
+			if err != nil {
+				err = msgp.WrapError(err, "AttachmentLinkId")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x10000) == 0 { // if not empty
+		// write "140853"
+		err = en.Append(0xa6, 0x31, 0x34, 0x30, 0x38, 0x35, 0x33)
+		if err != nil {
+			return
+		}
+		if z.AttachMethod == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.AttachMethod)
+			if err != nil {
+				err = msgp.WrapError(err, "AttachMethod")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x20000) == 0 { // if not empty
+		// write "1409431"
+		err = en.Append(0xa7, 0x31, 0x34, 0x30, 0x39, 0x34, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AttachMimeTag == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AttachMimeTag)
+			if err != nil {
+				err = msgp.WrapError(err, "AttachMimeTag")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x40000) == 0 { // if not empty
+		// write "36173"
+		err = en.Append(0xa5, 0x33, 0x36, 0x31, 0x37, 0x33)
+		if err != nil {
+			return
+		}
+		if z.AttachNumber == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.AttachNumber)
+			if err != nil {
+				err = msgp.WrapError(err, "AttachNumber")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x80000) == 0 { // if not empty
+		// write "1408831"
+		err = en.Append(0xa7, 0x31, 0x34, 0x30, 0x38, 0x38, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AttachPathname == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AttachPathname)
+			if err != nil {
+				err = msgp.WrapError(err, "AttachPathname")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x100000) == 0 { // if not empty
+		// write "36163"
+		err = en.Append(0xa5, 0x33, 0x36, 0x31, 0x36, 0x33)
+		if err != nil {
+			return
+		}
+		if z.AttachSize == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.AttachSize)
+			if err != nil {
+				err = msgp.WrapError(err, "AttachSize")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x200000) == 0 { // if not empty
+		// write "1409231"
+		err = en.Append(0xa7, 0x31, 0x34, 0x30, 0x39, 0x32, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AttachTransportName == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AttachTransportName)
+			if err != nil {
+				err = msgp.WrapError(err, "AttachTransportName")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x400000) == 0 { // if not empty
+		// write "1410731"
+		err = en.Append(0xa7, 0x31, 0x34, 0x31, 0x30, 0x37, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.TextAttachmentCharset == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.TextAttachmentCharset)
+			if err != nil {
+				err = msgp.WrapError(err, "TextAttachmentCharset")
+				return
+			}
 		}
 	}
 	return
@@ -849,9 +973,92 @@ func (z *Attachment) EncodeMsg(en *msgp.Writer) (err error) {
 // MarshalMsg implements msgp.Marshaler
 func (z *Attachment) MarshalMsg(b []byte) (o []byte, err error) {
 	o = msgp.Require(b, z.Msgsize())
-	// map header, size 23
+	// omitempty: check for empty values
+	zb0001Len := uint32(23)
+	var zb0001Mask uint32 /* 23 bits */
+	if z.AttachContentBase == nil {
+		zb0001Len--
+		zb0001Mask |= 0x10
+	}
+	if z.AttachContentId == nil {
+		zb0001Len--
+		zb0001Mask |= 0x20
+	}
+	if z.AttachContentLocation == nil {
+		zb0001Len--
+		zb0001Mask |= 0x40
+	}
+	if z.AttachExtension == nil {
+		zb0001Len--
+		zb0001Mask |= 0x80
+	}
+	if z.AttachFilename == nil {
+		zb0001Len--
+		zb0001Mask |= 0x100
+	}
+	if z.AttachFlags == nil {
+		zb0001Len--
+		zb0001Mask |= 0x200
+	}
+	if z.AttachLongFilename == nil {
+		zb0001Len--
+		zb0001Mask |= 0x400
+	}
+	if z.AttachLongPathname == nil {
+		zb0001Len--
+		zb0001Mask |= 0x800
+	}
+	if z.AttachmentContactPhoto == nil {
+		zb0001Len--
+		zb0001Mask |= 0x1000
+	}
+	if z.AttachmentFlags == nil {
+		zb0001Len--
+		zb0001Mask |= 0x2000
+	}
+	if z.AttachmentHidden == nil {
+		zb0001Len--
+		zb0001Mask |= 0x4000
+	}
+	if z.AttachmentLinkId == nil {
+		zb0001Len--
+		zb0001Mask |= 0x8000
+	}
+	if z.AttachMethod == nil {
+		zb0001Len--
+		zb0001Mask |= 0x10000
+	}
+	if z.AttachMimeTag == nil {
+		zb0001Len--
+		zb0001Mask |= 0x20000
+	}
+	if z.AttachNumber == nil {
+		zb0001Len--
+		zb0001Mask |= 0x40000
+	}
+	if z.AttachPathname == nil {
+		zb0001Len--
+		zb0001Mask |= 0x80000
+	}
+	if z.AttachSize == nil {
+		zb0001Len--
+		zb0001Mask |= 0x100000
+	}
+	if z.AttachTransportName == nil {
+		zb0001Len--
+		zb0001Mask |= 0x200000
+	}
+	if z.TextAttachmentCharset == nil {
+		zb0001Len--
+		zb0001Mask |= 0x400000
+	}
+	// variable map header, size zb0001Len
+	o = msgp.AppendMapHeader(o, zb0001Len)
+	if zb0001Len == 0 {
+		return
+	}
 	// string "AttachmentMacContentType"
-	o = append(o, 0xde, 0x0, 0x17, 0xb8, 0x41, 0x74, 0x74, 0x61, 0x63, 0x68, 0x6d, 0x65, 0x6e, 0x74, 0x4d, 0x61, 0x63, 0x43, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x54, 0x79, 0x70, 0x65)
+	o = append(o, 0xb8, 0x41, 0x74, 0x74, 0x61, 0x63, 0x68, 0x6d, 0x65, 0x6e, 0x74, 0x4d, 0x61, 0x63, 0x43, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x54, 0x79, 0x70, 0x65)
 	if z.AttachmentMacContentType == nil {
 		o = msgp.AppendNil(o)
 	} else {
@@ -878,138 +1085,176 @@ func (z *Attachment) MarshalMsg(b []byte) (o []byte, err error) {
 	} else {
 		o = msgp.AppendString(o, *z.AttachmentProviderType)
 	}
-	// string "1409731"
-	o = append(o, 0xa7, 0x31, 0x34, 0x30, 0x39, 0x37, 0x33, 0x31)
-	if z.AttachContentBase == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AttachContentBase)
+	if (zb0001Mask & 0x10) == 0 { // if not empty
+		// string "1409731"
+		o = append(o, 0xa7, 0x31, 0x34, 0x30, 0x39, 0x37, 0x33, 0x31)
+		if z.AttachContentBase == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AttachContentBase)
+		}
 	}
-	// string "1409831"
-	o = append(o, 0xa7, 0x31, 0x34, 0x30, 0x39, 0x38, 0x33, 0x31)
-	if z.AttachContentId == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AttachContentId)
+	if (zb0001Mask & 0x20) == 0 { // if not empty
+		// string "1409831"
+		o = append(o, 0xa7, 0x31, 0x34, 0x30, 0x39, 0x38, 0x33, 0x31)
+		if z.AttachContentId == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AttachContentId)
+		}
 	}
-	// string "1409931"
-	o = append(o, 0xa7, 0x31, 0x34, 0x30, 0x39, 0x39, 0x33, 0x31)
-	if z.AttachContentLocation == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AttachContentLocation)
+	if (zb0001Mask & 0x40) == 0 { // if not empty
+		// string "1409931"
+		o = append(o, 0xa7, 0x31, 0x34, 0x30, 0x39, 0x39, 0x33, 0x31)
+		if z.AttachContentLocation == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AttachContentLocation)
+		}
 	}
-	// string "1408331"
-	o = append(o, 0xa7, 0x31, 0x34, 0x30, 0x38, 0x33, 0x33, 0x31)
-	if z.AttachExtension == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AttachExtension)
+	if (zb0001Mask & 0x80) == 0 { // if not empty
+		// string "1408331"
+		o = append(o, 0xa7, 0x31, 0x34, 0x30, 0x38, 0x33, 0x33, 0x31)
+		if z.AttachExtension == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AttachExtension)
+		}
 	}
-	// string "1408431"
-	o = append(o, 0xa7, 0x31, 0x34, 0x30, 0x38, 0x34, 0x33, 0x31)
-	if z.AttachFilename == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AttachFilename)
+	if (zb0001Mask & 0x100) == 0 { // if not empty
+		// string "1408431"
+		o = append(o, 0xa7, 0x31, 0x34, 0x30, 0x38, 0x34, 0x33, 0x31)
+		if z.AttachFilename == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AttachFilename)
+		}
 	}
-	// string "141003"
-	o = append(o, 0xa6, 0x31, 0x34, 0x31, 0x30, 0x30, 0x33)
-	if z.AttachFlags == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.AttachFlags)
+	if (zb0001Mask & 0x200) == 0 { // if not empty
+		// string "141003"
+		o = append(o, 0xa6, 0x31, 0x34, 0x31, 0x30, 0x30, 0x33)
+		if z.AttachFlags == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.AttachFlags)
+		}
 	}
-	// string "1408731"
-	o = append(o, 0xa7, 0x31, 0x34, 0x30, 0x38, 0x37, 0x33, 0x31)
-	if z.AttachLongFilename == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AttachLongFilename)
+	if (zb0001Mask & 0x400) == 0 { // if not empty
+		// string "1408731"
+		o = append(o, 0xa7, 0x31, 0x34, 0x30, 0x38, 0x37, 0x33, 0x31)
+		if z.AttachLongFilename == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AttachLongFilename)
+		}
 	}
-	// string "1409331"
-	o = append(o, 0xa7, 0x31, 0x34, 0x30, 0x39, 0x33, 0x33, 0x31)
-	if z.AttachLongPathname == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AttachLongPathname)
+	if (zb0001Mask & 0x800) == 0 { // if not empty
+		// string "1409331"
+		o = append(o, 0xa7, 0x31, 0x34, 0x30, 0x39, 0x33, 0x33, 0x31)
+		if z.AttachLongPathname == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AttachLongPathname)
+		}
 	}
-	// string "3276711"
-	o = append(o, 0xa7, 0x33, 0x32, 0x37, 0x36, 0x37, 0x31, 0x31)
-	if z.AttachmentContactPhoto == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.AttachmentContactPhoto)
+	if (zb0001Mask & 0x1000) == 0 { // if not empty
+		// string "3276711"
+		o = append(o, 0xa7, 0x33, 0x32, 0x37, 0x36, 0x37, 0x31, 0x31)
+		if z.AttachmentContactPhoto == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.AttachmentContactPhoto)
+		}
 	}
-	// string "327653"
-	o = append(o, 0xa6, 0x33, 0x32, 0x37, 0x36, 0x35, 0x33)
-	if z.AttachmentFlags == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.AttachmentFlags)
+	if (zb0001Mask & 0x2000) == 0 { // if not empty
+		// string "327653"
+		o = append(o, 0xa6, 0x33, 0x32, 0x37, 0x36, 0x35, 0x33)
+		if z.AttachmentFlags == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.AttachmentFlags)
+		}
 	}
-	// string "3276611"
-	o = append(o, 0xa7, 0x33, 0x32, 0x37, 0x36, 0x36, 0x31, 0x31)
-	if z.AttachmentHidden == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.AttachmentHidden)
+	if (zb0001Mask & 0x4000) == 0 { // if not empty
+		// string "3276611"
+		o = append(o, 0xa7, 0x33, 0x32, 0x37, 0x36, 0x36, 0x31, 0x31)
+		if z.AttachmentHidden == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.AttachmentHidden)
+		}
 	}
-	// string "327623"
-	o = append(o, 0xa6, 0x33, 0x32, 0x37, 0x36, 0x32, 0x33)
-	if z.AttachmentLinkId == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.AttachmentLinkId)
+	if (zb0001Mask & 0x8000) == 0 { // if not empty
+		// string "327623"
+		o = append(o, 0xa6, 0x33, 0x32, 0x37, 0x36, 0x32, 0x33)
+		if z.AttachmentLinkId == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.AttachmentLinkId)
+		}
 	}
-	// string "140853"
-	o = append(o, 0xa6, 0x31, 0x34, 0x30, 0x38, 0x35, 0x33)
-	if z.AttachMethod == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.AttachMethod)
+	if (zb0001Mask & 0x10000) == 0 { // if not empty
+		// string "140853"
+		o = append(o, 0xa6, 0x31, 0x34, 0x30, 0x38, 0x35, 0x33)
+		if z.AttachMethod == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.AttachMethod)
+		}
 	}
-	// string "1409431"
-	o = append(o, 0xa7, 0x31, 0x34, 0x30, 0x39, 0x34, 0x33, 0x31)
-	if z.AttachMimeTag == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AttachMimeTag)
+	if (zb0001Mask & 0x20000) == 0 { // if not empty
+		// string "1409431"
+		o = append(o, 0xa7, 0x31, 0x34, 0x30, 0x39, 0x34, 0x33, 0x31)
+		if z.AttachMimeTag == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AttachMimeTag)
+		}
 	}
-	// string "36173"
-	o = append(o, 0xa5, 0x33, 0x36, 0x31, 0x37, 0x33)
-	if z.AttachNumber == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.AttachNumber)
+	if (zb0001Mask & 0x40000) == 0 { // if not empty
+		// string "36173"
+		o = append(o, 0xa5, 0x33, 0x36, 0x31, 0x37, 0x33)
+		if z.AttachNumber == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.AttachNumber)
+		}
 	}
-	// string "1408831"
-	o = append(o, 0xa7, 0x31, 0x34, 0x30, 0x38, 0x38, 0x33, 0x31)
-	if z.AttachPathname == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AttachPathname)
+	if (zb0001Mask & 0x80000) == 0 { // if not empty
+		// string "1408831"
+		o = append(o, 0xa7, 0x31, 0x34, 0x30, 0x38, 0x38, 0x33, 0x31)
+		if z.AttachPathname == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AttachPathname)
+		}
 	}
-	// string "36163"
-	o = append(o, 0xa5, 0x33, 0x36, 0x31, 0x36, 0x33)
-	if z.AttachSize == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.AttachSize)
+	if (zb0001Mask & 0x100000) == 0 { // if not empty
+		// string "36163"
+		o = append(o, 0xa5, 0x33, 0x36, 0x31, 0x36, 0x33)
+		if z.AttachSize == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.AttachSize)
+		}
 	}
-	// string "1409231"
-	o = append(o, 0xa7, 0x31, 0x34, 0x30, 0x39, 0x32, 0x33, 0x31)
-	if z.AttachTransportName == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AttachTransportName)
+	if (zb0001Mask & 0x200000) == 0 { // if not empty
+		// string "1409231"
+		o = append(o, 0xa7, 0x31, 0x34, 0x30, 0x39, 0x32, 0x33, 0x31)
+		if z.AttachTransportName == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AttachTransportName)
+		}
 	}
-	// string "1410731"
-	o = append(o, 0xa7, 0x31, 0x34, 0x31, 0x30, 0x37, 0x33, 0x31)
-	if z.TextAttachmentCharset == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.TextAttachmentCharset)
+	if (zb0001Mask & 0x400000) == 0 { // if not empty
+		// string "1410731"
+		o = append(o, 0xa7, 0x31, 0x34, 0x31, 0x30, 0x37, 0x33, 0x31)
+		if z.TextAttachmentCharset == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.TextAttachmentCharset)
+		}
 	}
 	return
 }

@@ -61,17 +61,17 @@ type Voicemail struct {
 	// Contains the name of the caller who left the attached voice message, as provided by the voice network's caller ID system.
 	XVoiceMessageSenderName *string `protobuf:"bytes,9,opt,name=x_voice_message_sender_name,json=xVoiceMessageSenderName,proto3,oneof" json:"x_voice_message_sender_name,omitempty"`
 	// Contains a unique identifier associated with the phone call.
-	CallId *string `protobuf:"bytes,10,opt,name=call_id,json=callId,proto3,oneof" json:"call_id,omitempty" msg:"2663031"` // @gotags: msg:"2663031"
+	CallId *string `protobuf:"bytes,10,opt,name=call_id,json=callId,proto3,oneof" json:"call_id,omitempty" msg:"2663031,omitempty"`
 	// Contains the number of pages in a Fax object.
-	FaxNumberOfPages *int32 `protobuf:"varint,11,opt,name=fax_number_of_pages,json=faxNumberOfPages,proto3,oneof" json:"fax_number_of_pages,omitempty" msg:"266283"` // @gotags: msg:"266283"
+	FaxNumberOfPages *int32 `protobuf:"varint,11,opt,name=fax_number_of_pages,json=faxNumberOfPages,proto3,oneof" json:"fax_number_of_pages,omitempty" msg:"266283,omitempty"`
 	// Contains the telephone number of the caller associated with a voice mail message.
-	SenderTelephoneNumber *string `protobuf:"bytes,12,opt,name=sender_telephone_number,json=senderTelephoneNumber,proto3,oneof" json:"sender_telephone_number,omitempty" msg:"2662631"` // @gotags: msg:"2662631"
+	SenderTelephoneNumber *string `protobuf:"bytes,12,opt,name=sender_telephone_number,json=senderTelephoneNumber,proto3,oneof" json:"sender_telephone_number,omitempty" msg:"2662631,omitempty"`
 	// Contains a list of file names for the audio file attachments that are to be played as part of a message.
-	VoiceMessageAttachmentOrder *string `protobuf:"bytes,13,opt,name=voice_message_attachment_order,json=voiceMessageAttachmentOrder,proto3,oneof" json:"voice_message_attachment_order,omitempty" msg:"2662931"` // @gotags: msg:"2662931"
+	VoiceMessageAttachmentOrder *string `protobuf:"bytes,13,opt,name=voice_message_attachment_order,json=voiceMessageAttachmentOrder,proto3,oneof" json:"voice_message_attachment_order,omitempty" msg:"2662931,omitempty"`
 	// Specifies the length of the attached audio message, in seconds.
-	VoiceMessageDuration *int32 `protobuf:"varint,14,opt,name=voice_message_duration,json=voiceMessageDuration,proto3,oneof" json:"voice_message_duration,omitempty" msg:"266253"` // @gotags: msg:"266253"
+	VoiceMessageDuration *int32 `protobuf:"varint,14,opt,name=voice_message_duration,json=voiceMessageDuration,proto3,oneof" json:"voice_message_duration,omitempty" msg:"266253,omitempty"`
 	// Specifies the name of the caller who left the attached voice message, as provided by the voice network's caller ID system.
-	VoiceMessageSenderName *string `protobuf:"bytes,15,opt,name=voice_message_sender_name,json=voiceMessageSenderName,proto3,oneof" json:"voice_message_sender_name,omitempty" msg:"2662731"` // @gotags: msg:"2662731"
+	VoiceMessageSenderName *string `protobuf:"bytes,15,opt,name=voice_message_sender_name,json=voiceMessageSenderName,proto3,oneof" json:"voice_message_sender_name,omitempty" msg:"2662731,omitempty"`
 }
 
 func (x *Voicemail) Reset() {

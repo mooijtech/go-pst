@@ -289,9 +289,43 @@ func (z *Voicemail) DecodeMsg(dc *msgp.Reader) (err error) {
 
 // EncodeMsg implements msgp.Encodable
 func (z *Voicemail) EncodeMsg(en *msgp.Writer) (err error) {
-	// map header, size 14
+	// omitempty: check for empty values
+	zb0001Len := uint32(14)
+	var zb0001Mask uint16 /* 14 bits */
+	if z.CallId == nil {
+		zb0001Len--
+		zb0001Mask |= 0x100
+	}
+	if z.FaxNumberOfPages == nil {
+		zb0001Len--
+		zb0001Mask |= 0x200
+	}
+	if z.SenderTelephoneNumber == nil {
+		zb0001Len--
+		zb0001Mask |= 0x400
+	}
+	if z.VoiceMessageAttachmentOrder == nil {
+		zb0001Len--
+		zb0001Mask |= 0x800
+	}
+	if z.VoiceMessageDuration == nil {
+		zb0001Len--
+		zb0001Mask |= 0x1000
+	}
+	if z.VoiceMessageSenderName == nil {
+		zb0001Len--
+		zb0001Mask |= 0x2000
+	}
+	// variable map header, size zb0001Len
+	err = en.Append(0x80 | uint8(zb0001Len))
+	if err != nil {
+		return
+	}
+	if zb0001Len == 0 {
+		return
+	}
 	// write "AudioNotes"
-	err = en.Append(0x8e, 0xaa, 0x41, 0x75, 0x64, 0x69, 0x6f, 0x4e, 0x6f, 0x74, 0x65, 0x73)
+	err = en.Append(0xaa, 0x41, 0x75, 0x64, 0x69, 0x6f, 0x4e, 0x6f, 0x74, 0x65, 0x73)
 	if err != nil {
 		return
 	}
@@ -426,106 +460,118 @@ func (z *Voicemail) EncodeMsg(en *msgp.Writer) (err error) {
 			return
 		}
 	}
-	// write "2663031"
-	err = en.Append(0xa7, 0x32, 0x36, 0x36, 0x33, 0x30, 0x33, 0x31)
-	if err != nil {
-		return
-	}
-	if z.CallId == nil {
-		err = en.WriteNil()
+	if (zb0001Mask & 0x100) == 0 { // if not empty
+		// write "2663031"
+		err = en.Append(0xa7, 0x32, 0x36, 0x36, 0x33, 0x30, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.CallId)
-		if err != nil {
-			err = msgp.WrapError(err, "CallId")
-			return
+		if z.CallId == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.CallId)
+			if err != nil {
+				err = msgp.WrapError(err, "CallId")
+				return
+			}
 		}
 	}
-	// write "266283"
-	err = en.Append(0xa6, 0x32, 0x36, 0x36, 0x32, 0x38, 0x33)
-	if err != nil {
-		return
-	}
-	if z.FaxNumberOfPages == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.FaxNumberOfPages)
-		if err != nil {
-			err = msgp.WrapError(err, "FaxNumberOfPages")
-			return
-		}
-	}
-	// write "2662631"
-	err = en.Append(0xa7, 0x32, 0x36, 0x36, 0x32, 0x36, 0x33, 0x31)
-	if err != nil {
-		return
-	}
-	if z.SenderTelephoneNumber == nil {
-		err = en.WriteNil()
+	if (zb0001Mask & 0x200) == 0 { // if not empty
+		// write "266283"
+		err = en.Append(0xa6, 0x32, 0x36, 0x36, 0x32, 0x38, 0x33)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.SenderTelephoneNumber)
-		if err != nil {
-			err = msgp.WrapError(err, "SenderTelephoneNumber")
-			return
+		if z.FaxNumberOfPages == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.FaxNumberOfPages)
+			if err != nil {
+				err = msgp.WrapError(err, "FaxNumberOfPages")
+				return
+			}
 		}
 	}
-	// write "2662931"
-	err = en.Append(0xa7, 0x32, 0x36, 0x36, 0x32, 0x39, 0x33, 0x31)
-	if err != nil {
-		return
-	}
-	if z.VoiceMessageAttachmentOrder == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.VoiceMessageAttachmentOrder)
-		if err != nil {
-			err = msgp.WrapError(err, "VoiceMessageAttachmentOrder")
-			return
-		}
-	}
-	// write "266253"
-	err = en.Append(0xa6, 0x32, 0x36, 0x36, 0x32, 0x35, 0x33)
-	if err != nil {
-		return
-	}
-	if z.VoiceMessageDuration == nil {
-		err = en.WriteNil()
+	if (zb0001Mask & 0x400) == 0 { // if not empty
+		// write "2662631"
+		err = en.Append(0xa7, 0x32, 0x36, 0x36, 0x32, 0x36, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteInt32(*z.VoiceMessageDuration)
-		if err != nil {
-			err = msgp.WrapError(err, "VoiceMessageDuration")
-			return
+		if z.SenderTelephoneNumber == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.SenderTelephoneNumber)
+			if err != nil {
+				err = msgp.WrapError(err, "SenderTelephoneNumber")
+				return
+			}
 		}
 	}
-	// write "2662731"
-	err = en.Append(0xa7, 0x32, 0x36, 0x36, 0x32, 0x37, 0x33, 0x31)
-	if err != nil {
-		return
-	}
-	if z.VoiceMessageSenderName == nil {
-		err = en.WriteNil()
+	if (zb0001Mask & 0x800) == 0 { // if not empty
+		// write "2662931"
+		err = en.Append(0xa7, 0x32, 0x36, 0x36, 0x32, 0x39, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.VoiceMessageSenderName)
+		if z.VoiceMessageAttachmentOrder == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.VoiceMessageAttachmentOrder)
+			if err != nil {
+				err = msgp.WrapError(err, "VoiceMessageAttachmentOrder")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x1000) == 0 { // if not empty
+		// write "266253"
+		err = en.Append(0xa6, 0x32, 0x36, 0x36, 0x32, 0x35, 0x33)
 		if err != nil {
-			err = msgp.WrapError(err, "VoiceMessageSenderName")
 			return
+		}
+		if z.VoiceMessageDuration == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.VoiceMessageDuration)
+			if err != nil {
+				err = msgp.WrapError(err, "VoiceMessageDuration")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x2000) == 0 { // if not empty
+		// write "2662731"
+		err = en.Append(0xa7, 0x32, 0x36, 0x36, 0x32, 0x37, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.VoiceMessageSenderName == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.VoiceMessageSenderName)
+			if err != nil {
+				err = msgp.WrapError(err, "VoiceMessageSenderName")
+				return
+			}
 		}
 	}
 	return
@@ -534,9 +580,40 @@ func (z *Voicemail) EncodeMsg(en *msgp.Writer) (err error) {
 // MarshalMsg implements msgp.Marshaler
 func (z *Voicemail) MarshalMsg(b []byte) (o []byte, err error) {
 	o = msgp.Require(b, z.Msgsize())
-	// map header, size 14
+	// omitempty: check for empty values
+	zb0001Len := uint32(14)
+	var zb0001Mask uint16 /* 14 bits */
+	if z.CallId == nil {
+		zb0001Len--
+		zb0001Mask |= 0x100
+	}
+	if z.FaxNumberOfPages == nil {
+		zb0001Len--
+		zb0001Mask |= 0x200
+	}
+	if z.SenderTelephoneNumber == nil {
+		zb0001Len--
+		zb0001Mask |= 0x400
+	}
+	if z.VoiceMessageAttachmentOrder == nil {
+		zb0001Len--
+		zb0001Mask |= 0x800
+	}
+	if z.VoiceMessageDuration == nil {
+		zb0001Len--
+		zb0001Mask |= 0x1000
+	}
+	if z.VoiceMessageSenderName == nil {
+		zb0001Len--
+		zb0001Mask |= 0x2000
+	}
+	// variable map header, size zb0001Len
+	o = append(o, 0x80|uint8(zb0001Len))
+	if zb0001Len == 0 {
+		return
+	}
 	// string "AudioNotes"
-	o = append(o, 0x8e, 0xaa, 0x41, 0x75, 0x64, 0x69, 0x6f, 0x4e, 0x6f, 0x74, 0x65, 0x73)
+	o = append(o, 0xaa, 0x41, 0x75, 0x64, 0x69, 0x6f, 0x4e, 0x6f, 0x74, 0x65, 0x73)
 	if z.AudioNotes == nil {
 		o = msgp.AppendNil(o)
 	} else {
@@ -591,47 +668,59 @@ func (z *Voicemail) MarshalMsg(b []byte) (o []byte, err error) {
 	} else {
 		o = msgp.AppendString(o, *z.XVoiceMessageSenderName)
 	}
-	// string "2663031"
-	o = append(o, 0xa7, 0x32, 0x36, 0x36, 0x33, 0x30, 0x33, 0x31)
-	if z.CallId == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.CallId)
+	if (zb0001Mask & 0x100) == 0 { // if not empty
+		// string "2663031"
+		o = append(o, 0xa7, 0x32, 0x36, 0x36, 0x33, 0x30, 0x33, 0x31)
+		if z.CallId == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.CallId)
+		}
 	}
-	// string "266283"
-	o = append(o, 0xa6, 0x32, 0x36, 0x36, 0x32, 0x38, 0x33)
-	if z.FaxNumberOfPages == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.FaxNumberOfPages)
+	if (zb0001Mask & 0x200) == 0 { // if not empty
+		// string "266283"
+		o = append(o, 0xa6, 0x32, 0x36, 0x36, 0x32, 0x38, 0x33)
+		if z.FaxNumberOfPages == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.FaxNumberOfPages)
+		}
 	}
-	// string "2662631"
-	o = append(o, 0xa7, 0x32, 0x36, 0x36, 0x32, 0x36, 0x33, 0x31)
-	if z.SenderTelephoneNumber == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.SenderTelephoneNumber)
+	if (zb0001Mask & 0x400) == 0 { // if not empty
+		// string "2662631"
+		o = append(o, 0xa7, 0x32, 0x36, 0x36, 0x32, 0x36, 0x33, 0x31)
+		if z.SenderTelephoneNumber == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.SenderTelephoneNumber)
+		}
 	}
-	// string "2662931"
-	o = append(o, 0xa7, 0x32, 0x36, 0x36, 0x32, 0x39, 0x33, 0x31)
-	if z.VoiceMessageAttachmentOrder == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.VoiceMessageAttachmentOrder)
+	if (zb0001Mask & 0x800) == 0 { // if not empty
+		// string "2662931"
+		o = append(o, 0xa7, 0x32, 0x36, 0x36, 0x32, 0x39, 0x33, 0x31)
+		if z.VoiceMessageAttachmentOrder == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.VoiceMessageAttachmentOrder)
+		}
 	}
-	// string "266253"
-	o = append(o, 0xa6, 0x32, 0x36, 0x36, 0x32, 0x35, 0x33)
-	if z.VoiceMessageDuration == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.VoiceMessageDuration)
+	if (zb0001Mask & 0x1000) == 0 { // if not empty
+		// string "266253"
+		o = append(o, 0xa6, 0x32, 0x36, 0x36, 0x32, 0x35, 0x33)
+		if z.VoiceMessageDuration == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.VoiceMessageDuration)
+		}
 	}
-	// string "2662731"
-	o = append(o, 0xa7, 0x32, 0x36, 0x36, 0x32, 0x37, 0x33, 0x31)
-	if z.VoiceMessageSenderName == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.VoiceMessageSenderName)
+	if (zb0001Mask & 0x2000) == 0 { // if not empty
+		// string "2662731"
+		o = append(o, 0xa7, 0x32, 0x36, 0x36, 0x32, 0x37, 0x33, 0x31)
+		if z.VoiceMessageSenderName == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.VoiceMessageSenderName)
+		}
 	}
 	return
 }

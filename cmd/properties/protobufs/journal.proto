@@ -22,23 +22,23 @@ option go_package = "github.com/mooijtech/go-pst;properties";
 
 message Journal {
   // Indicates whether the document was sent by email or posted to a server folder during journaling.
-  optional bool log_document_posted = 1; // @gotags: msg:"26934511"
+  optional bool log_document_posted = 1; // @gotags: msg:"26934511,omitempty"
   // Indicates whether the document was printed during journaling.
-  optional bool log_document_printed = 2; // @gotags: msg:"26932611"
+  optional bool log_document_printed = 2; // @gotags: msg:"26932611,omitempty"
   // Indicates whether the document was sent to a routing recipient during journaling.
-  optional bool log_document_routed = 3; // @gotags: msg:"26934411"
+  optional bool log_document_routed = 3; // @gotags: msg:"26934411,omitempty"
   // Indicates whether the document was saved during journaling.
-  optional bool log_document_saved = 4; // @gotags: msg:"26932711"
+  optional bool log_document_saved = 4; // @gotags: msg:"26932711,omitempty"
   // Contains the duration, in minutes, of the activity.
-  optional int32 log_duration = 5; // @gotags: msg:"2693193"
+  optional int32 log_duration = 5; // @gotags: msg:"2693193,omitempty"
   // Contains the time, in UTC, at which the activity ended.
-  optional int64 log_end = 6; // @gotags: msg:"26932064"
+  optional int64 log_end = 6; // @gotags: msg:"26932064,omitempty"
   // Contains metadata about the Journal object.
-  optional int32 log_flags = 7; // @gotags: msg:"2693243"
+  optional int32 log_flags = 7; // @gotags: msg:"2693243,omitempty"
   // Contains the time, in UTC, at which the activity began.
-  optional int64 log_start = 8; // @gotags: msg:"26931864"
+  optional int64 log_start = 8; // @gotags: msg:"26931864,omitempty"
   // Briefly describes the journal activity that is being recorded.
-  optional string log_type = 9; // @gotags: msg:"26931231"
+  optional string log_type = 9; // @gotags: msg:"26931231,omitempty"
   // Contains an expanded description of the journal activity that is being recorded.
-  optional string log_type_desc = 10; // @gotags: msg:"26934631"
+  optional string log_type_desc = 10; // @gotags: msg:"26934631,omitempty"
 }

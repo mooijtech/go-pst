@@ -30,41 +30,41 @@ message Attachment {
   // Contains the provider type data associated with a web reference attachment.
   optional string attachment_provider_type = 5; 
   // Contains the base of a relative URI.
-  optional string attach_content_base = 7; // @gotags: msg:"1409731"
+  optional string attach_content_base = 7; // @gotags: msg:"1409731,omitempty"
   // Contains a content identifier unique to the Message object that matches a corresponding "cid:" URI schema reference in the HTML body of the Message object.
-  optional string attach_content_id = 8; // @gotags: msg:"1409831"
+  optional string attach_content_id = 8; // @gotags: msg:"1409831,omitempty"
   // Contains a relative or full URI that matches a corresponding reference in the HTML body of a Message object.
-  optional string attach_content_location = 9; // @gotags: msg:"1409931"
+  optional string attach_content_location = 9; // @gotags: msg:"1409931,omitempty"
   // Contains a file name extension that indicates the document type of an attachment.
-  optional string attach_extension = 13; // @gotags: msg:"1408331"
+  optional string attach_extension = 13; // @gotags: msg:"1408331,omitempty"
   // Contains the 8.3 name of the PidTagAttachLongFilename property (section 2.595).
-  optional string attach_filename = 14; // @gotags: msg:"1408431"
+  optional string attach_filename = 14; // @gotags: msg:"1408431,omitempty"
   // Indicates which body formats might reference this attachment when rendering data.
-  optional int32 attach_flags = 15; // @gotags: msg:"141003"
+  optional int32 attach_flags = 15; // @gotags: msg:"141003,omitempty"
   // Contains the full filename and extension of the Attachment object.
-  optional string attach_long_filename = 16; // @gotags: msg:"1408731"
+  optional string attach_long_filename = 16; // @gotags: msg:"1408731,omitempty"
   // Contains the fully-qualified path and file name with extension.
-  optional string attach_long_pathname = 17; // @gotags: msg:"1409331"
+  optional string attach_long_pathname = 17; // @gotags: msg:"1409331,omitempty"
   // Indicates that a contact photo attachment is attached to a Contact object.
-  optional bool attachment_contact_photo = 18; // @gotags: msg:"3276711"
+  optional bool attachment_contact_photo = 18; // @gotags: msg:"3276711,omitempty"
   // Indicates special handling for an Attachment object.
-  optional int32 attachment_flags = 19; // @gotags: msg:"327653"
+  optional int32 attachment_flags = 19; // @gotags: msg:"327653,omitempty"
   // Indicates whether an Attachment object is hidden from the end user.
-  optional bool attachment_hidden = 20; // @gotags: msg:"3276611"
+  optional bool attachment_hidden = 20; // @gotags: msg:"3276611,omitempty"
   // Contains the type of Message object to which an attachment is linked.
-  optional int32 attachment_link_id = 21; // @gotags: msg:"327623"
+  optional int32 attachment_link_id = 21; // @gotags: msg:"327623,omitempty"
   // Represents the way the contents of an attachment are accessed.
-  optional int32 attach_method = 22; // @gotags: msg:"140853"
+  optional int32 attach_method = 22; // @gotags: msg:"140853,omitempty"
   // Contains a content-type MIME header.
-  optional string attach_mime_tag = 23; // @gotags: msg:"1409431"
+  optional string attach_mime_tag = 23; // @gotags: msg:"1409431,omitempty"
   // Identifies the Attachment object within its Message object.
-  optional int32 attach_number = 24; // @gotags: msg:"36173"
+  optional int32 attach_number = 24; // @gotags: msg:"36173,omitempty"
   // Contains the 8.3 name of the PidTagAttachLongPathname property (section 2.596).
-  optional string attach_pathname = 25; // @gotags: msg:"1408831"
+  optional string attach_pathname = 25; // @gotags: msg:"1408831,omitempty"
   // Contains the size, in bytes, consumed by the Attachment object on the server.
-  optional int32 attach_size = 27; // @gotags: msg:"36163"
+  optional int32 attach_size = 27; // @gotags: msg:"36163,omitempty"
   // Contains the name of an attachment file, modified so that it can be correlated with TNEF messages.
-  optional string attach_transport_name = 29; // @gotags: msg:"1409231"
+  optional string attach_transport_name = 29; // @gotags: msg:"1409231,omitempty"
   // Specifies the character set of an attachment received via MIME with the content-type of text.
-  optional string text_attachment_charset = 31; // @gotags: msg:"1410731"
+  optional string text_attachment_charset = 31; // @gotags: msg:"1410731,omitempty"
 }

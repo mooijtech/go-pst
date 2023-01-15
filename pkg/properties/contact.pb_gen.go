@@ -1999,1025 +1999,1583 @@ func (z *Contact) DecodeMsg(dc *msgp.Reader) (err error) {
 
 // EncodeMsg implements msgp.Encodable
 func (z *Contact) EncodeMsg(en *msgp.Writer) (err error) {
-	// map header, size 109
-	// write "2622173"
-	err = en.Append(0xde, 0x0, 0x6d, 0xa7, 0x32, 0x36, 0x32, 0x32, 0x31, 0x37, 0x33)
-	if err != nil {
-		return
-	}
+	// omitempty: check for empty values
+	zb0001Len := uint32(109)
+	var zb0001Mask [2]uint64 /* 109 bits */
 	if z.AddressBookProviderArrayType == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.AddressBookProviderArrayType)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressBookProviderArrayType")
-			return
-		}
-	}
-	// write "26257331"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x35, 0x37, 0x33, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x1
 	}
 	if z.AddressCountryCode == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.AddressCountryCode)
-		if err != nil {
-			err = msgp.WrapError(err, "AddressCountryCode")
-			return
-		}
-	}
-	// write "26221311"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x32, 0x31, 0x33, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x2
 	}
 	if z.AutoLog == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.AutoLog)
-		if err != nil {
-			err = msgp.WrapError(err, "AutoLog")
-			return
-		}
-	}
-	// write "26257464"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x35, 0x37, 0x34, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x4
 	}
 	if z.BirthdayLocal == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.BirthdayLocal)
-		if err != nil {
-			err = msgp.WrapError(err, "BirthdayLocal")
-			return
-		}
-	}
-	// write "2622113"
-	err = en.Append(0xa7, 0x32, 0x36, 0x32, 0x32, 0x31, 0x31, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x8
 	}
 	if z.ContactCharacterSet == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.ContactCharacterSet)
-		if err != nil {
-			err = msgp.WrapError(err, "ContactCharacterSet")
-			return
-		}
-	}
-	// write "26260072"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x36, 0x30, 0x30, 0x37, 0x32)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x10
 	}
 	if z.ContactLinkGlobalAddressListLinkId == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteUint64(*z.ContactLinkGlobalAddressListLinkId)
-		if err != nil {
-			err = msgp.WrapError(err, "ContactLinkGlobalAddressListLinkId")
-			return
-		}
-	}
-	// write "2625983"
-	err = en.Append(0xa7, 0x32, 0x36, 0x32, 0x35, 0x39, 0x38, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x20
 	}
 	if z.ContactLinkGlobalAddressListLinkState == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.ContactLinkGlobalAddressListLinkState)
-		if err != nil {
-			err = msgp.WrapError(err, "ContactLinkGlobalAddressListLinkState")
-			return
-		}
-	}
-	// write "26752631"
-	err = en.Append(0xa8, 0x32, 0x36, 0x37, 0x35, 0x32, 0x36, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x40
 	}
 	if z.ContactLinkName == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.ContactLinkName)
-		if err != nil {
-			err = msgp.WrapError(err, "ContactLinkName")
-			return
-		}
-	}
-	// write "26228731"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x32, 0x38, 0x37, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x80
 	}
 	if z.ContactUserField1 == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.ContactUserField1)
-		if err != nil {
-			err = msgp.WrapError(err, "ContactUserField1")
-			return
-		}
-	}
-	// write "26230431"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x33, 0x30, 0x34, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x100
 	}
 	if z.ContactUserField2 == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.ContactUserField2)
-		if err != nil {
-			err = msgp.WrapError(err, "ContactUserField2")
-			return
-		}
-	}
-	// write "26230531"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x33, 0x30, 0x35, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x200
 	}
 	if z.ContactUserField3 == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.ContactUserField3)
-		if err != nil {
-			err = msgp.WrapError(err, "ContactUserField3")
-			return
-		}
-	}
-	// write "26230631"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x33, 0x30, 0x36, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x400
 	}
 	if z.ContactUserField4 == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.ContactUserField4)
-		if err != nil {
-			err = msgp.WrapError(err, "ContactUserField4")
-			return
-		}
-	}
-	// write "26217631"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x31, 0x37, 0x36, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x800
 	}
 	if z.Department == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.Department)
-		if err != nil {
-			err = msgp.WrapError(err, "Department")
-			return
-		}
-	}
-	// write "2622843"
-	err = en.Append(0xa7, 0x32, 0x36, 0x32, 0x32, 0x38, 0x34, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x1000
 	}
 	if z.DistributionListChecksum == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.DistributionListChecksum)
-		if err != nil {
-			err = msgp.WrapError(err, "DistributionListChecksum")
-			return
-		}
-	}
-	// write "26230731"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x33, 0x30, 0x37, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x2000
 	}
 	if z.DistributionListName == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.DistributionListName)
-		if err != nil {
-			err = msgp.WrapError(err, "DistributionListName")
-			return
-		}
-	}
-	// write "26240231"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x34, 0x30, 0x32, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x4000
 	}
 	if z.Email1AddressType == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.Email1AddressType)
-		if err != nil {
-			err = msgp.WrapError(err, "Email1AddressType")
-			return
-		}
-	}
-	// write "26240031"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x34, 0x30, 0x30, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x8000
 	}
 	if z.Email1DisplayName == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.Email1DisplayName)
-		if err != nil {
-			err = msgp.WrapError(err, "Email1DisplayName")
-			return
-		}
-	}
-	// write "26240331"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x34, 0x30, 0x33, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x10000
 	}
 	if z.Email1EmailAddress == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.Email1EmailAddress)
-		if err != nil {
-			err = msgp.WrapError(err, "Email1EmailAddress")
-			return
-		}
-	}
-	// write "26240431"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x34, 0x30, 0x34, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x20000
 	}
 	if z.Email1OriginalDisplayName == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.Email1OriginalDisplayName)
-		if err != nil {
-			err = msgp.WrapError(err, "Email1OriginalDisplayName")
-			return
-		}
-	}
-	// write "26243431"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x34, 0x33, 0x34, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x40000
 	}
 	if z.Email2AddressType == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.Email2AddressType)
-		if err != nil {
-			err = msgp.WrapError(err, "Email2AddressType")
-			return
-		}
-	}
-	// write "26243231"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x34, 0x33, 0x32, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x80000
 	}
 	if z.Email2DisplayName == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.Email2DisplayName)
-		if err != nil {
-			err = msgp.WrapError(err, "Email2DisplayName")
-			return
-		}
-	}
-	// write "26243531"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x34, 0x33, 0x35, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x100000
 	}
 	if z.Email2EmailAddress == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.Email2EmailAddress)
-		if err != nil {
-			err = msgp.WrapError(err, "Email2EmailAddress")
-			return
-		}
-	}
-	// write "26243631"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x34, 0x33, 0x36, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x200000
 	}
 	if z.Email2OriginalDisplayName == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.Email2OriginalDisplayName)
-		if err != nil {
-			err = msgp.WrapError(err, "Email2OriginalDisplayName")
-			return
-		}
-	}
-	// write "26246631"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x34, 0x36, 0x36, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x400000
 	}
 	if z.Email3AddressType == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.Email3AddressType)
-		if err != nil {
-			err = msgp.WrapError(err, "Email3AddressType")
-			return
-		}
-	}
-	// write "26246431"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x34, 0x36, 0x34, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x800000
 	}
 	if z.Email3DisplayName == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.Email3DisplayName)
-		if err != nil {
-			err = msgp.WrapError(err, "Email3DisplayName")
-			return
-		}
-	}
-	// write "26246731"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x34, 0x36, 0x37, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x1000000
 	}
 	if z.Email3EmailAddress == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.Email3EmailAddress)
-		if err != nil {
-			err = msgp.WrapError(err, "Email3EmailAddress")
-			return
-		}
-	}
-	// write "26246831"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x34, 0x36, 0x38, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x2000000
 	}
 	if z.Email3OriginalDisplayName == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.Email3OriginalDisplayName)
-		if err != nil {
-			err = msgp.WrapError(err, "Email3OriginalDisplayName")
-			return
-		}
-	}
-	// write "26249831"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x34, 0x39, 0x38, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x4000000
 	}
 	if z.Fax1AddressType == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.Fax1AddressType)
-		if err != nil {
-			err = msgp.WrapError(err, "Fax1AddressType")
-			return
-		}
-	}
-	// write "26249931"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x34, 0x39, 0x39, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x8000000
 	}
 	if z.Fax1EmailAddress == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.Fax1EmailAddress)
-		if err != nil {
-			err = msgp.WrapError(err, "Fax1EmailAddress")
-			return
-		}
-	}
-	// write "26250031"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x35, 0x30, 0x30, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x10000000
 	}
 	if z.Fax1OriginalDisplayName == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.Fax1OriginalDisplayName)
-		if err != nil {
-			err = msgp.WrapError(err, "Fax1OriginalDisplayName")
-			return
-		}
-	}
-	// write "26253031"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x35, 0x33, 0x30, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x20000000
 	}
 	if z.Fax2AddressType == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.Fax2AddressType)
-		if err != nil {
-			err = msgp.WrapError(err, "Fax2AddressType")
-			return
-		}
-	}
-	// write "26253131"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x35, 0x33, 0x31, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x40000000
 	}
 	if z.Fax2EmailAddress == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.Fax2EmailAddress)
-		if err != nil {
-			err = msgp.WrapError(err, "Fax2EmailAddress")
-			return
-		}
-	}
-	// write "26253231"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x35, 0x33, 0x32, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x80000000
 	}
 	if z.Fax2OriginalDisplayName == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.Fax2OriginalDisplayName)
-		if err != nil {
-			err = msgp.WrapError(err, "Fax2OriginalDisplayName")
-			return
-		}
-	}
-	// write "26256231"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x35, 0x36, 0x32, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x100000000
 	}
 	if z.Fax3AddressType == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.Fax3AddressType)
-		if err != nil {
-			err = msgp.WrapError(err, "Fax3AddressType")
-			return
-		}
-	}
-	// write "26256331"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x35, 0x36, 0x33, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x200000000
 	}
 	if z.Fax3EmailAddress == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.Fax3EmailAddress)
-		if err != nil {
-			err = msgp.WrapError(err, "Fax3EmailAddress")
-			return
-		}
-	}
-	// write "26256431"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x35, 0x36, 0x34, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x400000000
 	}
 	if z.Fax3OriginalDisplayName == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.Fax3OriginalDisplayName)
-		if err != nil {
-			err = msgp.WrapError(err, "Fax3OriginalDisplayName")
-			return
-		}
-	}
-	// write "26214931"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x31, 0x34, 0x39, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x800000000
 	}
 	if z.FileUnder == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.FileUnder)
-		if err != nil {
-			err = msgp.WrapError(err, "FileUnder")
-			return
-		}
-	}
-	// write "2621503"
-	err = en.Append(0xa7, 0x32, 0x36, 0x32, 0x31, 0x35, 0x30, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x1000000000
 	}
 	if z.FileUnderId == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.FileUnderId)
-		if err != nil {
-			err = msgp.WrapError(err, "FileUnderId")
-			return
-		}
-	}
-	// write "26256831"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x35, 0x36, 0x38, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x2000000000
 	}
 	if z.FreeBusyLocation == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.FreeBusyLocation)
-		if err != nil {
-			err = msgp.WrapError(err, "FreeBusyLocation")
-			return
-		}
-	}
-	// write "26218111"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x31, 0x38, 0x31, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x4000000000
 	}
 	if z.HasPicture == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.HasPicture)
-		if err != nil {
-			err = msgp.WrapError(err, "HasPicture")
-			return
-		}
-	}
-	// write "26218631"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x31, 0x38, 0x36, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x8000000000
 	}
 	if z.HomeAddress == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.HomeAddress)
-		if err != nil {
-			err = msgp.WrapError(err, "HomeAddress")
-			return
-		}
-	}
-	// write "26257031"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x35, 0x37, 0x30, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x10000000000
 	}
 	if z.HomeAddressCountryCode == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.HomeAddressCountryCode)
-		if err != nil {
-			err = msgp.WrapError(err, "HomeAddressCountryCode")
-			return
-		}
-	}
-	// write "26221931"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x32, 0x31, 0x39, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x20000000000
 	}
 	if z.Html == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.Html)
-		if err != nil {
-			err = msgp.WrapError(err, "Html")
-			return
-		}
-	}
-	// write "26233831"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x33, 0x33, 0x38, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x40000000000
 	}
 	if z.InstantMessagingAddress == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.InstantMessagingAddress)
-		if err != nil {
-			err = msgp.WrapError(err, "InstantMessagingAddress")
-			return
-		}
-	}
-	// write "26259211"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x35, 0x39, 0x32, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x80000000000
 	}
 	if z.IsContactLinked == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.IsContactLinked)
-		if err != nil {
-			err = msgp.WrapError(err, "IsContactLinked")
-			return
-		}
-	}
-	// write "26218831"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x31, 0x38, 0x38, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x100000000000
 	}
 	if z.OtherAddress == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.OtherAddress)
-		if err != nil {
-			err = msgp.WrapError(err, "OtherAddress")
-			return
-		}
-	}
-	// write "26257231"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x35, 0x37, 0x32, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x200000000000
 	}
 	if z.OtherAddressCountryCode == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.OtherAddressCountryCode)
-		if err != nil {
-			err = msgp.WrapError(err, "OtherAddressCountryCode")
-			return
-		}
-	}
-	// write "2622103"
-	err = en.Append(0xa7, 0x32, 0x36, 0x32, 0x32, 0x31, 0x30, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x400000000000
 	}
 	if z.PostalAddressId == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.PostalAddressId)
-		if err != nil {
-			err = msgp.WrapError(err, "PostalAddressId")
-			return
-		}
-	}
-	// write "26257564"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x35, 0x37, 0x35, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x800000000000
 	}
 	if z.WeddingAnniversaryLocal == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.WeddingAnniversaryLocal)
-		if err != nil {
-			err = msgp.WrapError(err, "WeddingAnniversaryLocal")
-			return
-		}
-	}
-	// write "26218731"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x31, 0x38, 0x37, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x1000000000000
 	}
 	if z.WorkAddress == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.WorkAddress)
-		if err != nil {
-			err = msgp.WrapError(err, "WorkAddress")
-			return
-		}
-	}
-	// write "26227831"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x32, 0x37, 0x38, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x2000000000000
 	}
 	if z.WorkAddressCity == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.WorkAddressCity)
-		if err != nil {
-			err = msgp.WrapError(err, "WorkAddressCity")
-			return
-		}
-	}
-	// write "26228131"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x32, 0x38, 0x31, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x4000000000000
 	}
 	if z.WorkAddressCountry == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.WorkAddressCountry)
-		if err != nil {
-			err = msgp.WrapError(err, "WorkAddressCountry")
-			return
-		}
-	}
-	// write "26257131"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x35, 0x37, 0x31, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x8000000000000
 	}
 	if z.WorkAddressCountryCode == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.WorkAddressCountryCode)
-		if err != nil {
-			err = msgp.WrapError(err, "WorkAddressCountryCode")
-			return
-		}
-	}
-	// write "26228031"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x32, 0x38, 0x30, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x10000000000000
 	}
 	if z.WorkAddressPostalCode == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.WorkAddressPostalCode)
-		if err != nil {
-			err = msgp.WrapError(err, "WorkAddressPostalCode")
-			return
-		}
-	}
-	// write "26228231"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x32, 0x38, 0x32, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x20000000000000
 	}
 	if z.WorkAddressPostOfficeBox == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.WorkAddressPostOfficeBox)
-		if err != nil {
-			err = msgp.WrapError(err, "WorkAddressPostOfficeBox")
-			return
-		}
-	}
-	// write "26227931"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x32, 0x37, 0x39, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x40000000000000
 	}
 	if z.WorkAddressState == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.WorkAddressState)
-		if err != nil {
-			err = msgp.WrapError(err, "WorkAddressState")
-			return
-		}
-	}
-	// write "26227731"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x32, 0x37, 0x37, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x80000000000000
 	}
 	if z.WorkAddressStreet == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.WorkAddressStreet)
-		if err != nil {
-			err = msgp.WrapError(err, "WorkAddressStreet")
-			return
-		}
-	}
-	// write "26222231"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x32, 0x32, 0x32, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x100000000000000
 	}
 	if z.YomiCompanyName == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.YomiCompanyName)
-		if err != nil {
-			err = msgp.WrapError(err, "YomiCompanyName")
-			return
-		}
-	}
-	// write "26222031"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x32, 0x32, 0x30, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x200000000000000
 	}
 	if z.YomiFirstName == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.YomiFirstName)
-		if err != nil {
-			err = msgp.WrapError(err, "YomiFirstName")
-			return
-		}
+		zb0001Len--
+		zb0001Mask[0] |= 0x400000000000000
 	}
-	// write "26222131"
-	err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x32, 0x32, 0x31, 0x33, 0x31)
+	if z.YomiLastName == nil {
+		zb0001Len--
+		zb0001Mask[0] |= 0x800000000000000
+	}
+	if z.Birthday == nil {
+		zb0001Len--
+		zb0001Mask[0] |= 0x4000000000000000
+	}
+	if z.Business2TelephoneNumber == nil {
+		zb0001Len--
+		zb0001Mask[0] |= 0x8000000000000000
+	}
+	if z.BusinessFaxNumber == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x1
+	}
+	if z.BusinessHomePage == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x2
+	}
+	if z.BusinessTelephoneNumber == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x4
+	}
+	if z.CallbackTelephoneNumber == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x8
+	}
+	if z.CarTelephoneNumber == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x10
+	}
+	if z.CompanyMainTelephoneNumber == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x20
+	}
+	if z.CompanyName == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x40
+	}
+	if z.ComputerNetworkName == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x80
+	}
+	if z.Country == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x100
+	}
+	if z.CustomerId == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x200
+	}
+	if z.DepartmentName == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x400
+	}
+	if z.DisplayNamePrefix == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x800
+	}
+	if z.FtpSite == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x1000
+	}
+	if z.Gender == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x2000
+	}
+	if z.Generation == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x4000
+	}
+	if z.GivenName == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x8000
+	}
+	if z.GovernmentIdNumber == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x10000
+	}
+	if z.Hobbies == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x20000
+	}
+	if z.Home2TelephoneNumber == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x40000
+	}
+	if z.HomeAddressCity == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x80000
+	}
+	if z.HomeAddressCountry == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x100000
+	}
+	if z.HomeAddressPostalCode == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x200000
+	}
+	if z.HomeAddressPostOfficeBox == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x400000
+	}
+	if z.HomeAddressStateOrProvince == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x800000
+	}
+	if z.HomeAddressStreet == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x1000000
+	}
+	if z.HomeFaxNumber == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x2000000
+	}
+	if z.HomeTelephoneNumber == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x4000000
+	}
+	if z.OscSyncEnabled == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x8000000
+	}
+	if z.PersonalHomePage == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x10000000
+	}
+	if z.PostalAddress == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x20000000
+	}
+	if z.PostalCode == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x40000000
+	}
+	if z.PostOfficeBox == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x80000000
+	}
+	if z.PrimaryFaxNumber == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x100000000
+	}
+	if z.PrimaryTelephoneNumber == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x200000000
+	}
+	if z.Profession == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x400000000
+	}
+	if z.RadioTelephoneNumber == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x800000000
+	}
+	if z.ReferredByName == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x1000000000
+	}
+	if z.SpouseName == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x2000000000
+	}
+	if z.StateOrProvince == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x4000000000
+	}
+	if z.StreetAddress == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x8000000000
+	}
+	if z.Surname == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x10000000000
+	}
+	if z.TelecommunicationsDeviceForDeafTelephoneNumber == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x20000000000
+	}
+	if z.TelexNumber == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x40000000000
+	}
+	if z.Title == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x80000000000
+	}
+	if z.WeddingAnniversary == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x100000000000
+	}
+	// variable map header, size zb0001Len
+	err = en.WriteMapHeader(zb0001Len)
 	if err != nil {
 		return
 	}
-	if z.YomiLastName == nil {
-		err = en.WriteNil()
+	if zb0001Len == 0 {
+		return
+	}
+	if (zb0001Mask[0] & 0x1) == 0 { // if not empty
+		// write "2622173"
+		err = en.Append(0xa7, 0x32, 0x36, 0x32, 0x32, 0x31, 0x37, 0x33)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.YomiLastName)
+		if z.AddressBookProviderArrayType == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.AddressBookProviderArrayType)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressBookProviderArrayType")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x2) == 0 { // if not empty
+		// write "26257331"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x35, 0x37, 0x33, 0x33, 0x31)
 		if err != nil {
-			err = msgp.WrapError(err, "YomiLastName")
 			return
+		}
+		if z.AddressCountryCode == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.AddressCountryCode)
+			if err != nil {
+				err = msgp.WrapError(err, "AddressCountryCode")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x4) == 0 { // if not empty
+		// write "26221311"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x32, 0x31, 0x33, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.AutoLog == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.AutoLog)
+			if err != nil {
+				err = msgp.WrapError(err, "AutoLog")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x8) == 0 { // if not empty
+		// write "26257464"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x35, 0x37, 0x34, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.BirthdayLocal == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.BirthdayLocal)
+			if err != nil {
+				err = msgp.WrapError(err, "BirthdayLocal")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x10) == 0 { // if not empty
+		// write "2622113"
+		err = en.Append(0xa7, 0x32, 0x36, 0x32, 0x32, 0x31, 0x31, 0x33)
+		if err != nil {
+			return
+		}
+		if z.ContactCharacterSet == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.ContactCharacterSet)
+			if err != nil {
+				err = msgp.WrapError(err, "ContactCharacterSet")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x20) == 0 { // if not empty
+		// write "26260072"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x36, 0x30, 0x30, 0x37, 0x32)
+		if err != nil {
+			return
+		}
+		if z.ContactLinkGlobalAddressListLinkId == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteUint64(*z.ContactLinkGlobalAddressListLinkId)
+			if err != nil {
+				err = msgp.WrapError(err, "ContactLinkGlobalAddressListLinkId")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x40) == 0 { // if not empty
+		// write "2625983"
+		err = en.Append(0xa7, 0x32, 0x36, 0x32, 0x35, 0x39, 0x38, 0x33)
+		if err != nil {
+			return
+		}
+		if z.ContactLinkGlobalAddressListLinkState == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.ContactLinkGlobalAddressListLinkState)
+			if err != nil {
+				err = msgp.WrapError(err, "ContactLinkGlobalAddressListLinkState")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x80) == 0 { // if not empty
+		// write "26752631"
+		err = en.Append(0xa8, 0x32, 0x36, 0x37, 0x35, 0x32, 0x36, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.ContactLinkName == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.ContactLinkName)
+			if err != nil {
+				err = msgp.WrapError(err, "ContactLinkName")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x100) == 0 { // if not empty
+		// write "26228731"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x32, 0x38, 0x37, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.ContactUserField1 == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.ContactUserField1)
+			if err != nil {
+				err = msgp.WrapError(err, "ContactUserField1")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x200) == 0 { // if not empty
+		// write "26230431"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x33, 0x30, 0x34, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.ContactUserField2 == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.ContactUserField2)
+			if err != nil {
+				err = msgp.WrapError(err, "ContactUserField2")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x400) == 0 { // if not empty
+		// write "26230531"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x33, 0x30, 0x35, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.ContactUserField3 == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.ContactUserField3)
+			if err != nil {
+				err = msgp.WrapError(err, "ContactUserField3")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x800) == 0 { // if not empty
+		// write "26230631"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x33, 0x30, 0x36, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.ContactUserField4 == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.ContactUserField4)
+			if err != nil {
+				err = msgp.WrapError(err, "ContactUserField4")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x1000) == 0 { // if not empty
+		// write "26217631"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x31, 0x37, 0x36, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.Department == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.Department)
+			if err != nil {
+				err = msgp.WrapError(err, "Department")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x2000) == 0 { // if not empty
+		// write "2622843"
+		err = en.Append(0xa7, 0x32, 0x36, 0x32, 0x32, 0x38, 0x34, 0x33)
+		if err != nil {
+			return
+		}
+		if z.DistributionListChecksum == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.DistributionListChecksum)
+			if err != nil {
+				err = msgp.WrapError(err, "DistributionListChecksum")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x4000) == 0 { // if not empty
+		// write "26230731"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x33, 0x30, 0x37, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.DistributionListName == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.DistributionListName)
+			if err != nil {
+				err = msgp.WrapError(err, "DistributionListName")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x8000) == 0 { // if not empty
+		// write "26240231"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x34, 0x30, 0x32, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.Email1AddressType == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.Email1AddressType)
+			if err != nil {
+				err = msgp.WrapError(err, "Email1AddressType")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x10000) == 0 { // if not empty
+		// write "26240031"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x34, 0x30, 0x30, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.Email1DisplayName == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.Email1DisplayName)
+			if err != nil {
+				err = msgp.WrapError(err, "Email1DisplayName")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x20000) == 0 { // if not empty
+		// write "26240331"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x34, 0x30, 0x33, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.Email1EmailAddress == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.Email1EmailAddress)
+			if err != nil {
+				err = msgp.WrapError(err, "Email1EmailAddress")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x40000) == 0 { // if not empty
+		// write "26240431"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x34, 0x30, 0x34, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.Email1OriginalDisplayName == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.Email1OriginalDisplayName)
+			if err != nil {
+				err = msgp.WrapError(err, "Email1OriginalDisplayName")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x80000) == 0 { // if not empty
+		// write "26243431"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x34, 0x33, 0x34, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.Email2AddressType == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.Email2AddressType)
+			if err != nil {
+				err = msgp.WrapError(err, "Email2AddressType")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x100000) == 0 { // if not empty
+		// write "26243231"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x34, 0x33, 0x32, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.Email2DisplayName == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.Email2DisplayName)
+			if err != nil {
+				err = msgp.WrapError(err, "Email2DisplayName")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x200000) == 0 { // if not empty
+		// write "26243531"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x34, 0x33, 0x35, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.Email2EmailAddress == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.Email2EmailAddress)
+			if err != nil {
+				err = msgp.WrapError(err, "Email2EmailAddress")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x400000) == 0 { // if not empty
+		// write "26243631"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x34, 0x33, 0x36, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.Email2OriginalDisplayName == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.Email2OriginalDisplayName)
+			if err != nil {
+				err = msgp.WrapError(err, "Email2OriginalDisplayName")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x800000) == 0 { // if not empty
+		// write "26246631"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x34, 0x36, 0x36, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.Email3AddressType == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.Email3AddressType)
+			if err != nil {
+				err = msgp.WrapError(err, "Email3AddressType")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x1000000) == 0 { // if not empty
+		// write "26246431"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x34, 0x36, 0x34, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.Email3DisplayName == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.Email3DisplayName)
+			if err != nil {
+				err = msgp.WrapError(err, "Email3DisplayName")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x2000000) == 0 { // if not empty
+		// write "26246731"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x34, 0x36, 0x37, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.Email3EmailAddress == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.Email3EmailAddress)
+			if err != nil {
+				err = msgp.WrapError(err, "Email3EmailAddress")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x4000000) == 0 { // if not empty
+		// write "26246831"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x34, 0x36, 0x38, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.Email3OriginalDisplayName == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.Email3OriginalDisplayName)
+			if err != nil {
+				err = msgp.WrapError(err, "Email3OriginalDisplayName")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x8000000) == 0 { // if not empty
+		// write "26249831"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x34, 0x39, 0x38, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.Fax1AddressType == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.Fax1AddressType)
+			if err != nil {
+				err = msgp.WrapError(err, "Fax1AddressType")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x10000000) == 0 { // if not empty
+		// write "26249931"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x34, 0x39, 0x39, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.Fax1EmailAddress == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.Fax1EmailAddress)
+			if err != nil {
+				err = msgp.WrapError(err, "Fax1EmailAddress")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x20000000) == 0 { // if not empty
+		// write "26250031"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x35, 0x30, 0x30, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.Fax1OriginalDisplayName == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.Fax1OriginalDisplayName)
+			if err != nil {
+				err = msgp.WrapError(err, "Fax1OriginalDisplayName")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x40000000) == 0 { // if not empty
+		// write "26253031"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x35, 0x33, 0x30, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.Fax2AddressType == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.Fax2AddressType)
+			if err != nil {
+				err = msgp.WrapError(err, "Fax2AddressType")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x80000000) == 0 { // if not empty
+		// write "26253131"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x35, 0x33, 0x31, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.Fax2EmailAddress == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.Fax2EmailAddress)
+			if err != nil {
+				err = msgp.WrapError(err, "Fax2EmailAddress")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x100000000) == 0 { // if not empty
+		// write "26253231"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x35, 0x33, 0x32, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.Fax2OriginalDisplayName == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.Fax2OriginalDisplayName)
+			if err != nil {
+				err = msgp.WrapError(err, "Fax2OriginalDisplayName")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x200000000) == 0 { // if not empty
+		// write "26256231"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x35, 0x36, 0x32, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.Fax3AddressType == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.Fax3AddressType)
+			if err != nil {
+				err = msgp.WrapError(err, "Fax3AddressType")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x400000000) == 0 { // if not empty
+		// write "26256331"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x35, 0x36, 0x33, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.Fax3EmailAddress == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.Fax3EmailAddress)
+			if err != nil {
+				err = msgp.WrapError(err, "Fax3EmailAddress")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x800000000) == 0 { // if not empty
+		// write "26256431"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x35, 0x36, 0x34, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.Fax3OriginalDisplayName == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.Fax3OriginalDisplayName)
+			if err != nil {
+				err = msgp.WrapError(err, "Fax3OriginalDisplayName")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x1000000000) == 0 { // if not empty
+		// write "26214931"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x31, 0x34, 0x39, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.FileUnder == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.FileUnder)
+			if err != nil {
+				err = msgp.WrapError(err, "FileUnder")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x2000000000) == 0 { // if not empty
+		// write "2621503"
+		err = en.Append(0xa7, 0x32, 0x36, 0x32, 0x31, 0x35, 0x30, 0x33)
+		if err != nil {
+			return
+		}
+		if z.FileUnderId == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.FileUnderId)
+			if err != nil {
+				err = msgp.WrapError(err, "FileUnderId")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x4000000000) == 0 { // if not empty
+		// write "26256831"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x35, 0x36, 0x38, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.FreeBusyLocation == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.FreeBusyLocation)
+			if err != nil {
+				err = msgp.WrapError(err, "FreeBusyLocation")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x8000000000) == 0 { // if not empty
+		// write "26218111"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x31, 0x38, 0x31, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.HasPicture == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.HasPicture)
+			if err != nil {
+				err = msgp.WrapError(err, "HasPicture")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x10000000000) == 0 { // if not empty
+		// write "26218631"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x31, 0x38, 0x36, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.HomeAddress == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.HomeAddress)
+			if err != nil {
+				err = msgp.WrapError(err, "HomeAddress")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x20000000000) == 0 { // if not empty
+		// write "26257031"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x35, 0x37, 0x30, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.HomeAddressCountryCode == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.HomeAddressCountryCode)
+			if err != nil {
+				err = msgp.WrapError(err, "HomeAddressCountryCode")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x40000000000) == 0 { // if not empty
+		// write "26221931"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x32, 0x31, 0x39, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.Html == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.Html)
+			if err != nil {
+				err = msgp.WrapError(err, "Html")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x80000000000) == 0 { // if not empty
+		// write "26233831"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x33, 0x33, 0x38, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.InstantMessagingAddress == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.InstantMessagingAddress)
+			if err != nil {
+				err = msgp.WrapError(err, "InstantMessagingAddress")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x100000000000) == 0 { // if not empty
+		// write "26259211"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x35, 0x39, 0x32, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.IsContactLinked == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.IsContactLinked)
+			if err != nil {
+				err = msgp.WrapError(err, "IsContactLinked")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x200000000000) == 0 { // if not empty
+		// write "26218831"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x31, 0x38, 0x38, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.OtherAddress == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.OtherAddress)
+			if err != nil {
+				err = msgp.WrapError(err, "OtherAddress")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x400000000000) == 0 { // if not empty
+		// write "26257231"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x35, 0x37, 0x32, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.OtherAddressCountryCode == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.OtherAddressCountryCode)
+			if err != nil {
+				err = msgp.WrapError(err, "OtherAddressCountryCode")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x800000000000) == 0 { // if not empty
+		// write "2622103"
+		err = en.Append(0xa7, 0x32, 0x36, 0x32, 0x32, 0x31, 0x30, 0x33)
+		if err != nil {
+			return
+		}
+		if z.PostalAddressId == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.PostalAddressId)
+			if err != nil {
+				err = msgp.WrapError(err, "PostalAddressId")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x1000000000000) == 0 { // if not empty
+		// write "26257564"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x35, 0x37, 0x35, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.WeddingAnniversaryLocal == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.WeddingAnniversaryLocal)
+			if err != nil {
+				err = msgp.WrapError(err, "WeddingAnniversaryLocal")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x2000000000000) == 0 { // if not empty
+		// write "26218731"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x31, 0x38, 0x37, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.WorkAddress == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.WorkAddress)
+			if err != nil {
+				err = msgp.WrapError(err, "WorkAddress")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x4000000000000) == 0 { // if not empty
+		// write "26227831"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x32, 0x37, 0x38, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.WorkAddressCity == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.WorkAddressCity)
+			if err != nil {
+				err = msgp.WrapError(err, "WorkAddressCity")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x8000000000000) == 0 { // if not empty
+		// write "26228131"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x32, 0x38, 0x31, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.WorkAddressCountry == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.WorkAddressCountry)
+			if err != nil {
+				err = msgp.WrapError(err, "WorkAddressCountry")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x10000000000000) == 0 { // if not empty
+		// write "26257131"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x35, 0x37, 0x31, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.WorkAddressCountryCode == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.WorkAddressCountryCode)
+			if err != nil {
+				err = msgp.WrapError(err, "WorkAddressCountryCode")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x20000000000000) == 0 { // if not empty
+		// write "26228031"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x32, 0x38, 0x30, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.WorkAddressPostalCode == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.WorkAddressPostalCode)
+			if err != nil {
+				err = msgp.WrapError(err, "WorkAddressPostalCode")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x40000000000000) == 0 { // if not empty
+		// write "26228231"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x32, 0x38, 0x32, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.WorkAddressPostOfficeBox == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.WorkAddressPostOfficeBox)
+			if err != nil {
+				err = msgp.WrapError(err, "WorkAddressPostOfficeBox")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x80000000000000) == 0 { // if not empty
+		// write "26227931"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x32, 0x37, 0x39, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.WorkAddressState == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.WorkAddressState)
+			if err != nil {
+				err = msgp.WrapError(err, "WorkAddressState")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x100000000000000) == 0 { // if not empty
+		// write "26227731"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x32, 0x37, 0x37, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.WorkAddressStreet == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.WorkAddressStreet)
+			if err != nil {
+				err = msgp.WrapError(err, "WorkAddressStreet")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x200000000000000) == 0 { // if not empty
+		// write "26222231"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x32, 0x32, 0x32, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.YomiCompanyName == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.YomiCompanyName)
+			if err != nil {
+				err = msgp.WrapError(err, "YomiCompanyName")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x400000000000000) == 0 { // if not empty
+		// write "26222031"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x32, 0x32, 0x30, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.YomiFirstName == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.YomiFirstName)
+			if err != nil {
+				err = msgp.WrapError(err, "YomiFirstName")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x800000000000000) == 0 { // if not empty
+		// write "26222131"
+		err = en.Append(0xa8, 0x32, 0x36, 0x32, 0x32, 0x32, 0x31, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.YomiLastName == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.YomiLastName)
+			if err != nil {
+				err = msgp.WrapError(err, "YomiLastName")
+				return
+			}
 		}
 	}
 	// write "BirthdayContactAttributionDisplayName"
@@ -3054,803 +3612,897 @@ func (z *Contact) EncodeMsg(en *msgp.Writer) (err error) {
 			return
 		}
 	}
-	// write "1491464"
-	err = en.Append(0xa7, 0x31, 0x34, 0x39, 0x31, 0x34, 0x36, 0x34)
-	if err != nil {
-		return
-	}
-	if z.Birthday == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[0] & 0x4000000000000000) == 0 { // if not empty
+		// write "1491464"
+		err = en.Append(0xa7, 0x31, 0x34, 0x39, 0x31, 0x34, 0x36, 0x34)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteInt64(*z.Birthday)
-		if err != nil {
-			err = msgp.WrapError(err, "Birthday")
-			return
+		if z.Birthday == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.Birthday)
+			if err != nil {
+				err = msgp.WrapError(err, "Birthday")
+				return
+			}
 		}
-	}
-	// write "1487531"
-	err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x37, 0x35, 0x33, 0x31)
-	if err != nil {
-		return
 	}
-	if z.Business2TelephoneNumber == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[0] & 0x8000000000000000) == 0 { // if not empty
+		// write "1487531"
+		err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x37, 0x35, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.Business2TelephoneNumber)
-		if err != nil {
-			err = msgp.WrapError(err, "Business2TelephoneNumber")
-			return
+		if z.Business2TelephoneNumber == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.Business2TelephoneNumber)
+			if err != nil {
+				err = msgp.WrapError(err, "Business2TelephoneNumber")
+				return
+			}
 		}
 	}
-	// write "1488431"
-	err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x38, 0x34, 0x33, 0x31)
-	if err != nil {
-		return
-	}
-	if z.BusinessFaxNumber == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x1) == 0 { // if not empty
+		// write "1488431"
+		err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x38, 0x34, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.BusinessFaxNumber)
-		if err != nil {
-			err = msgp.WrapError(err, "BusinessFaxNumber")
-			return
+		if z.BusinessFaxNumber == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.BusinessFaxNumber)
+			if err != nil {
+				err = msgp.WrapError(err, "BusinessFaxNumber")
+				return
+			}
 		}
-	}
-	// write "1492931"
-	err = en.Append(0xa7, 0x31, 0x34, 0x39, 0x32, 0x39, 0x33, 0x31)
-	if err != nil {
-		return
 	}
-	if z.BusinessHomePage == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x2) == 0 { // if not empty
+		// write "1492931"
+		err = en.Append(0xa7, 0x31, 0x34, 0x39, 0x32, 0x39, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.BusinessHomePage)
-		if err != nil {
-			err = msgp.WrapError(err, "BusinessHomePage")
-			return
+		if z.BusinessHomePage == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.BusinessHomePage)
+			if err != nil {
+				err = msgp.WrapError(err, "BusinessHomePage")
+				return
+			}
 		}
 	}
-	// write "1485631"
-	err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x35, 0x36, 0x33, 0x31)
-	if err != nil {
-		return
-	}
-	if z.BusinessTelephoneNumber == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x4) == 0 { // if not empty
+		// write "1485631"
+		err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x35, 0x36, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.BusinessTelephoneNumber)
-		if err != nil {
-			err = msgp.WrapError(err, "BusinessTelephoneNumber")
-			return
+		if z.BusinessTelephoneNumber == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.BusinessTelephoneNumber)
+			if err != nil {
+				err = msgp.WrapError(err, "BusinessTelephoneNumber")
+				return
+			}
 		}
 	}
-	// write "1485031"
-	err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x35, 0x30, 0x33, 0x31)
-	if err != nil {
-		return
-	}
-	if z.CallbackTelephoneNumber == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x8) == 0 { // if not empty
+		// write "1485031"
+		err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x35, 0x30, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.CallbackTelephoneNumber)
-		if err != nil {
-			err = msgp.WrapError(err, "CallbackTelephoneNumber")
-			return
+		if z.CallbackTelephoneNumber == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.CallbackTelephoneNumber)
+			if err != nil {
+				err = msgp.WrapError(err, "CallbackTelephoneNumber")
+				return
+			}
 		}
-	}
-	// write "1487831"
-	err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x37, 0x38, 0x33, 0x31)
-	if err != nil {
-		return
 	}
-	if z.CarTelephoneNumber == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x10) == 0 { // if not empty
+		// write "1487831"
+		err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x37, 0x38, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.CarTelephoneNumber)
-		if err != nil {
-			err = msgp.WrapError(err, "CarTelephoneNumber")
-			return
+		if z.CarTelephoneNumber == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.CarTelephoneNumber)
+			if err != nil {
+				err = msgp.WrapError(err, "CarTelephoneNumber")
+				return
+			}
 		}
 	}
-	// write "1493531"
-	err = en.Append(0xa7, 0x31, 0x34, 0x39, 0x33, 0x35, 0x33, 0x31)
-	if err != nil {
-		return
-	}
-	if z.CompanyMainTelephoneNumber == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x20) == 0 { // if not empty
+		// write "1493531"
+		err = en.Append(0xa7, 0x31, 0x34, 0x39, 0x33, 0x35, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.CompanyMainTelephoneNumber)
-		if err != nil {
-			err = msgp.WrapError(err, "CompanyMainTelephoneNumber")
-			return
+		if z.CompanyMainTelephoneNumber == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.CompanyMainTelephoneNumber)
+			if err != nil {
+				err = msgp.WrapError(err, "CompanyMainTelephoneNumber")
+				return
+			}
 		}
 	}
-	// write "1487031"
-	err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x37, 0x30, 0x33, 0x31)
-	if err != nil {
-		return
-	}
-	if z.CompanyName == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x40) == 0 { // if not empty
+		// write "1487031"
+		err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x37, 0x30, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.CompanyName)
-		if err != nil {
-			err = msgp.WrapError(err, "CompanyName")
-			return
+		if z.CompanyName == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.CompanyName)
+			if err != nil {
+				err = msgp.WrapError(err, "CompanyName")
+				return
+			}
 		}
-	}
-	// write "1492131"
-	err = en.Append(0xa7, 0x31, 0x34, 0x39, 0x32, 0x31, 0x33, 0x31)
-	if err != nil {
-		return
 	}
-	if z.ComputerNetworkName == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x80) == 0 { // if not empty
+		// write "1492131"
+		err = en.Append(0xa7, 0x31, 0x34, 0x39, 0x32, 0x31, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.ComputerNetworkName)
-		if err != nil {
-			err = msgp.WrapError(err, "ComputerNetworkName")
-			return
+		if z.ComputerNetworkName == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.ComputerNetworkName)
+			if err != nil {
+				err = msgp.WrapError(err, "ComputerNetworkName")
+				return
+			}
 		}
 	}
-	// write "1488631"
-	err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x38, 0x36, 0x33, 0x31)
-	if err != nil {
-		return
-	}
-	if z.Country == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x100) == 0 { // if not empty
+		// write "1488631"
+		err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x38, 0x36, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.Country)
-		if err != nil {
-			err = msgp.WrapError(err, "Country")
-			return
+		if z.Country == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.Country)
+			if err != nil {
+				err = msgp.WrapError(err, "Country")
+				return
+			}
 		}
 	}
-	// write "1492231"
-	err = en.Append(0xa7, 0x31, 0x34, 0x39, 0x32, 0x32, 0x33, 0x31)
-	if err != nil {
-		return
-	}
-	if z.CustomerId == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x200) == 0 { // if not empty
+		// write "1492231"
+		err = en.Append(0xa7, 0x31, 0x34, 0x39, 0x32, 0x32, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.CustomerId)
-		if err != nil {
-			err = msgp.WrapError(err, "CustomerId")
-			return
+		if z.CustomerId == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.CustomerId)
+			if err != nil {
+				err = msgp.WrapError(err, "CustomerId")
+				return
+			}
 		}
-	}
-	// write "1487231"
-	err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x37, 0x32, 0x33, 0x31)
-	if err != nil {
-		return
 	}
-	if z.DepartmentName == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x400) == 0 { // if not empty
+		// write "1487231"
+		err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x37, 0x32, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.DepartmentName)
-		if err != nil {
-			err = msgp.WrapError(err, "DepartmentName")
-			return
+		if z.DepartmentName == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.DepartmentName)
+			if err != nil {
+				err = msgp.WrapError(err, "DepartmentName")
+				return
+			}
 		}
 	}
-	// write "1491731"
-	err = en.Append(0xa7, 0x31, 0x34, 0x39, 0x31, 0x37, 0x33, 0x31)
-	if err != nil {
-		return
-	}
-	if z.DisplayNamePrefix == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x800) == 0 { // if not empty
+		// write "1491731"
+		err = en.Append(0xa7, 0x31, 0x34, 0x39, 0x31, 0x37, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.DisplayNamePrefix)
-		if err != nil {
-			err = msgp.WrapError(err, "DisplayNamePrefix")
-			return
+		if z.DisplayNamePrefix == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.DisplayNamePrefix)
+			if err != nil {
+				err = msgp.WrapError(err, "DisplayNamePrefix")
+				return
+			}
 		}
-	}
-	// write "1492431"
-	err = en.Append(0xa7, 0x31, 0x34, 0x39, 0x32, 0x34, 0x33, 0x31)
-	if err != nil {
-		return
 	}
-	if z.FtpSite == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x1000) == 0 { // if not empty
+		// write "1492431"
+		err = en.Append(0xa7, 0x31, 0x34, 0x39, 0x32, 0x34, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.FtpSite)
-		if err != nil {
-			err = msgp.WrapError(err, "FtpSite")
-			return
+		if z.FtpSite == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.FtpSite)
+			if err != nil {
+				err = msgp.WrapError(err, "FtpSite")
+				return
+			}
 		}
 	}
-	// write "149252"
-	err = en.Append(0xa6, 0x31, 0x34, 0x39, 0x32, 0x35, 0x32)
-	if err != nil {
-		return
-	}
-	if z.Gender == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x2000) == 0 { // if not empty
+		// write "149252"
+		err = en.Append(0xa6, 0x31, 0x34, 0x39, 0x32, 0x35, 0x32)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteInt32(*z.Gender)
-		if err != nil {
-			err = msgp.WrapError(err, "Gender")
-			return
+		if z.Gender == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.Gender)
+			if err != nil {
+				err = msgp.WrapError(err, "Gender")
+				return
+			}
 		}
-	}
-	// write "1485331"
-	err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x35, 0x33, 0x33, 0x31)
-	if err != nil {
-		return
 	}
-	if z.Generation == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x4000) == 0 { // if not empty
+		// write "1485331"
+		err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x35, 0x33, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.Generation)
-		if err != nil {
-			err = msgp.WrapError(err, "Generation")
-			return
+		if z.Generation == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.Generation)
+			if err != nil {
+				err = msgp.WrapError(err, "Generation")
+				return
+			}
 		}
-	}
-	// write "1485431"
-	err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x35, 0x34, 0x33, 0x31)
-	if err != nil {
-		return
 	}
-	if z.GivenName == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x8000) == 0 { // if not empty
+		// write "1485431"
+		err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x35, 0x34, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.GivenName)
-		if err != nil {
-			err = msgp.WrapError(err, "GivenName")
-			return
+		if z.GivenName == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.GivenName)
+			if err != nil {
+				err = msgp.WrapError(err, "GivenName")
+				return
+			}
 		}
 	}
-	// write "1485531"
-	err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x35, 0x35, 0x33, 0x31)
-	if err != nil {
-		return
-	}
-	if z.GovernmentIdNumber == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x10000) == 0 { // if not empty
+		// write "1485531"
+		err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x35, 0x35, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.GovernmentIdNumber)
-		if err != nil {
-			err = msgp.WrapError(err, "GovernmentIdNumber")
-			return
+		if z.GovernmentIdNumber == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.GovernmentIdNumber)
+			if err != nil {
+				err = msgp.WrapError(err, "GovernmentIdNumber")
+				return
+			}
 		}
-	}
-	// write "1491531"
-	err = en.Append(0xa7, 0x31, 0x34, 0x39, 0x31, 0x35, 0x33, 0x31)
-	if err != nil {
-		return
 	}
-	if z.Hobbies == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x20000) == 0 { // if not empty
+		// write "1491531"
+		err = en.Append(0xa7, 0x31, 0x34, 0x39, 0x31, 0x35, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.Hobbies)
-		if err != nil {
-			err = msgp.WrapError(err, "Hobbies")
-			return
+		if z.Hobbies == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.Hobbies)
+			if err != nil {
+				err = msgp.WrapError(err, "Hobbies")
+				return
+			}
 		}
-	}
-	// write "1489531"
-	err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x39, 0x35, 0x33, 0x31)
-	if err != nil {
-		return
 	}
-	if z.Home2TelephoneNumber == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x40000) == 0 { // if not empty
+		// write "1489531"
+		err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x39, 0x35, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.Home2TelephoneNumber)
-		if err != nil {
-			err = msgp.WrapError(err, "Home2TelephoneNumber")
-			return
+		if z.Home2TelephoneNumber == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.Home2TelephoneNumber)
+			if err != nil {
+				err = msgp.WrapError(err, "Home2TelephoneNumber")
+				return
+			}
 		}
 	}
-	// write "1493731"
-	err = en.Append(0xa7, 0x31, 0x34, 0x39, 0x33, 0x37, 0x33, 0x31)
-	if err != nil {
-		return
-	}
-	if z.HomeAddressCity == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x80000) == 0 { // if not empty
+		// write "1493731"
+		err = en.Append(0xa7, 0x31, 0x34, 0x39, 0x33, 0x37, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.HomeAddressCity)
-		if err != nil {
-			err = msgp.WrapError(err, "HomeAddressCity")
-			return
+		if z.HomeAddressCity == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.HomeAddressCity)
+			if err != nil {
+				err = msgp.WrapError(err, "HomeAddressCity")
+				return
+			}
 		}
-	}
-	// write "1493831"
-	err = en.Append(0xa7, 0x31, 0x34, 0x39, 0x33, 0x38, 0x33, 0x31)
-	if err != nil {
-		return
 	}
-	if z.HomeAddressCountry == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x100000) == 0 { // if not empty
+		// write "1493831"
+		err = en.Append(0xa7, 0x31, 0x34, 0x39, 0x33, 0x38, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.HomeAddressCountry)
-		if err != nil {
-			err = msgp.WrapError(err, "HomeAddressCountry")
-			return
+		if z.HomeAddressCountry == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.HomeAddressCountry)
+			if err != nil {
+				err = msgp.WrapError(err, "HomeAddressCountry")
+				return
+			}
 		}
-	}
-	// write "1493931"
-	err = en.Append(0xa7, 0x31, 0x34, 0x39, 0x33, 0x39, 0x33, 0x31)
-	if err != nil {
-		return
 	}
-	if z.HomeAddressPostalCode == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x200000) == 0 { // if not empty
+		// write "1493931"
+		err = en.Append(0xa7, 0x31, 0x34, 0x39, 0x33, 0x39, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.HomeAddressPostalCode)
-		if err != nil {
-			err = msgp.WrapError(err, "HomeAddressPostalCode")
-			return
+		if z.HomeAddressPostalCode == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.HomeAddressPostalCode)
+			if err != nil {
+				err = msgp.WrapError(err, "HomeAddressPostalCode")
+				return
+			}
 		}
 	}
-	// write "1494231"
-	err = en.Append(0xa7, 0x31, 0x34, 0x39, 0x34, 0x32, 0x33, 0x31)
-	if err != nil {
-		return
-	}
-	if z.HomeAddressPostOfficeBox == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x400000) == 0 { // if not empty
+		// write "1494231"
+		err = en.Append(0xa7, 0x31, 0x34, 0x39, 0x34, 0x32, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.HomeAddressPostOfficeBox)
-		if err != nil {
-			err = msgp.WrapError(err, "HomeAddressPostOfficeBox")
-			return
+		if z.HomeAddressPostOfficeBox == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.HomeAddressPostOfficeBox)
+			if err != nil {
+				err = msgp.WrapError(err, "HomeAddressPostOfficeBox")
+				return
+			}
 		}
-	}
-	// write "1494031"
-	err = en.Append(0xa7, 0x31, 0x34, 0x39, 0x34, 0x30, 0x33, 0x31)
-	if err != nil {
-		return
 	}
-	if z.HomeAddressStateOrProvince == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x800000) == 0 { // if not empty
+		// write "1494031"
+		err = en.Append(0xa7, 0x31, 0x34, 0x39, 0x34, 0x30, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.HomeAddressStateOrProvince)
-		if err != nil {
-			err = msgp.WrapError(err, "HomeAddressStateOrProvince")
-			return
+		if z.HomeAddressStateOrProvince == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.HomeAddressStateOrProvince)
+			if err != nil {
+				err = msgp.WrapError(err, "HomeAddressStateOrProvince")
+				return
+			}
 		}
 	}
-	// write "1494131"
-	err = en.Append(0xa7, 0x31, 0x34, 0x39, 0x34, 0x31, 0x33, 0x31)
-	if err != nil {
-		return
-	}
-	if z.HomeAddressStreet == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x1000000) == 0 { // if not empty
+		// write "1494131"
+		err = en.Append(0xa7, 0x31, 0x34, 0x39, 0x34, 0x31, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.HomeAddressStreet)
-		if err != nil {
-			err = msgp.WrapError(err, "HomeAddressStreet")
-			return
+		if z.HomeAddressStreet == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.HomeAddressStreet)
+			if err != nil {
+				err = msgp.WrapError(err, "HomeAddressStreet")
+				return
+			}
 		}
-	}
-	// write "1488531"
-	err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x38, 0x35, 0x33, 0x31)
-	if err != nil {
-		return
 	}
-	if z.HomeFaxNumber == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x2000000) == 0 { // if not empty
+		// write "1488531"
+		err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x38, 0x35, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.HomeFaxNumber)
-		if err != nil {
-			err = msgp.WrapError(err, "HomeFaxNumber")
-			return
+		if z.HomeFaxNumber == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.HomeFaxNumber)
+			if err != nil {
+				err = msgp.WrapError(err, "HomeFaxNumber")
+				return
+			}
 		}
 	}
-	// write "1485731"
-	err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x35, 0x37, 0x33, 0x31)
-	if err != nil {
-		return
-	}
-	if z.HomeTelephoneNumber == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x4000000) == 0 { // if not empty
+		// write "1485731"
+		err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x35, 0x37, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.HomeTelephoneNumber)
-		if err != nil {
-			err = msgp.WrapError(err, "HomeTelephoneNumber")
-			return
+		if z.HomeTelephoneNumber == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.HomeTelephoneNumber)
+			if err != nil {
+				err = msgp.WrapError(err, "HomeTelephoneNumber")
+				return
+			}
 		}
 	}
-	// write "3178011"
-	err = en.Append(0xa7, 0x33, 0x31, 0x37, 0x38, 0x30, 0x31, 0x31)
-	if err != nil {
-		return
-	}
-	if z.OscSyncEnabled == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x8000000) == 0 { // if not empty
+		// write "3178011"
+		err = en.Append(0xa7, 0x33, 0x31, 0x37, 0x38, 0x30, 0x31, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteBool(*z.OscSyncEnabled)
-		if err != nil {
-			err = msgp.WrapError(err, "OscSyncEnabled")
-			return
+		if z.OscSyncEnabled == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.OscSyncEnabled)
+			if err != nil {
+				err = msgp.WrapError(err, "OscSyncEnabled")
+				return
+			}
 		}
-	}
-	// write "1492831"
-	err = en.Append(0xa7, 0x31, 0x34, 0x39, 0x32, 0x38, 0x33, 0x31)
-	if err != nil {
-		return
 	}
-	if z.PersonalHomePage == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x10000000) == 0 { // if not empty
+		// write "1492831"
+		err = en.Append(0xa7, 0x31, 0x34, 0x39, 0x32, 0x38, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.PersonalHomePage)
-		if err != nil {
-			err = msgp.WrapError(err, "PersonalHomePage")
-			return
+		if z.PersonalHomePage == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.PersonalHomePage)
+			if err != nil {
+				err = msgp.WrapError(err, "PersonalHomePage")
+				return
+			}
 		}
 	}
-	// write "1486931"
-	err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x36, 0x39, 0x33, 0x31)
-	if err != nil {
-		return
-	}
-	if z.PostalAddress == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x20000000) == 0 { // if not empty
+		// write "1486931"
+		err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x36, 0x39, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.PostalAddress)
-		if err != nil {
-			err = msgp.WrapError(err, "PostalAddress")
-			return
+		if z.PostalAddress == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.PostalAddress)
+			if err != nil {
+				err = msgp.WrapError(err, "PostalAddress")
+				return
+			}
 		}
 	}
-	// write "1489031"
-	err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x39, 0x30, 0x33, 0x31)
-	if err != nil {
-		return
-	}
-	if z.PostalCode == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x40000000) == 0 { // if not empty
+		// write "1489031"
+		err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x39, 0x30, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.PostalCode)
-		if err != nil {
-			err = msgp.WrapError(err, "PostalCode")
-			return
+		if z.PostalCode == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.PostalCode)
+			if err != nil {
+				err = msgp.WrapError(err, "PostalCode")
+				return
+			}
 		}
-	}
-	// write "1489131"
-	err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x39, 0x31, 0x33, 0x31)
-	if err != nil {
-		return
 	}
-	if z.PostOfficeBox == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x80000000) == 0 { // if not empty
+		// write "1489131"
+		err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x39, 0x31, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.PostOfficeBox)
-		if err != nil {
-			err = msgp.WrapError(err, "PostOfficeBox")
-			return
+		if z.PostOfficeBox == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.PostOfficeBox)
+			if err != nil {
+				err = msgp.WrapError(err, "PostOfficeBox")
+				return
+			}
 		}
 	}
-	// write "1488331"
-	err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x38, 0x33, 0x33, 0x31)
-	if err != nil {
-		return
-	}
-	if z.PrimaryFaxNumber == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x100000000) == 0 { // if not empty
+		// write "1488331"
+		err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x38, 0x33, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.PrimaryFaxNumber)
-		if err != nil {
-			err = msgp.WrapError(err, "PrimaryFaxNumber")
-			return
+		if z.PrimaryFaxNumber == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.PrimaryFaxNumber)
+			if err != nil {
+				err = msgp.WrapError(err, "PrimaryFaxNumber")
+				return
+			}
 		}
 	}
-	// write "1487431"
-	err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x37, 0x34, 0x33, 0x31)
-	if err != nil {
-		return
-	}
-	if z.PrimaryTelephoneNumber == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x200000000) == 0 { // if not empty
+		// write "1487431"
+		err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x37, 0x34, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.PrimaryTelephoneNumber)
-		if err != nil {
-			err = msgp.WrapError(err, "PrimaryTelephoneNumber")
-			return
+		if z.PrimaryTelephoneNumber == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.PrimaryTelephoneNumber)
+			if err != nil {
+				err = msgp.WrapError(err, "PrimaryTelephoneNumber")
+				return
+			}
 		}
-	}
-	// write "1491831"
-	err = en.Append(0xa7, 0x31, 0x34, 0x39, 0x31, 0x38, 0x33, 0x31)
-	if err != nil {
-		return
 	}
-	if z.Profession == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x400000000) == 0 { // if not empty
+		// write "1491831"
+		err = en.Append(0xa7, 0x31, 0x34, 0x39, 0x31, 0x38, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.Profession)
-		if err != nil {
-			err = msgp.WrapError(err, "Profession")
-			return
+		if z.Profession == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.Profession)
+			if err != nil {
+				err = msgp.WrapError(err, "Profession")
+				return
+			}
 		}
 	}
-	// write "1487731"
-	err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x37, 0x37, 0x33, 0x31)
-	if err != nil {
-		return
-	}
-	if z.RadioTelephoneNumber == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x800000000) == 0 { // if not empty
+		// write "1487731"
+		err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x37, 0x37, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.RadioTelephoneNumber)
-		if err != nil {
-			err = msgp.WrapError(err, "RadioTelephoneNumber")
-			return
+		if z.RadioTelephoneNumber == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.RadioTelephoneNumber)
+			if err != nil {
+				err = msgp.WrapError(err, "RadioTelephoneNumber")
+				return
+			}
 		}
 	}
-	// write "1491931"
-	err = en.Append(0xa7, 0x31, 0x34, 0x39, 0x31, 0x39, 0x33, 0x31)
-	if err != nil {
-		return
-	}
-	if z.ReferredByName == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x1000000000) == 0 { // if not empty
+		// write "1491931"
+		err = en.Append(0xa7, 0x31, 0x34, 0x39, 0x31, 0x39, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.ReferredByName)
-		if err != nil {
-			err = msgp.WrapError(err, "ReferredByName")
-			return
+		if z.ReferredByName == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.ReferredByName)
+			if err != nil {
+				err = msgp.WrapError(err, "ReferredByName")
+				return
+			}
 		}
-	}
-	// write "1492031"
-	err = en.Append(0xa7, 0x31, 0x34, 0x39, 0x32, 0x30, 0x33, 0x31)
-	if err != nil {
-		return
 	}
-	if z.SpouseName == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x2000000000) == 0 { // if not empty
+		// write "1492031"
+		err = en.Append(0xa7, 0x31, 0x34, 0x39, 0x32, 0x30, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.SpouseName)
-		if err != nil {
-			err = msgp.WrapError(err, "SpouseName")
-			return
+		if z.SpouseName == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.SpouseName)
+			if err != nil {
+				err = msgp.WrapError(err, "SpouseName")
+				return
+			}
 		}
 	}
-	// write "1488831"
-	err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x38, 0x38, 0x33, 0x31)
-	if err != nil {
-		return
-	}
-	if z.StateOrProvince == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x4000000000) == 0 { // if not empty
+		// write "1488831"
+		err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x38, 0x38, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.StateOrProvince)
-		if err != nil {
-			err = msgp.WrapError(err, "StateOrProvince")
-			return
+		if z.StateOrProvince == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.StateOrProvince)
+			if err != nil {
+				err = msgp.WrapError(err, "StateOrProvince")
+				return
+			}
 		}
 	}
-	// write "1488931"
-	err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x38, 0x39, 0x33, 0x31)
-	if err != nil {
-		return
-	}
-	if z.StreetAddress == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x8000000000) == 0 { // if not empty
+		// write "1488931"
+		err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x38, 0x39, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.StreetAddress)
-		if err != nil {
-			err = msgp.WrapError(err, "StreetAddress")
-			return
+		if z.StreetAddress == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.StreetAddress)
+			if err != nil {
+				err = msgp.WrapError(err, "StreetAddress")
+				return
+			}
 		}
-	}
-	// write "1486531"
-	err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x36, 0x35, 0x33, 0x31)
-	if err != nil {
-		return
 	}
-	if z.Surname == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x10000000000) == 0 { // if not empty
+		// write "1486531"
+		err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x36, 0x35, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.Surname)
-		if err != nil {
-			err = msgp.WrapError(err, "Surname")
-			return
+		if z.Surname == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.Surname)
+			if err != nil {
+				err = msgp.WrapError(err, "Surname")
+				return
+			}
 		}
 	}
-	// write "1492331"
-	err = en.Append(0xa7, 0x31, 0x34, 0x39, 0x32, 0x33, 0x33, 0x31)
-	if err != nil {
-		return
-	}
-	if z.TelecommunicationsDeviceForDeafTelephoneNumber == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x20000000000) == 0 { // if not empty
+		// write "1492331"
+		err = en.Append(0xa7, 0x31, 0x34, 0x39, 0x32, 0x33, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.TelecommunicationsDeviceForDeafTelephoneNumber)
-		if err != nil {
-			err = msgp.WrapError(err, "TelecommunicationsDeviceForDeafTelephoneNumber")
-			return
+		if z.TelecommunicationsDeviceForDeafTelephoneNumber == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.TelecommunicationsDeviceForDeafTelephoneNumber)
+			if err != nil {
+				err = msgp.WrapError(err, "TelecommunicationsDeviceForDeafTelephoneNumber")
+				return
+			}
 		}
 	}
-	// write "1489231"
-	err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x39, 0x32, 0x33, 0x31)
-	if err != nil {
-		return
-	}
-	if z.TelexNumber == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x40000000000) == 0 { // if not empty
+		// write "1489231"
+		err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x39, 0x32, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.TelexNumber)
-		if err != nil {
-			err = msgp.WrapError(err, "TelexNumber")
-			return
+		if z.TelexNumber == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.TelexNumber)
+			if err != nil {
+				err = msgp.WrapError(err, "TelexNumber")
+				return
+			}
 		}
-	}
-	// write "1487131"
-	err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x37, 0x31, 0x33, 0x31)
-	if err != nil {
-		return
 	}
-	if z.Title == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x80000000000) == 0 { // if not empty
+		// write "1487131"
+		err = en.Append(0xa7, 0x31, 0x34, 0x38, 0x37, 0x31, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.Title)
-		if err != nil {
-			err = msgp.WrapError(err, "Title")
-			return
+		if z.Title == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.Title)
+			if err != nil {
+				err = msgp.WrapError(err, "Title")
+				return
+			}
 		}
 	}
-	// write "1491364"
-	err = en.Append(0xa7, 0x31, 0x34, 0x39, 0x31, 0x33, 0x36, 0x34)
-	if err != nil {
-		return
-	}
-	if z.WeddingAnniversary == nil {
-		err = en.WriteNil()
+	if (zb0001Mask[1] & 0x100000000000) == 0 { // if not empty
+		// write "1491364"
+		err = en.Append(0xa7, 0x31, 0x34, 0x39, 0x31, 0x33, 0x36, 0x34)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteInt64(*z.WeddingAnniversary)
-		if err != nil {
-			err = msgp.WrapError(err, "WeddingAnniversary")
-			return
+		if z.WeddingAnniversary == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.WeddingAnniversary)
+			if err != nil {
+				err = msgp.WrapError(err, "WeddingAnniversary")
+				return
+			}
 		}
 	}
 	return
@@ -3859,426 +4511,981 @@ func (z *Contact) EncodeMsg(en *msgp.Writer) (err error) {
 // MarshalMsg implements msgp.Marshaler
 func (z *Contact) MarshalMsg(b []byte) (o []byte, err error) {
 	o = msgp.Require(b, z.Msgsize())
-	// map header, size 109
-	// string "2622173"
-	o = append(o, 0xde, 0x0, 0x6d, 0xa7, 0x32, 0x36, 0x32, 0x32, 0x31, 0x37, 0x33)
+	// omitempty: check for empty values
+	zb0001Len := uint32(109)
+	var zb0001Mask [2]uint64 /* 109 bits */
 	if z.AddressBookProviderArrayType == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.AddressBookProviderArrayType)
+		zb0001Len--
+		zb0001Mask[0] |= 0x1
 	}
-	// string "26257331"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x35, 0x37, 0x33, 0x33, 0x31)
 	if z.AddressCountryCode == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.AddressCountryCode)
+		zb0001Len--
+		zb0001Mask[0] |= 0x2
 	}
-	// string "26221311"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x32, 0x31, 0x33, 0x31, 0x31)
 	if z.AutoLog == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.AutoLog)
+		zb0001Len--
+		zb0001Mask[0] |= 0x4
 	}
-	// string "26257464"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x35, 0x37, 0x34, 0x36, 0x34)
 	if z.BirthdayLocal == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.BirthdayLocal)
+		zb0001Len--
+		zb0001Mask[0] |= 0x8
 	}
-	// string "2622113"
-	o = append(o, 0xa7, 0x32, 0x36, 0x32, 0x32, 0x31, 0x31, 0x33)
 	if z.ContactCharacterSet == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.ContactCharacterSet)
+		zb0001Len--
+		zb0001Mask[0] |= 0x10
 	}
-	// string "26260072"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x36, 0x30, 0x30, 0x37, 0x32)
 	if z.ContactLinkGlobalAddressListLinkId == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendUint64(o, *z.ContactLinkGlobalAddressListLinkId)
+		zb0001Len--
+		zb0001Mask[0] |= 0x20
 	}
-	// string "2625983"
-	o = append(o, 0xa7, 0x32, 0x36, 0x32, 0x35, 0x39, 0x38, 0x33)
 	if z.ContactLinkGlobalAddressListLinkState == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.ContactLinkGlobalAddressListLinkState)
+		zb0001Len--
+		zb0001Mask[0] |= 0x40
 	}
-	// string "26752631"
-	o = append(o, 0xa8, 0x32, 0x36, 0x37, 0x35, 0x32, 0x36, 0x33, 0x31)
 	if z.ContactLinkName == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.ContactLinkName)
+		zb0001Len--
+		zb0001Mask[0] |= 0x80
 	}
-	// string "26228731"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x32, 0x38, 0x37, 0x33, 0x31)
 	if z.ContactUserField1 == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.ContactUserField1)
+		zb0001Len--
+		zb0001Mask[0] |= 0x100
 	}
-	// string "26230431"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x33, 0x30, 0x34, 0x33, 0x31)
 	if z.ContactUserField2 == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.ContactUserField2)
+		zb0001Len--
+		zb0001Mask[0] |= 0x200
 	}
-	// string "26230531"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x33, 0x30, 0x35, 0x33, 0x31)
 	if z.ContactUserField3 == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.ContactUserField3)
+		zb0001Len--
+		zb0001Mask[0] |= 0x400
 	}
-	// string "26230631"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x33, 0x30, 0x36, 0x33, 0x31)
 	if z.ContactUserField4 == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.ContactUserField4)
+		zb0001Len--
+		zb0001Mask[0] |= 0x800
 	}
-	// string "26217631"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x31, 0x37, 0x36, 0x33, 0x31)
 	if z.Department == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.Department)
+		zb0001Len--
+		zb0001Mask[0] |= 0x1000
 	}
-	// string "2622843"
-	o = append(o, 0xa7, 0x32, 0x36, 0x32, 0x32, 0x38, 0x34, 0x33)
 	if z.DistributionListChecksum == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.DistributionListChecksum)
+		zb0001Len--
+		zb0001Mask[0] |= 0x2000
 	}
-	// string "26230731"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x33, 0x30, 0x37, 0x33, 0x31)
 	if z.DistributionListName == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.DistributionListName)
+		zb0001Len--
+		zb0001Mask[0] |= 0x4000
 	}
-	// string "26240231"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x34, 0x30, 0x32, 0x33, 0x31)
 	if z.Email1AddressType == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.Email1AddressType)
+		zb0001Len--
+		zb0001Mask[0] |= 0x8000
 	}
-	// string "26240031"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x34, 0x30, 0x30, 0x33, 0x31)
 	if z.Email1DisplayName == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.Email1DisplayName)
+		zb0001Len--
+		zb0001Mask[0] |= 0x10000
 	}
-	// string "26240331"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x34, 0x30, 0x33, 0x33, 0x31)
 	if z.Email1EmailAddress == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.Email1EmailAddress)
+		zb0001Len--
+		zb0001Mask[0] |= 0x20000
 	}
-	// string "26240431"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x34, 0x30, 0x34, 0x33, 0x31)
 	if z.Email1OriginalDisplayName == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.Email1OriginalDisplayName)
+		zb0001Len--
+		zb0001Mask[0] |= 0x40000
 	}
-	// string "26243431"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x34, 0x33, 0x34, 0x33, 0x31)
 	if z.Email2AddressType == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.Email2AddressType)
+		zb0001Len--
+		zb0001Mask[0] |= 0x80000
 	}
-	// string "26243231"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x34, 0x33, 0x32, 0x33, 0x31)
 	if z.Email2DisplayName == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.Email2DisplayName)
+		zb0001Len--
+		zb0001Mask[0] |= 0x100000
 	}
-	// string "26243531"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x34, 0x33, 0x35, 0x33, 0x31)
 	if z.Email2EmailAddress == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.Email2EmailAddress)
+		zb0001Len--
+		zb0001Mask[0] |= 0x200000
 	}
-	// string "26243631"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x34, 0x33, 0x36, 0x33, 0x31)
 	if z.Email2OriginalDisplayName == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.Email2OriginalDisplayName)
+		zb0001Len--
+		zb0001Mask[0] |= 0x400000
 	}
-	// string "26246631"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x34, 0x36, 0x36, 0x33, 0x31)
 	if z.Email3AddressType == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.Email3AddressType)
+		zb0001Len--
+		zb0001Mask[0] |= 0x800000
 	}
-	// string "26246431"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x34, 0x36, 0x34, 0x33, 0x31)
 	if z.Email3DisplayName == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.Email3DisplayName)
+		zb0001Len--
+		zb0001Mask[0] |= 0x1000000
 	}
-	// string "26246731"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x34, 0x36, 0x37, 0x33, 0x31)
 	if z.Email3EmailAddress == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.Email3EmailAddress)
+		zb0001Len--
+		zb0001Mask[0] |= 0x2000000
 	}
-	// string "26246831"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x34, 0x36, 0x38, 0x33, 0x31)
 	if z.Email3OriginalDisplayName == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.Email3OriginalDisplayName)
+		zb0001Len--
+		zb0001Mask[0] |= 0x4000000
 	}
-	// string "26249831"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x34, 0x39, 0x38, 0x33, 0x31)
 	if z.Fax1AddressType == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.Fax1AddressType)
+		zb0001Len--
+		zb0001Mask[0] |= 0x8000000
 	}
-	// string "26249931"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x34, 0x39, 0x39, 0x33, 0x31)
 	if z.Fax1EmailAddress == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.Fax1EmailAddress)
+		zb0001Len--
+		zb0001Mask[0] |= 0x10000000
 	}
-	// string "26250031"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x35, 0x30, 0x30, 0x33, 0x31)
 	if z.Fax1OriginalDisplayName == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.Fax1OriginalDisplayName)
+		zb0001Len--
+		zb0001Mask[0] |= 0x20000000
 	}
-	// string "26253031"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x35, 0x33, 0x30, 0x33, 0x31)
 	if z.Fax2AddressType == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.Fax2AddressType)
+		zb0001Len--
+		zb0001Mask[0] |= 0x40000000
 	}
-	// string "26253131"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x35, 0x33, 0x31, 0x33, 0x31)
 	if z.Fax2EmailAddress == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.Fax2EmailAddress)
+		zb0001Len--
+		zb0001Mask[0] |= 0x80000000
 	}
-	// string "26253231"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x35, 0x33, 0x32, 0x33, 0x31)
 	if z.Fax2OriginalDisplayName == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.Fax2OriginalDisplayName)
+		zb0001Len--
+		zb0001Mask[0] |= 0x100000000
 	}
-	// string "26256231"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x35, 0x36, 0x32, 0x33, 0x31)
 	if z.Fax3AddressType == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.Fax3AddressType)
+		zb0001Len--
+		zb0001Mask[0] |= 0x200000000
 	}
-	// string "26256331"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x35, 0x36, 0x33, 0x33, 0x31)
 	if z.Fax3EmailAddress == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.Fax3EmailAddress)
+		zb0001Len--
+		zb0001Mask[0] |= 0x400000000
 	}
-	// string "26256431"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x35, 0x36, 0x34, 0x33, 0x31)
 	if z.Fax3OriginalDisplayName == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.Fax3OriginalDisplayName)
+		zb0001Len--
+		zb0001Mask[0] |= 0x800000000
 	}
-	// string "26214931"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x31, 0x34, 0x39, 0x33, 0x31)
 	if z.FileUnder == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.FileUnder)
+		zb0001Len--
+		zb0001Mask[0] |= 0x1000000000
 	}
-	// string "2621503"
-	o = append(o, 0xa7, 0x32, 0x36, 0x32, 0x31, 0x35, 0x30, 0x33)
 	if z.FileUnderId == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.FileUnderId)
+		zb0001Len--
+		zb0001Mask[0] |= 0x2000000000
 	}
-	// string "26256831"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x35, 0x36, 0x38, 0x33, 0x31)
 	if z.FreeBusyLocation == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.FreeBusyLocation)
+		zb0001Len--
+		zb0001Mask[0] |= 0x4000000000
 	}
-	// string "26218111"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x31, 0x38, 0x31, 0x31, 0x31)
 	if z.HasPicture == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.HasPicture)
+		zb0001Len--
+		zb0001Mask[0] |= 0x8000000000
 	}
-	// string "26218631"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x31, 0x38, 0x36, 0x33, 0x31)
 	if z.HomeAddress == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.HomeAddress)
+		zb0001Len--
+		zb0001Mask[0] |= 0x10000000000
 	}
-	// string "26257031"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x35, 0x37, 0x30, 0x33, 0x31)
 	if z.HomeAddressCountryCode == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.HomeAddressCountryCode)
+		zb0001Len--
+		zb0001Mask[0] |= 0x20000000000
 	}
-	// string "26221931"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x32, 0x31, 0x39, 0x33, 0x31)
 	if z.Html == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.Html)
+		zb0001Len--
+		zb0001Mask[0] |= 0x40000000000
 	}
-	// string "26233831"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x33, 0x33, 0x38, 0x33, 0x31)
 	if z.InstantMessagingAddress == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.InstantMessagingAddress)
+		zb0001Len--
+		zb0001Mask[0] |= 0x80000000000
 	}
-	// string "26259211"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x35, 0x39, 0x32, 0x31, 0x31)
 	if z.IsContactLinked == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.IsContactLinked)
+		zb0001Len--
+		zb0001Mask[0] |= 0x100000000000
 	}
-	// string "26218831"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x31, 0x38, 0x38, 0x33, 0x31)
 	if z.OtherAddress == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.OtherAddress)
+		zb0001Len--
+		zb0001Mask[0] |= 0x200000000000
 	}
-	// string "26257231"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x35, 0x37, 0x32, 0x33, 0x31)
 	if z.OtherAddressCountryCode == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.OtherAddressCountryCode)
+		zb0001Len--
+		zb0001Mask[0] |= 0x400000000000
 	}
-	// string "2622103"
-	o = append(o, 0xa7, 0x32, 0x36, 0x32, 0x32, 0x31, 0x30, 0x33)
 	if z.PostalAddressId == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.PostalAddressId)
+		zb0001Len--
+		zb0001Mask[0] |= 0x800000000000
 	}
-	// string "26257564"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x35, 0x37, 0x35, 0x36, 0x34)
 	if z.WeddingAnniversaryLocal == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.WeddingAnniversaryLocal)
+		zb0001Len--
+		zb0001Mask[0] |= 0x1000000000000
 	}
-	// string "26218731"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x31, 0x38, 0x37, 0x33, 0x31)
 	if z.WorkAddress == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.WorkAddress)
+		zb0001Len--
+		zb0001Mask[0] |= 0x2000000000000
 	}
-	// string "26227831"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x32, 0x37, 0x38, 0x33, 0x31)
 	if z.WorkAddressCity == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.WorkAddressCity)
+		zb0001Len--
+		zb0001Mask[0] |= 0x4000000000000
 	}
-	// string "26228131"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x32, 0x38, 0x31, 0x33, 0x31)
 	if z.WorkAddressCountry == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.WorkAddressCountry)
+		zb0001Len--
+		zb0001Mask[0] |= 0x8000000000000
 	}
-	// string "26257131"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x35, 0x37, 0x31, 0x33, 0x31)
 	if z.WorkAddressCountryCode == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.WorkAddressCountryCode)
+		zb0001Len--
+		zb0001Mask[0] |= 0x10000000000000
 	}
-	// string "26228031"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x32, 0x38, 0x30, 0x33, 0x31)
 	if z.WorkAddressPostalCode == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.WorkAddressPostalCode)
+		zb0001Len--
+		zb0001Mask[0] |= 0x20000000000000
 	}
-	// string "26228231"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x32, 0x38, 0x32, 0x33, 0x31)
 	if z.WorkAddressPostOfficeBox == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.WorkAddressPostOfficeBox)
+		zb0001Len--
+		zb0001Mask[0] |= 0x40000000000000
 	}
-	// string "26227931"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x32, 0x37, 0x39, 0x33, 0x31)
 	if z.WorkAddressState == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.WorkAddressState)
+		zb0001Len--
+		zb0001Mask[0] |= 0x80000000000000
 	}
-	// string "26227731"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x32, 0x37, 0x37, 0x33, 0x31)
 	if z.WorkAddressStreet == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.WorkAddressStreet)
+		zb0001Len--
+		zb0001Mask[0] |= 0x100000000000000
 	}
-	// string "26222231"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x32, 0x32, 0x32, 0x33, 0x31)
 	if z.YomiCompanyName == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.YomiCompanyName)
+		zb0001Len--
+		zb0001Mask[0] |= 0x200000000000000
 	}
-	// string "26222031"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x32, 0x32, 0x30, 0x33, 0x31)
 	if z.YomiFirstName == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.YomiFirstName)
+		zb0001Len--
+		zb0001Mask[0] |= 0x400000000000000
 	}
-	// string "26222131"
-	o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x32, 0x32, 0x31, 0x33, 0x31)
 	if z.YomiLastName == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.YomiLastName)
+		zb0001Len--
+		zb0001Mask[0] |= 0x800000000000000
+	}
+	if z.Birthday == nil {
+		zb0001Len--
+		zb0001Mask[0] |= 0x4000000000000000
+	}
+	if z.Business2TelephoneNumber == nil {
+		zb0001Len--
+		zb0001Mask[0] |= 0x8000000000000000
+	}
+	if z.BusinessFaxNumber == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x1
+	}
+	if z.BusinessHomePage == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x2
+	}
+	if z.BusinessTelephoneNumber == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x4
+	}
+	if z.CallbackTelephoneNumber == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x8
+	}
+	if z.CarTelephoneNumber == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x10
+	}
+	if z.CompanyMainTelephoneNumber == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x20
+	}
+	if z.CompanyName == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x40
+	}
+	if z.ComputerNetworkName == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x80
+	}
+	if z.Country == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x100
+	}
+	if z.CustomerId == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x200
+	}
+	if z.DepartmentName == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x400
+	}
+	if z.DisplayNamePrefix == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x800
+	}
+	if z.FtpSite == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x1000
+	}
+	if z.Gender == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x2000
+	}
+	if z.Generation == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x4000
+	}
+	if z.GivenName == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x8000
+	}
+	if z.GovernmentIdNumber == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x10000
+	}
+	if z.Hobbies == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x20000
+	}
+	if z.Home2TelephoneNumber == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x40000
+	}
+	if z.HomeAddressCity == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x80000
+	}
+	if z.HomeAddressCountry == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x100000
+	}
+	if z.HomeAddressPostalCode == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x200000
+	}
+	if z.HomeAddressPostOfficeBox == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x400000
+	}
+	if z.HomeAddressStateOrProvince == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x800000
+	}
+	if z.HomeAddressStreet == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x1000000
+	}
+	if z.HomeFaxNumber == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x2000000
+	}
+	if z.HomeTelephoneNumber == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x4000000
+	}
+	if z.OscSyncEnabled == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x8000000
+	}
+	if z.PersonalHomePage == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x10000000
+	}
+	if z.PostalAddress == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x20000000
+	}
+	if z.PostalCode == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x40000000
+	}
+	if z.PostOfficeBox == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x80000000
+	}
+	if z.PrimaryFaxNumber == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x100000000
+	}
+	if z.PrimaryTelephoneNumber == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x200000000
+	}
+	if z.Profession == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x400000000
+	}
+	if z.RadioTelephoneNumber == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x800000000
+	}
+	if z.ReferredByName == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x1000000000
+	}
+	if z.SpouseName == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x2000000000
+	}
+	if z.StateOrProvince == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x4000000000
+	}
+	if z.StreetAddress == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x8000000000
+	}
+	if z.Surname == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x10000000000
+	}
+	if z.TelecommunicationsDeviceForDeafTelephoneNumber == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x20000000000
+	}
+	if z.TelexNumber == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x40000000000
+	}
+	if z.Title == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x80000000000
+	}
+	if z.WeddingAnniversary == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x100000000000
+	}
+	// variable map header, size zb0001Len
+	o = msgp.AppendMapHeader(o, zb0001Len)
+	if zb0001Len == 0 {
+		return
+	}
+	if (zb0001Mask[0] & 0x1) == 0 { // if not empty
+		// string "2622173"
+		o = append(o, 0xa7, 0x32, 0x36, 0x32, 0x32, 0x31, 0x37, 0x33)
+		if z.AddressBookProviderArrayType == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.AddressBookProviderArrayType)
+		}
+	}
+	if (zb0001Mask[0] & 0x2) == 0 { // if not empty
+		// string "26257331"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x35, 0x37, 0x33, 0x33, 0x31)
+		if z.AddressCountryCode == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.AddressCountryCode)
+		}
+	}
+	if (zb0001Mask[0] & 0x4) == 0 { // if not empty
+		// string "26221311"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x32, 0x31, 0x33, 0x31, 0x31)
+		if z.AutoLog == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.AutoLog)
+		}
+	}
+	if (zb0001Mask[0] & 0x8) == 0 { // if not empty
+		// string "26257464"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x35, 0x37, 0x34, 0x36, 0x34)
+		if z.BirthdayLocal == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.BirthdayLocal)
+		}
+	}
+	if (zb0001Mask[0] & 0x10) == 0 { // if not empty
+		// string "2622113"
+		o = append(o, 0xa7, 0x32, 0x36, 0x32, 0x32, 0x31, 0x31, 0x33)
+		if z.ContactCharacterSet == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.ContactCharacterSet)
+		}
+	}
+	if (zb0001Mask[0] & 0x20) == 0 { // if not empty
+		// string "26260072"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x36, 0x30, 0x30, 0x37, 0x32)
+		if z.ContactLinkGlobalAddressListLinkId == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendUint64(o, *z.ContactLinkGlobalAddressListLinkId)
+		}
+	}
+	if (zb0001Mask[0] & 0x40) == 0 { // if not empty
+		// string "2625983"
+		o = append(o, 0xa7, 0x32, 0x36, 0x32, 0x35, 0x39, 0x38, 0x33)
+		if z.ContactLinkGlobalAddressListLinkState == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.ContactLinkGlobalAddressListLinkState)
+		}
+	}
+	if (zb0001Mask[0] & 0x80) == 0 { // if not empty
+		// string "26752631"
+		o = append(o, 0xa8, 0x32, 0x36, 0x37, 0x35, 0x32, 0x36, 0x33, 0x31)
+		if z.ContactLinkName == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.ContactLinkName)
+		}
+	}
+	if (zb0001Mask[0] & 0x100) == 0 { // if not empty
+		// string "26228731"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x32, 0x38, 0x37, 0x33, 0x31)
+		if z.ContactUserField1 == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.ContactUserField1)
+		}
+	}
+	if (zb0001Mask[0] & 0x200) == 0 { // if not empty
+		// string "26230431"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x33, 0x30, 0x34, 0x33, 0x31)
+		if z.ContactUserField2 == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.ContactUserField2)
+		}
+	}
+	if (zb0001Mask[0] & 0x400) == 0 { // if not empty
+		// string "26230531"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x33, 0x30, 0x35, 0x33, 0x31)
+		if z.ContactUserField3 == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.ContactUserField3)
+		}
+	}
+	if (zb0001Mask[0] & 0x800) == 0 { // if not empty
+		// string "26230631"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x33, 0x30, 0x36, 0x33, 0x31)
+		if z.ContactUserField4 == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.ContactUserField4)
+		}
+	}
+	if (zb0001Mask[0] & 0x1000) == 0 { // if not empty
+		// string "26217631"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x31, 0x37, 0x36, 0x33, 0x31)
+		if z.Department == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.Department)
+		}
+	}
+	if (zb0001Mask[0] & 0x2000) == 0 { // if not empty
+		// string "2622843"
+		o = append(o, 0xa7, 0x32, 0x36, 0x32, 0x32, 0x38, 0x34, 0x33)
+		if z.DistributionListChecksum == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.DistributionListChecksum)
+		}
+	}
+	if (zb0001Mask[0] & 0x4000) == 0 { // if not empty
+		// string "26230731"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x33, 0x30, 0x37, 0x33, 0x31)
+		if z.DistributionListName == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.DistributionListName)
+		}
+	}
+	if (zb0001Mask[0] & 0x8000) == 0 { // if not empty
+		// string "26240231"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x34, 0x30, 0x32, 0x33, 0x31)
+		if z.Email1AddressType == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.Email1AddressType)
+		}
+	}
+	if (zb0001Mask[0] & 0x10000) == 0 { // if not empty
+		// string "26240031"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x34, 0x30, 0x30, 0x33, 0x31)
+		if z.Email1DisplayName == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.Email1DisplayName)
+		}
+	}
+	if (zb0001Mask[0] & 0x20000) == 0 { // if not empty
+		// string "26240331"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x34, 0x30, 0x33, 0x33, 0x31)
+		if z.Email1EmailAddress == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.Email1EmailAddress)
+		}
+	}
+	if (zb0001Mask[0] & 0x40000) == 0 { // if not empty
+		// string "26240431"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x34, 0x30, 0x34, 0x33, 0x31)
+		if z.Email1OriginalDisplayName == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.Email1OriginalDisplayName)
+		}
+	}
+	if (zb0001Mask[0] & 0x80000) == 0 { // if not empty
+		// string "26243431"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x34, 0x33, 0x34, 0x33, 0x31)
+		if z.Email2AddressType == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.Email2AddressType)
+		}
+	}
+	if (zb0001Mask[0] & 0x100000) == 0 { // if not empty
+		// string "26243231"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x34, 0x33, 0x32, 0x33, 0x31)
+		if z.Email2DisplayName == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.Email2DisplayName)
+		}
+	}
+	if (zb0001Mask[0] & 0x200000) == 0 { // if not empty
+		// string "26243531"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x34, 0x33, 0x35, 0x33, 0x31)
+		if z.Email2EmailAddress == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.Email2EmailAddress)
+		}
+	}
+	if (zb0001Mask[0] & 0x400000) == 0 { // if not empty
+		// string "26243631"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x34, 0x33, 0x36, 0x33, 0x31)
+		if z.Email2OriginalDisplayName == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.Email2OriginalDisplayName)
+		}
+	}
+	if (zb0001Mask[0] & 0x800000) == 0 { // if not empty
+		// string "26246631"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x34, 0x36, 0x36, 0x33, 0x31)
+		if z.Email3AddressType == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.Email3AddressType)
+		}
+	}
+	if (zb0001Mask[0] & 0x1000000) == 0 { // if not empty
+		// string "26246431"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x34, 0x36, 0x34, 0x33, 0x31)
+		if z.Email3DisplayName == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.Email3DisplayName)
+		}
+	}
+	if (zb0001Mask[0] & 0x2000000) == 0 { // if not empty
+		// string "26246731"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x34, 0x36, 0x37, 0x33, 0x31)
+		if z.Email3EmailAddress == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.Email3EmailAddress)
+		}
+	}
+	if (zb0001Mask[0] & 0x4000000) == 0 { // if not empty
+		// string "26246831"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x34, 0x36, 0x38, 0x33, 0x31)
+		if z.Email3OriginalDisplayName == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.Email3OriginalDisplayName)
+		}
+	}
+	if (zb0001Mask[0] & 0x8000000) == 0 { // if not empty
+		// string "26249831"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x34, 0x39, 0x38, 0x33, 0x31)
+		if z.Fax1AddressType == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.Fax1AddressType)
+		}
+	}
+	if (zb0001Mask[0] & 0x10000000) == 0 { // if not empty
+		// string "26249931"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x34, 0x39, 0x39, 0x33, 0x31)
+		if z.Fax1EmailAddress == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.Fax1EmailAddress)
+		}
+	}
+	if (zb0001Mask[0] & 0x20000000) == 0 { // if not empty
+		// string "26250031"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x35, 0x30, 0x30, 0x33, 0x31)
+		if z.Fax1OriginalDisplayName == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.Fax1OriginalDisplayName)
+		}
+	}
+	if (zb0001Mask[0] & 0x40000000) == 0 { // if not empty
+		// string "26253031"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x35, 0x33, 0x30, 0x33, 0x31)
+		if z.Fax2AddressType == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.Fax2AddressType)
+		}
+	}
+	if (zb0001Mask[0] & 0x80000000) == 0 { // if not empty
+		// string "26253131"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x35, 0x33, 0x31, 0x33, 0x31)
+		if z.Fax2EmailAddress == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.Fax2EmailAddress)
+		}
+	}
+	if (zb0001Mask[0] & 0x100000000) == 0 { // if not empty
+		// string "26253231"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x35, 0x33, 0x32, 0x33, 0x31)
+		if z.Fax2OriginalDisplayName == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.Fax2OriginalDisplayName)
+		}
+	}
+	if (zb0001Mask[0] & 0x200000000) == 0 { // if not empty
+		// string "26256231"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x35, 0x36, 0x32, 0x33, 0x31)
+		if z.Fax3AddressType == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.Fax3AddressType)
+		}
+	}
+	if (zb0001Mask[0] & 0x400000000) == 0 { // if not empty
+		// string "26256331"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x35, 0x36, 0x33, 0x33, 0x31)
+		if z.Fax3EmailAddress == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.Fax3EmailAddress)
+		}
+	}
+	if (zb0001Mask[0] & 0x800000000) == 0 { // if not empty
+		// string "26256431"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x35, 0x36, 0x34, 0x33, 0x31)
+		if z.Fax3OriginalDisplayName == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.Fax3OriginalDisplayName)
+		}
+	}
+	if (zb0001Mask[0] & 0x1000000000) == 0 { // if not empty
+		// string "26214931"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x31, 0x34, 0x39, 0x33, 0x31)
+		if z.FileUnder == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.FileUnder)
+		}
+	}
+	if (zb0001Mask[0] & 0x2000000000) == 0 { // if not empty
+		// string "2621503"
+		o = append(o, 0xa7, 0x32, 0x36, 0x32, 0x31, 0x35, 0x30, 0x33)
+		if z.FileUnderId == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.FileUnderId)
+		}
+	}
+	if (zb0001Mask[0] & 0x4000000000) == 0 { // if not empty
+		// string "26256831"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x35, 0x36, 0x38, 0x33, 0x31)
+		if z.FreeBusyLocation == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.FreeBusyLocation)
+		}
+	}
+	if (zb0001Mask[0] & 0x8000000000) == 0 { // if not empty
+		// string "26218111"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x31, 0x38, 0x31, 0x31, 0x31)
+		if z.HasPicture == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.HasPicture)
+		}
+	}
+	if (zb0001Mask[0] & 0x10000000000) == 0 { // if not empty
+		// string "26218631"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x31, 0x38, 0x36, 0x33, 0x31)
+		if z.HomeAddress == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.HomeAddress)
+		}
+	}
+	if (zb0001Mask[0] & 0x20000000000) == 0 { // if not empty
+		// string "26257031"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x35, 0x37, 0x30, 0x33, 0x31)
+		if z.HomeAddressCountryCode == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.HomeAddressCountryCode)
+		}
+	}
+	if (zb0001Mask[0] & 0x40000000000) == 0 { // if not empty
+		// string "26221931"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x32, 0x31, 0x39, 0x33, 0x31)
+		if z.Html == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.Html)
+		}
+	}
+	if (zb0001Mask[0] & 0x80000000000) == 0 { // if not empty
+		// string "26233831"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x33, 0x33, 0x38, 0x33, 0x31)
+		if z.InstantMessagingAddress == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.InstantMessagingAddress)
+		}
+	}
+	if (zb0001Mask[0] & 0x100000000000) == 0 { // if not empty
+		// string "26259211"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x35, 0x39, 0x32, 0x31, 0x31)
+		if z.IsContactLinked == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.IsContactLinked)
+		}
+	}
+	if (zb0001Mask[0] & 0x200000000000) == 0 { // if not empty
+		// string "26218831"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x31, 0x38, 0x38, 0x33, 0x31)
+		if z.OtherAddress == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.OtherAddress)
+		}
+	}
+	if (zb0001Mask[0] & 0x400000000000) == 0 { // if not empty
+		// string "26257231"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x35, 0x37, 0x32, 0x33, 0x31)
+		if z.OtherAddressCountryCode == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.OtherAddressCountryCode)
+		}
+	}
+	if (zb0001Mask[0] & 0x800000000000) == 0 { // if not empty
+		// string "2622103"
+		o = append(o, 0xa7, 0x32, 0x36, 0x32, 0x32, 0x31, 0x30, 0x33)
+		if z.PostalAddressId == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.PostalAddressId)
+		}
+	}
+	if (zb0001Mask[0] & 0x1000000000000) == 0 { // if not empty
+		// string "26257564"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x35, 0x37, 0x35, 0x36, 0x34)
+		if z.WeddingAnniversaryLocal == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.WeddingAnniversaryLocal)
+		}
+	}
+	if (zb0001Mask[0] & 0x2000000000000) == 0 { // if not empty
+		// string "26218731"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x31, 0x38, 0x37, 0x33, 0x31)
+		if z.WorkAddress == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.WorkAddress)
+		}
+	}
+	if (zb0001Mask[0] & 0x4000000000000) == 0 { // if not empty
+		// string "26227831"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x32, 0x37, 0x38, 0x33, 0x31)
+		if z.WorkAddressCity == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.WorkAddressCity)
+		}
+	}
+	if (zb0001Mask[0] & 0x8000000000000) == 0 { // if not empty
+		// string "26228131"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x32, 0x38, 0x31, 0x33, 0x31)
+		if z.WorkAddressCountry == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.WorkAddressCountry)
+		}
+	}
+	if (zb0001Mask[0] & 0x10000000000000) == 0 { // if not empty
+		// string "26257131"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x35, 0x37, 0x31, 0x33, 0x31)
+		if z.WorkAddressCountryCode == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.WorkAddressCountryCode)
+		}
+	}
+	if (zb0001Mask[0] & 0x20000000000000) == 0 { // if not empty
+		// string "26228031"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x32, 0x38, 0x30, 0x33, 0x31)
+		if z.WorkAddressPostalCode == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.WorkAddressPostalCode)
+		}
+	}
+	if (zb0001Mask[0] & 0x40000000000000) == 0 { // if not empty
+		// string "26228231"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x32, 0x38, 0x32, 0x33, 0x31)
+		if z.WorkAddressPostOfficeBox == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.WorkAddressPostOfficeBox)
+		}
+	}
+	if (zb0001Mask[0] & 0x80000000000000) == 0 { // if not empty
+		// string "26227931"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x32, 0x37, 0x39, 0x33, 0x31)
+		if z.WorkAddressState == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.WorkAddressState)
+		}
+	}
+	if (zb0001Mask[0] & 0x100000000000000) == 0 { // if not empty
+		// string "26227731"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x32, 0x37, 0x37, 0x33, 0x31)
+		if z.WorkAddressStreet == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.WorkAddressStreet)
+		}
+	}
+	if (zb0001Mask[0] & 0x200000000000000) == 0 { // if not empty
+		// string "26222231"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x32, 0x32, 0x32, 0x33, 0x31)
+		if z.YomiCompanyName == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.YomiCompanyName)
+		}
+	}
+	if (zb0001Mask[0] & 0x400000000000000) == 0 { // if not empty
+		// string "26222031"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x32, 0x32, 0x30, 0x33, 0x31)
+		if z.YomiFirstName == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.YomiFirstName)
+		}
+	}
+	if (zb0001Mask[0] & 0x800000000000000) == 0 { // if not empty
+		// string "26222131"
+		o = append(o, 0xa8, 0x32, 0x36, 0x32, 0x32, 0x32, 0x31, 0x33, 0x31)
+		if z.YomiLastName == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.YomiLastName)
+		}
 	}
 	// string "BirthdayContactAttributionDisplayName"
 	o = append(o, 0xd9, 0x25, 0x42, 0x69, 0x72, 0x74, 0x68, 0x64, 0x61, 0x79, 0x43, 0x6f, 0x6e, 0x74, 0x61, 0x63, 0x74, 0x41, 0x74, 0x74, 0x72, 0x69, 0x62, 0x75, 0x74, 0x69, 0x6f, 0x6e, 0x44, 0x69, 0x73, 0x70, 0x6c, 0x61, 0x79, 0x4e, 0x61, 0x6d, 0x65)
@@ -4294,334 +5501,428 @@ func (z *Contact) MarshalMsg(b []byte) (o []byte, err error) {
 	} else {
 		o = msgp.AppendBool(o, *z.IsBirthdayContactWritable)
 	}
-	// string "1491464"
-	o = append(o, 0xa7, 0x31, 0x34, 0x39, 0x31, 0x34, 0x36, 0x34)
-	if z.Birthday == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.Birthday)
+	if (zb0001Mask[0] & 0x4000000000000000) == 0 { // if not empty
+		// string "1491464"
+		o = append(o, 0xa7, 0x31, 0x34, 0x39, 0x31, 0x34, 0x36, 0x34)
+		if z.Birthday == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.Birthday)
+		}
 	}
-	// string "1487531"
-	o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x37, 0x35, 0x33, 0x31)
-	if z.Business2TelephoneNumber == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.Business2TelephoneNumber)
+	if (zb0001Mask[0] & 0x8000000000000000) == 0 { // if not empty
+		// string "1487531"
+		o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x37, 0x35, 0x33, 0x31)
+		if z.Business2TelephoneNumber == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.Business2TelephoneNumber)
+		}
 	}
-	// string "1488431"
-	o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x38, 0x34, 0x33, 0x31)
-	if z.BusinessFaxNumber == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.BusinessFaxNumber)
+	if (zb0001Mask[1] & 0x1) == 0 { // if not empty
+		// string "1488431"
+		o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x38, 0x34, 0x33, 0x31)
+		if z.BusinessFaxNumber == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.BusinessFaxNumber)
+		}
 	}
-	// string "1492931"
-	o = append(o, 0xa7, 0x31, 0x34, 0x39, 0x32, 0x39, 0x33, 0x31)
-	if z.BusinessHomePage == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.BusinessHomePage)
+	if (zb0001Mask[1] & 0x2) == 0 { // if not empty
+		// string "1492931"
+		o = append(o, 0xa7, 0x31, 0x34, 0x39, 0x32, 0x39, 0x33, 0x31)
+		if z.BusinessHomePage == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.BusinessHomePage)
+		}
 	}
-	// string "1485631"
-	o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x35, 0x36, 0x33, 0x31)
-	if z.BusinessTelephoneNumber == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.BusinessTelephoneNumber)
+	if (zb0001Mask[1] & 0x4) == 0 { // if not empty
+		// string "1485631"
+		o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x35, 0x36, 0x33, 0x31)
+		if z.BusinessTelephoneNumber == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.BusinessTelephoneNumber)
+		}
 	}
-	// string "1485031"
-	o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x35, 0x30, 0x33, 0x31)
-	if z.CallbackTelephoneNumber == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.CallbackTelephoneNumber)
+	if (zb0001Mask[1] & 0x8) == 0 { // if not empty
+		// string "1485031"
+		o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x35, 0x30, 0x33, 0x31)
+		if z.CallbackTelephoneNumber == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.CallbackTelephoneNumber)
+		}
 	}
-	// string "1487831"
-	o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x37, 0x38, 0x33, 0x31)
-	if z.CarTelephoneNumber == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.CarTelephoneNumber)
+	if (zb0001Mask[1] & 0x10) == 0 { // if not empty
+		// string "1487831"
+		o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x37, 0x38, 0x33, 0x31)
+		if z.CarTelephoneNumber == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.CarTelephoneNumber)
+		}
 	}
-	// string "1493531"
-	o = append(o, 0xa7, 0x31, 0x34, 0x39, 0x33, 0x35, 0x33, 0x31)
-	if z.CompanyMainTelephoneNumber == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.CompanyMainTelephoneNumber)
+	if (zb0001Mask[1] & 0x20) == 0 { // if not empty
+		// string "1493531"
+		o = append(o, 0xa7, 0x31, 0x34, 0x39, 0x33, 0x35, 0x33, 0x31)
+		if z.CompanyMainTelephoneNumber == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.CompanyMainTelephoneNumber)
+		}
 	}
-	// string "1487031"
-	o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x37, 0x30, 0x33, 0x31)
-	if z.CompanyName == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.CompanyName)
+	if (zb0001Mask[1] & 0x40) == 0 { // if not empty
+		// string "1487031"
+		o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x37, 0x30, 0x33, 0x31)
+		if z.CompanyName == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.CompanyName)
+		}
 	}
-	// string "1492131"
-	o = append(o, 0xa7, 0x31, 0x34, 0x39, 0x32, 0x31, 0x33, 0x31)
-	if z.ComputerNetworkName == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.ComputerNetworkName)
+	if (zb0001Mask[1] & 0x80) == 0 { // if not empty
+		// string "1492131"
+		o = append(o, 0xa7, 0x31, 0x34, 0x39, 0x32, 0x31, 0x33, 0x31)
+		if z.ComputerNetworkName == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.ComputerNetworkName)
+		}
 	}
-	// string "1488631"
-	o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x38, 0x36, 0x33, 0x31)
-	if z.Country == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.Country)
+	if (zb0001Mask[1] & 0x100) == 0 { // if not empty
+		// string "1488631"
+		o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x38, 0x36, 0x33, 0x31)
+		if z.Country == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.Country)
+		}
 	}
-	// string "1492231"
-	o = append(o, 0xa7, 0x31, 0x34, 0x39, 0x32, 0x32, 0x33, 0x31)
-	if z.CustomerId == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.CustomerId)
+	if (zb0001Mask[1] & 0x200) == 0 { // if not empty
+		// string "1492231"
+		o = append(o, 0xa7, 0x31, 0x34, 0x39, 0x32, 0x32, 0x33, 0x31)
+		if z.CustomerId == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.CustomerId)
+		}
 	}
-	// string "1487231"
-	o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x37, 0x32, 0x33, 0x31)
-	if z.DepartmentName == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.DepartmentName)
+	if (zb0001Mask[1] & 0x400) == 0 { // if not empty
+		// string "1487231"
+		o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x37, 0x32, 0x33, 0x31)
+		if z.DepartmentName == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.DepartmentName)
+		}
 	}
-	// string "1491731"
-	o = append(o, 0xa7, 0x31, 0x34, 0x39, 0x31, 0x37, 0x33, 0x31)
-	if z.DisplayNamePrefix == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.DisplayNamePrefix)
+	if (zb0001Mask[1] & 0x800) == 0 { // if not empty
+		// string "1491731"
+		o = append(o, 0xa7, 0x31, 0x34, 0x39, 0x31, 0x37, 0x33, 0x31)
+		if z.DisplayNamePrefix == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.DisplayNamePrefix)
+		}
 	}
-	// string "1492431"
-	o = append(o, 0xa7, 0x31, 0x34, 0x39, 0x32, 0x34, 0x33, 0x31)
-	if z.FtpSite == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.FtpSite)
+	if (zb0001Mask[1] & 0x1000) == 0 { // if not empty
+		// string "1492431"
+		o = append(o, 0xa7, 0x31, 0x34, 0x39, 0x32, 0x34, 0x33, 0x31)
+		if z.FtpSite == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.FtpSite)
+		}
 	}
-	// string "149252"
-	o = append(o, 0xa6, 0x31, 0x34, 0x39, 0x32, 0x35, 0x32)
-	if z.Gender == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.Gender)
+	if (zb0001Mask[1] & 0x2000) == 0 { // if not empty
+		// string "149252"
+		o = append(o, 0xa6, 0x31, 0x34, 0x39, 0x32, 0x35, 0x32)
+		if z.Gender == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.Gender)
+		}
 	}
-	// string "1485331"
-	o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x35, 0x33, 0x33, 0x31)
-	if z.Generation == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.Generation)
+	if (zb0001Mask[1] & 0x4000) == 0 { // if not empty
+		// string "1485331"
+		o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x35, 0x33, 0x33, 0x31)
+		if z.Generation == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.Generation)
+		}
 	}
-	// string "1485431"
-	o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x35, 0x34, 0x33, 0x31)
-	if z.GivenName == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.GivenName)
+	if (zb0001Mask[1] & 0x8000) == 0 { // if not empty
+		// string "1485431"
+		o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x35, 0x34, 0x33, 0x31)
+		if z.GivenName == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.GivenName)
+		}
 	}
-	// string "1485531"
-	o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x35, 0x35, 0x33, 0x31)
-	if z.GovernmentIdNumber == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.GovernmentIdNumber)
+	if (zb0001Mask[1] & 0x10000) == 0 { // if not empty
+		// string "1485531"
+		o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x35, 0x35, 0x33, 0x31)
+		if z.GovernmentIdNumber == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.GovernmentIdNumber)
+		}
 	}
-	// string "1491531"
-	o = append(o, 0xa7, 0x31, 0x34, 0x39, 0x31, 0x35, 0x33, 0x31)
-	if z.Hobbies == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.Hobbies)
+	if (zb0001Mask[1] & 0x20000) == 0 { // if not empty
+		// string "1491531"
+		o = append(o, 0xa7, 0x31, 0x34, 0x39, 0x31, 0x35, 0x33, 0x31)
+		if z.Hobbies == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.Hobbies)
+		}
 	}
-	// string "1489531"
-	o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x39, 0x35, 0x33, 0x31)
-	if z.Home2TelephoneNumber == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.Home2TelephoneNumber)
+	if (zb0001Mask[1] & 0x40000) == 0 { // if not empty
+		// string "1489531"
+		o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x39, 0x35, 0x33, 0x31)
+		if z.Home2TelephoneNumber == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.Home2TelephoneNumber)
+		}
 	}
-	// string "1493731"
-	o = append(o, 0xa7, 0x31, 0x34, 0x39, 0x33, 0x37, 0x33, 0x31)
-	if z.HomeAddressCity == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.HomeAddressCity)
+	if (zb0001Mask[1] & 0x80000) == 0 { // if not empty
+		// string "1493731"
+		o = append(o, 0xa7, 0x31, 0x34, 0x39, 0x33, 0x37, 0x33, 0x31)
+		if z.HomeAddressCity == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.HomeAddressCity)
+		}
 	}
-	// string "1493831"
-	o = append(o, 0xa7, 0x31, 0x34, 0x39, 0x33, 0x38, 0x33, 0x31)
-	if z.HomeAddressCountry == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.HomeAddressCountry)
+	if (zb0001Mask[1] & 0x100000) == 0 { // if not empty
+		// string "1493831"
+		o = append(o, 0xa7, 0x31, 0x34, 0x39, 0x33, 0x38, 0x33, 0x31)
+		if z.HomeAddressCountry == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.HomeAddressCountry)
+		}
 	}
-	// string "1493931"
-	o = append(o, 0xa7, 0x31, 0x34, 0x39, 0x33, 0x39, 0x33, 0x31)
-	if z.HomeAddressPostalCode == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.HomeAddressPostalCode)
+	if (zb0001Mask[1] & 0x200000) == 0 { // if not empty
+		// string "1493931"
+		o = append(o, 0xa7, 0x31, 0x34, 0x39, 0x33, 0x39, 0x33, 0x31)
+		if z.HomeAddressPostalCode == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.HomeAddressPostalCode)
+		}
 	}
-	// string "1494231"
-	o = append(o, 0xa7, 0x31, 0x34, 0x39, 0x34, 0x32, 0x33, 0x31)
-	if z.HomeAddressPostOfficeBox == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.HomeAddressPostOfficeBox)
+	if (zb0001Mask[1] & 0x400000) == 0 { // if not empty
+		// string "1494231"
+		o = append(o, 0xa7, 0x31, 0x34, 0x39, 0x34, 0x32, 0x33, 0x31)
+		if z.HomeAddressPostOfficeBox == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.HomeAddressPostOfficeBox)
+		}
 	}
-	// string "1494031"
-	o = append(o, 0xa7, 0x31, 0x34, 0x39, 0x34, 0x30, 0x33, 0x31)
-	if z.HomeAddressStateOrProvince == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.HomeAddressStateOrProvince)
+	if (zb0001Mask[1] & 0x800000) == 0 { // if not empty
+		// string "1494031"
+		o = append(o, 0xa7, 0x31, 0x34, 0x39, 0x34, 0x30, 0x33, 0x31)
+		if z.HomeAddressStateOrProvince == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.HomeAddressStateOrProvince)
+		}
 	}
-	// string "1494131"
-	o = append(o, 0xa7, 0x31, 0x34, 0x39, 0x34, 0x31, 0x33, 0x31)
-	if z.HomeAddressStreet == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.HomeAddressStreet)
+	if (zb0001Mask[1] & 0x1000000) == 0 { // if not empty
+		// string "1494131"
+		o = append(o, 0xa7, 0x31, 0x34, 0x39, 0x34, 0x31, 0x33, 0x31)
+		if z.HomeAddressStreet == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.HomeAddressStreet)
+		}
 	}
-	// string "1488531"
-	o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x38, 0x35, 0x33, 0x31)
-	if z.HomeFaxNumber == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.HomeFaxNumber)
+	if (zb0001Mask[1] & 0x2000000) == 0 { // if not empty
+		// string "1488531"
+		o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x38, 0x35, 0x33, 0x31)
+		if z.HomeFaxNumber == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.HomeFaxNumber)
+		}
 	}
-	// string "1485731"
-	o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x35, 0x37, 0x33, 0x31)
-	if z.HomeTelephoneNumber == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.HomeTelephoneNumber)
+	if (zb0001Mask[1] & 0x4000000) == 0 { // if not empty
+		// string "1485731"
+		o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x35, 0x37, 0x33, 0x31)
+		if z.HomeTelephoneNumber == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.HomeTelephoneNumber)
+		}
 	}
-	// string "3178011"
-	o = append(o, 0xa7, 0x33, 0x31, 0x37, 0x38, 0x30, 0x31, 0x31)
-	if z.OscSyncEnabled == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.OscSyncEnabled)
+	if (zb0001Mask[1] & 0x8000000) == 0 { // if not empty
+		// string "3178011"
+		o = append(o, 0xa7, 0x33, 0x31, 0x37, 0x38, 0x30, 0x31, 0x31)
+		if z.OscSyncEnabled == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.OscSyncEnabled)
+		}
 	}
-	// string "1492831"
-	o = append(o, 0xa7, 0x31, 0x34, 0x39, 0x32, 0x38, 0x33, 0x31)
-	if z.PersonalHomePage == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.PersonalHomePage)
+	if (zb0001Mask[1] & 0x10000000) == 0 { // if not empty
+		// string "1492831"
+		o = append(o, 0xa7, 0x31, 0x34, 0x39, 0x32, 0x38, 0x33, 0x31)
+		if z.PersonalHomePage == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.PersonalHomePage)
+		}
 	}
-	// string "1486931"
-	o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x36, 0x39, 0x33, 0x31)
-	if z.PostalAddress == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.PostalAddress)
+	if (zb0001Mask[1] & 0x20000000) == 0 { // if not empty
+		// string "1486931"
+		o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x36, 0x39, 0x33, 0x31)
+		if z.PostalAddress == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.PostalAddress)
+		}
 	}
-	// string "1489031"
-	o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x39, 0x30, 0x33, 0x31)
-	if z.PostalCode == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.PostalCode)
+	if (zb0001Mask[1] & 0x40000000) == 0 { // if not empty
+		// string "1489031"
+		o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x39, 0x30, 0x33, 0x31)
+		if z.PostalCode == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.PostalCode)
+		}
 	}
-	// string "1489131"
-	o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x39, 0x31, 0x33, 0x31)
-	if z.PostOfficeBox == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.PostOfficeBox)
+	if (zb0001Mask[1] & 0x80000000) == 0 { // if not empty
+		// string "1489131"
+		o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x39, 0x31, 0x33, 0x31)
+		if z.PostOfficeBox == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.PostOfficeBox)
+		}
 	}
-	// string "1488331"
-	o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x38, 0x33, 0x33, 0x31)
-	if z.PrimaryFaxNumber == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.PrimaryFaxNumber)
+	if (zb0001Mask[1] & 0x100000000) == 0 { // if not empty
+		// string "1488331"
+		o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x38, 0x33, 0x33, 0x31)
+		if z.PrimaryFaxNumber == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.PrimaryFaxNumber)
+		}
 	}
-	// string "1487431"
-	o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x37, 0x34, 0x33, 0x31)
-	if z.PrimaryTelephoneNumber == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.PrimaryTelephoneNumber)
+	if (zb0001Mask[1] & 0x200000000) == 0 { // if not empty
+		// string "1487431"
+		o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x37, 0x34, 0x33, 0x31)
+		if z.PrimaryTelephoneNumber == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.PrimaryTelephoneNumber)
+		}
 	}
-	// string "1491831"
-	o = append(o, 0xa7, 0x31, 0x34, 0x39, 0x31, 0x38, 0x33, 0x31)
-	if z.Profession == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.Profession)
+	if (zb0001Mask[1] & 0x400000000) == 0 { // if not empty
+		// string "1491831"
+		o = append(o, 0xa7, 0x31, 0x34, 0x39, 0x31, 0x38, 0x33, 0x31)
+		if z.Profession == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.Profession)
+		}
 	}
-	// string "1487731"
-	o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x37, 0x37, 0x33, 0x31)
-	if z.RadioTelephoneNumber == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.RadioTelephoneNumber)
+	if (zb0001Mask[1] & 0x800000000) == 0 { // if not empty
+		// string "1487731"
+		o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x37, 0x37, 0x33, 0x31)
+		if z.RadioTelephoneNumber == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.RadioTelephoneNumber)
+		}
 	}
-	// string "1491931"
-	o = append(o, 0xa7, 0x31, 0x34, 0x39, 0x31, 0x39, 0x33, 0x31)
-	if z.ReferredByName == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.ReferredByName)
+	if (zb0001Mask[1] & 0x1000000000) == 0 { // if not empty
+		// string "1491931"
+		o = append(o, 0xa7, 0x31, 0x34, 0x39, 0x31, 0x39, 0x33, 0x31)
+		if z.ReferredByName == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.ReferredByName)
+		}
 	}
-	// string "1492031"
-	o = append(o, 0xa7, 0x31, 0x34, 0x39, 0x32, 0x30, 0x33, 0x31)
-	if z.SpouseName == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.SpouseName)
+	if (zb0001Mask[1] & 0x2000000000) == 0 { // if not empty
+		// string "1492031"
+		o = append(o, 0xa7, 0x31, 0x34, 0x39, 0x32, 0x30, 0x33, 0x31)
+		if z.SpouseName == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.SpouseName)
+		}
 	}
-	// string "1488831"
-	o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x38, 0x38, 0x33, 0x31)
-	if z.StateOrProvince == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.StateOrProvince)
+	if (zb0001Mask[1] & 0x4000000000) == 0 { // if not empty
+		// string "1488831"
+		o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x38, 0x38, 0x33, 0x31)
+		if z.StateOrProvince == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.StateOrProvince)
+		}
 	}
-	// string "1488931"
-	o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x38, 0x39, 0x33, 0x31)
-	if z.StreetAddress == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.StreetAddress)
+	if (zb0001Mask[1] & 0x8000000000) == 0 { // if not empty
+		// string "1488931"
+		o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x38, 0x39, 0x33, 0x31)
+		if z.StreetAddress == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.StreetAddress)
+		}
 	}
-	// string "1486531"
-	o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x36, 0x35, 0x33, 0x31)
-	if z.Surname == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.Surname)
+	if (zb0001Mask[1] & 0x10000000000) == 0 { // if not empty
+		// string "1486531"
+		o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x36, 0x35, 0x33, 0x31)
+		if z.Surname == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.Surname)
+		}
 	}
-	// string "1492331"
-	o = append(o, 0xa7, 0x31, 0x34, 0x39, 0x32, 0x33, 0x33, 0x31)
-	if z.TelecommunicationsDeviceForDeafTelephoneNumber == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.TelecommunicationsDeviceForDeafTelephoneNumber)
+	if (zb0001Mask[1] & 0x20000000000) == 0 { // if not empty
+		// string "1492331"
+		o = append(o, 0xa7, 0x31, 0x34, 0x39, 0x32, 0x33, 0x33, 0x31)
+		if z.TelecommunicationsDeviceForDeafTelephoneNumber == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.TelecommunicationsDeviceForDeafTelephoneNumber)
+		}
 	}
-	// string "1489231"
-	o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x39, 0x32, 0x33, 0x31)
-	if z.TelexNumber == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.TelexNumber)
+	if (zb0001Mask[1] & 0x40000000000) == 0 { // if not empty
+		// string "1489231"
+		o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x39, 0x32, 0x33, 0x31)
+		if z.TelexNumber == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.TelexNumber)
+		}
 	}
-	// string "1487131"
-	o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x37, 0x31, 0x33, 0x31)
-	if z.Title == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.Title)
+	if (zb0001Mask[1] & 0x80000000000) == 0 { // if not empty
+		// string "1487131"
+		o = append(o, 0xa7, 0x31, 0x34, 0x38, 0x37, 0x31, 0x33, 0x31)
+		if z.Title == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.Title)
+		}
 	}
-	// string "1491364"
-	o = append(o, 0xa7, 0x31, 0x34, 0x39, 0x31, 0x33, 0x36, 0x34)
-	if z.WeddingAnniversary == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.WeddingAnniversary)
+	if (zb0001Mask[1] & 0x100000000000) == 0 { // if not empty
+		// string "1491364"
+		o = append(o, 0xa7, 0x31, 0x34, 0x39, 0x31, 0x33, 0x36, 0x34)
+		if z.WeddingAnniversary == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.WeddingAnniversary)
+		}
 	}
 	return
 }

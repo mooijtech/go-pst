@@ -19,7 +19,8 @@ package pst_test
 
 import (
 	"fmt"
-	"github.com/pkg/errors"
+	"github.com/mooijtech/go-pst/v5/pkg/properties"
+	"github.com/rotisserie/eris"
 	"os"
 	"testing"
 	"time"
@@ -32,14 +33,22 @@ func TestExample(t *testing.T) {
 
 	fmt.Println("Initializing...")
 
-	pstFile, err := pst.NewFromFile("../data/enron.pst")
+	reader, err := os.Open("/home/bot/Documents/Projects/go-pst/data/s.woon.pst")
+
+	if err != nil {
+		panic(fmt.Sprintf("Failed to open PST file: %+v\n", err))
+	}
+
+	pstFile, err := pst.New(reader)
 
 	if err != nil {
 		panic(fmt.Sprintf("Failed to open PST file: %+v\n", err))
 	}
 
 	defer func() {
-		if errClosing := pstFile.Close(); errClosing != nil {
+		pstFile.Cleanup()
+
+		if errClosing := reader.Close(); errClosing != nil {
 			panic(fmt.Sprintf("Failed to close PST file: %+v\n", err))
 		}
 	}()
@@ -50,7 +59,7 @@ func TestExample(t *testing.T) {
 
 		messageIterator, err := folder.GetMessageIterator()
 
-		if errors.Is(err, pst.ErrMessagesNotFound) {
+		if eris.Is(err, pst.ErrMessagesNotFound) {
 			// Folder has no messages.
 			return nil
 		} else if err != nil {
@@ -61,39 +70,58 @@ func TestExample(t *testing.T) {
 		for messageIterator.Next() {
 			message := messageIterator.Value()
 
-			fmt.Printf("Message subject: %s\n", message.GetSubject())
-
-			attachmentIterator, err := message.GetAttachmentIterator()
-
-			if errors.Is(err, pst.ErrAttachmentsNotFound) {
-				// This message has no attachments.
-				continue
-			} else if err != nil {
-				return err
+			switch messageProperties := message.Properties.(type) {
+			case *properties.Appointment:
+				fmt.Printf("Appointment: %s - %s\n", messageProperties.String(), folder.Name)
+			case *properties.Contact:
+				fmt.Printf("Contact: %s - %s\n", messageProperties.String(), folder.Name)
+			case *properties.Task:
+				fmt.Printf("Task: %s\n", messageProperties.GetTaskAssigner())
+			case *properties.RSS:
+				fmt.Printf("RSS: %s\n", messageProperties.GetPostRssChannelLink())
+			case *properties.AddressBook:
+				fmt.Printf("Address book: %s\n", messageProperties.GetAccount())
+			case *properties.Message:
+				//fmt.Printf("Message: %s\n", messageProperties.GetSubject())
+			case *properties.Note:
+				fmt.Printf("Note: %d\n", messageProperties.GetNoteColor())
+			default:
+				fmt.Printf("Unknown message type\n")
 			}
 
-			// Iterate through attachments.
-			for attachmentIterator.Next() {
-				attachment := attachmentIterator.Value()
+			//fmt.Printf("Got: %s\n", message.GetOriginalMessageClass())
 
-				fmt.Printf("Attachment: %s\n", attachment.GetAttachFilename())
-
-				attachmentOutput, err := os.Create(fmt.Sprintf("attachments/%s", attachment.GetAttachFilename()))
-
-				if err != nil {
-					return err
-				} else if _, err := attachment.WriteTo(attachmentOutput); err != nil {
-					return err
-				}
-
-				if err := attachmentOutput.Close(); err != nil {
-					return err
-				}
-			}
-
-			if attachmentIterator.Err() != nil {
-				return attachmentIterator.Err()
-			}
+			//attachmentIterator, err := message.GetAttachmentIterator()
+			//
+			//if eris.Is(err, pst.ErrAttachmentsNotFound) {
+			//	// This message has no attachments.
+			//	continue
+			//} else if err != nil {
+			//	return err
+			//}
+			//
+			//// Iterate through attachments.
+			//for attachmentIterator.Next() {
+			//	attachment := attachmentIterator.Value()
+			//
+			//	fmt.Printf("Attachment: %s\n", attachment.GetAttachFilename())
+			//
+			//	attachmentOutput, err := os.Create(fmt.Sprintf("attachments/%s", attachment.GetAttachFilename()))
+			//
+			//	if err != nil {
+			//		return err
+			//	} else if _, err := attachment.WriteTo(attachmentOutput); err != nil {
+			//		return err
+			//	}
+			//
+			//	if err := attachmentOutput.Close(); err != nil {
+			//		return err
+			//	}
+			//}
+			//
+			//if attachmentIterator.Err() != nil {
+			//	return attachmentIterator.Err()
+			//}
 		}
 
 		return messageIterator.Err()

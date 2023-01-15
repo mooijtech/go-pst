@@ -20,7 +20,7 @@ package pst
 import (
 	"encoding/binary"
 
-	"github.com/pkg/errors"
+	"github.com/rotisserie/eris"
 )
 
 // LocalDescriptor represents an item in the local descriptors.
@@ -66,24 +66,25 @@ func (file *File) GetLocalDescriptorsFromIdentifier(localDescriptorsIdentifier I
 	localDescriptorsNode, err := file.GetBlockBTreeNode(localDescriptorsIdentifier)
 
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, eris.Wrap(err, "failed to get local descriptors node")
 	}
 
+	// TODO - Merge signature, level, entry count etc into one ReadAt
 	signature := make([]byte, 1)
 
-	if _, err = file.ReadAt(signature, localDescriptorsNode.FileOffset); err != nil {
-		return nil, errors.WithStack(err)
+	if _, err = file.Reader.ReadAt(signature, localDescriptorsNode.FileOffset); err != nil {
+		return nil, eris.Wrap(err, "failed to read local descriptors signature")
 	} else if signature[0] != 2 {
-		return nil, errors.WithStack(ErrLocalDescriptorsSignatureInvalid)
+		return nil, ErrLocalDescriptorsSignatureInvalid
 	}
 
 	localDescriptorsLevel := make([]byte, 1)
 
-	if _, err := file.ReadAt(localDescriptorsLevel, localDescriptorsNode.FileOffset+1); err != nil {
-		return nil, errors.WithStack(err)
+	if _, err := file.Reader.ReadAt(localDescriptorsLevel, localDescriptorsNode.FileOffset+1); err != nil {
+		return nil, eris.Wrap(err, "failed to read local descriptors level")
 	} else if localDescriptorsLevel[0] > 0 {
 		// Haven't seen branch nodes yet.
-		return nil, errors.WithStack(ErrLocalDescriptorBranchNode)
+		return nil, ErrLocalDescriptorBranchNode
 	}
 
 	var localDescriptorEntrySize uint8
@@ -97,8 +98,8 @@ func (file *File) GetLocalDescriptorsFromIdentifier(localDescriptorsIdentifier I
 
 	localDescriptorsEntryCount := make([]byte, 2)
 
-	if _, err := file.ReadAt(localDescriptorsEntryCount, localDescriptorsNode.FileOffset+2); err != nil {
-		return nil, errors.WithStack(err)
+	if _, err := file.Reader.ReadAt(localDescriptorsEntryCount, localDescriptorsNode.FileOffset+2); err != nil {
+		return nil, eris.Wrap(err, "failed to get local descriptors entry count")
 	}
 
 	var localDescriptorsEntriesOffset int64
@@ -112,8 +113,8 @@ func (file *File) GetLocalDescriptorsFromIdentifier(localDescriptorsIdentifier I
 
 	localDescriptorsEntries := make([]byte, binary.LittleEndian.Uint16(localDescriptorsEntryCount)*uint16(localDescriptorEntrySize))
 
-	if _, err := file.ReadAt(localDescriptorsEntries, localDescriptorsEntriesOffset); err != nil {
-		return nil, errors.WithStack(err)
+	if _, err := file.Reader.ReadAt(localDescriptorsEntries, localDescriptorsEntriesOffset); err != nil {
+		return nil, eris.Wrap(err, "failed to read local descriptors entries")
 	}
 
 	localDescriptors := make([]LocalDescriptor, binary.LittleEndian.Uint16(localDescriptorsEntryCount))
@@ -135,5 +136,5 @@ func FindLocalDescriptor(identifier Identifier, localDescriptors []LocalDescript
 		}
 	}
 
-	return LocalDescriptor{}, errors.WithStack(ErrLocalDescriptorNotFound)
+	return LocalDescriptor{}, ErrLocalDescriptorNotFound
 }

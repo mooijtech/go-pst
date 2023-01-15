@@ -127,90 +127,130 @@ func (z *Spam) DecodeMsg(dc *msgp.Reader) (err error) {
 
 // EncodeMsg implements msgp.Encodable
 func (z *Spam) EncodeMsg(en *msgp.Writer) (err error) {
-	// map header, size 5
-	// write "248353"
-	err = en.Append(0x85, 0xa6, 0x32, 0x34, 0x38, 0x33, 0x35, 0x33)
-	if err != nil {
-		return
-	}
+	// omitempty: check for empty values
+	zb0001Len := uint32(5)
+	var zb0001Mask uint8 /* 5 bits */
 	if z.JunkAddRecipientsToSafeSendersList == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.JunkAddRecipientsToSafeSendersList)
-		if err != nil {
-			err = msgp.WrapError(err, "JunkAddRecipientsToSafeSendersList")
-			return
-		}
-	}
-	// write "248323"
-	err = en.Append(0xa6, 0x32, 0x34, 0x38, 0x33, 0x32, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x1
 	}
 	if z.JunkIncludeContacts == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.JunkIncludeContacts)
-		if err != nil {
-			err = msgp.WrapError(err, "JunkIncludeContacts")
-			return
-		}
-	}
-	// write "248343"
-	err = en.Append(0xa6, 0x32, 0x34, 0x38, 0x33, 0x34, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x2
 	}
 	if z.JunkPermanentlyDelete == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.JunkPermanentlyDelete)
-		if err != nil {
-			err = msgp.WrapError(err, "JunkPermanentlyDelete")
-			return
-		}
-	}
-	// write "2483911"
-	err = en.Append(0xa7, 0x32, 0x34, 0x38, 0x33, 0x39, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x4
 	}
 	if z.JunkPhishingEnableLinks == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.JunkPhishingEnableLinks)
-		if err != nil {
-			err = msgp.WrapError(err, "JunkPhishingEnableLinks")
-			return
-		}
+		zb0001Len--
+		zb0001Mask |= 0x8
 	}
-	// write "248333"
-	err = en.Append(0xa6, 0x32, 0x34, 0x38, 0x33, 0x33, 0x33)
+	if z.JunkThreshold == nil {
+		zb0001Len--
+		zb0001Mask |= 0x10
+	}
+	// variable map header, size zb0001Len
+	err = en.Append(0x80 | uint8(zb0001Len))
 	if err != nil {
 		return
 	}
-	if z.JunkThreshold == nil {
-		err = en.WriteNil()
+	if zb0001Len == 0 {
+		return
+	}
+	if (zb0001Mask & 0x1) == 0 { // if not empty
+		// write "248353"
+		err = en.Append(0xa6, 0x32, 0x34, 0x38, 0x33, 0x35, 0x33)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteInt32(*z.JunkThreshold)
+		if z.JunkAddRecipientsToSafeSendersList == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.JunkAddRecipientsToSafeSendersList)
+			if err != nil {
+				err = msgp.WrapError(err, "JunkAddRecipientsToSafeSendersList")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x2) == 0 { // if not empty
+		// write "248323"
+		err = en.Append(0xa6, 0x32, 0x34, 0x38, 0x33, 0x32, 0x33)
 		if err != nil {
-			err = msgp.WrapError(err, "JunkThreshold")
 			return
+		}
+		if z.JunkIncludeContacts == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.JunkIncludeContacts)
+			if err != nil {
+				err = msgp.WrapError(err, "JunkIncludeContacts")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x4) == 0 { // if not empty
+		// write "248343"
+		err = en.Append(0xa6, 0x32, 0x34, 0x38, 0x33, 0x34, 0x33)
+		if err != nil {
+			return
+		}
+		if z.JunkPermanentlyDelete == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.JunkPermanentlyDelete)
+			if err != nil {
+				err = msgp.WrapError(err, "JunkPermanentlyDelete")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x8) == 0 { // if not empty
+		// write "2483911"
+		err = en.Append(0xa7, 0x32, 0x34, 0x38, 0x33, 0x39, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.JunkPhishingEnableLinks == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.JunkPhishingEnableLinks)
+			if err != nil {
+				err = msgp.WrapError(err, "JunkPhishingEnableLinks")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x10) == 0 { // if not empty
+		// write "248333"
+		err = en.Append(0xa6, 0x32, 0x34, 0x38, 0x33, 0x33, 0x33)
+		if err != nil {
+			return
+		}
+		if z.JunkThreshold == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.JunkThreshold)
+			if err != nil {
+				err = msgp.WrapError(err, "JunkThreshold")
+				return
+			}
 		}
 	}
 	return
@@ -219,41 +259,78 @@ func (z *Spam) EncodeMsg(en *msgp.Writer) (err error) {
 // MarshalMsg implements msgp.Marshaler
 func (z *Spam) MarshalMsg(b []byte) (o []byte, err error) {
 	o = msgp.Require(b, z.Msgsize())
-	// map header, size 5
-	// string "248353"
-	o = append(o, 0x85, 0xa6, 0x32, 0x34, 0x38, 0x33, 0x35, 0x33)
+	// omitempty: check for empty values
+	zb0001Len := uint32(5)
+	var zb0001Mask uint8 /* 5 bits */
 	if z.JunkAddRecipientsToSafeSendersList == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.JunkAddRecipientsToSafeSendersList)
+		zb0001Len--
+		zb0001Mask |= 0x1
 	}
-	// string "248323"
-	o = append(o, 0xa6, 0x32, 0x34, 0x38, 0x33, 0x32, 0x33)
 	if z.JunkIncludeContacts == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.JunkIncludeContacts)
+		zb0001Len--
+		zb0001Mask |= 0x2
 	}
-	// string "248343"
-	o = append(o, 0xa6, 0x32, 0x34, 0x38, 0x33, 0x34, 0x33)
 	if z.JunkPermanentlyDelete == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.JunkPermanentlyDelete)
+		zb0001Len--
+		zb0001Mask |= 0x4
 	}
-	// string "2483911"
-	o = append(o, 0xa7, 0x32, 0x34, 0x38, 0x33, 0x39, 0x31, 0x31)
 	if z.JunkPhishingEnableLinks == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.JunkPhishingEnableLinks)
+		zb0001Len--
+		zb0001Mask |= 0x8
 	}
-	// string "248333"
-	o = append(o, 0xa6, 0x32, 0x34, 0x38, 0x33, 0x33, 0x33)
 	if z.JunkThreshold == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.JunkThreshold)
+		zb0001Len--
+		zb0001Mask |= 0x10
+	}
+	// variable map header, size zb0001Len
+	o = append(o, 0x80|uint8(zb0001Len))
+	if zb0001Len == 0 {
+		return
+	}
+	if (zb0001Mask & 0x1) == 0 { // if not empty
+		// string "248353"
+		o = append(o, 0xa6, 0x32, 0x34, 0x38, 0x33, 0x35, 0x33)
+		if z.JunkAddRecipientsToSafeSendersList == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.JunkAddRecipientsToSafeSendersList)
+		}
+	}
+	if (zb0001Mask & 0x2) == 0 { // if not empty
+		// string "248323"
+		o = append(o, 0xa6, 0x32, 0x34, 0x38, 0x33, 0x32, 0x33)
+		if z.JunkIncludeContacts == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.JunkIncludeContacts)
+		}
+	}
+	if (zb0001Mask & 0x4) == 0 { // if not empty
+		// string "248343"
+		o = append(o, 0xa6, 0x32, 0x34, 0x38, 0x33, 0x34, 0x33)
+		if z.JunkPermanentlyDelete == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.JunkPermanentlyDelete)
+		}
+	}
+	if (zb0001Mask & 0x8) == 0 { // if not empty
+		// string "2483911"
+		o = append(o, 0xa7, 0x32, 0x34, 0x38, 0x33, 0x39, 0x31, 0x31)
+		if z.JunkPhishingEnableLinks == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.JunkPhishingEnableLinks)
+		}
+	}
+	if (zb0001Mask & 0x10) == 0 { // if not empty
+		// string "248333"
+		o = append(o, 0xa6, 0x32, 0x34, 0x38, 0x33, 0x33, 0x33)
+		if z.JunkThreshold == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.JunkThreshold)
+		}
 	}
 	return
 }

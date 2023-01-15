@@ -19,13 +19,13 @@ package pst
 
 import (
 	"encoding/binary"
+	"github.com/rotisserie/eris"
+	"golang.org/x/sync/errgroup"
 	"io"
-
-	"github.com/pkg/errors"
+	"sync"
 )
 
 // GetNodeBTreeOffset returns the file offset to the node b-tree.
-// References "The 64-bit header data", "The 32-bit header data".
 func (file *File) GetNodeBTreeOffset() (int64, error) {
 	var outputBuffer []byte
 	var offset int64
@@ -41,11 +41,11 @@ func (file *File) GetNodeBTreeOffset() (int64, error) {
 		outputBuffer = make([]byte, 4)
 		offset = 188
 	default:
-		return 0, errors.WithStack(ErrFormatTypeUnsupported)
+		return 0, ErrFormatTypeUnsupported
 	}
 
-	if _, err := file.ReadAt(outputBuffer, offset); err != nil {
-		return 0, errors.WithStack(err)
+	if _, err := file.Reader.ReadAt(outputBuffer, offset); err != nil {
+		return 0, eris.Wrap(err, "failed to read node b-tree offset")
 	}
 
 	switch file.FormatType {
@@ -57,7 +57,6 @@ func (file *File) GetNodeBTreeOffset() (int64, error) {
 }
 
 // GetBlockBTreeOffset returns the file offset to the block b-tree.
-// References "The 64-bit header data", "The 32-bit header data".
 func (file *File) GetBlockBTreeOffset() (int64, error) {
 	var outputBuffer []byte
 	var offset int64
@@ -73,11 +72,11 @@ func (file *File) GetBlockBTreeOffset() (int64, error) {
 		outputBuffer = make([]byte, 4)
 		offset = 196
 	default:
-		return 0, errors.WithStack(ErrFormatTypeUnsupported)
+		return 0, ErrFormatTypeUnsupported
 	}
 
-	if _, err := file.ReadAt(outputBuffer, offset); err != nil {
-		return 0, errors.WithStack(err)
+	if _, err := file.Reader.ReadAt(outputBuffer, offset); err != nil {
+		return 0, eris.Wrap(err, "failed to read block b-tree offset")
 	}
 
 	switch file.FormatType {
@@ -89,83 +88,46 @@ func (file *File) GetBlockBTreeOffset() (int64, error) {
 }
 
 // GetBTreeNodeEntryCount returns the amount of entries in the b-tree.
-// References "The node and block b-tree".
-func (file *File) GetBTreeNodeEntryCount(btreeNodeOffset int64) (uint16, error) {
-	var outputBuffer []byte
-	var offset int64
-
+func (file *File) GetBTreeNodeEntryCount(btreeNode []byte) uint16 {
 	switch file.FormatType {
 	case FormatTypeUnicode:
-		outputBuffer = make([]byte, 1)
-		offset = btreeNodeOffset + 488
+		return uint16(btreeNode[489])
 	case FormatTypeUnicode4k:
-		outputBuffer = make([]byte, 2)
-		offset = btreeNodeOffset + 4056
+		return binary.LittleEndian.Uint16(btreeNode[4056:4058])
 	case FormatTypeANSI:
-		outputBuffer = make([]byte, 1)
-		offset = btreeNodeOffset + 496
+		return uint16(btreeNode[497])
 	default:
-		return 0, errors.WithStack(ErrFormatTypeUnsupported)
-	}
-
-	if _, err := file.ReadAt(outputBuffer, offset); err != nil {
-		return 0, errors.WithStack(err)
-	}
-
-	switch file.FormatType {
-	case FormatTypeUnicode4k:
-		return binary.LittleEndian.Uint16(outputBuffer), nil
-	default:
-		return uint16(outputBuffer[0]), nil
+		panic(ErrFormatTypeUnsupported)
 	}
 }
 
 // GetBTreeNodeEntrySize returns the size of an entry in the b-tree.
-// References "The node and block b-tree".
-func (file *File) GetBTreeNodeEntrySize(btreeNodeOffset int64) (uint8, error) {
-	outputBuffer := make([]byte, 1)
-	var offset int64
-
+func (file *File) GetBTreeNodeEntrySize(btreeNode []byte) uint8 {
 	switch file.FormatType {
 	case FormatTypeUnicode:
-		offset = btreeNodeOffset + 490
+		return btreeNode[490]
 	case FormatTypeUnicode4k:
-		offset = btreeNodeOffset + 4060
+		return btreeNode[4060]
 	case FormatTypeANSI:
-		offset = btreeNodeOffset + 498
+		return btreeNode[498]
 	default:
-		return 0, errors.WithStack(ErrFormatTypeUnsupported)
+		panic(ErrFormatTypeUnsupported)
 	}
-
-	if _, err := file.ReadAt(outputBuffer, offset); err != nil {
-		return 0, errors.WithStack(err)
-	}
-
-	return outputBuffer[0], nil
 }
 
 // GetBTreeNodeLevel returns the level of the b-tree node.
 // References "The node and block b-tree".
-func (file *File) GetBTreeNodeLevel(btreeNodeOffset int64) (uint8, error) {
-	outputBuffer := make([]byte, 1)
-	var offset int64
-
+func (file *File) GetBTreeNodeLevel(btreeNode []byte) uint8 {
 	switch file.FormatType {
 	case FormatTypeUnicode:
-		offset = btreeNodeOffset + 491
+		return btreeNode[492]
 	case FormatTypeUnicode4k:
-		offset = btreeNodeOffset + 4061
+		return btreeNode[4062]
 	case FormatTypeANSI:
-		offset = btreeNodeOffset + 499
+		return btreeNode[500]
 	default:
-		return 0, errors.WithStack(ErrFormatTypeUnsupported)
+		panic(ErrFormatTypeUnsupported)
 	}
-
-	if _, err := file.ReadAt(outputBuffer, offset); err != nil {
-		return 0, errors.WithStack(err)
-	}
-
-	return outputBuffer[0], nil
 }
 
 // BTreeNode represents an entry in a b-tree node.
@@ -180,8 +142,8 @@ type BTreeNode struct {
 }
 
 // NewBTreeNodeReader is used by the Heap-on-Node.
-func NewBTreeNodeReader(btreeNode BTreeNode, file *File) *io.SectionReader {
-	return io.NewSectionReader(file, btreeNode.FileOffset, int64(btreeNode.Size))
+func NewBTreeNodeReader(btreeNode BTreeNode, reader Reader) *io.SectionReader {
+	return io.NewSectionReader(reader, btreeNode.FileOffset, int64(btreeNode.Size))
 }
 
 // BTreeNodeLessFunc tests whether the current node is less than the given argument.
@@ -199,81 +161,73 @@ func BTreeNodeLessFunc(a BTreeNode, b BTreeNode) bool {
 }
 
 // GetBTreeNodeRawEntries returns the raw b-tree node entries in bytes.
+// References https://github.com/mooijtech/go-pst/blob/master/docs/README.md#btpage
 // Used by GetBTreeNodeEntries.
-func (file *File) GetBTreeNodeRawEntries(btreeNodeOffset int64) ([]byte, error) {
+func (file *File) GetBTreeNodeRawEntries(btreeNodeOffset int64, callback func([]byte, error)) {
 	var outputBuffer []byte
 
 	switch file.FormatType {
 	case FormatTypeUnicode:
-		outputBuffer = make([]byte, 488)
+		outputBuffer = make([]byte, 512)
 	case FormatTypeUnicode4k:
-		outputBuffer = make([]byte, 4056)
+		outputBuffer = make([]byte, 4056) // TODO - Check
 	case FormatTypeANSI:
-		outputBuffer = make([]byte, 496)
+		outputBuffer = make([]byte, 512)
 	default:
-		return nil, errors.WithStack(ErrFormatTypeUnsupported)
+		callback(nil, ErrFormatTypeUnsupported)
 	}
 
-	if _, err := file.ReadAt(outputBuffer, btreeNodeOffset); err != nil {
-		return nil, errors.WithStack(err)
+	if _, err := file.Reader.ReadAtAsync(outputBuffer, uint64(btreeNodeOffset), func(err error) {
+		callback(outputBuffer, err)
+	}); err != nil {
+		callback(nil, err)
 	}
-
-	return outputBuffer, nil
 }
 
 // GetBTreeNodeEntries returns the entries in the b-tree node.
-// References "The node and block b-tree".
-func (file *File) GetBTreeNodeEntries(btreeNodeOffset int64, btreeType BTreeType, btreeNodeLevel uint8) ([]BTreeNode, error) {
-	btreeNodeRawEntries, err := file.GetBTreeNodeRawEntries(btreeNodeOffset)
+func (file *File) GetBTreeNodeEntries(btreeNodeOffset int64, btreeType BTreeType, callback func(btreeNodeEntries []BTreeNode, err error)) {
+	file.GetBTreeNodeRawEntries(btreeNodeOffset, func(btreeNodeEntry []byte, err error) {
+		if err != nil {
+			callback(nil, err)
+			return
+		}
 
-	if err != nil {
-		return nil, errors.WithStack(err)
-	}
+		btreeNodeEntryCount := file.GetBTreeNodeEntryCount(btreeNodeEntry)
+		btreeNodeLevel := file.GetBTreeNodeLevel(btreeNodeEntry)
+		btreeNodeEntrySize := file.GetBTreeNodeEntrySize(btreeNodeEntry)
+		btreeNodeEntries := make([]BTreeNode, btreeNodeEntryCount)
 
-	btreeNodeEntryCount, err := file.GetBTreeNodeEntryCount(btreeNodeOffset)
+		for i := 0; i < int(btreeNodeEntryCount); i++ {
+			btreeNodeEntryData := btreeNodeEntry[i*int(btreeNodeEntrySize) : (i*int(btreeNodeEntrySize))+int(btreeNodeEntrySize)]
 
-	if err != nil {
-		return nil, errors.WithStack(err)
-	}
-
-	btreeNodeEntrySize, err := file.GetBTreeNodeEntrySize(btreeNodeOffset)
-
-	if err != nil {
-		return nil, errors.WithStack(err)
-	}
-
-	btreeNodeEntries := make([]BTreeNode, btreeNodeEntryCount)
-
-	for i := 0; i < int(btreeNodeEntryCount); i++ {
-		btreeNodeEntryData := btreeNodeRawEntries[i*int(btreeNodeEntrySize) : (i*int(btreeNodeEntrySize))+int(btreeNodeEntrySize)]
-
-		if btreeNodeLevel > 0 && (btreeType == BTreeTypeNode || btreeType == BTreeTypeBlock) {
-			// Branch node or block b-tree node.
-			btreeNodeEntries[i] = BTreeNode{
-				Identifier: GetBTreeNodeEntryIdentifier(btreeNodeEntryData, file.FormatType),
-				FileOffset: GetBTreeNodeEntryFileOffset(btreeNodeEntryData, true, file.FormatType),
-				NodeLevel:  btreeNodeLevel,
-			}
-		} else if btreeNodeLevel == 0 && btreeType == BTreeTypeNode {
-			// Leaf node b-tree node.
-			btreeNodeEntries[i] = BTreeNode{
-				Identifier:                 GetBTreeNodeEntryIdentifier(btreeNodeEntryData, file.FormatType),
-				DataIdentifier:             GetBTreeNodeEntryDataIdentifier(btreeNodeEntryData, file.FormatType),
-				LocalDescriptorsIdentifier: GetBTreeNodeEntryLocalDescriptorsIdentifier(btreeNodeEntryData, file.FormatType),
-				NodeLevel:                  btreeNodeLevel,
-			}
-		} else if btreeNodeLevel == 0 && btreeType == BTreeTypeBlock {
-			// Leaf block b-tree node.
-			btreeNodeEntries[i] = BTreeNode{
-				Identifier: GetBTreeNodeEntryIdentifier(btreeNodeEntryData, file.FormatType),
-				FileOffset: GetBTreeNodeEntryFileOffset(btreeNodeEntryData, false, file.FormatType),
-				Size:       GetBTreeNodeEntrySize(btreeNodeEntryData, file.FormatType),
-				NodeLevel:  btreeNodeLevel,
+			if btreeNodeLevel > 0 && (btreeType == BTreeTypeNode || btreeType == BTreeTypeBlock) {
+				// Branch node or block b-tree node.
+				btreeNodeEntries[i] = BTreeNode{
+					Identifier: GetBTreeNodeEntryIdentifier(btreeNodeEntryData, file.FormatType),
+					FileOffset: GetBTreeNodeEntryFileOffset(btreeNodeEntryData, true, file.FormatType),
+					NodeLevel:  btreeNodeLevel,
+				}
+			} else if btreeNodeLevel == 0 && btreeType == BTreeTypeNode {
+				// Leaf node b-tree node.
+				btreeNodeEntries[i] = BTreeNode{
+					Identifier:                 GetBTreeNodeEntryIdentifier(btreeNodeEntryData, file.FormatType),
+					DataIdentifier:             GetBTreeNodeEntryDataIdentifier(btreeNodeEntryData, file.FormatType),
+					LocalDescriptorsIdentifier: GetBTreeNodeEntryLocalDescriptorsIdentifier(btreeNodeEntryData, file.FormatType),
+					NodeLevel:                  btreeNodeLevel,
+				}
+			} else if btreeNodeLevel == 0 && btreeType == BTreeTypeBlock {
+				// Leaf block b-tree node.
+				btreeNodeEntries[i] = BTreeNode{
+					Identifier: GetBTreeNodeEntryIdentifier(btreeNodeEntryData, file.FormatType),
+					FileOffset: GetBTreeNodeEntryFileOffset(btreeNodeEntryData, false, file.FormatType),
+					Size:       GetBTreeNodeEntrySize(btreeNodeEntryData, file.FormatType),
+					NodeLevel:  btreeNodeLevel,
+				}
 			}
 		}
-	}
 
-	return btreeNodeEntries, nil
+		callback(btreeNodeEntries, nil)
+	})
 }
 
 // GetBTreeNodeEntryIdentifier returns the Identifier of this b-tree node entry.
@@ -412,45 +366,47 @@ const (
 	BTreeTypeBlock
 )
 
+func AsyncWalkAndCreateBTree() {
+	// TODO - We can wait here.
+}
+
 // WalkAndCreateBTree walks the b-tree and updates the given b-tree store.
-func (file *File) WalkAndCreateBTree(btreeOffset int64, btreeType BTreeType, btreeStore BTreeStore) error {
-	nodeLevel, err := file.GetBTreeNodeLevel(btreeOffset)
+func (file *File) WalkAndCreateBTree(btreeOffset int64, btreeType BTreeType, btreeStore BTreeStore, walkGroup *errgroup.Group) {
+	walkGroup.Go(func() error {
+		var errFromCallback error
+		var errMutex sync.Mutex
 
-	if err != nil {
-		return errors.WithStack(err)
-	}
+		errMutex.Lock()
 
-	nodeEntries, err := file.GetBTreeNodeEntries(btreeOffset, btreeType, nodeLevel)
-
-	if err != nil {
-		return errors.WithStack(err)
-	}
-
-	if nodeLevel > 0 {
-		// Branch node entries.
-		for i := 0; i < len(nodeEntries); i++ {
-			nodeEntry := nodeEntries[i]
-
-			if _, exists := btreeStore.Load(nodeEntry); exists {
-				return errors.WithStack(ErrBTreeNodeConflict)
-			}
-
-			err = file.WalkAndCreateBTree(nodeEntry.FileOffset, btreeType, btreeStore)
-
+		file.GetBTreeNodeEntries(btreeOffset, btreeType, func(btreeNodeEntries []BTreeNode, err error) {
 			if err != nil {
-				return errors.WithStack(err)
+				errFromCallback = eris.Wrap(err, "failed to get b-tree node entries")
+				return
 			}
-		}
-	} else {
-		// Leaf node entries
-		for i := 0; i < len(nodeEntries); i++ {
-			if _, exists := btreeStore.Load(nodeEntries[i]); exists {
-				return errors.WithStack(ErrBTreeNodeConflict)
-			}
-		}
-	}
 
-	return nil
+			for i := 0; i < len(btreeNodeEntries); i++ {
+				nodeEntry := btreeNodeEntries[i]
+
+				if _, exists := btreeStore.Load(nodeEntry); exists {
+					errFromCallback = ErrBTreeNodeConflict
+					return
+				}
+
+				if nodeEntry.NodeLevel > 0 {
+					// Recursive.
+					file.WalkAndCreateBTree(nodeEntry.FileOffset, btreeType, btreeStore, walkGroup)
+
+					if err != nil {
+						errFromCallback = eris.Wrap(err, "failed to walk and create b-tree")
+					}
+				}
+			}
+		})
+
+		errMutex.Lock()
+
+		return errFromCallback
+	})
 }
 
 // GetBTreeNode returns the node in the node or block b-tree with the given identifier.
@@ -458,7 +414,7 @@ func (file *File) GetBTreeNode(identifier Identifier, btreeStore BTreeStore) (BT
 	btreeNode, found := btreeStore.Get(BTreeNode{Identifier: identifier})
 
 	if !found {
-		return BTreeNode{}, errors.WithStack(ErrBTreeNodeNotFound)
+		return BTreeNode{}, ErrBTreeNodeNotFound
 	}
 
 	return btreeNode, nil
@@ -480,7 +436,7 @@ func (file *File) GetDataBTreeNode(identifier Identifier) (BTreeNode, error) {
 	nodeBTreeNode, err := file.GetNodeBTreeNode(identifier)
 
 	if err != nil {
-		return BTreeNode{}, errors.WithStack(err)
+		return BTreeNode{}, eris.Wrap(err, "failed to get b-tree node")
 	}
 
 	return file.GetBlockBTreeNode(nodeBTreeNode.DataIdentifier)

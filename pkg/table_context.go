@@ -22,7 +22,7 @@ import (
 	"io"
 	"math"
 
-	"github.com/pkg/errors"
+	"github.com/rotisserie/eris"
 )
 
 // TableContext represents the table context.
@@ -34,76 +34,78 @@ type TableContext struct {
 
 // GetPropertyReader returns reader of the property.
 func (tableContext *TableContext) GetPropertyReader(property Property, localDescriptors ...LocalDescriptor) (PropertyReader, error) {
-	return NewPropertyReader(property, tableContext.HeapOnNode, tableContext.File, localDescriptors...)
+	// TODO - Caller never passes local descriptors?
+	return NewPropertyReader(property, tableContext.HeapOnNode, tableContext.File, localDescriptors)
 }
 
 // GetTableContext returns the table context.
 // If propertyIDsToGet is empty all properties will be returned.
 // References "Table Context".
 func (file *File) GetTableContext(heapOnNode *HeapOnNode, localDescriptors []LocalDescriptor, propertyIDsToGet ...uint16) (TableContext, error) {
+	// TODO - We can merge ReadAt calls into a single one.
 	tableType, err := heapOnNode.GetTableType()
 
 	if err != nil {
-		return TableContext{}, errors.WithStack(err)
+		return TableContext{}, eris.Wrap(err, "failed to get table type")
 	} else if tableType != 124 {
 		// Must be Table Context.
-		return TableContext{}, errors.WithStack(ErrTableTypeInvalid)
+		return TableContext{}, ErrTableTypeInvalid
 	}
 
 	hidUserRoot, err := heapOnNode.GetHIDUserRoot()
 
 	if err != nil {
-		return TableContext{}, errors.WithStack(err)
+		return TableContext{}, eris.Wrap(err, "failed to get HID user root")
 	}
 
 	tableContextReader, err := file.GetHeapOnNodeReaderFromHNID(hidUserRoot, *heapOnNode.Reader, localDescriptors...)
 
 	if err != nil {
-		return TableContext{}, errors.WithStack(err)
+		return TableContext{}, eris.Wrap(err, "failed to get table context reader")
 	}
 
 	tableContextSignature := make([]byte, 1)
 
 	if _, err = tableContextReader.ReadAt(tableContextSignature, 0); err != nil {
-		return TableContext{}, errors.WithStack(err)
+		return TableContext{}, eris.Wrap(err, "failed to read table context signature")
 	} else if tableContextSignature[0] != 124 {
-		return TableContext{}, errors.WithStack(ErrTableSignatureInvalid)
+		return TableContext{}, ErrTableSignatureInvalid
 	}
 
 	tableColumnCount := make([]byte, 1)
 
 	if _, err = tableContextReader.ReadAt(tableColumnCount, 1); err != nil {
-		return TableContext{}, errors.WithStack(err)
+		return TableContext{}, eris.Wrap(err, "failed to read table column count")
 	} else if tableColumnCount[0] < 1 {
-		return TableContext{}, errors.WithStack(ErrTableContextNoColumns)
+		return TableContext{}, ErrTableContextNoColumns
 	}
 
 	// TCI_1b is the start offset to the column which holds the 1-byte values.
 	tci1b := make([]byte, 2)
 
 	if _, err = tableContextReader.ReadAt(tci1b, 6); err != nil {
-		return TableContext{}, errors.WithStack(err)
+		return TableContext{}, eris.Wrap(err, "failed to read tci1b")
 	}
 
 	rowSize := make([]byte, 2)
 
 	if _, err = tableContextReader.ReadAt(rowSize, 8); err != nil {
-		return TableContext{}, errors.WithStack(err)
+		return TableContext{}, eris.Wrap(err, "failed to read row size")
 	}
 
 	tableRowMatrixHNID := make([]byte, 4)
 
 	if _, err = tableContextReader.ReadAt(tableRowMatrixHNID, 14); err != nil {
-		return TableContext{}, errors.WithStack(err)
+		return TableContext{}, eris.Wrap(err, "failed to read table row matrix HNID")
 	} else if binary.LittleEndian.Uint32(tableRowMatrixHNID) == 0 {
-		return TableContext{}, errors.WithStack(ErrTableContextNoRows)
+		return TableContext{}, ErrTableContextNoRows
 	}
 
 	// This is a row matrix, having all its elements in a single row.
 	tableRowMatrixReader, err := file.GetHeapOnNodeReaderFromHNID(Identifier(binary.LittleEndian.Uint32(tableRowMatrixHNID)), *heapOnNode.Reader, localDescriptors...)
 
 	if err != nil {
-		return TableContext{}, errors.WithStack(err)
+		return TableContext{}, eris.Wrap(err, "failed to get table row matrix reader")
 	}
 
 	// Get the columns descriptors.
@@ -116,7 +118,7 @@ func (file *File) GetTableContext(heapOnNode *HeapOnNode, localDescriptors []Loc
 		columnDescriptor, err := NewColumnDescriptor(tableContextReader, columnDescriptorsOffset)
 
 		if err != nil {
-			return TableContext{}, errors.WithStack(err)
+			return TableContext{}, eris.Wrap(err, "failed to create column descriptor")
 		}
 
 		tableColumnDescriptors[i] = columnDescriptor
@@ -140,13 +142,13 @@ func (file *File) GetTableContext(heapOnNode *HeapOnNode, localDescriptors []Loc
 	blockSize, err := file.GetBlockSize()
 
 	if err != nil {
-		return TableContext{}, errors.WithStack(err)
+		return TableContext{}, eris.Wrap(err, "failed to get block size")
 	}
 
 	blockTrailerSize, err := file.GetBlockTrailerSize()
 
 	if err != nil {
-		return TableContext{}, errors.WithStack(err)
+		return TableContext{}, eris.Wrap(err, "failed to get block trailer size")
 	}
 
 	blockCount := int(tableRowMatrixReader.Size()) / (blockSize - blockTrailerSize)
@@ -166,7 +168,7 @@ func (file *File) GetTableContext(heapOnNode *HeapOnNode, localDescriptors []Loc
 		cellExistenceBlock := make([]byte, cellExistenceBlockSize)
 
 		if _, err := tableRowMatrixReader.ReadAt(cellExistenceBlock, currentRowStartOffset+int64(binary.LittleEndian.Uint16(tci1b))); err != nil {
-			return TableContext{}, errors.WithStack(err)
+			return TableContext{}, eris.Wrap(err, "failed to read cell existence block")
 		}
 
 		for _, columnIndex := range columnIndexesToGet {
@@ -177,7 +179,7 @@ func (file *File) GetTableContext(heapOnNode *HeapOnNode, localDescriptors []Loc
 			property, err := file.GetTableContextProperty(tableRowMatrixReader, currentRowStartOffset, tableColumnDescriptors[columnIndex])
 
 			if err != nil {
-				return TableContext{}, errors.WithStack(err)
+				return TableContext{}, eris.Wrap(err, "failed to get table context property")
 			}
 
 			tableContextItems[rowIndex] = append(tableContextItems[rowIndex], property)
@@ -206,7 +208,7 @@ func (file *File) GetTableContextProperty(tableRowMatrixReader io.ReaderAt, rowO
 		data := make([]byte, column.DataSize)
 
 		if _, err := tableRowMatrixReader.ReadAt(data, rowOffset+int64(column.DataOffset)); err != nil {
-			return Property{}, errors.WithStack(err)
+			return Property{}, eris.Wrap(err, "failed to read table context data")
 		}
 
 		property.Data = data
@@ -215,7 +217,7 @@ func (file *File) GetTableContextProperty(tableRowMatrixReader io.ReaderAt, rowO
 		hnid := make([]byte, 4)
 
 		if _, err := tableRowMatrixReader.ReadAt(hnid, rowOffset+int64(column.DataOffset)); err != nil {
-			return Property{}, errors.WithStack(err)
+			return Property{}, eris.Wrap(err, "failed to read HNID")
 		}
 
 		property.HNID = Identifier(binary.LittleEndian.Uint32(hnid))
@@ -236,41 +238,17 @@ type ColumnDescriptor struct {
 
 // NewColumnDescriptor is a constructor for creating column descriptors.
 func NewColumnDescriptor(tableContextReader io.ReaderAt, columnStartOffset int64) (ColumnDescriptor, error) {
-	propertyType := make([]byte, 2)
+	columnDescriptor := make([]byte, 8)
 
-	if _, err := tableContextReader.ReadAt(propertyType, columnStartOffset); err != nil {
-		return ColumnDescriptor{}, errors.WithStack(err)
-	}
-
-	propertyID := make([]byte, 2)
-
-	if _, err := tableContextReader.ReadAt(propertyID, columnStartOffset+2); err != nil {
-		return ColumnDescriptor{}, errors.WithStack(err)
-	}
-
-	dataOffset := make([]byte, 2)
-
-	if _, err := tableContextReader.ReadAt(dataOffset, columnStartOffset+4); err != nil {
-		return ColumnDescriptor{}, errors.WithStack(err)
-	}
-
-	dataSize := make([]byte, 1)
-
-	if _, err := tableContextReader.ReadAt(dataSize, columnStartOffset+6); err != nil {
-		return ColumnDescriptor{}, errors.WithStack(err)
-	}
-
-	cellExistenceBitmapIndex := make([]byte, 1)
-
-	if _, err := tableContextReader.ReadAt(cellExistenceBitmapIndex, columnStartOffset+7); err != nil {
-		return ColumnDescriptor{}, errors.WithStack(err)
+	if _, err := tableContextReader.ReadAt(columnDescriptor, columnStartOffset); err != nil {
+		return ColumnDescriptor{}, err
 	}
 
 	return ColumnDescriptor{
-		PropertyType:             PropertyType(binary.LittleEndian.Uint16(propertyType)),
-		PropertyID:               binary.LittleEndian.Uint16(propertyID),
-		DataOffset:               binary.LittleEndian.Uint16(dataOffset),
-		DataSize:                 dataSize[0],
-		CellExistenceBitmapIndex: cellExistenceBitmapIndex[0],
+		PropertyType:             PropertyType(binary.LittleEndian.Uint16(columnDescriptor[:2])),
+		PropertyID:               binary.LittleEndian.Uint16(columnDescriptor[2 : 2+2]),
+		DataOffset:               binary.LittleEndian.Uint16(columnDescriptor[4 : 4+2]),
+		DataSize:                 columnDescriptor[6:7][0],
+		CellExistenceBitmapIndex: columnDescriptor[7:8][0],
 	}, nil
 }

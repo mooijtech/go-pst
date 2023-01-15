@@ -56,7 +56,7 @@ $ cd /path/to/go-pst
 $ ./protoc --proto_path=cmd/properties/protobufs --go_out=paths=source_relative:pkg/properties --plugin=protoc-gen-go=protoc-gen-go $(find cmd/properties/protobufs -iname "*.proto")
 
 # Generate MessagePack tags.
-$ ./protoc-go-inject-tag -input="pkg/properties/*.pb.go"
+$ ./protoc-go-inject-tag -input="pkg/properties/*.pb.go" -remove_tag_comment
 
 # Generate Message Pack 
 $ cd pkg/properties && go generate

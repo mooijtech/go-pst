@@ -1297,940 +1297,1280 @@ func (z *Sharing) DecodeMsg(dc *msgp.Reader) (err error) {
 
 // EncodeMsg implements msgp.Encodable
 func (z *Sharing) EncodeMsg(en *msgp.Writer) (err error) {
-	// map header, size 70
-	// write "2724253"
-	err = en.Append(0xde, 0x0, 0x46, 0xa7, 0x32, 0x37, 0x32, 0x34, 0x32, 0x35, 0x33)
-	if err != nil {
-		return
-	}
+	// omitempty: check for empty values
+	zb0001Len := uint32(70)
+	var zb0001Mask [2]uint64 /* 70 bits */
 	if z.SharingAnonymity == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.SharingAnonymity)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingAnonymity")
-			return
-		}
-	}
-	// write "27254531"
-	err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x35, 0x34, 0x35, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x1
 	}
 	if z.SharingBrowseUrl == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.SharingBrowseUrl)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingBrowseUrl")
-			return
-		}
-	}
-	// write "2724233"
-	err = en.Append(0xa7, 0x32, 0x37, 0x32, 0x34, 0x32, 0x33, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x2
 	}
 	if z.SharingCapabilities == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.SharingCapabilities)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingCapabilities")
-			return
-		}
-	}
-	// write "27245231"
-	err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x34, 0x35, 0x32, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x4
 	}
 	if z.SharingConfigurationUrl == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.SharingConfigurationUrl)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingConfigurationUrl")
-			return
-		}
-	}
-	// write "27251764"
-	err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x35, 0x31, 0x37, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x8
 	}
 	if z.SharingDataRangeEnd == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.SharingDataRangeEnd)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingDataRangeEnd")
-			return
-		}
-	}
-	// write "27251664"
-	err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x35, 0x31, 0x36, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x10
 	}
 	if z.SharingDataRangeStart == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.SharingDataRangeStart)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingDataRangeStart")
-			return
-		}
-	}
-	// write "2724593"
-	err = en.Append(0xa7, 0x32, 0x37, 0x32, 0x34, 0x35, 0x39, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x20
 	}
 	if z.SharingDetail == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.SharingDetail)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingDetail")
-			return
-		}
-	}
-	// write "27244931"
-	err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x34, 0x34, 0x39, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x40
 	}
 	if z.SharingExtensionXml == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.SharingExtensionXml)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingExtensionXml")
-			return
-		}
-	}
-	// write "2723943"
-	err = en.Append(0xa7, 0x32, 0x37, 0x32, 0x33, 0x39, 0x34, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x80
 	}
 	if z.SharingFlags == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.SharingFlags)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingFlags")
-			return
-		}
-	}
-	// write "2724243"
-	err = en.Append(0xa7, 0x32, 0x37, 0x32, 0x34, 0x32, 0x34, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x100
 	}
 	if z.SharingFlavor == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.SharingFlavor)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingFlavor")
-			return
-		}
-	}
-	// write "27239131"
-	err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x33, 0x39, 0x31, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x200
 	}
 	if z.SharingInitiatorName == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.SharingInitiatorName)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingInitiatorName")
-			return
-		}
-	}
-	// write "27239231"
-	err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x33, 0x39, 0x32, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x400
 	}
 	if z.SharingInitiatorSmtp == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.SharingInitiatorSmtp)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingInitiatorSmtp")
-			return
-		}
-	}
-	// write "27254964"
-	err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x35, 0x34, 0x39, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x800
 	}
 	if z.SharingLastAutoSyncTime == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.SharingLastAutoSyncTime)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingLastAutoSyncTime")
-			return
-		}
-	}
-	// write "27243164"
-	err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x34, 0x33, 0x31, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x1000
 	}
 	if z.SharingLastSyncTime == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.SharingLastSyncTime)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingLastSyncTime")
-			return
-		}
-	}
-	// write "27252531"
-	err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x35, 0x32, 0x35, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x2000
 	}
 	if z.SharingLocalComment == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.SharingLocalComment)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingLocalComment")
-			return
-		}
-	}
-	// write "27245164"
-	err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x34, 0x35, 0x31, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x4000
 	}
 	if z.SharingLocalLastModificationTime == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.SharingLocalLastModificationTime)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingLocalLastModificationTime")
-			return
-		}
-	}
-	// write "27239931"
-	err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x33, 0x39, 0x39, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x8000
 	}
 	if z.SharingLocalName == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.SharingLocalName)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingLocalName")
-			return
-		}
-	}
-	// write "27239831"
-	err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x33, 0x39, 0x38, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x10000
 	}
 	if z.SharingLocalPath == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.SharingLocalPath)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingLocalPath")
-			return
-		}
-	}
-	// write "27252131"
-	err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x35, 0x32, 0x31, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x20000
 	}
 	if z.SharingLocalStoreUid == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.SharingLocalStoreUid)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingLocalStoreUid")
-			return
-		}
-	}
-	// write "27242031"
-	err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x34, 0x32, 0x30, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x40000
 	}
 	if z.SharingLocalType == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.SharingLocalType)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingLocalType")
-			return
-		}
-	}
-	// write "27241631"
-	err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x34, 0x31, 0x36, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x80000
 	}
 	if z.SharingLocalUid == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.SharingLocalUid)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingLocalUid")
-			return
-		}
-	}
-	// write "27243031"
-	err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x34, 0x33, 0x30, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x100000
 	}
 	if z.SharingParticipants == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.SharingParticipants)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingParticipants")
-			return
-		}
-	}
-	// write "2724273"
-	err = en.Append(0xa7, 0x32, 0x37, 0x32, 0x34, 0x32, 0x37, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x200000
 	}
 	if z.SharingPermissions == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.SharingPermissions)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingPermissions")
-			return
-		}
-	}
-	// write "27239531"
-	err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x33, 0x39, 0x35, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x400000
 	}
 	if z.SharingProviderExtension == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.SharingProviderExtension)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingProviderExtension")
-			return
-		}
-	}
-	// write "27238631"
-	err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x33, 0x38, 0x36, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x800000
 	}
 	if z.SharingProviderName == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.SharingProviderName)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingProviderName")
-			return
-		}
-	}
-	// write "27238731"
-	err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x33, 0x38, 0x37, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x1000000
 	}
 	if z.SharingProviderUrl == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.SharingProviderUrl)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingProviderUrl")
-			return
-		}
-	}
-	// write "2725193"
-	err = en.Append(0xa7, 0x32, 0x37, 0x32, 0x35, 0x31, 0x39, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x2000000
 	}
 	if z.SharingRangeEnd == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.SharingRangeEnd)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingRangeEnd")
-			return
-		}
-	}
-	// write "2725183"
-	err = en.Append(0xa7, 0x32, 0x37, 0x32, 0x35, 0x31, 0x38, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x4000000
 	}
 	if z.SharingRangeStart == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.SharingRangeStart)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingRangeStart")
-			return
-		}
-	}
-	// write "2724263"
-	err = en.Append(0xa7, 0x32, 0x37, 0x32, 0x34, 0x32, 0x36, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x8000000
 	}
 	if z.SharingReciprocation == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.SharingReciprocation)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingReciprocation")
-			return
-		}
-	}
-	// write "2725233"
-	err = en.Append(0xa7, 0x32, 0x37, 0x32, 0x35, 0x32, 0x33, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x10000000
 	}
 	if z.SharingRemoteByteSize == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.SharingRemoteByteSize)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingRemoteByteSize")
-			return
-		}
-	}
-	// write "27246331"
-	err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x34, 0x36, 0x33, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x20000000
 	}
 	if z.SharingRemoteComment == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.SharingRemoteComment)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingRemoteComment")
-			return
-		}
-	}
-	// write "2725243"
-	err = en.Append(0xa7, 0x32, 0x37, 0x32, 0x35, 0x32, 0x34, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x40000000
 	}
 	if z.SharingRemoteCrc == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.SharingRemoteCrc)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingRemoteCrc")
-			return
-		}
-	}
-	// write "27245064"
-	err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x34, 0x35, 0x30, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x80000000
 	}
 	if z.SharingRemoteLastModificationTime == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.SharingRemoteLastModificationTime)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingRemoteLastModificationTime")
-			return
-		}
-	}
-	// write "2725273"
-	err = en.Append(0xa7, 0x32, 0x37, 0x32, 0x35, 0x32, 0x37, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x100000000
 	}
 	if z.SharingRemoteMessageCount == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.SharingRemoteMessageCount)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingRemoteMessageCount")
-			return
-		}
-	}
-	// write "27238931"
-	err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x33, 0x38, 0x39, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x200000000
 	}
 	if z.SharingRemoteName == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.SharingRemoteName)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingRemoteName")
-			return
-		}
-	}
-	// write "27239731"
-	err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x33, 0x39, 0x37, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x400000000
 	}
 	if z.SharingRemotePass == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.SharingRemotePass)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingRemotePass")
-			return
-		}
-	}
-	// write "27238831"
-	err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x33, 0x38, 0x38, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x800000000
 	}
 	if z.SharingRemotePath == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.SharingRemotePath)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingRemotePath")
-			return
-		}
-	}
-	// write "27252031"
-	err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x35, 0x32, 0x30, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x1000000000
 	}
 	if z.SharingRemoteStoreUid == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.SharingRemoteStoreUid)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingRemoteStoreUid")
-			return
-		}
-	}
-	// write "27242931"
-	err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x34, 0x32, 0x39, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x2000000000
 	}
 	if z.SharingRemoteType == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.SharingRemoteType)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingRemoteType")
-			return
-		}
-	}
-	// write "27239031"
-	err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x33, 0x39, 0x30, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x4000000000
 	}
 	if z.SharingRemoteUid == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.SharingRemoteUid)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingRemoteUid")
-			return
-		}
-	}
-	// write "27239631"
-	err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x33, 0x39, 0x36, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x8000000000
 	}
 	if z.SharingRemoteUser == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.SharingRemoteUser)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingRemoteUser")
-			return
-		}
-	}
-	// write "27255531"
-	err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x35, 0x35, 0x35, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x10000000000
 	}
 	if z.SharingRemoteVersion == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.SharingRemoteVersion)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingRemoteVersion")
-			return
-		}
-	}
-	// write "27245664"
-	err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x34, 0x35, 0x36, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x20000000000
 	}
 	if z.SharingResponseTime == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.SharingResponseTime)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingResponseTime")
-			return
-		}
-	}
-	// write "2724553"
-	err = en.Append(0xa7, 0x32, 0x37, 0x32, 0x34, 0x35, 0x35, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x40000000000
 	}
 	if z.SharingResponseType == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.SharingResponseType)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingResponseType")
-			return
-		}
-	}
-	// write "2725263"
-	err = en.Append(0xa7, 0x32, 0x37, 0x32, 0x35, 0x32, 0x36, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x80000000000
 	}
 	if z.SharingRoamLog == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.SharingRoamLog)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingRoamLog")
-			return
-		}
-	}
-	// write "27245364"
-	err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x34, 0x35, 0x33, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x100000000000
 	}
 	if z.SharingStart == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.SharingStart)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingStart")
-			return
-		}
-	}
-	// write "2723843"
-	err = en.Append(0xa7, 0x32, 0x37, 0x32, 0x33, 0x38, 0x34, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x200000000000
 	}
 	if z.SharingStatus == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.SharingStatus)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingStatus")
-			return
-		}
-	}
-	// write "27245464"
-	err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x34, 0x35, 0x34, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x400000000000
 	}
 	if z.SharingStop == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.SharingStop)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingStop")
-			return
-		}
-	}
-	// write "2725763"
-	err = en.Append(0xa7, 0x32, 0x37, 0x32, 0x35, 0x37, 0x36, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x800000000000
 	}
 	if z.SharingSyncFlags == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.SharingSyncFlags)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingSyncFlags")
-			return
-		}
-	}
-	// write "2724583"
-	err = en.Append(0xa7, 0x32, 0x37, 0x32, 0x34, 0x35, 0x38, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x1000000000000
 	}
 	if z.SharingSyncInterval == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.SharingSyncInterval)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingSyncInterval")
-			return
-		}
-	}
-	// write "2724603"
-	err = en.Append(0xa7, 0x32, 0x37, 0x32, 0x34, 0x36, 0x30, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x2000000000000
 	}
 	if z.SharingTimeToLive == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.SharingTimeToLive)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingTimeToLive")
-			return
-		}
-	}
-	// write "2725503"
-	err = en.Append(0xa7, 0x32, 0x37, 0x32, 0x35, 0x35, 0x30, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x4000000000000
 	}
 	if z.SharingTimeToLiveAuto == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.SharingTimeToLiveAuto)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingTimeToLiveAuto")
-			return
-		}
-	}
-	// write "2725143"
-	err = en.Append(0xa7, 0x32, 0x37, 0x32, 0x35, 0x31, 0x34, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x8000000000000
 	}
 	if z.SharingWorkingHoursDays == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.SharingWorkingHoursDays)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingWorkingHoursDays")
-			return
-		}
-	}
-	// write "27251364"
-	err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x35, 0x31, 0x33, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask[0] |= 0x10000000000000
 	}
 	if z.SharingWorkingHoursEnd == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.SharingWorkingHoursEnd)
-		if err != nil {
-			err = msgp.WrapError(err, "SharingWorkingHoursEnd")
-			return
-		}
+		zb0001Len--
+		zb0001Mask[0] |= 0x20000000000000
 	}
-	// write "27251264"
-	err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x35, 0x31, 0x32, 0x36, 0x34)
+	if z.SharingWorkingHoursStart == nil {
+		zb0001Len--
+		zb0001Mask[0] |= 0x40000000000000
+	}
+	// variable map header, size zb0001Len
+	err = en.WriteMapHeader(zb0001Len)
 	if err != nil {
 		return
 	}
-	if z.SharingWorkingHoursStart == nil {
-		err = en.WriteNil()
+	if zb0001Len == 0 {
+		return
+	}
+	if (zb0001Mask[0] & 0x1) == 0 { // if not empty
+		// write "2724253"
+		err = en.Append(0xa7, 0x32, 0x37, 0x32, 0x34, 0x32, 0x35, 0x33)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteInt64(*z.SharingWorkingHoursStart)
+		if z.SharingAnonymity == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.SharingAnonymity)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingAnonymity")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x2) == 0 { // if not empty
+		// write "27254531"
+		err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x35, 0x34, 0x35, 0x33, 0x31)
 		if err != nil {
-			err = msgp.WrapError(err, "SharingWorkingHoursStart")
 			return
+		}
+		if z.SharingBrowseUrl == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.SharingBrowseUrl)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingBrowseUrl")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x4) == 0 { // if not empty
+		// write "2724233"
+		err = en.Append(0xa7, 0x32, 0x37, 0x32, 0x34, 0x32, 0x33, 0x33)
+		if err != nil {
+			return
+		}
+		if z.SharingCapabilities == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.SharingCapabilities)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingCapabilities")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x8) == 0 { // if not empty
+		// write "27245231"
+		err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x34, 0x35, 0x32, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.SharingConfigurationUrl == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.SharingConfigurationUrl)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingConfigurationUrl")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x10) == 0 { // if not empty
+		// write "27251764"
+		err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x35, 0x31, 0x37, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.SharingDataRangeEnd == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.SharingDataRangeEnd)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingDataRangeEnd")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x20) == 0 { // if not empty
+		// write "27251664"
+		err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x35, 0x31, 0x36, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.SharingDataRangeStart == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.SharingDataRangeStart)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingDataRangeStart")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x40) == 0 { // if not empty
+		// write "2724593"
+		err = en.Append(0xa7, 0x32, 0x37, 0x32, 0x34, 0x35, 0x39, 0x33)
+		if err != nil {
+			return
+		}
+		if z.SharingDetail == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.SharingDetail)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingDetail")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x80) == 0 { // if not empty
+		// write "27244931"
+		err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x34, 0x34, 0x39, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.SharingExtensionXml == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.SharingExtensionXml)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingExtensionXml")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x100) == 0 { // if not empty
+		// write "2723943"
+		err = en.Append(0xa7, 0x32, 0x37, 0x32, 0x33, 0x39, 0x34, 0x33)
+		if err != nil {
+			return
+		}
+		if z.SharingFlags == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.SharingFlags)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingFlags")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x200) == 0 { // if not empty
+		// write "2724243"
+		err = en.Append(0xa7, 0x32, 0x37, 0x32, 0x34, 0x32, 0x34, 0x33)
+		if err != nil {
+			return
+		}
+		if z.SharingFlavor == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.SharingFlavor)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingFlavor")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x400) == 0 { // if not empty
+		// write "27239131"
+		err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x33, 0x39, 0x31, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.SharingInitiatorName == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.SharingInitiatorName)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingInitiatorName")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x800) == 0 { // if not empty
+		// write "27239231"
+		err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x33, 0x39, 0x32, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.SharingInitiatorSmtp == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.SharingInitiatorSmtp)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingInitiatorSmtp")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x1000) == 0 { // if not empty
+		// write "27254964"
+		err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x35, 0x34, 0x39, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.SharingLastAutoSyncTime == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.SharingLastAutoSyncTime)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingLastAutoSyncTime")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x2000) == 0 { // if not empty
+		// write "27243164"
+		err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x34, 0x33, 0x31, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.SharingLastSyncTime == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.SharingLastSyncTime)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingLastSyncTime")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x4000) == 0 { // if not empty
+		// write "27252531"
+		err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x35, 0x32, 0x35, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.SharingLocalComment == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.SharingLocalComment)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingLocalComment")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x8000) == 0 { // if not empty
+		// write "27245164"
+		err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x34, 0x35, 0x31, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.SharingLocalLastModificationTime == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.SharingLocalLastModificationTime)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingLocalLastModificationTime")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x10000) == 0 { // if not empty
+		// write "27239931"
+		err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x33, 0x39, 0x39, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.SharingLocalName == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.SharingLocalName)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingLocalName")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x20000) == 0 { // if not empty
+		// write "27239831"
+		err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x33, 0x39, 0x38, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.SharingLocalPath == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.SharingLocalPath)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingLocalPath")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x40000) == 0 { // if not empty
+		// write "27252131"
+		err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x35, 0x32, 0x31, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.SharingLocalStoreUid == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.SharingLocalStoreUid)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingLocalStoreUid")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x80000) == 0 { // if not empty
+		// write "27242031"
+		err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x34, 0x32, 0x30, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.SharingLocalType == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.SharingLocalType)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingLocalType")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x100000) == 0 { // if not empty
+		// write "27241631"
+		err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x34, 0x31, 0x36, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.SharingLocalUid == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.SharingLocalUid)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingLocalUid")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x200000) == 0 { // if not empty
+		// write "27243031"
+		err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x34, 0x33, 0x30, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.SharingParticipants == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.SharingParticipants)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingParticipants")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x400000) == 0 { // if not empty
+		// write "2724273"
+		err = en.Append(0xa7, 0x32, 0x37, 0x32, 0x34, 0x32, 0x37, 0x33)
+		if err != nil {
+			return
+		}
+		if z.SharingPermissions == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.SharingPermissions)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingPermissions")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x800000) == 0 { // if not empty
+		// write "27239531"
+		err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x33, 0x39, 0x35, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.SharingProviderExtension == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.SharingProviderExtension)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingProviderExtension")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x1000000) == 0 { // if not empty
+		// write "27238631"
+		err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x33, 0x38, 0x36, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.SharingProviderName == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.SharingProviderName)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingProviderName")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x2000000) == 0 { // if not empty
+		// write "27238731"
+		err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x33, 0x38, 0x37, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.SharingProviderUrl == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.SharingProviderUrl)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingProviderUrl")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x4000000) == 0 { // if not empty
+		// write "2725193"
+		err = en.Append(0xa7, 0x32, 0x37, 0x32, 0x35, 0x31, 0x39, 0x33)
+		if err != nil {
+			return
+		}
+		if z.SharingRangeEnd == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.SharingRangeEnd)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingRangeEnd")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x8000000) == 0 { // if not empty
+		// write "2725183"
+		err = en.Append(0xa7, 0x32, 0x37, 0x32, 0x35, 0x31, 0x38, 0x33)
+		if err != nil {
+			return
+		}
+		if z.SharingRangeStart == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.SharingRangeStart)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingRangeStart")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x10000000) == 0 { // if not empty
+		// write "2724263"
+		err = en.Append(0xa7, 0x32, 0x37, 0x32, 0x34, 0x32, 0x36, 0x33)
+		if err != nil {
+			return
+		}
+		if z.SharingReciprocation == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.SharingReciprocation)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingReciprocation")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x20000000) == 0 { // if not empty
+		// write "2725233"
+		err = en.Append(0xa7, 0x32, 0x37, 0x32, 0x35, 0x32, 0x33, 0x33)
+		if err != nil {
+			return
+		}
+		if z.SharingRemoteByteSize == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.SharingRemoteByteSize)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingRemoteByteSize")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x40000000) == 0 { // if not empty
+		// write "27246331"
+		err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x34, 0x36, 0x33, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.SharingRemoteComment == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.SharingRemoteComment)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingRemoteComment")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x80000000) == 0 { // if not empty
+		// write "2725243"
+		err = en.Append(0xa7, 0x32, 0x37, 0x32, 0x35, 0x32, 0x34, 0x33)
+		if err != nil {
+			return
+		}
+		if z.SharingRemoteCrc == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.SharingRemoteCrc)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingRemoteCrc")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x100000000) == 0 { // if not empty
+		// write "27245064"
+		err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x34, 0x35, 0x30, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.SharingRemoteLastModificationTime == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.SharingRemoteLastModificationTime)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingRemoteLastModificationTime")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x200000000) == 0 { // if not empty
+		// write "2725273"
+		err = en.Append(0xa7, 0x32, 0x37, 0x32, 0x35, 0x32, 0x37, 0x33)
+		if err != nil {
+			return
+		}
+		if z.SharingRemoteMessageCount == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.SharingRemoteMessageCount)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingRemoteMessageCount")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x400000000) == 0 { // if not empty
+		// write "27238931"
+		err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x33, 0x38, 0x39, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.SharingRemoteName == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.SharingRemoteName)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingRemoteName")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x800000000) == 0 { // if not empty
+		// write "27239731"
+		err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x33, 0x39, 0x37, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.SharingRemotePass == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.SharingRemotePass)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingRemotePass")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x1000000000) == 0 { // if not empty
+		// write "27238831"
+		err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x33, 0x38, 0x38, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.SharingRemotePath == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.SharingRemotePath)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingRemotePath")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x2000000000) == 0 { // if not empty
+		// write "27252031"
+		err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x35, 0x32, 0x30, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.SharingRemoteStoreUid == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.SharingRemoteStoreUid)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingRemoteStoreUid")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x4000000000) == 0 { // if not empty
+		// write "27242931"
+		err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x34, 0x32, 0x39, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.SharingRemoteType == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.SharingRemoteType)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingRemoteType")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x8000000000) == 0 { // if not empty
+		// write "27239031"
+		err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x33, 0x39, 0x30, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.SharingRemoteUid == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.SharingRemoteUid)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingRemoteUid")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x10000000000) == 0 { // if not empty
+		// write "27239631"
+		err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x33, 0x39, 0x36, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.SharingRemoteUser == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.SharingRemoteUser)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingRemoteUser")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x20000000000) == 0 { // if not empty
+		// write "27255531"
+		err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x35, 0x35, 0x35, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.SharingRemoteVersion == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.SharingRemoteVersion)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingRemoteVersion")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x40000000000) == 0 { // if not empty
+		// write "27245664"
+		err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x34, 0x35, 0x36, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.SharingResponseTime == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.SharingResponseTime)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingResponseTime")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x80000000000) == 0 { // if not empty
+		// write "2724553"
+		err = en.Append(0xa7, 0x32, 0x37, 0x32, 0x34, 0x35, 0x35, 0x33)
+		if err != nil {
+			return
+		}
+		if z.SharingResponseType == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.SharingResponseType)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingResponseType")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x100000000000) == 0 { // if not empty
+		// write "2725263"
+		err = en.Append(0xa7, 0x32, 0x37, 0x32, 0x35, 0x32, 0x36, 0x33)
+		if err != nil {
+			return
+		}
+		if z.SharingRoamLog == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.SharingRoamLog)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingRoamLog")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x200000000000) == 0 { // if not empty
+		// write "27245364"
+		err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x34, 0x35, 0x33, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.SharingStart == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.SharingStart)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingStart")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x400000000000) == 0 { // if not empty
+		// write "2723843"
+		err = en.Append(0xa7, 0x32, 0x37, 0x32, 0x33, 0x38, 0x34, 0x33)
+		if err != nil {
+			return
+		}
+		if z.SharingStatus == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.SharingStatus)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingStatus")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x800000000000) == 0 { // if not empty
+		// write "27245464"
+		err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x34, 0x35, 0x34, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.SharingStop == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.SharingStop)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingStop")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x1000000000000) == 0 { // if not empty
+		// write "2725763"
+		err = en.Append(0xa7, 0x32, 0x37, 0x32, 0x35, 0x37, 0x36, 0x33)
+		if err != nil {
+			return
+		}
+		if z.SharingSyncFlags == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.SharingSyncFlags)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingSyncFlags")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x2000000000000) == 0 { // if not empty
+		// write "2724583"
+		err = en.Append(0xa7, 0x32, 0x37, 0x32, 0x34, 0x35, 0x38, 0x33)
+		if err != nil {
+			return
+		}
+		if z.SharingSyncInterval == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.SharingSyncInterval)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingSyncInterval")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x4000000000000) == 0 { // if not empty
+		// write "2724603"
+		err = en.Append(0xa7, 0x32, 0x37, 0x32, 0x34, 0x36, 0x30, 0x33)
+		if err != nil {
+			return
+		}
+		if z.SharingTimeToLive == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.SharingTimeToLive)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingTimeToLive")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x8000000000000) == 0 { // if not empty
+		// write "2725503"
+		err = en.Append(0xa7, 0x32, 0x37, 0x32, 0x35, 0x35, 0x30, 0x33)
+		if err != nil {
+			return
+		}
+		if z.SharingTimeToLiveAuto == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.SharingTimeToLiveAuto)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingTimeToLiveAuto")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x10000000000000) == 0 { // if not empty
+		// write "2725143"
+		err = en.Append(0xa7, 0x32, 0x37, 0x32, 0x35, 0x31, 0x34, 0x33)
+		if err != nil {
+			return
+		}
+		if z.SharingWorkingHoursDays == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.SharingWorkingHoursDays)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingWorkingHoursDays")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x20000000000000) == 0 { // if not empty
+		// write "27251364"
+		err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x35, 0x31, 0x33, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.SharingWorkingHoursEnd == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.SharingWorkingHoursEnd)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingWorkingHoursEnd")
+				return
+			}
+		}
+	}
+	if (zb0001Mask[0] & 0x40000000000000) == 0 { // if not empty
+		// write "27251264"
+		err = en.Append(0xa8, 0x32, 0x37, 0x32, 0x35, 0x31, 0x32, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.SharingWorkingHoursStart == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.SharingWorkingHoursStart)
+			if err != nil {
+				err = msgp.WrapError(err, "SharingWorkingHoursStart")
+				return
+			}
 		}
 	}
 	// write "XSharingBrowseUrl_"
@@ -2494,391 +2834,728 @@ func (z *Sharing) EncodeMsg(en *msgp.Writer) (err error) {
 // MarshalMsg implements msgp.Marshaler
 func (z *Sharing) MarshalMsg(b []byte) (o []byte, err error) {
 	o = msgp.Require(b, z.Msgsize())
-	// map header, size 70
-	// string "2724253"
-	o = append(o, 0xde, 0x0, 0x46, 0xa7, 0x32, 0x37, 0x32, 0x34, 0x32, 0x35, 0x33)
+	// omitempty: check for empty values
+	zb0001Len := uint32(70)
+	var zb0001Mask [2]uint64 /* 70 bits */
 	if z.SharingAnonymity == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.SharingAnonymity)
+		zb0001Len--
+		zb0001Mask[0] |= 0x1
 	}
-	// string "27254531"
-	o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x35, 0x34, 0x35, 0x33, 0x31)
 	if z.SharingBrowseUrl == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.SharingBrowseUrl)
+		zb0001Len--
+		zb0001Mask[0] |= 0x2
 	}
-	// string "2724233"
-	o = append(o, 0xa7, 0x32, 0x37, 0x32, 0x34, 0x32, 0x33, 0x33)
 	if z.SharingCapabilities == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.SharingCapabilities)
+		zb0001Len--
+		zb0001Mask[0] |= 0x4
 	}
-	// string "27245231"
-	o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x34, 0x35, 0x32, 0x33, 0x31)
 	if z.SharingConfigurationUrl == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.SharingConfigurationUrl)
+		zb0001Len--
+		zb0001Mask[0] |= 0x8
 	}
-	// string "27251764"
-	o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x35, 0x31, 0x37, 0x36, 0x34)
 	if z.SharingDataRangeEnd == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.SharingDataRangeEnd)
+		zb0001Len--
+		zb0001Mask[0] |= 0x10
 	}
-	// string "27251664"
-	o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x35, 0x31, 0x36, 0x36, 0x34)
 	if z.SharingDataRangeStart == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.SharingDataRangeStart)
+		zb0001Len--
+		zb0001Mask[0] |= 0x20
 	}
-	// string "2724593"
-	o = append(o, 0xa7, 0x32, 0x37, 0x32, 0x34, 0x35, 0x39, 0x33)
 	if z.SharingDetail == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.SharingDetail)
+		zb0001Len--
+		zb0001Mask[0] |= 0x40
 	}
-	// string "27244931"
-	o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x34, 0x34, 0x39, 0x33, 0x31)
 	if z.SharingExtensionXml == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.SharingExtensionXml)
+		zb0001Len--
+		zb0001Mask[0] |= 0x80
 	}
-	// string "2723943"
-	o = append(o, 0xa7, 0x32, 0x37, 0x32, 0x33, 0x39, 0x34, 0x33)
 	if z.SharingFlags == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.SharingFlags)
+		zb0001Len--
+		zb0001Mask[0] |= 0x100
 	}
-	// string "2724243"
-	o = append(o, 0xa7, 0x32, 0x37, 0x32, 0x34, 0x32, 0x34, 0x33)
 	if z.SharingFlavor == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.SharingFlavor)
+		zb0001Len--
+		zb0001Mask[0] |= 0x200
 	}
-	// string "27239131"
-	o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x33, 0x39, 0x31, 0x33, 0x31)
 	if z.SharingInitiatorName == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.SharingInitiatorName)
+		zb0001Len--
+		zb0001Mask[0] |= 0x400
 	}
-	// string "27239231"
-	o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x33, 0x39, 0x32, 0x33, 0x31)
 	if z.SharingInitiatorSmtp == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.SharingInitiatorSmtp)
+		zb0001Len--
+		zb0001Mask[0] |= 0x800
 	}
-	// string "27254964"
-	o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x35, 0x34, 0x39, 0x36, 0x34)
 	if z.SharingLastAutoSyncTime == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.SharingLastAutoSyncTime)
+		zb0001Len--
+		zb0001Mask[0] |= 0x1000
 	}
-	// string "27243164"
-	o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x34, 0x33, 0x31, 0x36, 0x34)
 	if z.SharingLastSyncTime == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.SharingLastSyncTime)
+		zb0001Len--
+		zb0001Mask[0] |= 0x2000
 	}
-	// string "27252531"
-	o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x35, 0x32, 0x35, 0x33, 0x31)
 	if z.SharingLocalComment == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.SharingLocalComment)
+		zb0001Len--
+		zb0001Mask[0] |= 0x4000
 	}
-	// string "27245164"
-	o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x34, 0x35, 0x31, 0x36, 0x34)
 	if z.SharingLocalLastModificationTime == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.SharingLocalLastModificationTime)
+		zb0001Len--
+		zb0001Mask[0] |= 0x8000
 	}
-	// string "27239931"
-	o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x33, 0x39, 0x39, 0x33, 0x31)
 	if z.SharingLocalName == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.SharingLocalName)
+		zb0001Len--
+		zb0001Mask[0] |= 0x10000
 	}
-	// string "27239831"
-	o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x33, 0x39, 0x38, 0x33, 0x31)
 	if z.SharingLocalPath == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.SharingLocalPath)
+		zb0001Len--
+		zb0001Mask[0] |= 0x20000
 	}
-	// string "27252131"
-	o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x35, 0x32, 0x31, 0x33, 0x31)
 	if z.SharingLocalStoreUid == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.SharingLocalStoreUid)
+		zb0001Len--
+		zb0001Mask[0] |= 0x40000
 	}
-	// string "27242031"
-	o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x34, 0x32, 0x30, 0x33, 0x31)
 	if z.SharingLocalType == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.SharingLocalType)
+		zb0001Len--
+		zb0001Mask[0] |= 0x80000
 	}
-	// string "27241631"
-	o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x34, 0x31, 0x36, 0x33, 0x31)
 	if z.SharingLocalUid == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.SharingLocalUid)
+		zb0001Len--
+		zb0001Mask[0] |= 0x100000
 	}
-	// string "27243031"
-	o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x34, 0x33, 0x30, 0x33, 0x31)
 	if z.SharingParticipants == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.SharingParticipants)
+		zb0001Len--
+		zb0001Mask[0] |= 0x200000
 	}
-	// string "2724273"
-	o = append(o, 0xa7, 0x32, 0x37, 0x32, 0x34, 0x32, 0x37, 0x33)
 	if z.SharingPermissions == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.SharingPermissions)
+		zb0001Len--
+		zb0001Mask[0] |= 0x400000
 	}
-	// string "27239531"
-	o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x33, 0x39, 0x35, 0x33, 0x31)
 	if z.SharingProviderExtension == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.SharingProviderExtension)
+		zb0001Len--
+		zb0001Mask[0] |= 0x800000
 	}
-	// string "27238631"
-	o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x33, 0x38, 0x36, 0x33, 0x31)
 	if z.SharingProviderName == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.SharingProviderName)
+		zb0001Len--
+		zb0001Mask[0] |= 0x1000000
 	}
-	// string "27238731"
-	o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x33, 0x38, 0x37, 0x33, 0x31)
 	if z.SharingProviderUrl == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.SharingProviderUrl)
+		zb0001Len--
+		zb0001Mask[0] |= 0x2000000
 	}
-	// string "2725193"
-	o = append(o, 0xa7, 0x32, 0x37, 0x32, 0x35, 0x31, 0x39, 0x33)
 	if z.SharingRangeEnd == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.SharingRangeEnd)
+		zb0001Len--
+		zb0001Mask[0] |= 0x4000000
 	}
-	// string "2725183"
-	o = append(o, 0xa7, 0x32, 0x37, 0x32, 0x35, 0x31, 0x38, 0x33)
 	if z.SharingRangeStart == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.SharingRangeStart)
+		zb0001Len--
+		zb0001Mask[0] |= 0x8000000
 	}
-	// string "2724263"
-	o = append(o, 0xa7, 0x32, 0x37, 0x32, 0x34, 0x32, 0x36, 0x33)
 	if z.SharingReciprocation == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.SharingReciprocation)
+		zb0001Len--
+		zb0001Mask[0] |= 0x10000000
 	}
-	// string "2725233"
-	o = append(o, 0xa7, 0x32, 0x37, 0x32, 0x35, 0x32, 0x33, 0x33)
 	if z.SharingRemoteByteSize == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.SharingRemoteByteSize)
+		zb0001Len--
+		zb0001Mask[0] |= 0x20000000
 	}
-	// string "27246331"
-	o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x34, 0x36, 0x33, 0x33, 0x31)
 	if z.SharingRemoteComment == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.SharingRemoteComment)
+		zb0001Len--
+		zb0001Mask[0] |= 0x40000000
 	}
-	// string "2725243"
-	o = append(o, 0xa7, 0x32, 0x37, 0x32, 0x35, 0x32, 0x34, 0x33)
 	if z.SharingRemoteCrc == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.SharingRemoteCrc)
+		zb0001Len--
+		zb0001Mask[0] |= 0x80000000
 	}
-	// string "27245064"
-	o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x34, 0x35, 0x30, 0x36, 0x34)
 	if z.SharingRemoteLastModificationTime == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.SharingRemoteLastModificationTime)
+		zb0001Len--
+		zb0001Mask[0] |= 0x100000000
 	}
-	// string "2725273"
-	o = append(o, 0xa7, 0x32, 0x37, 0x32, 0x35, 0x32, 0x37, 0x33)
 	if z.SharingRemoteMessageCount == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.SharingRemoteMessageCount)
+		zb0001Len--
+		zb0001Mask[0] |= 0x200000000
 	}
-	// string "27238931"
-	o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x33, 0x38, 0x39, 0x33, 0x31)
 	if z.SharingRemoteName == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.SharingRemoteName)
+		zb0001Len--
+		zb0001Mask[0] |= 0x400000000
 	}
-	// string "27239731"
-	o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x33, 0x39, 0x37, 0x33, 0x31)
 	if z.SharingRemotePass == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.SharingRemotePass)
+		zb0001Len--
+		zb0001Mask[0] |= 0x800000000
 	}
-	// string "27238831"
-	o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x33, 0x38, 0x38, 0x33, 0x31)
 	if z.SharingRemotePath == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.SharingRemotePath)
+		zb0001Len--
+		zb0001Mask[0] |= 0x1000000000
 	}
-	// string "27252031"
-	o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x35, 0x32, 0x30, 0x33, 0x31)
 	if z.SharingRemoteStoreUid == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.SharingRemoteStoreUid)
+		zb0001Len--
+		zb0001Mask[0] |= 0x2000000000
 	}
-	// string "27242931"
-	o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x34, 0x32, 0x39, 0x33, 0x31)
 	if z.SharingRemoteType == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.SharingRemoteType)
+		zb0001Len--
+		zb0001Mask[0] |= 0x4000000000
 	}
-	// string "27239031"
-	o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x33, 0x39, 0x30, 0x33, 0x31)
 	if z.SharingRemoteUid == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.SharingRemoteUid)
+		zb0001Len--
+		zb0001Mask[0] |= 0x8000000000
 	}
-	// string "27239631"
-	o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x33, 0x39, 0x36, 0x33, 0x31)
 	if z.SharingRemoteUser == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.SharingRemoteUser)
+		zb0001Len--
+		zb0001Mask[0] |= 0x10000000000
 	}
-	// string "27255531"
-	o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x35, 0x35, 0x35, 0x33, 0x31)
 	if z.SharingRemoteVersion == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.SharingRemoteVersion)
+		zb0001Len--
+		zb0001Mask[0] |= 0x20000000000
 	}
-	// string "27245664"
-	o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x34, 0x35, 0x36, 0x36, 0x34)
 	if z.SharingResponseTime == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.SharingResponseTime)
+		zb0001Len--
+		zb0001Mask[0] |= 0x40000000000
 	}
-	// string "2724553"
-	o = append(o, 0xa7, 0x32, 0x37, 0x32, 0x34, 0x35, 0x35, 0x33)
 	if z.SharingResponseType == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.SharingResponseType)
+		zb0001Len--
+		zb0001Mask[0] |= 0x80000000000
 	}
-	// string "2725263"
-	o = append(o, 0xa7, 0x32, 0x37, 0x32, 0x35, 0x32, 0x36, 0x33)
 	if z.SharingRoamLog == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.SharingRoamLog)
+		zb0001Len--
+		zb0001Mask[0] |= 0x100000000000
 	}
-	// string "27245364"
-	o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x34, 0x35, 0x33, 0x36, 0x34)
 	if z.SharingStart == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.SharingStart)
+		zb0001Len--
+		zb0001Mask[0] |= 0x200000000000
 	}
-	// string "2723843"
-	o = append(o, 0xa7, 0x32, 0x37, 0x32, 0x33, 0x38, 0x34, 0x33)
 	if z.SharingStatus == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.SharingStatus)
+		zb0001Len--
+		zb0001Mask[0] |= 0x400000000000
 	}
-	// string "27245464"
-	o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x34, 0x35, 0x34, 0x36, 0x34)
 	if z.SharingStop == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.SharingStop)
+		zb0001Len--
+		zb0001Mask[0] |= 0x800000000000
 	}
-	// string "2725763"
-	o = append(o, 0xa7, 0x32, 0x37, 0x32, 0x35, 0x37, 0x36, 0x33)
 	if z.SharingSyncFlags == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.SharingSyncFlags)
+		zb0001Len--
+		zb0001Mask[0] |= 0x1000000000000
 	}
-	// string "2724583"
-	o = append(o, 0xa7, 0x32, 0x37, 0x32, 0x34, 0x35, 0x38, 0x33)
 	if z.SharingSyncInterval == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.SharingSyncInterval)
+		zb0001Len--
+		zb0001Mask[0] |= 0x2000000000000
 	}
-	// string "2724603"
-	o = append(o, 0xa7, 0x32, 0x37, 0x32, 0x34, 0x36, 0x30, 0x33)
 	if z.SharingTimeToLive == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.SharingTimeToLive)
+		zb0001Len--
+		zb0001Mask[0] |= 0x4000000000000
 	}
-	// string "2725503"
-	o = append(o, 0xa7, 0x32, 0x37, 0x32, 0x35, 0x35, 0x30, 0x33)
 	if z.SharingTimeToLiveAuto == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.SharingTimeToLiveAuto)
+		zb0001Len--
+		zb0001Mask[0] |= 0x8000000000000
 	}
-	// string "2725143"
-	o = append(o, 0xa7, 0x32, 0x37, 0x32, 0x35, 0x31, 0x34, 0x33)
 	if z.SharingWorkingHoursDays == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.SharingWorkingHoursDays)
+		zb0001Len--
+		zb0001Mask[0] |= 0x10000000000000
 	}
-	// string "27251364"
-	o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x35, 0x31, 0x33, 0x36, 0x34)
 	if z.SharingWorkingHoursEnd == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.SharingWorkingHoursEnd)
+		zb0001Len--
+		zb0001Mask[0] |= 0x20000000000000
 	}
-	// string "27251264"
-	o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x35, 0x31, 0x32, 0x36, 0x34)
 	if z.SharingWorkingHoursStart == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.SharingWorkingHoursStart)
+		zb0001Len--
+		zb0001Mask[0] |= 0x40000000000000
+	}
+	// variable map header, size zb0001Len
+	o = msgp.AppendMapHeader(o, zb0001Len)
+	if zb0001Len == 0 {
+		return
+	}
+	if (zb0001Mask[0] & 0x1) == 0 { // if not empty
+		// string "2724253"
+		o = append(o, 0xa7, 0x32, 0x37, 0x32, 0x34, 0x32, 0x35, 0x33)
+		if z.SharingAnonymity == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.SharingAnonymity)
+		}
+	}
+	if (zb0001Mask[0] & 0x2) == 0 { // if not empty
+		// string "27254531"
+		o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x35, 0x34, 0x35, 0x33, 0x31)
+		if z.SharingBrowseUrl == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.SharingBrowseUrl)
+		}
+	}
+	if (zb0001Mask[0] & 0x4) == 0 { // if not empty
+		// string "2724233"
+		o = append(o, 0xa7, 0x32, 0x37, 0x32, 0x34, 0x32, 0x33, 0x33)
+		if z.SharingCapabilities == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.SharingCapabilities)
+		}
+	}
+	if (zb0001Mask[0] & 0x8) == 0 { // if not empty
+		// string "27245231"
+		o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x34, 0x35, 0x32, 0x33, 0x31)
+		if z.SharingConfigurationUrl == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.SharingConfigurationUrl)
+		}
+	}
+	if (zb0001Mask[0] & 0x10) == 0 { // if not empty
+		// string "27251764"
+		o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x35, 0x31, 0x37, 0x36, 0x34)
+		if z.SharingDataRangeEnd == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.SharingDataRangeEnd)
+		}
+	}
+	if (zb0001Mask[0] & 0x20) == 0 { // if not empty
+		// string "27251664"
+		o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x35, 0x31, 0x36, 0x36, 0x34)
+		if z.SharingDataRangeStart == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.SharingDataRangeStart)
+		}
+	}
+	if (zb0001Mask[0] & 0x40) == 0 { // if not empty
+		// string "2724593"
+		o = append(o, 0xa7, 0x32, 0x37, 0x32, 0x34, 0x35, 0x39, 0x33)
+		if z.SharingDetail == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.SharingDetail)
+		}
+	}
+	if (zb0001Mask[0] & 0x80) == 0 { // if not empty
+		// string "27244931"
+		o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x34, 0x34, 0x39, 0x33, 0x31)
+		if z.SharingExtensionXml == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.SharingExtensionXml)
+		}
+	}
+	if (zb0001Mask[0] & 0x100) == 0 { // if not empty
+		// string "2723943"
+		o = append(o, 0xa7, 0x32, 0x37, 0x32, 0x33, 0x39, 0x34, 0x33)
+		if z.SharingFlags == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.SharingFlags)
+		}
+	}
+	if (zb0001Mask[0] & 0x200) == 0 { // if not empty
+		// string "2724243"
+		o = append(o, 0xa7, 0x32, 0x37, 0x32, 0x34, 0x32, 0x34, 0x33)
+		if z.SharingFlavor == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.SharingFlavor)
+		}
+	}
+	if (zb0001Mask[0] & 0x400) == 0 { // if not empty
+		// string "27239131"
+		o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x33, 0x39, 0x31, 0x33, 0x31)
+		if z.SharingInitiatorName == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.SharingInitiatorName)
+		}
+	}
+	if (zb0001Mask[0] & 0x800) == 0 { // if not empty
+		// string "27239231"
+		o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x33, 0x39, 0x32, 0x33, 0x31)
+		if z.SharingInitiatorSmtp == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.SharingInitiatorSmtp)
+		}
+	}
+	if (zb0001Mask[0] & 0x1000) == 0 { // if not empty
+		// string "27254964"
+		o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x35, 0x34, 0x39, 0x36, 0x34)
+		if z.SharingLastAutoSyncTime == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.SharingLastAutoSyncTime)
+		}
+	}
+	if (zb0001Mask[0] & 0x2000) == 0 { // if not empty
+		// string "27243164"
+		o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x34, 0x33, 0x31, 0x36, 0x34)
+		if z.SharingLastSyncTime == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.SharingLastSyncTime)
+		}
+	}
+	if (zb0001Mask[0] & 0x4000) == 0 { // if not empty
+		// string "27252531"
+		o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x35, 0x32, 0x35, 0x33, 0x31)
+		if z.SharingLocalComment == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.SharingLocalComment)
+		}
+	}
+	if (zb0001Mask[0] & 0x8000) == 0 { // if not empty
+		// string "27245164"
+		o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x34, 0x35, 0x31, 0x36, 0x34)
+		if z.SharingLocalLastModificationTime == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.SharingLocalLastModificationTime)
+		}
+	}
+	if (zb0001Mask[0] & 0x10000) == 0 { // if not empty
+		// string "27239931"
+		o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x33, 0x39, 0x39, 0x33, 0x31)
+		if z.SharingLocalName == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.SharingLocalName)
+		}
+	}
+	if (zb0001Mask[0] & 0x20000) == 0 { // if not empty
+		// string "27239831"
+		o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x33, 0x39, 0x38, 0x33, 0x31)
+		if z.SharingLocalPath == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.SharingLocalPath)
+		}
+	}
+	if (zb0001Mask[0] & 0x40000) == 0 { // if not empty
+		// string "27252131"
+		o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x35, 0x32, 0x31, 0x33, 0x31)
+		if z.SharingLocalStoreUid == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.SharingLocalStoreUid)
+		}
+	}
+	if (zb0001Mask[0] & 0x80000) == 0 { // if not empty
+		// string "27242031"
+		o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x34, 0x32, 0x30, 0x33, 0x31)
+		if z.SharingLocalType == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.SharingLocalType)
+		}
+	}
+	if (zb0001Mask[0] & 0x100000) == 0 { // if not empty
+		// string "27241631"
+		o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x34, 0x31, 0x36, 0x33, 0x31)
+		if z.SharingLocalUid == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.SharingLocalUid)
+		}
+	}
+	if (zb0001Mask[0] & 0x200000) == 0 { // if not empty
+		// string "27243031"
+		o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x34, 0x33, 0x30, 0x33, 0x31)
+		if z.SharingParticipants == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.SharingParticipants)
+		}
+	}
+	if (zb0001Mask[0] & 0x400000) == 0 { // if not empty
+		// string "2724273"
+		o = append(o, 0xa7, 0x32, 0x37, 0x32, 0x34, 0x32, 0x37, 0x33)
+		if z.SharingPermissions == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.SharingPermissions)
+		}
+	}
+	if (zb0001Mask[0] & 0x800000) == 0 { // if not empty
+		// string "27239531"
+		o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x33, 0x39, 0x35, 0x33, 0x31)
+		if z.SharingProviderExtension == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.SharingProviderExtension)
+		}
+	}
+	if (zb0001Mask[0] & 0x1000000) == 0 { // if not empty
+		// string "27238631"
+		o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x33, 0x38, 0x36, 0x33, 0x31)
+		if z.SharingProviderName == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.SharingProviderName)
+		}
+	}
+	if (zb0001Mask[0] & 0x2000000) == 0 { // if not empty
+		// string "27238731"
+		o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x33, 0x38, 0x37, 0x33, 0x31)
+		if z.SharingProviderUrl == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.SharingProviderUrl)
+		}
+	}
+	if (zb0001Mask[0] & 0x4000000) == 0 { // if not empty
+		// string "2725193"
+		o = append(o, 0xa7, 0x32, 0x37, 0x32, 0x35, 0x31, 0x39, 0x33)
+		if z.SharingRangeEnd == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.SharingRangeEnd)
+		}
+	}
+	if (zb0001Mask[0] & 0x8000000) == 0 { // if not empty
+		// string "2725183"
+		o = append(o, 0xa7, 0x32, 0x37, 0x32, 0x35, 0x31, 0x38, 0x33)
+		if z.SharingRangeStart == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.SharingRangeStart)
+		}
+	}
+	if (zb0001Mask[0] & 0x10000000) == 0 { // if not empty
+		// string "2724263"
+		o = append(o, 0xa7, 0x32, 0x37, 0x32, 0x34, 0x32, 0x36, 0x33)
+		if z.SharingReciprocation == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.SharingReciprocation)
+		}
+	}
+	if (zb0001Mask[0] & 0x20000000) == 0 { // if not empty
+		// string "2725233"
+		o = append(o, 0xa7, 0x32, 0x37, 0x32, 0x35, 0x32, 0x33, 0x33)
+		if z.SharingRemoteByteSize == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.SharingRemoteByteSize)
+		}
+	}
+	if (zb0001Mask[0] & 0x40000000) == 0 { // if not empty
+		// string "27246331"
+		o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x34, 0x36, 0x33, 0x33, 0x31)
+		if z.SharingRemoteComment == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.SharingRemoteComment)
+		}
+	}
+	if (zb0001Mask[0] & 0x80000000) == 0 { // if not empty
+		// string "2725243"
+		o = append(o, 0xa7, 0x32, 0x37, 0x32, 0x35, 0x32, 0x34, 0x33)
+		if z.SharingRemoteCrc == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.SharingRemoteCrc)
+		}
+	}
+	if (zb0001Mask[0] & 0x100000000) == 0 { // if not empty
+		// string "27245064"
+		o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x34, 0x35, 0x30, 0x36, 0x34)
+		if z.SharingRemoteLastModificationTime == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.SharingRemoteLastModificationTime)
+		}
+	}
+	if (zb0001Mask[0] & 0x200000000) == 0 { // if not empty
+		// string "2725273"
+		o = append(o, 0xa7, 0x32, 0x37, 0x32, 0x35, 0x32, 0x37, 0x33)
+		if z.SharingRemoteMessageCount == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.SharingRemoteMessageCount)
+		}
+	}
+	if (zb0001Mask[0] & 0x400000000) == 0 { // if not empty
+		// string "27238931"
+		o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x33, 0x38, 0x39, 0x33, 0x31)
+		if z.SharingRemoteName == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.SharingRemoteName)
+		}
+	}
+	if (zb0001Mask[0] & 0x800000000) == 0 { // if not empty
+		// string "27239731"
+		o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x33, 0x39, 0x37, 0x33, 0x31)
+		if z.SharingRemotePass == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.SharingRemotePass)
+		}
+	}
+	if (zb0001Mask[0] & 0x1000000000) == 0 { // if not empty
+		// string "27238831"
+		o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x33, 0x38, 0x38, 0x33, 0x31)
+		if z.SharingRemotePath == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.SharingRemotePath)
+		}
+	}
+	if (zb0001Mask[0] & 0x2000000000) == 0 { // if not empty
+		// string "27252031"
+		o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x35, 0x32, 0x30, 0x33, 0x31)
+		if z.SharingRemoteStoreUid == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.SharingRemoteStoreUid)
+		}
+	}
+	if (zb0001Mask[0] & 0x4000000000) == 0 { // if not empty
+		// string "27242931"
+		o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x34, 0x32, 0x39, 0x33, 0x31)
+		if z.SharingRemoteType == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.SharingRemoteType)
+		}
+	}
+	if (zb0001Mask[0] & 0x8000000000) == 0 { // if not empty
+		// string "27239031"
+		o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x33, 0x39, 0x30, 0x33, 0x31)
+		if z.SharingRemoteUid == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.SharingRemoteUid)
+		}
+	}
+	if (zb0001Mask[0] & 0x10000000000) == 0 { // if not empty
+		// string "27239631"
+		o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x33, 0x39, 0x36, 0x33, 0x31)
+		if z.SharingRemoteUser == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.SharingRemoteUser)
+		}
+	}
+	if (zb0001Mask[0] & 0x20000000000) == 0 { // if not empty
+		// string "27255531"
+		o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x35, 0x35, 0x35, 0x33, 0x31)
+		if z.SharingRemoteVersion == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.SharingRemoteVersion)
+		}
+	}
+	if (zb0001Mask[0] & 0x40000000000) == 0 { // if not empty
+		// string "27245664"
+		o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x34, 0x35, 0x36, 0x36, 0x34)
+		if z.SharingResponseTime == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.SharingResponseTime)
+		}
+	}
+	if (zb0001Mask[0] & 0x80000000000) == 0 { // if not empty
+		// string "2724553"
+		o = append(o, 0xa7, 0x32, 0x37, 0x32, 0x34, 0x35, 0x35, 0x33)
+		if z.SharingResponseType == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.SharingResponseType)
+		}
+	}
+	if (zb0001Mask[0] & 0x100000000000) == 0 { // if not empty
+		// string "2725263"
+		o = append(o, 0xa7, 0x32, 0x37, 0x32, 0x35, 0x32, 0x36, 0x33)
+		if z.SharingRoamLog == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.SharingRoamLog)
+		}
+	}
+	if (zb0001Mask[0] & 0x200000000000) == 0 { // if not empty
+		// string "27245364"
+		o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x34, 0x35, 0x33, 0x36, 0x34)
+		if z.SharingStart == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.SharingStart)
+		}
+	}
+	if (zb0001Mask[0] & 0x400000000000) == 0 { // if not empty
+		// string "2723843"
+		o = append(o, 0xa7, 0x32, 0x37, 0x32, 0x33, 0x38, 0x34, 0x33)
+		if z.SharingStatus == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.SharingStatus)
+		}
+	}
+	if (zb0001Mask[0] & 0x800000000000) == 0 { // if not empty
+		// string "27245464"
+		o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x34, 0x35, 0x34, 0x36, 0x34)
+		if z.SharingStop == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.SharingStop)
+		}
+	}
+	if (zb0001Mask[0] & 0x1000000000000) == 0 { // if not empty
+		// string "2725763"
+		o = append(o, 0xa7, 0x32, 0x37, 0x32, 0x35, 0x37, 0x36, 0x33)
+		if z.SharingSyncFlags == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.SharingSyncFlags)
+		}
+	}
+	if (zb0001Mask[0] & 0x2000000000000) == 0 { // if not empty
+		// string "2724583"
+		o = append(o, 0xa7, 0x32, 0x37, 0x32, 0x34, 0x35, 0x38, 0x33)
+		if z.SharingSyncInterval == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.SharingSyncInterval)
+		}
+	}
+	if (zb0001Mask[0] & 0x4000000000000) == 0 { // if not empty
+		// string "2724603"
+		o = append(o, 0xa7, 0x32, 0x37, 0x32, 0x34, 0x36, 0x30, 0x33)
+		if z.SharingTimeToLive == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.SharingTimeToLive)
+		}
+	}
+	if (zb0001Mask[0] & 0x8000000000000) == 0 { // if not empty
+		// string "2725503"
+		o = append(o, 0xa7, 0x32, 0x37, 0x32, 0x35, 0x35, 0x30, 0x33)
+		if z.SharingTimeToLiveAuto == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.SharingTimeToLiveAuto)
+		}
+	}
+	if (zb0001Mask[0] & 0x10000000000000) == 0 { // if not empty
+		// string "2725143"
+		o = append(o, 0xa7, 0x32, 0x37, 0x32, 0x35, 0x31, 0x34, 0x33)
+		if z.SharingWorkingHoursDays == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.SharingWorkingHoursDays)
+		}
+	}
+	if (zb0001Mask[0] & 0x20000000000000) == 0 { // if not empty
+		// string "27251364"
+		o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x35, 0x31, 0x33, 0x36, 0x34)
+		if z.SharingWorkingHoursEnd == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.SharingWorkingHoursEnd)
+		}
+	}
+	if (zb0001Mask[0] & 0x40000000000000) == 0 { // if not empty
+		// string "27251264"
+		o = append(o, 0xa8, 0x32, 0x37, 0x32, 0x35, 0x31, 0x32, 0x36, 0x34)
+		if z.SharingWorkingHoursStart == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.SharingWorkingHoursStart)
+		}
 	}
 	// string "XSharingBrowseUrl_"
 	o = append(o, 0xb2, 0x58, 0x53, 0x68, 0x61, 0x72, 0x69, 0x6e, 0x67, 0x42, 0x72, 0x6f, 0x77, 0x73, 0x65, 0x55, 0x72, 0x6c, 0x5f)

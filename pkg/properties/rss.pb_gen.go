@@ -163,124 +163,176 @@ func (z *RSS) DecodeMsg(dc *msgp.Reader) (err error) {
 
 // EncodeMsg implements msgp.Encodable
 func (z *RSS) EncodeMsg(en *msgp.Writer) (err error) {
-	// map header, size 7
-	// write "27136431"
-	err = en.Append(0x87, 0xa8, 0x32, 0x37, 0x31, 0x33, 0x36, 0x34, 0x33, 0x31)
-	if err != nil {
-		return
-	}
+	// omitempty: check for empty values
+	zb0001Len := uint32(7)
+	var zb0001Mask uint8 /* 7 bits */
 	if z.PostRssChannel == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.PostRssChannel)
-		if err != nil {
-			err = msgp.WrapError(err, "PostRssChannel")
-			return
-		}
-	}
-	// write "27136031"
-	err = en.Append(0xa8, 0x32, 0x37, 0x31, 0x33, 0x36, 0x30, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x1
 	}
 	if z.PostRssChannelLink == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.PostRssChannelLink)
-		if err != nil {
-			err = msgp.WrapError(err, "PostRssChannelLink")
-			return
-		}
-	}
-	// write "27136331"
-	err = en.Append(0xa8, 0x32, 0x37, 0x31, 0x33, 0x36, 0x33, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x2
 	}
 	if z.PostRssItemGuid == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.PostRssItemGuid)
-		if err != nil {
-			err = msgp.WrapError(err, "PostRssItemGuid")
-			return
-		}
-	}
-	// write "2713623"
-	err = en.Append(0xa7, 0x32, 0x37, 0x31, 0x33, 0x36, 0x32, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x4
 	}
 	if z.PostRssItemHash == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.PostRssItemHash)
-		if err != nil {
-			err = msgp.WrapError(err, "PostRssItemHash")
-			return
-		}
-	}
-	// write "27136131"
-	err = en.Append(0xa8, 0x32, 0x37, 0x31, 0x33, 0x36, 0x31, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x8
 	}
 	if z.PostRssItemLink == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.PostRssItemLink)
-		if err != nil {
-			err = msgp.WrapError(err, "PostRssItemLink")
-			return
-		}
-	}
-	// write "27136531"
-	err = en.Append(0xa8, 0x32, 0x37, 0x31, 0x33, 0x36, 0x35, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x10
 	}
 	if z.PostRssItemXml == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.PostRssItemXml)
-		if err != nil {
-			err = msgp.WrapError(err, "PostRssItemXml")
-			return
-		}
+		zb0001Len--
+		zb0001Mask |= 0x20
 	}
-	// write "27136631"
-	err = en.Append(0xa8, 0x32, 0x37, 0x31, 0x33, 0x36, 0x36, 0x33, 0x31)
+	if z.PostRssSubscription == nil {
+		zb0001Len--
+		zb0001Mask |= 0x40
+	}
+	// variable map header, size zb0001Len
+	err = en.Append(0x80 | uint8(zb0001Len))
 	if err != nil {
 		return
 	}
-	if z.PostRssSubscription == nil {
-		err = en.WriteNil()
+	if zb0001Len == 0 {
+		return
+	}
+	if (zb0001Mask & 0x1) == 0 { // if not empty
+		// write "27136431"
+		err = en.Append(0xa8, 0x32, 0x37, 0x31, 0x33, 0x36, 0x34, 0x33, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.PostRssSubscription)
+		if z.PostRssChannel == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.PostRssChannel)
+			if err != nil {
+				err = msgp.WrapError(err, "PostRssChannel")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x2) == 0 { // if not empty
+		// write "27136031"
+		err = en.Append(0xa8, 0x32, 0x37, 0x31, 0x33, 0x36, 0x30, 0x33, 0x31)
 		if err != nil {
-			err = msgp.WrapError(err, "PostRssSubscription")
 			return
+		}
+		if z.PostRssChannelLink == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.PostRssChannelLink)
+			if err != nil {
+				err = msgp.WrapError(err, "PostRssChannelLink")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x4) == 0 { // if not empty
+		// write "27136331"
+		err = en.Append(0xa8, 0x32, 0x37, 0x31, 0x33, 0x36, 0x33, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.PostRssItemGuid == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.PostRssItemGuid)
+			if err != nil {
+				err = msgp.WrapError(err, "PostRssItemGuid")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x8) == 0 { // if not empty
+		// write "2713623"
+		err = en.Append(0xa7, 0x32, 0x37, 0x31, 0x33, 0x36, 0x32, 0x33)
+		if err != nil {
+			return
+		}
+		if z.PostRssItemHash == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.PostRssItemHash)
+			if err != nil {
+				err = msgp.WrapError(err, "PostRssItemHash")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x10) == 0 { // if not empty
+		// write "27136131"
+		err = en.Append(0xa8, 0x32, 0x37, 0x31, 0x33, 0x36, 0x31, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.PostRssItemLink == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.PostRssItemLink)
+			if err != nil {
+				err = msgp.WrapError(err, "PostRssItemLink")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x20) == 0 { // if not empty
+		// write "27136531"
+		err = en.Append(0xa8, 0x32, 0x37, 0x31, 0x33, 0x36, 0x35, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.PostRssItemXml == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.PostRssItemXml)
+			if err != nil {
+				err = msgp.WrapError(err, "PostRssItemXml")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x40) == 0 { // if not empty
+		// write "27136631"
+		err = en.Append(0xa8, 0x32, 0x37, 0x31, 0x33, 0x36, 0x36, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.PostRssSubscription == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.PostRssSubscription)
+			if err != nil {
+				err = msgp.WrapError(err, "PostRssSubscription")
+				return
+			}
 		}
 	}
 	return
@@ -289,55 +341,104 @@ func (z *RSS) EncodeMsg(en *msgp.Writer) (err error) {
 // MarshalMsg implements msgp.Marshaler
 func (z *RSS) MarshalMsg(b []byte) (o []byte, err error) {
 	o = msgp.Require(b, z.Msgsize())
-	// map header, size 7
-	// string "27136431"
-	o = append(o, 0x87, 0xa8, 0x32, 0x37, 0x31, 0x33, 0x36, 0x34, 0x33, 0x31)
+	// omitempty: check for empty values
+	zb0001Len := uint32(7)
+	var zb0001Mask uint8 /* 7 bits */
 	if z.PostRssChannel == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.PostRssChannel)
+		zb0001Len--
+		zb0001Mask |= 0x1
 	}
-	// string "27136031"
-	o = append(o, 0xa8, 0x32, 0x37, 0x31, 0x33, 0x36, 0x30, 0x33, 0x31)
 	if z.PostRssChannelLink == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.PostRssChannelLink)
+		zb0001Len--
+		zb0001Mask |= 0x2
 	}
-	// string "27136331"
-	o = append(o, 0xa8, 0x32, 0x37, 0x31, 0x33, 0x36, 0x33, 0x33, 0x31)
 	if z.PostRssItemGuid == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.PostRssItemGuid)
+		zb0001Len--
+		zb0001Mask |= 0x4
 	}
-	// string "2713623"
-	o = append(o, 0xa7, 0x32, 0x37, 0x31, 0x33, 0x36, 0x32, 0x33)
 	if z.PostRssItemHash == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.PostRssItemHash)
+		zb0001Len--
+		zb0001Mask |= 0x8
 	}
-	// string "27136131"
-	o = append(o, 0xa8, 0x32, 0x37, 0x31, 0x33, 0x36, 0x31, 0x33, 0x31)
 	if z.PostRssItemLink == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.PostRssItemLink)
+		zb0001Len--
+		zb0001Mask |= 0x10
 	}
-	// string "27136531"
-	o = append(o, 0xa8, 0x32, 0x37, 0x31, 0x33, 0x36, 0x35, 0x33, 0x31)
 	if z.PostRssItemXml == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.PostRssItemXml)
+		zb0001Len--
+		zb0001Mask |= 0x20
 	}
-	// string "27136631"
-	o = append(o, 0xa8, 0x32, 0x37, 0x31, 0x33, 0x36, 0x36, 0x33, 0x31)
 	if z.PostRssSubscription == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.PostRssSubscription)
+		zb0001Len--
+		zb0001Mask |= 0x40
+	}
+	// variable map header, size zb0001Len
+	o = append(o, 0x80|uint8(zb0001Len))
+	if zb0001Len == 0 {
+		return
+	}
+	if (zb0001Mask & 0x1) == 0 { // if not empty
+		// string "27136431"
+		o = append(o, 0xa8, 0x32, 0x37, 0x31, 0x33, 0x36, 0x34, 0x33, 0x31)
+		if z.PostRssChannel == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.PostRssChannel)
+		}
+	}
+	if (zb0001Mask & 0x2) == 0 { // if not empty
+		// string "27136031"
+		o = append(o, 0xa8, 0x32, 0x37, 0x31, 0x33, 0x36, 0x30, 0x33, 0x31)
+		if z.PostRssChannelLink == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.PostRssChannelLink)
+		}
+	}
+	if (zb0001Mask & 0x4) == 0 { // if not empty
+		// string "27136331"
+		o = append(o, 0xa8, 0x32, 0x37, 0x31, 0x33, 0x36, 0x33, 0x33, 0x31)
+		if z.PostRssItemGuid == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.PostRssItemGuid)
+		}
+	}
+	if (zb0001Mask & 0x8) == 0 { // if not empty
+		// string "2713623"
+		o = append(o, 0xa7, 0x32, 0x37, 0x31, 0x33, 0x36, 0x32, 0x33)
+		if z.PostRssItemHash == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.PostRssItemHash)
+		}
+	}
+	if (zb0001Mask & 0x10) == 0 { // if not empty
+		// string "27136131"
+		o = append(o, 0xa8, 0x32, 0x37, 0x31, 0x33, 0x36, 0x31, 0x33, 0x31)
+		if z.PostRssItemLink == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.PostRssItemLink)
+		}
+	}
+	if (zb0001Mask & 0x20) == 0 { // if not empty
+		// string "27136531"
+		o = append(o, 0xa8, 0x32, 0x37, 0x31, 0x33, 0x36, 0x35, 0x33, 0x31)
+		if z.PostRssItemXml == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.PostRssItemXml)
+		}
+	}
+	if (zb0001Mask & 0x40) == 0 { // if not empty
+		// string "27136631"
+		o = append(o, 0xa8, 0x32, 0x37, 0x31, 0x33, 0x36, 0x36, 0x33, 0x31)
+		if z.PostRssSubscription == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.PostRssSubscription)
+		}
 	}
 	return
 }

@@ -45,15 +45,15 @@ type Spam struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Indicates whether email recipients are to be added to the safe senders list.
-	JunkAddRecipientsToSafeSendersList *int32 `protobuf:"varint,2,opt,name=junk_add_recipients_to_safe_senders_list,json=junkAddRecipientsToSafeSendersList,proto3,oneof" json:"junk_add_recipients_to_safe_senders_list,omitempty" msg:"248353"` // @gotags: msg:"248353"
+	JunkAddRecipientsToSafeSendersList *int32 `protobuf:"varint,2,opt,name=junk_add_recipients_to_safe_senders_list,json=junkAddRecipientsToSafeSendersList,proto3,oneof" json:"junk_add_recipients_to_safe_senders_list,omitempty" msg:"248353,omitempty"`
 	// Indicates whether email addresses of the contacts in the Contacts folder are treated in a special way with respect to the spam filter.
-	JunkIncludeContacts *int32 `protobuf:"varint,3,opt,name=junk_include_contacts,json=junkIncludeContacts,proto3,oneof" json:"junk_include_contacts,omitempty" msg:"248323"` // @gotags: msg:"248323"
+	JunkIncludeContacts *int32 `protobuf:"varint,3,opt,name=junk_include_contacts,json=junkIncludeContacts,proto3,oneof" json:"junk_include_contacts,omitempty" msg:"248323,omitempty"`
 	// Indicates whether messages identified as spam can be permanently deleted.
-	JunkPermanentlyDelete *int32 `protobuf:"varint,4,opt,name=junk_permanently_delete,json=junkPermanentlyDelete,proto3,oneof" json:"junk_permanently_delete,omitempty" msg:"248343"` // @gotags: msg:"248343"
+	JunkPermanentlyDelete *int32 `protobuf:"varint,4,opt,name=junk_permanently_delete,json=junkPermanentlyDelete,proto3,oneof" json:"junk_permanently_delete,omitempty" msg:"248343,omitempty"`
 	// Indicated whether the phishing stamp on a message is to be ignored.
-	JunkPhishingEnableLinks *bool `protobuf:"varint,5,opt,name=junk_phishing_enable_links,json=junkPhishingEnableLinks,proto3,oneof" json:"junk_phishing_enable_links,omitempty" msg:"2483911"` // @gotags: msg:"2483911"
+	JunkPhishingEnableLinks *bool `protobuf:"varint,5,opt,name=junk_phishing_enable_links,json=junkPhishingEnableLinks,proto3,oneof" json:"junk_phishing_enable_links,omitempty" msg:"2483911,omitempty"`
 	// Indicates how aggressively incoming email is to be sent to the Junk Email folder.
-	JunkThreshold *int32 `protobuf:"varint,6,opt,name=junk_threshold,json=junkThreshold,proto3,oneof" json:"junk_threshold,omitempty" msg:"248333"` // @gotags: msg:"248333"
+	JunkThreshold *int32 `protobuf:"varint,6,opt,name=junk_threshold,json=junkThreshold,proto3,oneof" json:"junk_threshold,omitempty" msg:"248333,omitempty"`
 }
 
 func (x *Spam) Reset() {

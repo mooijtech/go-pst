@@ -22,7 +22,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/pkg/errors"
+	"github.com/rotisserie/eris"
 	"golang.org/x/text/encoding/unicode"
 )
 
@@ -53,6 +53,7 @@ var PropertySets = []string{
 type PropertySet uint8
 
 // Constants defining the commonly used property sets.
+// Note that the defined order is important and reflects the PropertySets array.
 const (
 	PropertySetPublicStrings PropertySet = iota
 	PropertySetCommon
@@ -87,31 +88,31 @@ func (file *File) GetNameToIDMap() (*NameToIDMap, error) {
 	nodeBTreeNode, err := file.GetNodeBTreeNode(IdentifierNameToIDMap)
 
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, eris.Wrap(err, "failed to get node b-tree node")
 	}
 
 	localDescriptors, err := file.GetLocalDescriptors(nodeBTreeNode)
 
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, eris.Wrap(err, "failed to get local descriptors")
 	}
 
 	blockBTreeNode, err := file.GetBlockBTreeNode(nodeBTreeNode.DataIdentifier)
 
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, eris.Wrap(err, "failed to get block b-tree node")
 	}
 
 	heapOnNode, err := file.GetHeapOnNode(blockBTreeNode)
 
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, eris.Wrap(err, "failed to get Heap-on-Node")
 	}
 
 	propertyContext, err := file.GetPropertyContext(heapOnNode)
 
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, eris.Wrap(err, "failed to get property context")
 	}
 
 	propertySetToIndex := make(map[string]int, len(PropertySets))
@@ -124,10 +125,10 @@ func (file *File) GetNameToIDMap() (*NameToIDMap, error) {
 	// References [MS-PST].pdf "2.1.2 Properties"
 	// The GUID Stream is a flat array of 16-byte GUID values that contains the GUIDs associated with all
 	// the property sets used in all the named properties in the PST.
-	guidReader, err := propertyContext.GetPropertyReader(2, localDescriptors...)
+	guidReader, err := propertyContext.GetPropertyReader(2, localDescriptors)
 
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, eris.Wrap(err, "failed to get GUID reader")
 	}
 
 	guidCount := int(guidReader.Size() / 16)
@@ -137,11 +138,12 @@ func (file *File) GetNameToIDMap() (*NameToIDMap, error) {
 	var guids []string
 	guidIndexes := make([]int, guidCount)
 
+	// TODO - Do ReadAt up front.
 	for i := 0; i < guidCount; i++ {
 		guidBytes := make([]byte, 16)
 
 		if _, err := guidReader.ReadAt(guidBytes, offset); err != nil {
-			return nil, errors.WithStack(err)
+			return nil, eris.Wrap(err, "failed to read GUID")
 		}
 
 		guid := GUIDFromWindowsArray(guidBytes)
@@ -169,31 +171,31 @@ func (file *File) GetNameToIDMap() (*NameToIDMap, error) {
 	// References [MS-PST].pdf "2.4.7.3 Entry Stream"
 	// References [MS-PST].pdf "2.1.2 Properties"
 	// The Entry Stream is a flat array of NAMEID records that represent all the named properties in the PST.
-	entryStream, err := propertyContext.GetPropertyReader(3, localDescriptors...)
+	entryStream, err := propertyContext.GetPropertyReader(3, localDescriptors)
 
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, eris.Wrap(err, "failed to get entry stream property reader")
 	}
 
 	entryStreamData := make([]byte, entryStream.Size())
 
 	if _, err := entryStream.ReadAt(entryStreamData, 0); err != nil {
-		return nil, errors.WithStack(err)
+		return nil, eris.Wrap(err, "failed to read entry stream")
 	}
 
 	// References "2.4.7.4  The String Stream"
 	// References [MS-PST].pdf "2.1.2 Properties"
 	// The String Stream is a packed list of strings that is used for all the named properties in the PST.
-	stringStream, err := propertyContext.GetPropertyReader(4, localDescriptors...)
+	stringStream, err := propertyContext.GetPropertyReader(4, localDescriptors)
 
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, eris.Wrap(err, "failed to get string stream property reader")
 	}
 
 	stringStreamData := make([]byte, stringStream.Size())
 
 	if _, err := stringStream.ReadAt(stringStreamData, 0); err != nil {
-		return nil, errors.WithStack(err)
+		return nil, eris.Wrap(err, "failed to read string stream")
 	}
 
 	// Process the Entry Stream (NAMEID records).
@@ -227,6 +229,8 @@ func (file *File) GetNameToIDMap() (*NameToIDMap, error) {
 				propertySetIndex = guidIndexes[int(namedPropertyGUID)-3]
 			}
 
+			fmt.Printf("Got property ID: %d\n", namedPropertyIndex)
+
 			nameToID[int(namedPropertyIdentifier)|propertySetIndex<<32] = int(namedPropertyIndex)
 			idToName[int(namedPropertyIndex)] = int(namedPropertyIdentifier)
 		} else {
@@ -240,7 +244,7 @@ func (file *File) GetNameToIDMap() (*NameToIDMap, error) {
 				key, err := utf16Decoder.String(string(stringStreamData[int(namedPropertyIdentifier)+4 : int(namedPropertyIdentifier)+4+int(keyLength)]))
 
 				if err != nil {
-					return nil, errors.WithStack(err)
+					return nil, eris.Wrap(err, "failed to decode UTF-16")
 				}
 
 				namedPropertyIndex += 0x8000
@@ -267,7 +271,7 @@ func (nameToIDMap *NameToIDMap) GetPropertyID(key int, propertySet PropertySet) 
 	value, found := nameToIDMap.NameToID[nameToIDKey]
 
 	if !found {
-		return -1, errors.WithStack(ErrNameToIDMapKeyNotFound)
+		return -1, ErrNameToIDMapKeyNotFound
 	}
 
 	return value, nil

@@ -217,175 +217,245 @@ func (z *Journal) DecodeMsg(dc *msgp.Reader) (err error) {
 
 // EncodeMsg implements msgp.Encodable
 func (z *Journal) EncodeMsg(en *msgp.Writer) (err error) {
-	// map header, size 10
-	// write "26934511"
-	err = en.Append(0x8a, 0xa8, 0x32, 0x36, 0x39, 0x33, 0x34, 0x35, 0x31, 0x31)
-	if err != nil {
-		return
-	}
+	// omitempty: check for empty values
+	zb0001Len := uint32(10)
+	var zb0001Mask uint16 /* 10 bits */
 	if z.LogDocumentPosted == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.LogDocumentPosted)
-		if err != nil {
-			err = msgp.WrapError(err, "LogDocumentPosted")
-			return
-		}
-	}
-	// write "26932611"
-	err = en.Append(0xa8, 0x32, 0x36, 0x39, 0x33, 0x32, 0x36, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x1
 	}
 	if z.LogDocumentPrinted == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.LogDocumentPrinted)
-		if err != nil {
-			err = msgp.WrapError(err, "LogDocumentPrinted")
-			return
-		}
-	}
-	// write "26934411"
-	err = en.Append(0xa8, 0x32, 0x36, 0x39, 0x33, 0x34, 0x34, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x2
 	}
 	if z.LogDocumentRouted == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.LogDocumentRouted)
-		if err != nil {
-			err = msgp.WrapError(err, "LogDocumentRouted")
-			return
-		}
-	}
-	// write "26932711"
-	err = en.Append(0xa8, 0x32, 0x36, 0x39, 0x33, 0x32, 0x37, 0x31, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x4
 	}
 	if z.LogDocumentSaved == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteBool(*z.LogDocumentSaved)
-		if err != nil {
-			err = msgp.WrapError(err, "LogDocumentSaved")
-			return
-		}
-	}
-	// write "2693193"
-	err = en.Append(0xa7, 0x32, 0x36, 0x39, 0x33, 0x31, 0x39, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x8
 	}
 	if z.LogDuration == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.LogDuration)
-		if err != nil {
-			err = msgp.WrapError(err, "LogDuration")
-			return
-		}
-	}
-	// write "26932064"
-	err = en.Append(0xa8, 0x32, 0x36, 0x39, 0x33, 0x32, 0x30, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x10
 	}
 	if z.LogEnd == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.LogEnd)
-		if err != nil {
-			err = msgp.WrapError(err, "LogEnd")
-			return
-		}
-	}
-	// write "2693243"
-	err = en.Append(0xa7, 0x32, 0x36, 0x39, 0x33, 0x32, 0x34, 0x33)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x20
 	}
 	if z.LogFlags == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt32(*z.LogFlags)
-		if err != nil {
-			err = msgp.WrapError(err, "LogFlags")
-			return
-		}
-	}
-	// write "26931864"
-	err = en.Append(0xa8, 0x32, 0x36, 0x39, 0x33, 0x31, 0x38, 0x36, 0x34)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x40
 	}
 	if z.LogStart == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteInt64(*z.LogStart)
-		if err != nil {
-			err = msgp.WrapError(err, "LogStart")
-			return
-		}
-	}
-	// write "26931231"
-	err = en.Append(0xa8, 0x32, 0x36, 0x39, 0x33, 0x31, 0x32, 0x33, 0x31)
-	if err != nil {
-		return
+		zb0001Len--
+		zb0001Mask |= 0x80
 	}
 	if z.LogType == nil {
-		err = en.WriteNil()
-		if err != nil {
-			return
-		}
-	} else {
-		err = en.WriteString(*z.LogType)
-		if err != nil {
-			err = msgp.WrapError(err, "LogType")
-			return
-		}
+		zb0001Len--
+		zb0001Mask |= 0x100
 	}
-	// write "26934631"
-	err = en.Append(0xa8, 0x32, 0x36, 0x39, 0x33, 0x34, 0x36, 0x33, 0x31)
+	if z.LogTypeDesc == nil {
+		zb0001Len--
+		zb0001Mask |= 0x200
+	}
+	// variable map header, size zb0001Len
+	err = en.Append(0x80 | uint8(zb0001Len))
 	if err != nil {
 		return
 	}
-	if z.LogTypeDesc == nil {
-		err = en.WriteNil()
+	if zb0001Len == 0 {
+		return
+	}
+	if (zb0001Mask & 0x1) == 0 { // if not empty
+		// write "26934511"
+		err = en.Append(0xa8, 0x32, 0x36, 0x39, 0x33, 0x34, 0x35, 0x31, 0x31)
 		if err != nil {
 			return
 		}
-	} else {
-		err = en.WriteString(*z.LogTypeDesc)
+		if z.LogDocumentPosted == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.LogDocumentPosted)
+			if err != nil {
+				err = msgp.WrapError(err, "LogDocumentPosted")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x2) == 0 { // if not empty
+		// write "26932611"
+		err = en.Append(0xa8, 0x32, 0x36, 0x39, 0x33, 0x32, 0x36, 0x31, 0x31)
 		if err != nil {
-			err = msgp.WrapError(err, "LogTypeDesc")
 			return
+		}
+		if z.LogDocumentPrinted == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.LogDocumentPrinted)
+			if err != nil {
+				err = msgp.WrapError(err, "LogDocumentPrinted")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x4) == 0 { // if not empty
+		// write "26934411"
+		err = en.Append(0xa8, 0x32, 0x36, 0x39, 0x33, 0x34, 0x34, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.LogDocumentRouted == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.LogDocumentRouted)
+			if err != nil {
+				err = msgp.WrapError(err, "LogDocumentRouted")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x8) == 0 { // if not empty
+		// write "26932711"
+		err = en.Append(0xa8, 0x32, 0x36, 0x39, 0x33, 0x32, 0x37, 0x31, 0x31)
+		if err != nil {
+			return
+		}
+		if z.LogDocumentSaved == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteBool(*z.LogDocumentSaved)
+			if err != nil {
+				err = msgp.WrapError(err, "LogDocumentSaved")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x10) == 0 { // if not empty
+		// write "2693193"
+		err = en.Append(0xa7, 0x32, 0x36, 0x39, 0x33, 0x31, 0x39, 0x33)
+		if err != nil {
+			return
+		}
+		if z.LogDuration == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.LogDuration)
+			if err != nil {
+				err = msgp.WrapError(err, "LogDuration")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x20) == 0 { // if not empty
+		// write "26932064"
+		err = en.Append(0xa8, 0x32, 0x36, 0x39, 0x33, 0x32, 0x30, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.LogEnd == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.LogEnd)
+			if err != nil {
+				err = msgp.WrapError(err, "LogEnd")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x40) == 0 { // if not empty
+		// write "2693243"
+		err = en.Append(0xa7, 0x32, 0x36, 0x39, 0x33, 0x32, 0x34, 0x33)
+		if err != nil {
+			return
+		}
+		if z.LogFlags == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt32(*z.LogFlags)
+			if err != nil {
+				err = msgp.WrapError(err, "LogFlags")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x80) == 0 { // if not empty
+		// write "26931864"
+		err = en.Append(0xa8, 0x32, 0x36, 0x39, 0x33, 0x31, 0x38, 0x36, 0x34)
+		if err != nil {
+			return
+		}
+		if z.LogStart == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteInt64(*z.LogStart)
+			if err != nil {
+				err = msgp.WrapError(err, "LogStart")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x100) == 0 { // if not empty
+		// write "26931231"
+		err = en.Append(0xa8, 0x32, 0x36, 0x39, 0x33, 0x31, 0x32, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.LogType == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.LogType)
+			if err != nil {
+				err = msgp.WrapError(err, "LogType")
+				return
+			}
+		}
+	}
+	if (zb0001Mask & 0x200) == 0 { // if not empty
+		// write "26934631"
+		err = en.Append(0xa8, 0x32, 0x36, 0x39, 0x33, 0x34, 0x36, 0x33, 0x31)
+		if err != nil {
+			return
+		}
+		if z.LogTypeDesc == nil {
+			err = en.WriteNil()
+			if err != nil {
+				return
+			}
+		} else {
+			err = en.WriteString(*z.LogTypeDesc)
+			if err != nil {
+				err = msgp.WrapError(err, "LogTypeDesc")
+				return
+			}
 		}
 	}
 	return
@@ -394,76 +464,143 @@ func (z *Journal) EncodeMsg(en *msgp.Writer) (err error) {
 // MarshalMsg implements msgp.Marshaler
 func (z *Journal) MarshalMsg(b []byte) (o []byte, err error) {
 	o = msgp.Require(b, z.Msgsize())
-	// map header, size 10
-	// string "26934511"
-	o = append(o, 0x8a, 0xa8, 0x32, 0x36, 0x39, 0x33, 0x34, 0x35, 0x31, 0x31)
+	// omitempty: check for empty values
+	zb0001Len := uint32(10)
+	var zb0001Mask uint16 /* 10 bits */
 	if z.LogDocumentPosted == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.LogDocumentPosted)
+		zb0001Len--
+		zb0001Mask |= 0x1
 	}
-	// string "26932611"
-	o = append(o, 0xa8, 0x32, 0x36, 0x39, 0x33, 0x32, 0x36, 0x31, 0x31)
 	if z.LogDocumentPrinted == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.LogDocumentPrinted)
+		zb0001Len--
+		zb0001Mask |= 0x2
 	}
-	// string "26934411"
-	o = append(o, 0xa8, 0x32, 0x36, 0x39, 0x33, 0x34, 0x34, 0x31, 0x31)
 	if z.LogDocumentRouted == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.LogDocumentRouted)
+		zb0001Len--
+		zb0001Mask |= 0x4
 	}
-	// string "26932711"
-	o = append(o, 0xa8, 0x32, 0x36, 0x39, 0x33, 0x32, 0x37, 0x31, 0x31)
 	if z.LogDocumentSaved == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendBool(o, *z.LogDocumentSaved)
+		zb0001Len--
+		zb0001Mask |= 0x8
 	}
-	// string "2693193"
-	o = append(o, 0xa7, 0x32, 0x36, 0x39, 0x33, 0x31, 0x39, 0x33)
 	if z.LogDuration == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.LogDuration)
+		zb0001Len--
+		zb0001Mask |= 0x10
 	}
-	// string "26932064"
-	o = append(o, 0xa8, 0x32, 0x36, 0x39, 0x33, 0x32, 0x30, 0x36, 0x34)
 	if z.LogEnd == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.LogEnd)
+		zb0001Len--
+		zb0001Mask |= 0x20
 	}
-	// string "2693243"
-	o = append(o, 0xa7, 0x32, 0x36, 0x39, 0x33, 0x32, 0x34, 0x33)
 	if z.LogFlags == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt32(o, *z.LogFlags)
+		zb0001Len--
+		zb0001Mask |= 0x40
 	}
-	// string "26931864"
-	o = append(o, 0xa8, 0x32, 0x36, 0x39, 0x33, 0x31, 0x38, 0x36, 0x34)
 	if z.LogStart == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendInt64(o, *z.LogStart)
+		zb0001Len--
+		zb0001Mask |= 0x80
 	}
-	// string "26931231"
-	o = append(o, 0xa8, 0x32, 0x36, 0x39, 0x33, 0x31, 0x32, 0x33, 0x31)
 	if z.LogType == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.LogType)
+		zb0001Len--
+		zb0001Mask |= 0x100
 	}
-	// string "26934631"
-	o = append(o, 0xa8, 0x32, 0x36, 0x39, 0x33, 0x34, 0x36, 0x33, 0x31)
 	if z.LogTypeDesc == nil {
-		o = msgp.AppendNil(o)
-	} else {
-		o = msgp.AppendString(o, *z.LogTypeDesc)
+		zb0001Len--
+		zb0001Mask |= 0x200
+	}
+	// variable map header, size zb0001Len
+	o = append(o, 0x80|uint8(zb0001Len))
+	if zb0001Len == 0 {
+		return
+	}
+	if (zb0001Mask & 0x1) == 0 { // if not empty
+		// string "26934511"
+		o = append(o, 0xa8, 0x32, 0x36, 0x39, 0x33, 0x34, 0x35, 0x31, 0x31)
+		if z.LogDocumentPosted == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.LogDocumentPosted)
+		}
+	}
+	if (zb0001Mask & 0x2) == 0 { // if not empty
+		// string "26932611"
+		o = append(o, 0xa8, 0x32, 0x36, 0x39, 0x33, 0x32, 0x36, 0x31, 0x31)
+		if z.LogDocumentPrinted == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.LogDocumentPrinted)
+		}
+	}
+	if (zb0001Mask & 0x4) == 0 { // if not empty
+		// string "26934411"
+		o = append(o, 0xa8, 0x32, 0x36, 0x39, 0x33, 0x34, 0x34, 0x31, 0x31)
+		if z.LogDocumentRouted == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.LogDocumentRouted)
+		}
+	}
+	if (zb0001Mask & 0x8) == 0 { // if not empty
+		// string "26932711"
+		o = append(o, 0xa8, 0x32, 0x36, 0x39, 0x33, 0x32, 0x37, 0x31, 0x31)
+		if z.LogDocumentSaved == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendBool(o, *z.LogDocumentSaved)
+		}
+	}
+	if (zb0001Mask & 0x10) == 0 { // if not empty
+		// string "2693193"
+		o = append(o, 0xa7, 0x32, 0x36, 0x39, 0x33, 0x31, 0x39, 0x33)
+		if z.LogDuration == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.LogDuration)
+		}
+	}
+	if (zb0001Mask & 0x20) == 0 { // if not empty
+		// string "26932064"
+		o = append(o, 0xa8, 0x32, 0x36, 0x39, 0x33, 0x32, 0x30, 0x36, 0x34)
+		if z.LogEnd == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.LogEnd)
+		}
+	}
+	if (zb0001Mask & 0x40) == 0 { // if not empty
+		// string "2693243"
+		o = append(o, 0xa7, 0x32, 0x36, 0x39, 0x33, 0x32, 0x34, 0x33)
+		if z.LogFlags == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt32(o, *z.LogFlags)
+		}
+	}
+	if (zb0001Mask & 0x80) == 0 { // if not empty
+		// string "26931864"
+		o = append(o, 0xa8, 0x32, 0x36, 0x39, 0x33, 0x31, 0x38, 0x36, 0x34)
+		if z.LogStart == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendInt64(o, *z.LogStart)
+		}
+	}
+	if (zb0001Mask & 0x100) == 0 { // if not empty
+		// string "26931231"
+		o = append(o, 0xa8, 0x32, 0x36, 0x39, 0x33, 0x31, 0x32, 0x33, 0x31)
+		if z.LogType == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.LogType)
+		}
+	}
+	if (zb0001Mask & 0x200) == 0 { // if not empty
+		// string "26934631"
+		o = append(o, 0xa8, 0x32, 0x36, 0x39, 0x33, 0x34, 0x36, 0x33, 0x31)
+		if z.LogTypeDesc == nil {
+			o = msgp.AppendNil(o)
+		} else {
+			o = msgp.AppendString(o, *z.LogTypeDesc)
+		}
 	}
 	return
 }

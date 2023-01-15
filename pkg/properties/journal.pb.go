@@ -45,25 +45,25 @@ type Journal struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Indicates whether the document was sent by email or posted to a server folder during journaling.
-	LogDocumentPosted *bool `protobuf:"varint,1,opt,name=log_document_posted,json=logDocumentPosted,proto3,oneof" json:"log_document_posted,omitempty" msg:"26934511"` // @gotags: msg:"26934511"
+	LogDocumentPosted *bool `protobuf:"varint,1,opt,name=log_document_posted,json=logDocumentPosted,proto3,oneof" json:"log_document_posted,omitempty" msg:"26934511,omitempty"`
 	// Indicates whether the document was printed during journaling.
-	LogDocumentPrinted *bool `protobuf:"varint,2,opt,name=log_document_printed,json=logDocumentPrinted,proto3,oneof" json:"log_document_printed,omitempty" msg:"26932611"` // @gotags: msg:"26932611"
+	LogDocumentPrinted *bool `protobuf:"varint,2,opt,name=log_document_printed,json=logDocumentPrinted,proto3,oneof" json:"log_document_printed,omitempty" msg:"26932611,omitempty"`
 	// Indicates whether the document was sent to a routing recipient during journaling.
-	LogDocumentRouted *bool `protobuf:"varint,3,opt,name=log_document_routed,json=logDocumentRouted,proto3,oneof" json:"log_document_routed,omitempty" msg:"26934411"` // @gotags: msg:"26934411"
+	LogDocumentRouted *bool `protobuf:"varint,3,opt,name=log_document_routed,json=logDocumentRouted,proto3,oneof" json:"log_document_routed,omitempty" msg:"26934411,omitempty"`
 	// Indicates whether the document was saved during journaling.
-	LogDocumentSaved *bool `protobuf:"varint,4,opt,name=log_document_saved,json=logDocumentSaved,proto3,oneof" json:"log_document_saved,omitempty" msg:"26932711"` // @gotags: msg:"26932711"
+	LogDocumentSaved *bool `protobuf:"varint,4,opt,name=log_document_saved,json=logDocumentSaved,proto3,oneof" json:"log_document_saved,omitempty" msg:"26932711,omitempty"`
 	// Contains the duration, in minutes, of the activity.
-	LogDuration *int32 `protobuf:"varint,5,opt,name=log_duration,json=logDuration,proto3,oneof" json:"log_duration,omitempty" msg:"2693193"` // @gotags: msg:"2693193"
+	LogDuration *int32 `protobuf:"varint,5,opt,name=log_duration,json=logDuration,proto3,oneof" json:"log_duration,omitempty" msg:"2693193,omitempty"`
 	// Contains the time, in UTC, at which the activity ended.
-	LogEnd *int64 `protobuf:"varint,6,opt,name=log_end,json=logEnd,proto3,oneof" json:"log_end,omitempty" msg:"26932064"` // @gotags: msg:"26932064"
+	LogEnd *int64 `protobuf:"varint,6,opt,name=log_end,json=logEnd,proto3,oneof" json:"log_end,omitempty" msg:"26932064,omitempty"`
 	// Contains metadata about the Journal object.
-	LogFlags *int32 `protobuf:"varint,7,opt,name=log_flags,json=logFlags,proto3,oneof" json:"log_flags,omitempty" msg:"2693243"` // @gotags: msg:"2693243"
+	LogFlags *int32 `protobuf:"varint,7,opt,name=log_flags,json=logFlags,proto3,oneof" json:"log_flags,omitempty" msg:"2693243,omitempty"`
 	// Contains the time, in UTC, at which the activity began.
-	LogStart *int64 `protobuf:"varint,8,opt,name=log_start,json=logStart,proto3,oneof" json:"log_start,omitempty" msg:"26931864"` // @gotags: msg:"26931864"
+	LogStart *int64 `protobuf:"varint,8,opt,name=log_start,json=logStart,proto3,oneof" json:"log_start,omitempty" msg:"26931864,omitempty"`
 	// Briefly describes the journal activity that is being recorded.
-	LogType *string `protobuf:"bytes,9,opt,name=log_type,json=logType,proto3,oneof" json:"log_type,omitempty" msg:"26931231"` // @gotags: msg:"26931231"
+	LogType *string `protobuf:"bytes,9,opt,name=log_type,json=logType,proto3,oneof" json:"log_type,omitempty" msg:"26931231,omitempty"`
 	// Contains an expanded description of the journal activity that is being recorded.
-	LogTypeDesc *string `protobuf:"bytes,10,opt,name=log_type_desc,json=logTypeDesc,proto3,oneof" json:"log_type_desc,omitempty" msg:"26934631"` // @gotags: msg:"26934631"
+	LogTypeDesc *string `protobuf:"bytes,10,opt,name=log_type_desc,json=logTypeDesc,proto3,oneof" json:"log_type_desc,omitempty" msg:"26934631,omitempty"`
 }
 
 func (x *Journal) Reset() {

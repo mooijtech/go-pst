@@ -41,7 +41,7 @@ package main
 
 import (
   "fmt"
-  "github.com/pkg/errors"
+  "github.com/rotisserie/eris"
   "os"
   "time"
 
@@ -71,7 +71,7 @@ func main() {
 
     messageIterator, err := folder.GetMessageIterator()
 
-    if errors.Is(err, pst.ErrMessagesNotFound) {
+    if eris.Is(err, pst.ErrMessagesNotFound) {
       // Folder has no messages.
       return nil
     } else if err != nil {
@@ -86,7 +86,7 @@ func main() {
 
       attachmentIterator, err := message.GetAttachmentIterator()
 
-      if errors.Is(err, pst.ErrAttachmentsNotFound) {
+      if eris.Is(err, pst.ErrAttachmentsNotFound) {
         // This message has no attachments.
         continue
       } else if err != nil {

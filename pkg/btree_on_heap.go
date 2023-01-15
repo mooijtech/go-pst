@@ -20,7 +20,7 @@ package pst
 import (
 	"encoding/binary"
 
-	"github.com/pkg/errors"
+	"github.com/rotisserie/eris"
 )
 
 // BTreeOnHeapHeader represents the B-Tree-on-Heap header.
@@ -38,50 +38,26 @@ func (file *File) GetBTreeOnHeapHeader(heapOnNode *HeapOnNode) (*BTreeOnHeapHead
 	hidUserRoot, err := heapOnNode.GetHIDUserRoot()
 
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, eris.Wrap(err, "failed to get HID user root")
 	}
 
 	btreeOnHeapReader, err := file.GetHeapOnNodeReaderFromHNID(hidUserRoot, *heapOnNode.Reader)
 
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, eris.Wrap(err, "failed to get Heap-on-Node reader from HNID")
 	}
 
-	btreeOnHeapTableType := make([]byte, 1)
+	btreeOnHeap := make([]byte, 8)
 
-	if _, err := btreeOnHeapReader.ReadAt(btreeOnHeapTableType, 0); err != nil {
-		return nil, errors.WithStack(err)
-	}
-
-	btreeOnHeapKeySize := make([]byte, 1)
-
-	if _, err := btreeOnHeapReader.ReadAt(btreeOnHeapKeySize, 1); err != nil {
-		return nil, errors.WithStack(err)
-	}
-
-	btreeOnHeapValueSize := make([]byte, 1)
-
-	if _, err := btreeOnHeapReader.ReadAt(btreeOnHeapValueSize, 2); err != nil {
-		return nil, errors.WithStack(err)
-	}
-
-	btreeOnHeapLevels := make([]byte, 1)
-
-	if _, err := btreeOnHeapReader.ReadAt(btreeOnHeapLevels, 3); err != nil {
-		return nil, errors.WithStack(err)
-	}
-
-	btreeOnHeapHIDRoot := make([]byte, 4)
-
-	if _, err := btreeOnHeapReader.ReadAt(btreeOnHeapHIDRoot, 4); err != nil {
-		return nil, errors.WithStack(err)
+	if _, err := btreeOnHeapReader.ReadAt(btreeOnHeap, 0); err != nil {
+		return nil, eris.Wrap(err, "failed to read b-tree-on-heap")
 	}
 
 	return &BTreeOnHeapHeader{
-		TableType: btreeOnHeapTableType[0],
-		KeySize:   btreeOnHeapKeySize[0],
-		ValueSize: btreeOnHeapValueSize[0],
-		Levels:    btreeOnHeapLevels[0],
-		HIDRoot:   Identifier(binary.LittleEndian.Uint32(btreeOnHeapHIDRoot)),
+		TableType: btreeOnHeap[0],
+		KeySize:   btreeOnHeap[1],
+		ValueSize: btreeOnHeap[2],
+		Levels:    btreeOnHeap[3],
+		HIDRoot:   Identifier(binary.LittleEndian.Uint32(btreeOnHeap[4:])),
 	}, nil
 }

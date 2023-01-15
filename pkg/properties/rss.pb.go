@@ -45,19 +45,19 @@ type RSS struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Contains the contents of the title field from the XML of the Atom feed or RSS channel.
-	PostRssChannel *string `protobuf:"bytes,1,opt,name=post_rss_channel,json=postRssChannel,proto3,oneof" json:"post_rss_channel,omitempty" msg:"27136431"` // @gotags: msg:"27136431"
+	PostRssChannel *string `protobuf:"bytes,1,opt,name=post_rss_channel,json=postRssChannel,proto3,oneof" json:"post_rss_channel,omitempty" msg:"27136431,omitempty"`
 	// Contains the URL of the RSS or Atom feed from which the XML file came.
-	PostRssChannelLink *string `protobuf:"bytes,2,opt,name=post_rss_channel_link,json=postRssChannelLink,proto3,oneof" json:"post_rss_channel_link,omitempty" msg:"27136031"` // @gotags: msg:"27136031"
+	PostRssChannelLink *string `protobuf:"bytes,2,opt,name=post_rss_channel_link,json=postRssChannelLink,proto3,oneof" json:"post_rss_channel_link,omitempty" msg:"27136031,omitempty"`
 	// Contains a unique identifier for the RSS object.
-	PostRssItemGuid *string `protobuf:"bytes,3,opt,name=post_rss_item_guid,json=postRssItemGuid,proto3,oneof" json:"post_rss_item_guid,omitempty" msg:"27136331"` // @gotags: msg:"27136331"
+	PostRssItemGuid *string `protobuf:"bytes,3,opt,name=post_rss_item_guid,json=postRssItemGuid,proto3,oneof" json:"post_rss_item_guid,omitempty" msg:"27136331,omitempty"`
 	// Contains a hash of the feed XML computed by using an implementation-dependent algorithm.
-	PostRssItemHash *int32 `protobuf:"varint,4,opt,name=post_rss_item_hash,json=postRssItemHash,proto3,oneof" json:"post_rss_item_hash,omitempty" msg:"2713623"` // @gotags: msg:"2713623"
+	PostRssItemHash *int32 `protobuf:"varint,4,opt,name=post_rss_item_hash,json=postRssItemHash,proto3,oneof" json:"post_rss_item_hash,omitempty" msg:"2713623,omitempty"`
 	// Contains the URL of the link from an RSS or Atom item.
-	PostRssItemLink *string `protobuf:"bytes,5,opt,name=post_rss_item_link,json=postRssItemLink,proto3,oneof" json:"post_rss_item_link,omitempty" msg:"27136131"` // @gotags: msg:"27136131"
+	PostRssItemLink *string `protobuf:"bytes,5,opt,name=post_rss_item_link,json=postRssItemLink,proto3,oneof" json:"post_rss_item_link,omitempty" msg:"27136131,omitempty"`
 	// Contains the item element and all of its sub-elements from an RSS feed, or the entry element and all of its sub-elements from an Atom feed.
-	PostRssItemXml *string `protobuf:"bytes,6,opt,name=post_rss_item_xml,json=postRssItemXml,proto3,oneof" json:"post_rss_item_xml,omitempty" msg:"27136531"` // @gotags: msg:"27136531"
+	PostRssItemXml *string `protobuf:"bytes,6,opt,name=post_rss_item_xml,json=postRssItemXml,proto3,oneof" json:"post_rss_item_xml,omitempty" msg:"27136531,omitempty"`
 	// Contains the user's preferred name for the RSS or Atom subscription.
-	PostRssSubscription *string `protobuf:"bytes,7,opt,name=post_rss_subscription,json=postRssSubscription,proto3,oneof" json:"post_rss_subscription,omitempty" msg:"27136631"` // @gotags: msg:"27136631"
+	PostRssSubscription *string `protobuf:"bytes,7,opt,name=post_rss_subscription,json=postRssSubscription,proto3,oneof" json:"post_rss_subscription,omitempty" msg:"27136631,omitempty"`
 }
 
 func (x *RSS) Reset() {

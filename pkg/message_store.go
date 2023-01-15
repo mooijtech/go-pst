@@ -17,20 +17,20 @@
 
 package pst
 
-import "github.com/pkg/errors"
+import "github.com/rotisserie/eris"
 
 // GetMessageStore returns the message store of the PST file.
 func (file *File) GetMessageStore() (*PropertyContext, error) {
 	dataBTreeNode, err := file.GetDataBTreeNode(IdentifierMessageStore)
 
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, eris.Wrapf(err, "failed to find data b-tree node")
 	}
 
 	heapOnNode, err := file.GetHeapOnNode(dataBTreeNode)
 
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, eris.Wrap(err, "failed to get Heap-on-Node")
 	}
 
 	return file.GetPropertyContext(heapOnNode)
