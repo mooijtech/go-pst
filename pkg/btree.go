@@ -18,11 +18,12 @@
 package pst
 
 import (
+	"context"
 	"encoding/binary"
+	"fmt"
 	"github.com/rotisserie/eris"
 	"golang.org/x/sync/errgroup"
 	"io"
-	"sync"
 )
 
 // GetNodeBTreeOffset returns the file offset to the node b-tree.
@@ -105,11 +106,11 @@ func (file *File) GetBTreeNodeEntryCount(btreeNode []byte) uint16 {
 func (file *File) GetBTreeNodeEntrySize(btreeNode []byte) uint8 {
 	switch file.FormatType {
 	case FormatTypeUnicode:
-		return btreeNode[490]
+		return btreeNode[491]
 	case FormatTypeUnicode4k:
-		return btreeNode[4060]
+		return btreeNode[4061]
 	case FormatTypeANSI:
-		return btreeNode[498]
+		return btreeNode[499]
 	default:
 		panic(ErrFormatTypeUnsupported)
 	}
@@ -120,11 +121,11 @@ func (file *File) GetBTreeNodeEntrySize(btreeNode []byte) uint8 {
 func (file *File) GetBTreeNodeLevel(btreeNode []byte) uint8 {
 	switch file.FormatType {
 	case FormatTypeUnicode:
-		return btreeNode[492]
+		return btreeNode[491]
 	case FormatTypeUnicode4k:
-		return btreeNode[4062]
+		return btreeNode[4061]
 	case FormatTypeANSI:
-		return btreeNode[500]
+		return btreeNode[499]
 	default:
 		panic(ErrFormatTypeUnsupported)
 	}
@@ -191,6 +192,8 @@ func (file *File) GetBTreeNodeEntries(btreeNodeOffset int64, btreeType BTreeType
 			callback(nil, err)
 			return
 		}
+
+		fmt.Printf("Got offiset: %d", btreeNodeOffset)
 
 		btreeNodeEntryCount := file.GetBTreeNodeEntryCount(btreeNodeEntry)
 		btreeNodeLevel := file.GetBTreeNodeLevel(btreeNodeEntry)
@@ -366,46 +369,41 @@ const (
 	BTreeTypeBlock
 )
 
-func AsyncWalkAndCreateBTree() {
-	// TODO - We can wait here.
-}
-
 // WalkAndCreateBTree walks the b-tree and updates the given b-tree store.
-func (file *File) WalkAndCreateBTree(btreeOffset int64, btreeType BTreeType, btreeStore BTreeStore, walkGroup *errgroup.Group) {
+func (file *File) WalkAndCreateBTree(btreeOffset int64, btreeType BTreeType, btreeNodeLevel int, btreeStore BTreeStore, walkGroup *errgroup.Group, walkGroupCancel context.CancelCauseFunc) {
+
+	// TODO - This should return 2, pass?
+
 	walkGroup.Go(func() error {
-		var errFromCallback error
-		var errMutex sync.Mutex
-
-		errMutex.Lock()
-
 		file.GetBTreeNodeEntries(btreeOffset, btreeType, func(btreeNodeEntries []BTreeNode, err error) {
 			if err != nil {
-				errFromCallback = eris.Wrap(err, "failed to get b-tree node entries")
+				walkGroupCancel(eris.Wrap(err, "failed to get b-tree node entries"))
 				return
 			}
 
 			for i := 0; i < len(btreeNodeEntries); i++ {
 				nodeEntry := btreeNodeEntries[i]
 
+				fmt.Printf("Got identifier: %d\n", nodeEntry.Identifier)
+
 				if _, exists := btreeStore.Load(nodeEntry); exists {
-					errFromCallback = ErrBTreeNodeConflict
+					walkGroupCancel(eris.Wrap(ErrBTreeNodeConflict, "failed to load node"))
 					return
 				}
 
 				if nodeEntry.NodeLevel > 0 {
 					// Recursive.
-					file.WalkAndCreateBTree(nodeEntry.FileOffset, btreeType, btreeStore, walkGroup)
+					file.WalkAndCreateBTree(nodeEntry.FileOffset, btreeType, btreeStore, walkGroup, walkGroupCancel)
 
 					if err != nil {
-						errFromCallback = eris.Wrap(err, "failed to walk and create b-tree")
+						walkGroupCancel(eris.Wrap(err, "failed to walk and create b-tree"))
+						return
 					}
 				}
 			}
 		})
 
-		errMutex.Lock()
-
-		return errFromCallback
+		return nil
 	})
 }
 

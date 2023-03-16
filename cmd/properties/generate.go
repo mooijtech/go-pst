@@ -23,6 +23,7 @@ import (
 	"bytes"
 	_ "embed"
 	"encoding/csv"
+	"encoding/json"
 	"encoding/xml"
 	"fmt"
 	"github.com/pkg/errors"
@@ -41,7 +42,7 @@ func main() {
 	downloadedFile, err := download()
 
 	if err != nil {
-		panic(fmt.Sprintf("Failed to download [MS-OXPROPS].docx: %+v", err))
+		panic(fmt.Sprintf("Failed to download [MS-OXPROPS].docx: %+v", errors.WithStack(err)))
 	}
 
 	defer func() {
@@ -55,7 +56,7 @@ func main() {
 	unzippedFile, err := unzip(downloadedFile)
 
 	if err != nil {
-		panic(fmt.Sprintf("Failed to unzip [MS-OXPROPS].docx: %+v", err))
+		panic(fmt.Sprintf("Failed to unzip [MS-OXPROPS].docx: %+v", errors.WithStack(err)))
 	}
 
 	defer func() {
@@ -67,18 +68,19 @@ func main() {
 	properties, err := getPropertiesFromXML(unzippedFile)
 
 	if err != nil {
-		panic(fmt.Sprintf("Failed to create properties: %+v", err))
+		panic(fmt.Sprintf("Failed to create properties: %+v", errors.WithStack(err)))
 	}
 
 	if err = generateProtocolBuffers(properties); err != nil {
-		panic(fmt.Sprintf("Failed to generate Protocol Buffers: %+v", err))
+		panic(fmt.Sprintf("Failed to generate Protocol Buffers: %+v", errors.WithStack(err)))
 	}
 
 	// TODO - Check if exists.
+	// Write property map.
 	propertyMap, err := os.Create("properties.csv")
 
 	if err != nil {
-		panic(err)
+		panic(errors.WithStack(err))
 	}
 
 	propertyMapWriter := csv.NewWriter(propertyMap)
@@ -86,21 +88,128 @@ func main() {
 	for _, property := range properties {
 		propertyID := strconv.Itoa(int(property.PropertyID))
 		jsonName := getFormattedPropertyName(property.Name)
+		propertySet := property.PropertySet
 
 		if propertyID == "0" {
-			//propertyID = property.PropertySet
+			fmt.Printf("Unknown property ID for: %s\n", jsonName)
 			continue
-			// TODO - Fix before release.
 		}
 
-		if err := propertyMapWriter.Write([]string{propertyID, jsonName}); err != nil {
-			panic(err)
+		if err := propertyMapWriter.Write([]string{propertyID, jsonName, propertySet}); err != nil {
+			panic(errors.WithStack(err))
+		} else if propertyMapWriter.Error() != nil {
+			panic(errors.WithStack(propertyMapWriter.Error()))
 		}
 	}
 
-	if err := propertyMap.Close(); err != nil {
-		panic(err)
+	propertyMapWriter.Flush() // Important since writes are buffered.
+
+	if propertyMapWriter.Error() != nil {
+		panic(errors.WithStack(propertyMapWriter.Error()))
+	} else if err := propertyMap.Close(); err != nil {
+		panic(errors.WithStack(err))
 	}
+
+	// Create schema
+	var schema []map[string]any
+
+	propertyTypeMapping := map[uint16]string{
+		2:   "i64",
+		3:   "i64",
+		4:   "i64",
+		5:   "i64",
+		6:   "i64",
+		7:   "i64", // Time
+		10:  "i64",
+		11:  "i64",
+		20:  "i64",
+		31:  "text",
+		30:  "text",
+		64:  "i64", // Time
+		72:  "i64",
+		251: "i64",
+		// The rest are variable size.
+	}
+
+	var addedProperties []string
+
+	for _, property := range properties {
+		// Property JSON name
+		propertyName := property.Name
+
+		propertyName = strings.TrimPrefix(propertyName, "PidLid")
+		propertyName = strings.TrimPrefix(propertyName, "PidTag")
+		propertyName = strings.TrimPrefix(propertyName, "PidName")
+		propertyName = strings.ToLower(propertyName[:1]) + propertyName[1:]
+
+		found := false
+
+		for _, pro := range addedProperties {
+			if pro == propertyName {
+				found = true
+				break
+			}
+		}
+
+		if found {
+			continue
+		}
+
+		propertySchema := make(map[string]any)
+
+		fmt.Printf("Got property type: %s\n", propertyTypeMapping[property.PropertyTypes[0]])
+
+		propertyType := propertyTypeMapping[property.PropertyTypes[0]]
+
+		if propertyType == "" {
+			fmt.Printf("Skipping: %s\n", property.Name)
+			continue
+		}
+
+		propertySchema["name"] = propertyName
+		propertySchema["type"] = propertyType
+
+		propertySchemaOptions := make(map[string]any)
+		propertySchemaIndexingOptions := make(map[string]any)
+
+		propertySchemaOptions["stored"] = true
+
+		if propertyType == "text" {
+			propertySchemaIndexingOptions["record"] = "position"
+			propertySchemaOptions["indexing"] = propertySchemaIndexingOptions
+			// TODO - Analyzers, allow user to override?
+		} else {
+			// int
+			propertySchemaOptions["indexed"] = true
+		}
+
+		propertySchema["options"] = propertySchemaOptions
+
+		schema = append(schema, propertySchema)
+		addedProperties = append(addedProperties, propertyName)
+	}
+
+	schemaJSON, err := json.Marshal(schema)
+
+	if err != nil {
+		panic(errors.WithStack(err))
+	}
+
+	schemaOutput, err := os.Create("schema.json")
+
+	if err != nil {
+		panic(errors.WithStack(err))
+	}
+
+	if _, err := schemaOutput.Write(schemaJSON); err != nil {
+		panic(errors.WithStack(err))
+	}
+
+	if err := schemaOutput.Close(); err != nil {
+		panic(errors.WithStack(err))
+	}
+
+	fmt.Printf("Created schema: \n%s", schemaJSON)
 }
 
 // download the latest version of [MS-OXPROPS].docx and returns the downloaded file.
@@ -554,8 +663,8 @@ func createProtoFileField(property xmlProperty, protocolBufferFieldType string, 
 
 		if property.PropertyID != 0 {
 			// TODO - There may be multiple property types.
-			goTags.WriteString(fmt.Sprintf("// @gotags: msg:\"%d%d\"", property.PropertyID, property.PropertyTypes[0]))
-		} // TODO - Also map by PropertySet
+			goTags.WriteString(fmt.Sprintf("// @gotags: msg:\"%d%d,omitempty\"", property.PropertyID, property.PropertyTypes[0]))
+		} // PropertySets are mapped via the PropertyMap in property_context.go
 
 		// Write.
 		fieldBuilder.WriteString(fmt.Sprintf("  // %s\n", property.PropertyDescription))

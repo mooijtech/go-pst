@@ -1,0 +1,7578 @@
+[
+  {
+    "name": "addressBookProviderArrayType",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "addressCountryCode",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "agingDontAgeMe",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "allAttendeesString",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "allowExternalCheck",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "appointmentAuxiliaryFlags",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "appointmentColor",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "appointmentCounterProposal",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "appointmentDuration",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "appointmentEndDate",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "appointmentEndTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "appointmentEndWhole",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "appointmentLastSequence",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "appointmentMessageClass",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "appointmentNotAllowPropose",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "appointmentProposalNumber",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "appointmentProposedDuration",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "appointmentProposedEndWhole",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "appointmentProposedStartWhole",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "appointmentReplyName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "appointmentReplyTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "appointmentSequence",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "appointmentSequenceTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "appointmentStartDate",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "appointmentStartTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "appointmentStartWhole",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "appointmentStateFlags",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "appointmentSubType",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "appointmentUpdateTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "attendeeCriticalChange",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "autoFillLocation",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "autoLog",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "autoProcessState",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "autoStartCheck",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "billing",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "birthdayLocal",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "busyStatus",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "calendarType",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "ccAttendeesString",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "changeHighlight",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "classification",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "classificationDescription",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "classificationGuid",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "classificationKeep",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "classified",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "clientIntent",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "clipEnd",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "clipStart",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "collaborateDoc",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "commonEnd",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "commonStart",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "conferencingCheck",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "conferencingType",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "contactCharacterSet",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "contactLinkGlobalAddressListLinkId",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "contactLinkGlobalAddressListLinkState",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "contactLinkName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "contactUserField1",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "contactUserField2",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "contactUserField3",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "contactUserField4",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "conversationActionLastAppliedTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "conversationActionMaxDeliveryTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "conversationActionVersion",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "conversationProcessed",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "currentVersion",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "currentVersionName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "dayInterval",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "dayOfMonth",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "delegateMail",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "department",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "directory",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "distributionListChecksum",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "distributionListName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "email1AddressType",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "email1DisplayName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "email1EmailAddress",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "email1OriginalDisplayName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "email2AddressType",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "email2DisplayName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "email2EmailAddress",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "email2OriginalDisplayName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "email3AddressType",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "email3DisplayName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "email3EmailAddress",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "email3OriginalDisplayName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "endRecurrenceDate",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "endRecurrenceTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "exceptionReplaceTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "fax1AddressType",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "fax1EmailAddress",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "fax1OriginalDisplayName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "fax2AddressType",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "fax2EmailAddress",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "fax2OriginalDisplayName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "fax3AddressType",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "fax3EmailAddress",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "fax3OriginalDisplayName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "fExceptionalAttendees",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "fExceptionalBody",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "fileUnder",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "fileUnderId",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "fInvited",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "flagRequest",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "flagString",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "forwardInstance",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "fOthersAppointment",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "freeBusyLocation",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "hasPicture",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "homeAddress",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "homeAddressCountryCode",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "html",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "iCalendarDayOfWeekMask",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "infoPathFormName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "instantMessagingAddress",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "intendedBusyStatus",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "internetAccountName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "internetAccountStamp",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "isContactLinked",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "isException",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "isRecurring",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "isSilent",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "location",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "logDocumentPosted",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "logDocumentPrinted",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "logDocumentRouted",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "logDocumentSaved",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "logDuration",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "logEnd",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "logFlags",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "logStart",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "logType",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "logTypeDesc",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "meetingType",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "meetingWorkspaceUrl",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "monthInterval",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "monthOfYear",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "monthOfYearMask",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "netShowUrl",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "noEndDateFlag",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "nonSendableBcc",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "nonSendableCc",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "nonSendableTo",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "noteColor",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "noteHeight",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "noteWidth",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "noteX",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "noteY",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "occurrences",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "oldLocation",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "oldRecurrenceType",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "oldWhenEndWhole",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "oldWhenStartWhole",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "onlinePassword",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "optionalAttendees",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "organizerAlias",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "otherAddress",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "otherAddressCountryCode",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "ownerCriticalChange",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "ownerName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "pendingStateForSiteMailboxDocument",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "percentComplete",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "postalAddressId",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "postRssChannel",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "postRssChannelLink",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "postRssItemGuid",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "postRssItemHash",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "postRssItemLink",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "postRssItemXml",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "postRssSubscription",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "private",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "promptSendUpdate",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "recurrenceDuration",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "recurrencePattern",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "recurrenceType",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "recurring",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "reminderDelta",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "reminderFileParameter",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "reminderOverride",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "reminderPlaySound",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "reminderSet",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "reminderSignalTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "reminderTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "reminderTimeDate",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "reminderTimeTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "reminderType",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "remoteStatus",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "requiredAttendees",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "resourceAttendees",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "responseStatus",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "serverProcessed",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "serverProcessingActions",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "sharingAnonymity",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "sharingBrowseUrl",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "sharingCapabilities",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "sharingConfigurationUrl",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "sharingDataRangeEnd",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "sharingDataRangeStart",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "sharingDetail",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "sharingExtensionXml",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "sharingFlags",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "sharingFlavor",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "sharingInitiatorName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "sharingInitiatorSmtp",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "sharingLastAutoSyncTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "sharingLastSyncTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "sharingLocalComment",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "sharingLocalLastModificationTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "sharingLocalName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "sharingLocalPath",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "sharingLocalStoreUid",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "sharingLocalType",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "sharingLocalUid",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "sharingParticipants",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "sharingPermissions",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "sharingProviderExtension",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "sharingProviderName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "sharingProviderUrl",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "sharingRangeEnd",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "sharingRangeStart",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "sharingReciprocation",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "sharingRemoteByteSize",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "sharingRemoteComment",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "sharingRemoteCrc",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "sharingRemoteLastModificationTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "sharingRemoteMessageCount",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "sharingRemoteName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "sharingRemotePass",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "sharingRemotePath",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "sharingRemoteStoreUid",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "sharingRemoteType",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "sharingRemoteUid",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "sharingRemoteUser",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "sharingRemoteVersion",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "sharingResponseTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "sharingResponseType",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "sharingRoamLog",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "sharingStart",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "sharingStatus",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "sharingStop",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "sharingSyncFlags",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "sharingSyncInterval",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "sharingTimeToLive",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "sharingTimeToLiveAuto",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "sharingWorkingHoursDays",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "sharingWorkingHoursEnd",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "sharingWorkingHoursStart",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "sideEffects",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "singleBodyICal",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "smartNoAttach",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "startRecurrenceDate",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "startRecurrenceTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "taskAcceptanceState",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "taskAccepted",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "taskActualEffort",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "taskAssigner",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "taskComplete",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "taskCustomFlags",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "taskDateCompleted",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "taskDeadOccurrence",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "taskDueDate",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "taskEstimatedEffort",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "taskFCreator",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "taskFFixOffline",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "taskFRecurring",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "taskHistory",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "taskLastDelegate",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "taskLastUpdate",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "taskLastUser",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "taskMode",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "taskMultipleRecipients",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "taskNoCompute",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "taskOrdinal",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "taskOwner",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "taskOwnership",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "taskResetReminder",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "taskRole",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "taskStartDate",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "taskState",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "taskStatus",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "taskStatusOnComplete",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "taskUpdates",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "taskVersion",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "teamTask",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "timeZone",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "timeZoneDescription",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "toAttendeesString",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "toDoOrdinalDate",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "toDoSubOrdinal",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "toDoTitle",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "useTnef",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "validFlagStringProof",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "verbResponse",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "weddingAnniversaryLocal",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "weekInterval",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "where",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "workAddress",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "workAddressCity",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "workAddressCountry",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "workAddressCountryCode",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "workAddressPostalCode",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "workAddressPostOfficeBox",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "workAddressState",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "workAddressStreet",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "yearInterval",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "yomiCompanyName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "yomiFirstName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "yomiLastName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "acceptLanguage",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "applicationName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "attachmentMacContentType",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "attachmentOriginalPermissionType",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "attachmentPermissionType",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "attachmentProviderType",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "audioNotes",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "author",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "birthdayContactAttributionDisplayName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "byteCount",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "calendarAttendeeRole",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "calendarBusystatus",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "calendarContact",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "calendarContactUrl",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "calendarCreated",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "calendarDescriptionUrl",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "calendarDuration",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "calendarGeoLatitude",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "calendarGeoLongitude",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "calendarInstanceType",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "calendarIsOrganizer",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "calendarLastModified",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "calendarLocationUrl",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "calendarMeetingStatus",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "calendarMethod",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "calendarProductId",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "calendarRecurrenceIdRange",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "calendarReminderOffset",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "calendarResources",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "calendarRsvp",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "calendarSequence",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "calendarTimeZone",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "calendarTimeZoneId",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "calendarTransparent",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "calendarUid",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "calendarVersion",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "category",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "characterCount",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "comments",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "company",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "contentBase",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "contentClass",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "contentType",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "createDateTimeReadOnly",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "crossReference",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "davId",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "davIsCollection",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "davIsStructuredDocument",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "davParentName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "davUid",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "editTime",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "exchangeIntendedBusyStatus",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "exchangeJunkEmailMoveStamp",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "exchangeNoModifyExceptions",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "exchangePatternEnd",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "exchangePatternStart",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "exchangeReminderInterval",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "exchDataSchemaCollectionReference",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "extractedAddresses",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "extractedContacts",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "extractedEmails",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "extractedMeetings",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "extractedPhones",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "extractedTasks",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "extractedUrls",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "from",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "hiddenCount",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "httpmailCalendar",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "httpmailHtmlDescription",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "httpmailSendMessage",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "internetSubject",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "isBirthdayContactWritable",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "lastAuthor",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "lastPrinted",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "lastSaveDateTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "lineCount",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "linksDirty",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "locationUrl",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "manager",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "meetingDoNotForward",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "mSIPLabels",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "multimediaClipCount",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "noteCount",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "oMSAccountGuid",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "oMSMobileModel",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "oMSScheduleTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "oMSServiceType",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "oMSSourceType",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "pageCount",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "paragraphCount",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "phishingStamp",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "presentationFormat",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "quarantineOriginalSender",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "revisionNumber",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "scale",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "security",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "slideCount",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "subject",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "template",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "title",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "wordCount",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "xCallId",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "xFaxNumberOfPages",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "xRequireProtectedPlayOnPhone",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "xSenderTelephoneNumber",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "xSharingBrowseUrl",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "xSharingCapabilities",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "xSharingConfigUrl",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "xSharingExendedCaps",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "xSharingFlavor",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "xSharingInstanceGuid",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "xSharingLocalType",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "xSharingProviderGuid",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "xSharingProviderName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "xSharingProviderUrl",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "xSharingRemoteName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "xSharingRemotePath",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "xSharingRemoteStoreUid",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "xSharingRemoteType",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "xSharingRemoteUid",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "xVoiceMessageAttachmentOrder",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "xVoiceMessageDuration",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "xVoiceMessageSenderName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "access",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "accessLevel",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "account",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "addressBookContainerId",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "addressBookDeliveryContentLength",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "addressBookDisplayNamePrintable",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "addressBookDisplayTypeExtended",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "addressBookDistributionListExternalMemberCount",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "addressBookDistributionListMemberCount",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "addressBookExtensionAttribute1",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "addressBookExtensionAttribute10",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "addressBookExtensionAttribute11",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "addressBookExtensionAttribute12",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "addressBookExtensionAttribute13",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "addressBookExtensionAttribute14",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "addressBookExtensionAttribute15",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "addressBookExtensionAttribute2",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "addressBookExtensionAttribute3",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "addressBookExtensionAttribute4",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "addressBookExtensionAttribute5",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "addressBookExtensionAttribute6",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "addressBookExtensionAttribute7",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "addressBookExtensionAttribute8",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "addressBookExtensionAttribute9",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "addressBookFolderPathname",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "addressBookHierarchicalIsHierarchicalGroup",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "addressBookHierarchicalRootDepartment",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "addressBookHomeMessageDatabase",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "addressBookIsMaster",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "addressBookIsMemberOfDistributionList",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "addressBookManagerDistinguishedName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "addressBookMessageId",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "addressBookModerationEnabled",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "addressBookObjectDistinguishedName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "addressBookOrganizationalUnitRootDistinguishedName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "addressBookPhoneticCompanyName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "addressBookPhoneticDepartmentName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "addressBookPhoneticDisplayName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "addressBookPhoneticGivenName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "addressBookPhoneticSurname",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "addressBookRoomCapacity",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "addressBookRoomDescription",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "addressBookSeniorityIndex",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "addressBookTargetAddress",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "addressType",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "alternateRecipientAllowed",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "anr",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "archiveDate",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "archivePeriod",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "assistant",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "assistantTelephoneNumber",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "associated",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "attachContentBase",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "attachContentId",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "attachContentLocation",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "attachExtension",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "attachFilename",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "attachFlags",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "attachLongFilename",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "attachLongPathname",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "attachmentContactPhoto",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "attachmentFlags",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "attachmentHidden",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "attachmentLinkId",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "attachMethod",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "attachMimeTag",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "attachNumber",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "attachPathname",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "attachPayloadClass",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "attachPayloadProviderGuidString",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "attachSize",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "attachTransportName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "attributeHidden",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "attributeReadOnly",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "autoForwardComment",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "autoForwarded",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "autoResponseSuppress",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "birthday",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "blockStatus",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "body",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "bodyContentId",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "bodyContentLocation",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "bodyHtml",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "business2TelephoneNumber",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "businessFaxNumber",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "businessHomePage",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "businessTelephoneNumber",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "callbackTelephoneNumber",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "callId",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "carTelephoneNumber",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "cdoRecurrenceid",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "changeNumber",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "clientSubmitTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "codePageId",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "comment",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "companyMainTelephoneNumber",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "companyName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "computerNetworkName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "containerClass",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "containerFlags",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "contentCount",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "contentFilterSpamConfidenceLevel",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "contentUnreadCount",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "conversationIndexTracking",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "conversationTopic",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "country",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "creationTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "creatorName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "customerId",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "damBackPatched",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "defaultPostMessageClass",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "deferredActionMessageOriginalEntryId",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "deferredDeliveryTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "deferredSendNumber",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "deferredSendTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "deferredSendUnits",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "delegatedByRule",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "deleteAfterSubmit",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "deletedCountTotal",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "deletedOn",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "deliverTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "departmentName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "depth",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "displayBcc",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "displayCc",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "displayName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "displayNamePrefix",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "displayTo",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "displayType",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "displayTypeEx",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "emailAddress",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "endDate",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "exceptionEndTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "exceptionStartTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "expiryNumber",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "expiryTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "expiryUnits",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "extendedRuleSizeLimit",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "faxNumberOfPages",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "flagCompleteTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "flagStatus",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "flatUrlName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "folderId",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "folderFlags",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "folderType",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "followupIcon",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "freeBusyCountMonths",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "freeBusyMessageEmailAddress",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "freeBusyPublishEnd",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "freeBusyPublishStart",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "freeBusyRangeTimestamp",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "ftpSite",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "gatewayNeedsToRefresh",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "gender",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "generation",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "givenName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "governmentIdNumber",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "hasAttachments",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "hasDeferredActionMessages",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "hasNamedProperties",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "hasRules",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "hierarchyChangeNumber",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "hierRev",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "hobbies",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "home2TelephoneNumber",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "homeAddressCity",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "homeAddressCountry",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "homeAddressPostalCode",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "homeAddressPostOfficeBox",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "homeAddressStateOrProvince",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "homeAddressStreet",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "homeFaxNumber",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "homeTelephoneNumber",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "iCalendarEndTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "iCalendarReminderNextTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "iCalendarStartTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "iconIndex",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "importance",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "inConflict",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "initialDetailsPane",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "initials",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "inReplyToId",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "instanceNum",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "instID",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "internetCodepage",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "internetMailOverrideFormat",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "internetMessageId",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "internetReferences",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "isdnNumber",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "junkAddRecipientsToSafeSendersList",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "junkIncludeContacts",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "junkPermanentlyDelete",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "junkPhishingEnableLinks",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "junkThreshold",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "keyword",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "language",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "lastModificationTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "lastModifierName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "lastVerbExecuted",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "lastVerbExecutionTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "listHelp",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "listSubscribe",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "listUnsubscribe",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "localCommitTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "localCommitTimeMax",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "localeId",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "locality",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "mailboxOwnerName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "managerName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "maximumSubmitMessageSize",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "memberId",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "memberName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "memberRights",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "messageCcMe",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "messageClass",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "messageCodepage",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "messageDeliveryTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "messageEditorFormat",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "messageFlags",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "messageHandlingSystemCommonName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "messageLocaleId",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "messageRecipientMe",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "messageSize",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "messageSizeExtended",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "messageStatus",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "messageToMe",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "mid",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "middleName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "mobileTelephoneNumber",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "nativeBody",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "nextSendAcct",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "nickname",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "nonDeliveryReportDiagCode",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "nonDeliveryReportReasonCode",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "nonDeliveryReportStatusCode",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "normalizedSubject",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "objectType",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "officeLocation",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "offlineAddressBookContainerGuid",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "offlineAddressBookDistinguishedName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "offlineAddressBookMessageClass",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "offlineAddressBookName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "offlineAddressBookSequence",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "ordinalMost",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "organizationalIdNumber",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "originalAuthorName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "originalDeliveryTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "originalDisplayBcc",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "originalDisplayCc",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "originalDisplayTo",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "originalMessageClass",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "originalMessageId",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "originalSenderAddressType",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "originalSenderEmailAddress",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "originalSenderName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "originalSensitivity",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "originalSentRepresentingAddressType",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "originalSentRepresentingEmailAddress",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "originalSentRepresentingName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "originalSubject",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "originalSubmitTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "originatorDeliveryReportRequested",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "originatorNonDeliveryReportRequested",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "oscSyncEnabled",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "otherAddressCity",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "otherAddressCountry",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "otherAddressPostalCode",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "otherAddressPostOfficeBox",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "otherAddressStateOrProvince",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "otherAddressStreet",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "otherTelephoneNumber",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "outOfOfficeState",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "ownerAppointmentId",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "pagerTelephoneNumber",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "parentFolderId",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "personalHomePage",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "postalAddress",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "postalCode",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "postOfficeBox",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "primaryFaxNumber",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "primarySendAccount",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "primaryTelephoneNumber",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "priority",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "processed",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "profession",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "prohibitReceiveQuota",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "prohibitSendQuota",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "purportedSenderDomain",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "radioTelephoneNumber",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "read",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "readReceiptAddressType",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "readReceiptEmailAddress",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "readReceiptName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "readReceiptRequested",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "readReceiptSmtpAddress",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "receiptTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "receivedByAddressType",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "receivedByEmailAddress",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "receivedByName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "receivedBySmtpAddress",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "receivedRepresentingAddressType",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "receivedRepresentingEmailAddress",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "receivedRepresentingName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "receivedRepresentingSmtpAddress",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "recipientDisplayName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "recipientFlags",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "recipientOrder",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "recipientProposed",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "recipientProposedEndTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "recipientProposedStartTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "recipientReassignmentProhibited",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "recipientTrackStatus",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "recipientTrackStatusTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "recipientType",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "referredByName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "remoteMessageTransferAgent",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "renderingPosition",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "replyRecipientNames",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "replyRequested",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "replyTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "reportDisposition",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "reportDispositionMode",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "reportingMessageTransferAgent",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "reportName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "reportText",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "reportTime",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "resolveMethod",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "responseRequested",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "responsibility",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "retentionDate",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "retentionFlags",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "retentionPeriod",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "rights",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "roamingDatatypes",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "rowid",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "rowType",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "rtfInSync",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "ruleActionNumber",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "ruleActionType",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "ruleError",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "ruleId",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "ruleLevel",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "ruleMessageLevel",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "ruleMessageName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "ruleMessageProvider",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "ruleMessageSequence",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "ruleMessageState",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "ruleMessageUserFlags",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "ruleName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "ruleProvider",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "ruleSequence",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "ruleState",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "ruleUserFlags",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "scheduleInfoAutoAcceptAppointments",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "scheduleInfoDelegatorWantsCopy",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "scheduleInfoDelegatorWantsInfo",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "scheduleInfoDisallowOverlappingAppts",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "scheduleInfoDisallowRecurringAppts",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "scheduleInfoDontMailDelegates",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "scheduleInfoResourceType",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "searchFolderEfpFlags",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "searchFolderExpiration",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "searchFolderLastUsed",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "searchFolderStorageType",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "searchFolderTag",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "searchFolderTemplateId",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "securityDescriptorAsXml",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "selectable",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "senderAddressType",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "senderEmailAddress",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "senderIdStatus",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "senderName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "senderSmtpAddress",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "senderTelephoneNumber",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "sendInternetEncoding",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "sendRichInfo",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "sensitivity",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "sentMailSvrEID",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "sentRepresentingAddressType",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "sentRepresentingEmailAddress",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "sentRepresentingFlags",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "sentRepresentingName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "sentRepresentingSmtpAddress",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "smtpAddress",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "sortLocaleId",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "spouseName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "startDate",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "stateOrProvince",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "storeState",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "storeSupportMask",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "streetAddress",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "subfolders",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "subjectPrefix",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "supplementaryInfo",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "surname",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "telecommunicationsDeviceForDeafTelephoneNumber",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "telexNumber",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "textAttachmentCharset",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "toDoItemFlags",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "transmittableDisplayName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "transportMessageHeaders",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "trustSender",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "viewDescriptorName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "viewDescriptorStrings",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "viewDescriptorVersion",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "voiceMessageAttachmentOrder",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "voiceMessageDuration",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "voiceMessageSenderName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "weddingAnniversary",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "wlinkCalendarColor",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "wlinkFlags",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "wlinkGroupName",
+    "options": {
+      "indexing": {
+        "record": "position"
+      },
+      "stored": true
+    },
+    "type": "text"
+  },
+  {
+    "name": "wlinkROGroupType",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "wlinkSaveStamp",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "wlinkSection",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  },
+  {
+    "name": "wlinkType",
+    "options": {
+      "indexed": true,
+      "stored": true
+    },
+    "type": "i64"
+  }
+]

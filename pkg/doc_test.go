@@ -21,19 +21,25 @@ import (
 	"fmt"
 	"github.com/mooijtech/go-pst/v5/pkg/properties"
 	"github.com/rotisserie/eris"
+	"golang.org/x/text/encoding"
 	"os"
 	"testing"
 	"time"
 
+	charsets "github.com/emersion/go-message/charset"
 	pst "github.com/mooijtech/go-pst/v5/pkg"
 )
 
 func TestExample(t *testing.T) {
+	pst.ExtendCharsets(func(name string, enc encoding.Encoding) {
+		charsets.RegisterEncoding(name, enc)
+	})
+
 	startTime := time.Now()
 
 	fmt.Println("Initializing...")
 
-	reader, err := os.Open("/home/bot/Documents/Projects/go-pst/data/s.woon.pst")
+	reader, err := os.Open("/home/bot/Documents/Projects/go-pst-unmodified-test/data/enron.pst")
 
 	if err != nil {
 		panic(fmt.Sprintf("Failed to open PST file: %+v\n", err))
@@ -54,7 +60,7 @@ func TestExample(t *testing.T) {
 	}()
 
 	// Walk through folders.
-	if err := pstFile.WalkFolders(func(folder pst.Folder) error {
+	if err := pstFile.WalkFolders(func(folder *pst.Folder) error {
 		fmt.Printf("Walking folder: %s\n", folder.Name)
 
 		messageIterator, err := folder.GetMessageIterator()

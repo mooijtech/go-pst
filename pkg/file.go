@@ -21,6 +21,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/binary"
+	_ "github.com/emersion/go-message/charset"
 	"github.com/rotisserie/eris"
 	"golang.org/x/sync/errgroup"
 	"io"
@@ -100,7 +101,8 @@ func NewFromReaderWithBTrees(reader Reader, nodeBTree BTreeStore, blockBTree BTr
 
 	pstFile.EncryptionType = encryptionType
 
-	walkGroup, _ := errgroup.WithContext(context.Background())
+	walkGroupContext, walkGroupCancel := context.WithCancelCause(context.Background())
+	walkGroup, _ := errgroup.WithContext(walkGroupContext)
 
 	walkGroup.SetLimit(8)
 
@@ -111,7 +113,7 @@ func NewFromReaderWithBTrees(reader Reader, nodeBTree BTreeStore, blockBTree BTr
 			return nil, err
 		}
 
-		pstFile.WalkAndCreateBTree(nodeBTreeOffset, BTreeTypeNode, pstFile.NodeBTree, walkGroup)
+		pstFile.WalkAndCreateBTree(nodeBTreeOffset, BTreeTypeNode, pstFile.NodeBTree, walkGroup, walkGroupCancel)
 
 		if err != nil {
 			return nil, err
@@ -125,7 +127,7 @@ func NewFromReaderWithBTrees(reader Reader, nodeBTree BTreeStore, blockBTree BTr
 			return nil, err
 		}
 
-		pstFile.WalkAndCreateBTree(blockBTreeOffset, BTreeTypeBlock, pstFile.BlockBTree, walkGroup)
+		pstFile.WalkAndCreateBTree(blockBTreeOffset, BTreeTypeBlock, pstFile.BlockBTree, walkGroup, walkGroupCancel)
 
 		if err != nil {
 			return nil, err
@@ -135,6 +137,8 @@ func NewFromReaderWithBTrees(reader Reader, nodeBTree BTreeStore, blockBTree BTr
 	// Wait for walking of the b-trees to complete.
 	if err := walkGroup.Wait(); err != nil {
 		return nil, eris.Wrap(err, "failed to walk b-trees")
+	} else if walkGroupContext.Err() != nil {
+		return nil, eris.Wrap(context.Cause(walkGroupContext), "failed to walk and create b-trees")
 	}
 
 	nameToIDMap, err := pstFile.GetNameToIDMap()

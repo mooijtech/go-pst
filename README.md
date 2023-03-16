@@ -32,6 +32,8 @@ The PFF (Personal Folder File) and OFF (Offline Folder File) format is used to s
 
 ## Usage
 
+**Requires Go 1.20** for the new `WithCancelCause` added to `context`.
+
 ```bash
 $ go install github.com/mooijtech/go-pst/v5
 ```
@@ -46,9 +48,11 @@ import (
   "time"
 
   pst "github.com/mooijtech/go-pst/v5/pkg"
+  _ "github.com/emersion/go-message/charset"
 )
 
 func main() {
+	
   startTime := time.Now()
 
   fmt.Println("Initializing...")
@@ -130,12 +134,6 @@ func main() {
 
 go-pst is open-source under the GNU Affero General Public License Version 3 - AGPLv3. Fundamentally, this means that you are free to use go-pst for your project, as long as you don't modify go-pst. If you do, you have to make the modifications public.
 
-## Contact
-
-Feel free to contact me if you have any questions.<br/>
-**Name**: Marten Mooij<br/>
-**Email**: info@mooijtech.com<br/>
-
 ## Documentation
 
 - [Outlook Personal Folders (.pst) File Format](https://github.com/mooijtech/go-pst/blob/master/docs/README.md)
@@ -150,17 +148,8 @@ Feel free to contact me if you have any questions.<br/>
 - [XstReader](https://github.com/Dijji/XstReader)
 - [PANhunt](https://github.com/Dionach/PANhunt/blob/master/pst.py)
 
-## Datasets
+## Contact
 
-This library is tested on the following datasets:
-
-- [enron.pst](https://github.com/mooijtech/go-pst/blob/master/data/enron.pst)
-  - [Enron Corporation](https://en.wikipedia.org/wiki/Enron)
-- [32-bit.pst](https://github.com/mooijtech/go-pst/blob/master/data/32-bit.pst)
-  - [DFRWS 2009 Rodeo](http://old.dfrws.org/2009/rodeo.shtml)
-- [support.pst](https://github.com/mooijtech/go-pst/blob/master/data/support.pst)
-  - [Hacking Team](https://en.wikipedia.org/wiki/Hacking_Team)
-  - ~200GB worth of PST files from Hacking Team is available via this torrent magnet link (see the folders mail, mail2, mail3):
-    ```
-    magnet:?xt=urn:btih:51603bff88e0a1b3bad3962614978929c9d26955&dn=Hacked%20Team&tr=udp%3A%2F%2Fcoppersurfer.tk%3A6969%2Fannounce&tr=udp%3A%2F%2F9.rarbg.me%3A2710%2Fannounce&tr=http%3A%2F%2Fmgtracker.org%3A2710%2Fannounce&tr=http%3A%2F%2Fbt.careland.com.cn%3A6969%2Fannounce&tr=udp%3A%2F%2Fopen.demonii.com%3A1337&tr=udp%3A%2F%2Fexodus.desync.com%3A6969&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.pomf.se&tr=udp%3A%2F%2Ftracker.blackunicorn.xyz%3A6969
-    ```
+Feel free to contact me if you have any questions.<br/>
+**Name**: Marten Mooij<br/>
+**Email**: info@mooijtech.com<br/>
