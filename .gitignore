@@ -1,2 +1,5 @@
 .idea/
 .vscode/
+protoc
+protoc-gen-go
+protoc-go-inject-tag

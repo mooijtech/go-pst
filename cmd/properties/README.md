@@ -49,6 +49,14 @@ Requires that `generate.go` has been run.
 Download the [protocol compiler (protoc)](https://github.com/protocolbuffers/protobuf/releases) and [protoc-gen-go](https://github.com/protocolbuffers/protobuf-go/releases).
 
 ```bash
+# Compile protoc-go-inject
+$ go install github.com/favadi/protoc-go-inject-tag@latest
+
+# Move binary
+$ mv ~/go/bin/protoc-go-inject-tag ~/path/to/go-pst
+```
+
+```bash
 # Change directory.
 $ cd /path/to/go-pst
 

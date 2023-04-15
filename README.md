@@ -132,7 +132,7 @@ func main() {
 
 ## License 
 
-go-pst is open-source under the GNU Affero General Public License Version 3 - AGPLv3. Fundamentally, this means that you are free to use go-pst for your project, as long as you don't modify go-pst. If you do, you have to make the modifications public.
+This project is licensed under the [Apache License 2.0]().
 
 ## Documentation
 
