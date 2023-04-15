@@ -1,4 +1,4 @@
-module github.com/mooijtech/go-pst/v5
+module github.com/mooijtech/go-pst
 
 go 1.20
 
