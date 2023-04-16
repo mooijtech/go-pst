@@ -3,7 +3,7 @@ module github.com/mooijtech/go-pst
 go 1.20
 
 require (
-	github.com/alitto/pond v1.8.2
+	github.com/alitto/pond v1.8.3
 	github.com/emersion/go-message v0.16.0
 	github.com/godzie44/go-uring v0.0.0-20220926161041-69611e8b13d5
 	github.com/mooijtech/go-pst/v5 v5.0.4
