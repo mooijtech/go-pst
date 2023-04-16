@@ -12,7 +12,7 @@ require (
 	github.com/tinylib/msgp v1.1.8
 	golang.org/x/net v0.7.0
 	golang.org/x/sync v0.1.0
-	golang.org/x/text v0.7.0
+	golang.org/x/text v0.9.0
 	google.golang.org/protobuf v1.30.0
 )
 
