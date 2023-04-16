@@ -10,7 +10,7 @@ require (
 	github.com/rotisserie/eris v0.5.4
 	github.com/tidwall/btree v1.6.0
 	github.com/tinylib/msgp v1.1.8
-	golang.org/x/net v0.7.0
+	golang.org/x/net v0.9.0
 	golang.org/x/sync v0.1.0
 	golang.org/x/text v0.9.0
 	google.golang.org/protobuf v1.30.0
@@ -21,5 +21,5 @@ require (
 	github.com/libp2p/go-sockaddr v0.1.1 // indirect
 	github.com/philhofer/fwd v1.1.2 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
-	golang.org/x/sys v0.5.0 // indirect
+	golang.org/x/sys v0.7.0 // indirect
 )
