@@ -18,7 +18,6 @@ package pst
 
 import (
 	"encoding/binary"
-	"github.com/alitto/pond"
 	"github.com/pkg/errors"
 	"github.com/rotisserie/eris"
 	"io"
@@ -396,7 +395,7 @@ func (file *File) GetParentBTreeNodeLevel(btreeNodeOffset int64) (uint8, error) 
 }
 
 // WalkAndCreateBTree walks the b-tree and updates the given b-tree store.
-func (file *File) WalkAndCreateBTree(btreeOffset int64, btreeType BTreeType, btreeStore BTreeStore, workerPool *pond.WorkerPool) {
+func (file *File) WalkAndCreateBTree(btreeOffset int64, btreeType BTreeType, btreeStore BTreeStore) {
 	file.GetBTreeNodeEntries(btreeOffset, btreeType, func(nodeEntries []BTreeNode, nodeLevel uint8, err error) {
 		if nodeLevel > 0 {
 			// Branch node entries.
@@ -407,7 +406,7 @@ func (file *File) WalkAndCreateBTree(btreeOffset int64, btreeType BTreeType, btr
 					panic(errors.WithStack(ErrBTreeNodeConflict))
 				}
 
-				file.WalkAndCreateBTree(nodeEntry.FileOffset, btreeType, btreeStore, workerPool)
+				file.WalkAndCreateBTree(nodeEntry.FileOffset, btreeType, btreeStore)
 			}
 		} else {
 			// Leaf node entries

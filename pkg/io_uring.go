@@ -20,7 +20,6 @@ package pst
 
 import (
 	"context"
-	"github.com/alitto/pond"
 	"github.com/godzie44/go-uring/reactor"
 	"github.com/godzie44/go-uring/uring"
 	"os"
@@ -44,7 +43,6 @@ type AsyncReader struct {
 	eventLoopContext context.Context
 	eventLoopCancel  context.CancelFunc
 	reader           *os.File
-	pool             *pond.WorkerPool
 }
 
 // NewReaderAsync uses io_uring on Linux for asynchronous I/O operations.
@@ -79,7 +77,6 @@ func NewReaderAsync(name string) (*AsyncReader, error) {
 		eventLoopContext: eventLoopContext,
 		eventLoopCancel:  eventLoopCancel,
 		reader:           reader,
-		pool:             pond.New(8, 100),
 	}, nil
 }
 

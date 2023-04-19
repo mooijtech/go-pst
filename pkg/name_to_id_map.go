@@ -228,8 +228,6 @@ func (file *File) GetNameToIDMap() (*NameToIDMap, error) {
 				propertySetIndex = guidIndexes[int(namedPropertyGUID)-3]
 			}
 
-			fmt.Printf("Got property ID: %d\n", namedPropertyIndex)
-
 			nameToID[int(namedPropertyIdentifier)|propertySetIndex<<32] = int(namedPropertyIndex)
 			idToName[int(namedPropertyIndex)] = int(namedPropertyIdentifier)
 		} else {
