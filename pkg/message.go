@@ -19,7 +19,7 @@ package pst
 import (
 	_ "embed"
 	"fmt"
-	"github.com/mooijtech/go-pst/v5/pkg/properties"
+	"github.com/mooijtech/go-pst/pkg/properties"
 	"github.com/rotisserie/eris"
 	"github.com/tinylib/msgp/msgp"
 )
@@ -27,6 +27,7 @@ import (
 // Message represents a message.
 type Message struct {
 	File                   *File
+	Identifier             Identifier
 	PropertyContext        *PropertyContext
 	AttachmentTableContext *TableContext
 	LocalDescriptors       []LocalDescriptor // Used by the PropertyContext and TableContext.
@@ -261,6 +262,7 @@ func (file *File) GetMessage(identifier Identifier) (*Message, error) {
 
 	return &Message{
 		File:             file,
+		Identifier:       identifier,
 		PropertyContext:  propertyContext,
 		LocalDescriptors: localDescriptors,
 		Properties:       messageProperties,
