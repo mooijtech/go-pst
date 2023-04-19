@@ -35,7 +35,7 @@ The PFF (Personal Folder File) and OFF (Offline Folder File) format is used to s
 **Requires Go 1.20** for the new `WithCancelCause` added to `context`.
 
 ```bash
-$ go install github.com/mooijtech/go-pst/v5
+$ go install github.com/mooijtech/go-pst
 ```
 
 ```go
@@ -47,7 +47,7 @@ import (
   "os"
   "time"
 
-  pst "github.com/mooijtech/go-pst/v5/pkg"
+  pst "github.com/mooijtech/go-pst/pkg"
   _ "github.com/emersion/go-message/charset"
 )
 
