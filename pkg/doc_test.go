@@ -18,7 +18,8 @@ package pst_test
 
 import (
 	"fmt"
-	"github.com/mooijtech/go-pst/v5/pkg/properties"
+	"github.com/mooijtech/go-pst/pkg"
+	"github.com/mooijtech/go-pst/pkg/properties"
 	"github.com/rotisserie/eris"
 	"golang.org/x/text/encoding"
 	"os"
@@ -26,7 +27,6 @@ import (
 	"time"
 
 	charsets "github.com/emersion/go-message/charset"
-	pst "github.com/mooijtech/go-pst/v5/pkg"
 )
 
 func TestExample(t *testing.T) {
@@ -38,7 +38,7 @@ func TestExample(t *testing.T) {
 
 	fmt.Println("Initializing...")
 
-	reader, err := os.Open("/home/bot/Documents/Projects/go-pst-unmodified-test/data/enron.pst")
+	reader, err := os.Open("../data/enron.pst")
 
 	if err != nil {
 		panic(fmt.Sprintf("Failed to open PST file: %+v\n", err))
@@ -94,39 +94,37 @@ func TestExample(t *testing.T) {
 				fmt.Printf("Unknown message type\n")
 			}
 
-			//fmt.Printf("Got: %s\n", message.GetOriginalMessageClass())
+			attachmentIterator, err := message.GetAttachmentIterator()
 
-			//attachmentIterator, err := message.GetAttachmentIterator()
-			//
-			//if eris.Is(err, pst.ErrAttachmentsNotFound) {
-			//	// This message has no attachments.
-			//	continue
-			//} else if err != nil {
-			//	return err
-			//}
-			//
-			//// Iterate through attachments.
-			//for attachmentIterator.Next() {
-			//	attachment := attachmentIterator.Value()
-			//
-			//	fmt.Printf("Attachment: %s\n", attachment.GetAttachFilename())
-			//
-			//	attachmentOutput, err := os.Create(fmt.Sprintf("attachments/%s", attachment.GetAttachFilename()))
-			//
-			//	if err != nil {
-			//		return err
-			//	} else if _, err := attachment.WriteTo(attachmentOutput); err != nil {
-			//		return err
-			//	}
-			//
-			//	if err := attachmentOutput.Close(); err != nil {
-			//		return err
-			//	}
-			//}
-			//
-			//if attachmentIterator.Err() != nil {
-			//	return attachmentIterator.Err()
-			//}
+			if eris.Is(err, pst.ErrAttachmentsNotFound) {
+				// This message has no attachments.
+				continue
+			} else if err != nil {
+				return err
+			}
+
+			// Iterate through attachments.
+			for attachmentIterator.Next() {
+				attachment := attachmentIterator.Value()
+
+				fmt.Printf("Attachment: %s\n", attachment.GetAttachFilename())
+
+				attachmentOutput, err := os.Create(fmt.Sprintf("attachments/%s", attachment.GetAttachFilename()))
+
+				if err != nil {
+					return err
+				} else if _, err := attachment.WriteTo(attachmentOutput); err != nil {
+					return err
+				}
+
+				if err := attachmentOutput.Close(); err != nil {
+					return err
+				}
+			}
+
+			if attachmentIterator.Err() != nil {
+				return attachmentIterator.Err()
+			}
 		}
 
 		return messageIterator.Err()
