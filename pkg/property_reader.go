@@ -146,6 +146,20 @@ func (propertyReader *PropertyReader) WriteMessagePackValue(writer *msgp.Writer)
 		}
 
 		return nil
+	case PropertyTypeBoolean:
+		value, err := propertyReader.GetBoolean()
+
+		if err != nil {
+			return eris.Wrap(err, "failed to get boolean")
+		}
+
+		if err := writer.WriteString(key); err != nil {
+			return eris.Wrap(err, "failed to write key")
+		} else if err := writer.WriteBool(value); err != nil {
+			return eris.Wrap(err, "failed to write value")
+		}
+
+		return nil
 	default:
 		// TODO - Write Nil?
 		return ErrPropertyNoData
