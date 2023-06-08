@@ -20,6 +20,7 @@ import (
 	_ "embed"
 	"fmt"
 	"github.com/mooijtech/go-pst/pkg/properties"
+	"github.com/pkg/errors"
 	"github.com/rotisserie/eris"
 	"github.com/tinylib/msgp/msgp"
 )
@@ -269,6 +270,19 @@ func (file *File) GetMessage(identifier Identifier) (*Message, error) {
 	}, nil
 }
 
-func (message *Message) GetBodyRTF() {
-	// TODO -
+// GetBodyRTF return the RTF body, may be
+func (message *Message) GetBodyRTF() (string, error) {
+	rtfPropertyReader, err := message.PropertyContext.GetPropertyReader(4105, message.LocalDescriptors)
+
+	if err != nil {
+		return "", err
+	}
+
+	rtfBody := make([]byte, rtfPropertyReader.Size())
+
+	if _, err := rtfPropertyReader.ReadAt(rtfBody, 0); err != nil {
+		return "", errors.WithStack(err)
+	}
+
+	return NewRTFDecoder().Decode(rtfBody)
 }

@@ -45,12 +45,12 @@ func (propertyContext *PropertyContext) GetPropertyByID(propertyID uint16) (Prop
 	return Property{}, ErrPropertyNotFound
 }
 
-// GetPropertyReader returns the reader for the property.
+// GetPropertyReader returns the reader for the property, may return ErrPropertyNotFound.
 func (propertyContext *PropertyContext) GetPropertyReader(propertyID uint16, localDescriptors []LocalDescriptor) (PropertyReader, error) {
 	property, err := propertyContext.GetPropertyByID(propertyID)
 
 	if err != nil {
-		return PropertyReader{}, eris.Wrap(err, "failed to get property by ID")
+		return PropertyReader{}, ErrPropertyNotFound
 	}
 
 	return NewPropertyReader(property, propertyContext.HeapOnNode, propertyContext.File, localDescriptors)

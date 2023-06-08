@@ -58,6 +58,13 @@ func TestExample(t *testing.T) {
 		}
 	}()
 
+	// Create attachments directory
+	if _, err := os.Stat("attachments"); err != nil {
+		if err := os.Mkdir("attachments", 0755); err != nil {
+			panic(fmt.Sprintf("Failed to create attachments directory: %+v", err))
+		}
+	}
+
 	// Walk through folders.
 	if err := pstFile.WalkFolders(func(folder *pst.Folder) error {
 		fmt.Printf("Walking folder: %s\n", folder.Name)
@@ -77,19 +84,19 @@ func TestExample(t *testing.T) {
 
 			switch messageProperties := message.Properties.(type) {
 			case *properties.Appointment:
-				fmt.Printf("Appointment: %s - %s\n", messageProperties.String(), folder.Name)
+				//fmt.Printf("Appointment: %s\n", messageProperties.String())
 			case *properties.Contact:
-				fmt.Printf("Contact: %s - %s\n", messageProperties.String(), folder.Name)
+				//fmt.Printf("Contact: %s\n", messageProperties.String())
 			case *properties.Task:
-				fmt.Printf("Task: %s\n", messageProperties.GetTaskAssigner())
+				//fmt.Printf("Task: %s\n", messageProperties.String())
 			case *properties.RSS:
-				fmt.Printf("RSS: %s\n", messageProperties.GetPostRssChannelLink())
+				//fmt.Printf("RSS: %s\n", messageProperties.String())
 			case *properties.AddressBook:
-				fmt.Printf("Address book: %s\n", messageProperties.GetAccount())
+				//fmt.Printf("Address book: %s\n", messageProperties.String())
 			case *properties.Message:
-				//fmt.Printf("Message: %s\n", messageProperties.GetSubject())
+				fmt.Printf("Subject: %s\n", messageProperties.GetSubject())
 			case *properties.Note:
-				fmt.Printf("Note: %d\n", messageProperties.GetNoteColor())
+				//fmt.Printf("Note: %s\n", messageProperties.String())
 			default:
 				fmt.Printf("Unknown message type\n")
 			}
@@ -107,13 +114,21 @@ func TestExample(t *testing.T) {
 			for attachmentIterator.Next() {
 				attachment := attachmentIterator.Value()
 
-				fmt.Printf("Attachment: %s\n", attachment.GetAttachFilename())
+				var attachmentOutputPath string
 
-				attachmentOutput, err := os.Create(fmt.Sprintf("attachments/%s", attachment.GetAttachFilename()))
+				if attachment.GetAttachFilename() != "" {
+					attachmentOutputPath = fmt.Sprintf("attachments/%d-%s", attachment.Identifier, attachment.GetAttachFilename())
+				} else {
+					attachmentOutputPath = fmt.Sprintf("attachments/UNKNOWN_ATTACHMENT_FILE_NAME_%d", attachment.Identifier)
+				}
+
+				attachmentOutput, err := os.Create(attachmentOutputPath)
 
 				if err != nil {
 					return err
-				} else if _, err := attachment.WriteTo(attachmentOutput); err != nil {
+				}
+
+				if _, err := attachment.WriteTo(attachmentOutput); err != nil {
 					return err
 				}
 

@@ -43,34 +43,55 @@ package main
 
 import (
   "fmt"
+  "github.com/mooijtech/go-pst/pkg"
+  "github.com/mooijtech/go-pst/pkg/properties"
   "github.com/rotisserie/eris"
+  "golang.org/x/text/encoding"
   "os"
+  "testing"
   "time"
 
-  pst "github.com/mooijtech/go-pst/pkg"
-  _ "github.com/emersion/go-message/charset"
+  charsets "github.com/emersion/go-message/charset"
 )
 
 func main() {
-	
+  pst.ExtendCharsets(func(name string, enc encoding.Encoding) {
+    charsets.RegisterEncoding(name, enc)
+  })
+
   startTime := time.Now()
 
   fmt.Println("Initializing...")
 
-  pstFile, err := pst.NewFromFile("../data/enron.pst")
+  reader, err := os.Open("../data/enron.pst")
+
+  if err != nil {
+    panic(fmt.Sprintf("Failed to open PST file: %+v\n", err))
+  }
+
+  pstFile, err := pst.New(reader)
 
   if err != nil {
     panic(fmt.Sprintf("Failed to open PST file: %+v\n", err))
   }
 
   defer func() {
-    if errClosing := pstFile.Close(); errClosing != nil {
+    pstFile.Cleanup()
+
+    if errClosing := reader.Close(); errClosing != nil {
       panic(fmt.Sprintf("Failed to close PST file: %+v\n", err))
     }
   }()
 
+  // Create attachments directory
+  if _, err := os.Stat("attachments"); err != nil {
+    if err := os.Mkdir("attachments", 0755); err != nil {
+      panic(fmt.Sprintf("Failed to create attachments directory: %+v", err))
+    }
+  }
+
   // Walk through folders.
-  if err := pstFile.WalkFolders(func(folder pst.Folder) error {
+  if err := pstFile.WalkFolders(func(folder *pst.Folder) error {
     fmt.Printf("Walking folder: %s\n", folder.Name)
 
     messageIterator, err := folder.GetMessageIterator()
@@ -86,7 +107,24 @@ func main() {
     for messageIterator.Next() {
       message := messageIterator.Value()
 
-      fmt.Printf("Message subject: %s\n", message.GetSubject())
+      switch messageProperties := message.Properties.(type) {
+      case *properties.Appointment:
+        //fmt.Printf("Appointment: %s\n", messageProperties.String())
+      case *properties.Contact:
+        //fmt.Printf("Contact: %s\n", messageProperties.String())
+      case *properties.Task:
+        //fmt.Printf("Task: %s\n", messageProperties.String())
+      case *properties.RSS:
+        //fmt.Printf("RSS: %s\n", messageProperties.String())
+      case *properties.AddressBook:
+        //fmt.Printf("Address book: %s\n", messageProperties.String())
+      case *properties.Message:
+        fmt.Printf("Subject: %s\n", messageProperties.GetSubject())
+      case *properties.Note:
+        //fmt.Printf("Note: %s\n", messageProperties.String())
+      default:
+        fmt.Printf("Unknown message type\n")
+      }
 
       attachmentIterator, err := message.GetAttachmentIterator()
 
@@ -101,13 +139,21 @@ func main() {
       for attachmentIterator.Next() {
         attachment := attachmentIterator.Value()
 
-        fmt.Printf("Attachment: %s\n", attachment.GetAttachFilename())
+        var attachmentOutputPath string
 
-        attachmentOutput, err := os.Create(fmt.Sprintf("attachments/%s", attachment.GetAttachFilename()))
+        if attachment.GetAttachFilename() != "" {
+          attachmentOutputPath = fmt.Sprintf("attachments/%d-%s", attachment.Identifier, attachment.GetAttachFilename())
+        } else {
+          attachmentOutputPath = fmt.Sprintf("attachments/UNKNOWN_ATTACHMENT_FILE_NAME_%d", attachment.Identifier)
+        }
+
+        attachmentOutput, err := os.Create(attachmentOutputPath)
 
         if err != nil {
           return err
-        } else if _, err := attachment.WriteTo(attachmentOutput); err != nil {
+        }
+
+        if _, err := attachment.WriteTo(attachmentOutput); err != nil {
           return err
         }
 
