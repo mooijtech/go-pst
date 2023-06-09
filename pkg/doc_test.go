@@ -116,10 +116,10 @@ func TestExample(t *testing.T) {
 
 				var attachmentOutputPath string
 
-				if attachment.GetAttachFilename() != "" {
-					attachmentOutputPath = fmt.Sprintf("attachments/%d-%s", attachment.Identifier, attachment.GetAttachFilename())
+				if attachment.GetAttachLongFilename() != "" {
+					attachmentOutputPath = fmt.Sprintf("attachments/%d-%s", attachment.Identifier, attachment.GetAttachLongFilename())
 				} else {
-					attachmentOutputPath = fmt.Sprintf("attachments/UNKNOWN_ATTACHMENT_FILE_NAME_%d", attachment.Identifier)
+					attachmentOutputPath = fmt.Sprintf("attachments/UNKNOWN_%d", attachment.Identifier)
 				}
 
 				attachmentOutput, err := os.Create(attachmentOutputPath)

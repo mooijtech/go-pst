@@ -6,7 +6,7 @@
   <br>
 </h1>
 
-<h4 align="center">A library for reading PST files (written in Go/Golang).</h4>
+<h4 align="center">A library for reading PST files (written in Go/Golang)</h4>
 
 <p align="center">
   <a href="https://github.com/mooijtech/go-pst/blob/master/LICENSE.txt">
@@ -32,8 +32,6 @@ The PFF (Personal Folder File) and OFF (Offline Folder File) format is used to s
 
 ## Usage
 
-**Requires Go 1.20** for the new `WithCancelCause` added to `context`.
-
 ```bash
 $ go install github.com/mooijtech/go-pst
 ```
@@ -48,7 +46,6 @@ import (
   "github.com/rotisserie/eris"
   "golang.org/x/text/encoding"
   "os"
-  "testing"
   "time"
 
   charsets "github.com/emersion/go-message/charset"
@@ -141,10 +138,10 @@ func main() {
 
         var attachmentOutputPath string
 
-        if attachment.GetAttachFilename() != "" {
-          attachmentOutputPath = fmt.Sprintf("attachments/%d-%s", attachment.Identifier, attachment.GetAttachFilename())
+        if attachment.GetAttachLongFilename() != "" {
+          attachmentOutputPath = fmt.Sprintf("attachments/%d-%s", attachment.Identifier, attachment.GetAttachLongFilename())
         } else {
-          attachmentOutputPath = fmt.Sprintf("attachments/UNKNOWN_ATTACHMENT_FILE_NAME_%d", attachment.Identifier)
+          attachmentOutputPath = fmt.Sprintf("attachments/UNKNOWN_%d", attachment.Identifier)
         }
 
         attachmentOutput, err := os.Create(attachmentOutputPath)
