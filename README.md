@@ -6,7 +6,7 @@
   <br>
 </h1>
 
-<h4 align="center">A library for reading PST files (written in Go/Golang).</h4>
+<h4 align="center">A library for reading PST files (written in Go/Golang)</h4>
 
 <p align="center">
   <a href="https://github.com/mooijtech/go-pst/blob/master/LICENSE.txt">
@@ -30,151 +30,216 @@
 
 The PFF (Personal Folder File) and OFF (Offline Folder File) format is used to store Microsoft Outlook e-mails, appointments and contacts. The PST (Personal Storage Table), OST (Offline Storage Table) and PAB (Personal Address Book) file format consist of the PFF format.
 
+
 ## Usage
 
 **Requires Go 1.20** for the new `WithCancelCause` added to `context`.
 
+**Please also ensure that you have a folder with the name - attachments**
+
 ```bash
 $ go install github.com/mooijtech/go-pst
 ```
-
-```go
+```Go
 package main
 
 import (
-  "fmt"
-  "github.com/mooijtech/go-pst/pkg"
-  "github.com/mooijtech/go-pst/pkg/properties"
-  "github.com/rotisserie/eris"
-  "golang.org/x/text/encoding"
-  "os"
-  "testing"
-  "time"
+	"bufio"
+	"fmt"
+	"log"
+	"os"
+	"time"
 
-  charsets "github.com/emersion/go-message/charset"
+	pst "github.com/mooijtech/go-pst/pkg"
+	"github.com/mooijtech/go-pst/pkg/properties"
+
+	"github.com/rotisserie/eris"
 )
 
+func createEmailOutput(msg *pst.Message) string {
+	result := ""
+	switch msgProperties := msg.Properties.(type) {
+	case *properties.Appointment:
+		fmt.Printf("Appointment: %s - %s\n", msgProperties.String(), "denis")
+		result += msgProperties.String()
+	case *properties.Contact:
+		fmt.Printf("Contact: %s - %s\n", msgProperties.String(), "denis")
+		result += msgProperties.String()
+	case *properties.Task:
+		fmt.Printf("Task: %s\n", msgProperties.GetTaskAssigner())
+		result += msgProperties.GetTaskAssigner()
+	case *properties.RSS:
+		fmt.Printf("RSS: %s\n", msgProperties.GetPostRssChannelLink())
+		result += msgProperties.GetPostRssChannelLink()
+	case *properties.AddressBook:
+		fmt.Printf("Address book: %s\n", msgProperties.GetAccount())
+		result += msgProperties.GetAccount()
+	case *properties.Message:
+		// fmt.Printf("msg: %s\n", msgProperties.GetSubject())
+		result += "==========================================\n"
+		result += "Subject:" + msgProperties.GetSubject() + "\n\n" + msgProperties.GetBody()
+		result += "==========================================\n"
+	case *properties.Note:
+		fmt.Printf("Note: %d\n", msgProperties.GetNoteColor())
+		result += string(msgProperties.GetNoteColor())
+	default:
+		fmt.Printf("Unknown message type\n")
+	}
+	return result
+}
+
 func main() {
-  pst.ExtendCharsets(func(name string, enc encoding.Encoding) {
-    charsets.RegisterEncoding(name, enc)
-  })
+	startTime := time.Now()
+	fmt.Println("Initializing...")
 
-  startTime := time.Now()
+	// Open the file in append mode and create it if it doesn't exist
+	output, err := os.OpenFile("output.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o644)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer output.Close()
 
-  fmt.Println("Initializing...")
+	// Create a writer
+	writer := bufio.NewWriter(output)
 
-  reader, err := os.Open("../data/enron.pst")
+	// Provide the path to your PST container
+	file, err := os.Open("./data/denis.pst")
+	if err != nil {
+		panic(fmt.Sprintf("Failed to open PST file: %+v\n", err))
+	}
 
-  if err != nil {
-    panic(fmt.Sprintf("Failed to open PST file: %+v\n", err))
-  }
+	defer func() {
+		if errClosing := file.Close(); errClosing != nil {
+			panic(fmt.Sprintf("Failed to close PST file: %+v\n", errClosing))
+		}
+	}()
+	
+	pstFile, err := pst.New(file)
+	if err != nil {
+		panic(fmt.Sprintf("Failed to open PST file: %+v\n", err))
+	}
+	// Walk through folders.
+	if err := pstFile.WalkFolders(func(folder *pst.Folder) error {
+		fmt.Printf("Walking folder: %s\n", folder.Name)
 
-  pstFile, err := pst.New(reader)
+		messageIterator, err := folder.GetMessageIterator()
 
-  if err != nil {
-    panic(fmt.Sprintf("Failed to open PST file: %+v\n", err))
-  }
+		if eris.Is(err, pst.ErrMessagesNotFound) {
+			// Folder has no messages.
+			return nil
+		} else if err != nil {
+			return err
+		}
 
-  defer func() {
-    pstFile.Cleanup()
+		// Iterate through messages.
+		for messageIterator.Next() {
+			message := messageIterator.Value()
+			// Write the string to the file with a new line
+			_, err = writer.WriteString(fmt.Sprintf("Message: %+v \n\n\n", createEmailOutput(message)))
+			if err != nil {
+				log.Fatal(err)
+			}
 
-    if errClosing := reader.Close(); errClosing != nil {
-      panic(fmt.Sprintf("Failed to close PST file: %+v\n", err))
-    }
-  }()
+			attachmentIterator, err := message.GetAttachmentIterator()
 
-  // Create attachments directory
-  if _, err := os.Stat("attachments"); err != nil {
-    if err := os.Mkdir("attachments", 0755); err != nil {
-      panic(fmt.Sprintf("Failed to create attachments directory: %+v", err))
-    }
-  }
+			if eris.Is(err, pst.ErrAttachmentsNotFound) {
+				// This message has no attachments.
+				continue
+			} else if err != nil {
+				return err
+			}
+			attachID := 1
+			// Iterate through attachments.
+			for attachmentIterator.Next() {
+				attachment := attachmentIterator.Value()
 
-  // Walk through folders.
-  if err := pstFile.WalkFolders(func(folder *pst.Folder) error {
-    fmt.Printf("Walking folder: %s\n", folder.Name)
+				attachmentOutput, err := os.Create(fmt.Sprintf("attachments/%s", attachment.GetAttachLongFilename()))
 
-    messageIterator, err := folder.GetMessageIterator()
+				if err != nil {
+					log.Fatal("FATAL ERROR\n")
+					return err
+				} else if _, err := attachment.WriteTo(attachmentOutput); err != nil {
+					return err
+				}
 
-    if eris.Is(err, pst.ErrMessagesNotFound) {
-      // Folder has no messages.
-      return nil
-    } else if err != nil {
-      return err
-    }
+				if err := attachmentOutput.Close(); err != nil {
+					return err
+				}
+				_, err = writer.WriteString(fmt.Sprintf("Attachement #%d: %+v \n\n", attachID, attachment.GetAttachFilename()))
+				if err != nil {
+					log.Fatal(err)
+				}
+				attachID += 1
+			}
 
-    // Iterate through messages.
-    for messageIterator.Next() {
-      message := messageIterator.Value()
+			if attachmentIterator.Err() != nil {
+				return attachmentIterator.Err()
+			}
+		}
 
-      switch messageProperties := message.Properties.(type) {
-      case *properties.Appointment:
-        //fmt.Printf("Appointment: %s\n", messageProperties.String())
-      case *properties.Contact:
-        //fmt.Printf("Contact: %s\n", messageProperties.String())
-      case *properties.Task:
-        //fmt.Printf("Task: %s\n", messageProperties.String())
-      case *properties.RSS:
-        //fmt.Printf("RSS: %s\n", messageProperties.String())
-      case *properties.AddressBook:
-        //fmt.Printf("Address book: %s\n", messageProperties.String())
-      case *properties.Message:
-        fmt.Printf("Subject: %s\n", messageProperties.GetSubject())
-      case *properties.Note:
-        //fmt.Printf("Note: %s\n", messageProperties.String())
-      default:
-        fmt.Printf("Unknown message type\n")
-      }
-
-      attachmentIterator, err := message.GetAttachmentIterator()
-
-      if eris.Is(err, pst.ErrAttachmentsNotFound) {
-        // This message has no attachments.
-        continue
-      } else if err != nil {
-        return err
-      }
-
-      // Iterate through attachments.
-      for attachmentIterator.Next() {
-        attachment := attachmentIterator.Value()
-
-        var attachmentOutputPath string
-
-        if attachment.GetAttachFilename() != "" {
-          attachmentOutputPath = fmt.Sprintf("attachments/%d-%s", attachment.Identifier, attachment.GetAttachFilename())
-        } else {
-          attachmentOutputPath = fmt.Sprintf("attachments/UNKNOWN_ATTACHMENT_FILE_NAME_%d", attachment.Identifier)
-        }
-
-        attachmentOutput, err := os.Create(attachmentOutputPath)
-
-        if err != nil {
-          return err
-        }
-
-        if _, err := attachment.WriteTo(attachmentOutput); err != nil {
-          return err
-        }
-
-        if err := attachmentOutput.Close(); err != nil {
-          return err
-        }
-      }
-
-      if attachmentIterator.Err() != nil {
-        return attachmentIterator.Err()
-      }
-    }
-
-    return messageIterator.Err()
-  }); err != nil {
-    panic(fmt.Sprintf("Failed to walk folders: %+v\n", err))
-  }
-
-  fmt.Printf("Time: %s\n", time.Since(startTime).String())
+		// Flush the writer to ensure the data is written to the file
+		err = writer.Flush()
+		if err != nil {
+			log.Fatal(err)
+		}
+		return messageIterator.Err()
+	}); err != nil {
+		panic(fmt.Sprintf("Failed to walk folders: %+v\n", err))
+	}
+	fmt.Printf("Time: %s\n", time.Since(startTime).String())
 }
 ```
+## Result
+As an example of the result you will get a file "output.txt" with the following structure:
+---
+<div style="font-family: Calibri, Arial, sans-serif;">
+  <strong>Message:</strong>
+  <hr>
+  
+  <strong>Subject:</strong> RE: Начало!
+  
+  Всех с праздником, мой брат вчера позвал нас всех отпраздновать это на футбольном поле! Те, кто не в курсе правил, прилагаю учебник, который он мне прислал.
+  
+  <br>
+  
+  <strong>From:</strong> marteng@forensics.ru &lt;marten@forensics.ru&gt;<br>
+  <strong>Sent:</strong> Thursday, March 2, 2023 4:54 PM<br>
+  <strong>To:</strong> andrey@forensics.ru; denis@forensics.ru; roman@forensics.ru; timur@forensics.ru; marten@forensics.ru
+  
+  <hr>
+  
+  <strong>Subject:</strong> RE: Начало!
+  
+  Спасибо!
+  
+  Всех с открытием!
+  
+  <br>
+  
+  <strong>From:</strong> andrey@forensics.ru &lt;andrey@forensics.ru&gt;<br>
+  <strong>Sent:</strong> 2 марта 2023 г. 16:50<br>
+  <strong>To:</strong> denis@forensics.ru; oleg@forensics.ru; roman@forensics.ru; timur@forensics.ru; marten@forensics.ru
+  
+  <hr>
+  
+  <strong>Subject:</strong> Начало!
+  
+  Коллеги, добрый день!
+  
+  Поздравляю вас с началом новой эпохи, открытием "Forensics"!
+  
+  Нас ждет великий успех!
+  
+  <hr>
+  
+  <strong>Attachments:</strong>
+  <ul>
+    <li>image001.jpg</li>
+    <li>Учебник-.pdf</li>
+  </ul>
+</div>
+
+---
 
 ## License 
 
