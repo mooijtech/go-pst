@@ -10,7 +10,7 @@ require (
 	github.com/tidwall/btree v1.6.0
 	github.com/tinylib/msgp v1.1.8
 	golang.org/x/net v0.10.0
-	golang.org/x/text v0.9.0
+	golang.org/x/text v0.10.0
 	google.golang.org/protobuf v1.30.0
 )
 
