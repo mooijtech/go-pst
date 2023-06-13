@@ -17,7 +17,7 @@
 package pst
 
 import (
-	"github.com/mooijtech/go-pst/pkg/properties"
+	"github.com/mooijtech/go-pst/v6/pkg/properties"
 	"io"
 
 	"github.com/rotisserie/eris"
@@ -25,6 +25,7 @@ import (
 
 // Attachment represents a message attachment.
 type Attachment struct {
+	Identifier       Identifier
 	PropertyContext  *PropertyContext
 	LocalDescriptors []LocalDescriptor
 	properties.Attachment
@@ -163,11 +164,54 @@ func (message *Message) GetAttachment(attachmentIndex int) (*Attachment, error) 
 	}
 
 	attachment := &Attachment{
+		Identifier:       attachmentLocalDescriptor.Identifier,
 		PropertyContext:  attachmentPropertyContext,
 		LocalDescriptors: attachmentLocalDescriptors,
 	}
 
 	if err := attachmentPropertyContext.Populate(attachment, attachmentLocalDescriptors); err != nil {
+		return nil, eris.Wrap(err, "failed to populate attachment property context")
+	}
+
+	return attachment, nil
+}
+
+// GetAttachment returns the attachment.
+// Note that the properties aren't populated (call PropertyContext.Populate).
+func (file *File) GetAttachment(messageIdentifier Identifier) (*Attachment, error) {
+	attachmentsNode, err := file.GetNodeBTreeNode(messageIdentifier)
+
+	if err != nil {
+		return nil, eris.Wrap(err, "failed to find node b-tree node")
+	}
+
+	attachmentsDataNode, err := file.GetBlockBTreeNode(attachmentsNode.DataIdentifier)
+
+	if err != nil {
+		return nil, eris.Wrap(err, "failed to find block b-tree node")
+	}
+
+	attachmentsHeapOnNode, err := file.GetHeapOnNode(attachmentsDataNode)
+
+	if err != nil {
+		return nil, eris.Wrap(err, "failed to get Heap-on-Node")
+	}
+
+	localDescriptors, err := file.GetLocalDescriptors(attachmentsNode)
+
+	if err != nil {
+		return nil, eris.Wrap(err, "failed to find local descriptors")
+	}
+
+	propertyContext, err := file.GetPropertyContext(attachmentsHeapOnNode)
+
+	attachment := &Attachment{
+		Identifier:       messageIdentifier,
+		PropertyContext:  propertyContext,
+		LocalDescriptors: localDescriptors,
+	}
+
+	if err := propertyContext.Populate(attachment, localDescriptors); err != nil {
 		return nil, eris.Wrap(err, "failed to populate attachment property context")
 	}
 

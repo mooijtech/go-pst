@@ -20,12 +20,3 @@ require (
 	github.com/philhofer/fwd v1.1.2 // indirect
 	golang.org/x/sys v0.8.0 // indirect
 )
-
-retract (
-	[v0.0.1, v0.0.11]
-	v1.0.0
-	[v2.0.1, v2.0.2]
-	[v3.0.0, v3.2.1]
-	v4.0.0
-	[v5.0.0, v5.0.4]
-)
