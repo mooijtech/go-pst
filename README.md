@@ -22,7 +22,7 @@
 
 ---
 
-[![pkg.go.dev reference](https://img.shields.io/badge/pkg.go.dev-reference-007d9c?logo=go&logoColor=white&style=flat-square)](https://pkg.go.dev/github.com/mooijtech/go-pst/v5)
+[![pkg.go.dev reference](https://img.shields.io/badge/pkg.go.dev-reference-007d9c?logo=go&logoColor=white&style=flat-square)](https://pkg.go.dev/github.com/mooijtech/go-pst/v6)
 
 ## Introduction
 
@@ -33,7 +33,7 @@ The PFF (Personal Folder File) and OFF (Offline Folder File) format is used to s
 ## Usage
 
 ```bash
-$ go install github.com/mooijtech/go-pst
+$ go install github.com/mooijtech/go-pst/v6
 ```
 
 ```go
@@ -41,8 +41,8 @@ package main
 
 import (
   "fmt"
-  "github.com/mooijtech/go-pst/pkg"
-  "github.com/mooijtech/go-pst/pkg/properties"
+  "github.com/mooijtech/go-pst/pkg/v6"
+  "github.com/mooijtech/go-pst/pkg/v6/properties"
   "github.com/rotisserie/eris"
   "golang.org/x/text/encoding"
   "os"

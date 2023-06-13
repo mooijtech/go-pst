@@ -1,4 +1,4 @@
-module github.com/mooijtech/go-pst
+module github.com/mooijtech/go-pst/v6
 
 go 1.20
 
@@ -19,4 +19,36 @@ require (
 	github.com/libp2p/go-sockaddr v0.1.1 // indirect
 	github.com/philhofer/fwd v1.1.2 // indirect
 	golang.org/x/sys v0.8.0 // indirect
+)
+
+retract (
+	v0.0.1
+	v0.0.2
+	v0.0.3
+	v0.0.4
+	v0.0.5
+	v0.0.6
+	v0.0.7
+	v0.0.8
+	v0.0.9
+	v0.0.10
+	v0.0.11
+	v1.0.0
+	v2.0.2
+	v2.0.1
+	v3.0.0
+	v3.0.1
+	v3.0.2
+	v3.1.0
+	v3.1.1
+	v3.1.2
+	v3.1.3
+	v3.2.0
+	v3.2.1
+	v4.0.0
+	v5.0.0
+	v5.0.1
+	v5.0.2
+	v5.0.3
+	v5.0.4
 )
