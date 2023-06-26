@@ -11,7 +11,7 @@ require (
 	github.com/tinylib/msgp v1.1.8
 	golang.org/x/net v0.11.0
 	golang.org/x/text v0.10.0
-	google.golang.org/protobuf v1.30.0
+	google.golang.org/protobuf v1.31.0
 )
 
 require (
