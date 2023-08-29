@@ -35,6 +35,57 @@ type Message struct {
 	Properties             msgp.Decodable    // Type properties.Message, properties.Appointment, properties.Contact
 }
 
+// NewMessage constructs a new Message.
+func NewMessage(file *File, identifier Identifier, localDescriptors []LocalDescriptor, propertyContext *PropertyContext) (*Message, error) {
+	var messageProperties msgp.Decodable
+
+	messageClassPropertyReader, err := propertyContext.GetPropertyReader(26, localDescriptors)
+
+	if err != nil {
+		fmt.Printf("Failed to get message class property reader, falling back to properties.Message: %+v\n", eris.New(err.Error()))
+		messageProperties = &properties.Message{}
+	} else {
+		messageClass, err := messageClassPropertyReader.GetString()
+
+		if err != nil {
+			fmt.Printf("Failed to get message class, falling back to properties.Message: %+v\n", eris.New(err.Error()))
+			messageProperties = &properties.Message{}
+		} else {
+			// https://learn.microsoft.com/en-us/office/vba/outlook/concepts/forms/item-types-and-message-classes
+			if messageClass == "IPM.Note" || messageClass == "IPM.Note.SMIME.MultipartSigned" {
+				messageProperties = &properties.Message{}
+			} else if messageClass == "IPM.Appointment" || messageClass == "IPM.Schedule.Meeting" || messageClass == "IPM.Schedule.Meeting.Request" || messageClass == "IPM.OLE.CLASS.{00061055-0000-0000-C000-000000000046}" {
+				messageProperties = &properties.Appointment{}
+			} else if messageClass == "IPM.Contact" || messageClass == "IPM.AbchPerson" {
+				messageProperties = &properties.Contact{}
+			} else if messageClass == "IPM.Task" {
+				messageProperties = &properties.Task{}
+			} else if messageClass == "IPM.Activity" {
+				messageProperties = &properties.Journal{}
+			} else if messageClass == "IPM.Post.Rss" {
+				messageProperties = &properties.RSS{}
+			} else if messageClass == "IPM.DistList" {
+				messageProperties = &properties.AddressBook{}
+			} else {
+				fmt.Printf("Unmapped message class \"%s\", falling back to properties.Message...\n", messageClass)
+				messageProperties = &properties.Message{}
+			}
+		}
+	}
+
+	if err := propertyContext.Populate(messageProperties, localDescriptors); err != nil {
+		return nil, eris.Wrap(err, "failed to populate message properties")
+	}
+
+	return &Message{
+		File:             file,
+		Identifier:       identifier,
+		PropertyContext:  propertyContext,
+		LocalDescriptors: localDescriptors,
+		Properties:       messageProperties,
+	}, nil
+}
+
 // GetMessageTableContext returns the message table context of this folder which contains references to all messages.
 // Note this only returns the identifier of each message.
 func (folder *Folder) GetMessageTableContext() (TableContext, error) {
@@ -221,53 +272,7 @@ func (file *File) GetMessage(identifier Identifier) (*Message, error) {
 		return nil, eris.Wrap(err, "failed to get property context")
 	}
 
-	var messageProperties msgp.Decodable
-
-	messageClassPropertyReader, err := propertyContext.GetPropertyReader(26, localDescriptors)
-
-	if err != nil {
-		fmt.Printf("Failed to get message class property reader, falling back to properties.Message: %+v\n", eris.New(err.Error()))
-		messageProperties = &properties.Message{}
-	} else {
-		messageClass, err := messageClassPropertyReader.GetString()
-
-		if err != nil {
-			fmt.Printf("Failed to get message class, falling back to properties.Message: %+v\n", eris.New(err.Error()))
-			messageProperties = &properties.Message{}
-		} else {
-			// https://learn.microsoft.com/en-us/office/vba/outlook/concepts/forms/item-types-and-message-classes
-			if messageClass == "IPM.Note" || messageClass == "IPM.Note.SMIME.MultipartSigned" {
-				messageProperties = &properties.Message{}
-			} else if messageClass == "IPM.Appointment" || messageClass == "IPM.Schedule.Meeting" || messageClass == "IPM.Schedule.Meeting.Request" || messageClass == "IPM.OLE.CLASS.{00061055-0000-0000-C000-000000000046}" {
-				messageProperties = &properties.Appointment{}
-			} else if messageClass == "IPM.Contact" || messageClass == "IPM.AbchPerson" {
-				messageProperties = &properties.Contact{}
-			} else if messageClass == "IPM.Task" {
-				messageProperties = &properties.Task{}
-			} else if messageClass == "IPM.Activity" {
-				messageProperties = &properties.Journal{}
-			} else if messageClass == "IPM.Post.Rss" {
-				messageProperties = &properties.RSS{}
-			} else if messageClass == "IPM.DistList" {
-				messageProperties = &properties.AddressBook{}
-			} else {
-				fmt.Printf("Unmapped message class \"%s\", falling back to properties.Message...\n", messageClass)
-				messageProperties = &properties.Message{}
-			}
-		}
-	}
-
-	if err := propertyContext.Populate(messageProperties, localDescriptors); err != nil {
-		return nil, eris.Wrap(err, "failed to populate message properties")
-	}
-
-	return &Message{
-		File:             file,
-		Identifier:       identifier,
-		PropertyContext:  propertyContext,
-		LocalDescriptors: localDescriptors,
-		Properties:       messageProperties,
-	}, nil
+	return NewMessage(file, identifier, localDescriptors, propertyContext)
 }
 
 // GetBodyRTF return the RTF body, may be

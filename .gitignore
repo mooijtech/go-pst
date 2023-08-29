@@ -3,3 +3,4 @@
 protoc
 protoc-gen-go
 protoc-go-inject-tag
+data/*.pst

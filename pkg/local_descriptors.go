@@ -36,15 +36,15 @@ func NewLocalDescriptor(data []byte, formatType FormatType) LocalDescriptor {
 	case FormatTypeANSI:
 		return LocalDescriptor{
 			Identifier:                 Identifier(binary.LittleEndian.Uint32(data[:4])),
-			DataIdentifier:             Identifier(binary.LittleEndian.Uint32(data[4 : 4+4])),
-			LocalDescriptorsIdentifier: Identifier(binary.LittleEndian.Uint32(data[8 : 8+4])),
+			DataIdentifier:             Identifier(binary.LittleEndian.Uint32(data[4:4+4]) & 0xfffffffe),
+			LocalDescriptorsIdentifier: Identifier(binary.LittleEndian.Uint32(data[8:8+4]) & 0xfffffffe),
 		}
 	default:
 		// TODO - Reference [MS-PDF] that this is actually 32-bit.
 		return LocalDescriptor{
 			Identifier:                 Identifier(binary.LittleEndian.Uint32(data[:8])),
-			DataIdentifier:             Identifier(binary.LittleEndian.Uint32(data[8 : 8+8])),
-			LocalDescriptorsIdentifier: Identifier(binary.LittleEndian.Uint32(data[16 : 16+8])),
+			DataIdentifier:             Identifier(binary.LittleEndian.Uint32(data[8:8+8]) & 0xfffffffe),
+			LocalDescriptorsIdentifier: Identifier(binary.LittleEndian.Uint32(data[16:16+8]) & 0xfffffffe),
 		}
 	}
 }

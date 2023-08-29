@@ -28,6 +28,22 @@ type HeapOnNode struct {
 	Reader *HeapOnNodeReader
 }
 
+// SignatureType represents a signature type (for headers).
+type SignatureType uint8
+
+// Constants defining the signature types.
+// TODO - Use in read checks, change type to byte for checks?
+const (
+	SignatureTypeTableContext    SignatureType = 124
+	SignatureTypeBTreeOnHeap     SignatureType = 181
+	SignatureTypePropertyContext SignatureType = 188
+)
+
+// NewHeapOnNode creates a new HeapOnNode.
+func NewHeapOnNode(reader *HeapOnNodeReader) *HeapOnNode {
+	return &HeapOnNode{Reader: reader}
+}
+
 // IsValidSignature returns true if the signature of the block matches 0xEC (236).
 // References "Heap-on-Node header".
 func (heapOnNode *HeapOnNode) IsValidSignature() (bool, error) {

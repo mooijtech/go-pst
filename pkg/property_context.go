@@ -21,6 +21,7 @@ import (
 	_ "embed"
 	"encoding/binary"
 	"encoding/csv"
+	"fmt"
 	"github.com/rotisserie/eris"
 	"github.com/tinylib/msgp/msgp"
 	"io"
@@ -32,6 +33,23 @@ type PropertyContext struct {
 	Properties []Property
 	HeapOnNode *HeapOnNode
 	File       *File
+}
+
+// String prints all properties.
+func (propertyContext *PropertyContext) String() string {
+	var bobTheBuilder strings.Builder
+
+	for _, property := range propertyContext.Properties {
+		propertyName := GetPropertyFromID(property.ID)
+
+		bobTheBuilder.WriteString(fmt.Sprintf("%s: %s\n", propertyName, ""))
+	}
+
+	return bobTheBuilder.String()
+}
+
+func GetPropertyFromID(identifier uint16) []string {
+	return PropertyMap[fmt.Sprintf("%d", identifier)]
 }
 
 // GetPropertyByID returns the property by ID.

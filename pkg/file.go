@@ -21,6 +21,7 @@ import (
 	"encoding/binary"
 	_ "github.com/emersion/go-message/charset"
 	"github.com/rotisserie/eris"
+	"hash/crc32"
 	"io"
 )
 
@@ -225,6 +226,38 @@ const (
 	EncryptionTypePermute EncryptionType = 1
 	//EncryptionTypeCyclic  EncryptionType = 2 // Not implemented currently.
 )
+
+// GetHeaderCRCs returns the CRCs (cyclic redundancy check) of the header.
+func (file *File) GetHeaderCRCs() ([]uint32, error) {
+	crcPartial := make([]byte, 4)
+
+	if _, err := file.Reader.ReadAt(crcPartial, 4); err != nil {
+		return nil, eris.Wrap(err, "failed to read CRC")
+	}
+
+	crcFull := make([]byte, 4)
+
+	var crcFullOffset int64
+
+	switch file.FormatType {
+	case FormatTypeUnicode:
+
+	case FormatTypeANSI:
+	default:
+		return nil, eris.New("unsupported format type")
+	}
+
+	if _, err := file.Reader.ReadAt(crcFull, crcFullOffset); err != nil {
+		return nil, eris.Wrap(err, "failed to read CRC full")
+	}
+
+	// TODO - We don't currently verify these values.
+
+	return []uint32{
+		crc32.ChecksumIEEE(crcPartial),
+		crc32.ChecksumIEEE(crcFull),
+	}, nil
+}
 
 // GetEncryptionType returns the encryption type.
 // References "The 64-bit header data", "The 32-bit header data", "Encryption Types".

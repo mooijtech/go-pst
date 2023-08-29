@@ -16,10 +16,27 @@
 
 package pst
 
-import "github.com/rotisserie/eris"
+import (
+	"github.com/pkg/errors"
+	"github.com/rotisserie/eris"
+)
 
-// GetMessageStore returns the message store of the PST file.
-func (file *File) GetMessageStore() (*PropertyContext, error) {
+// MessageStore represents the MessageStore of a PST file.
+// Each PST file has at most one MessageStore.
+type MessageStore struct {
+	// PropertyContext represents the PropertyContext of the MessageStore.
+	PropertyContext *PropertyContext
+}
+
+// NewMessageStore creates a new MessageStore.
+func NewMessageStore(propertyContext *PropertyContext) *MessageStore {
+	return &MessageStore{
+		PropertyContext: propertyContext,
+	}
+}
+
+// GetMessageStore returns the MessageStore of the PST file.
+func (file *File) GetMessageStore() (*MessageStore, error) {
 	dataBTreeNode, err := file.GetDataBTreeNode(IdentifierMessageStore)
 
 	if err != nil {
@@ -32,5 +49,11 @@ func (file *File) GetMessageStore() (*PropertyContext, error) {
 		return nil, eris.Wrap(err, "failed to get Heap-on-Node")
 	}
 
-	return file.GetPropertyContext(heapOnNode)
+	propertyContext, err := file.GetPropertyContext(heapOnNode)
+
+	if err != nil {
+		return nil, errors.WithStack(err)
+	}
+
+	return NewMessageStore(propertyContext), nil
 }

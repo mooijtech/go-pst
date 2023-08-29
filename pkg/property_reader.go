@@ -20,6 +20,7 @@ import (
 	"encoding/binary"
 	"fmt"
 	"github.com/tinylib/msgp/msgp"
+	"io"
 	"math"
 	"time"
 
@@ -160,6 +161,10 @@ func (propertyReader *PropertyReader) WriteMessagePackValue(writer *msgp.Writer)
 		}
 
 		return nil
+	case PropertyTypeObject:
+		//
+		//panic("Got object!")
+		return ErrPropertyNoData
 	default:
 		// TODO - Write Nil?
 		return ErrPropertyNoData
@@ -310,6 +315,14 @@ func (propertyReader *PropertyReader) GetBoolean() (bool, error) {
 // ReadAt reads the underlying Heap-on-Node.
 func (propertyReader *PropertyReader) ReadAt(outputBuffer []byte, offset int64) (int, error) {
 	return propertyReader.HeapOnNodeReader.ReadAt(outputBuffer, offset)
+}
+
+func (propertyReader *PropertyReader) Read(outputBuffer []byte) (int, error) {
+	// TODO - Just use ReadAt for now
+
+	sectionReader := io.NewSectionReader(propertyReader.HeapOnNodeReader, 0, propertyReader.Size())
+
+	return sectionReader.Read(outputBuffer)
 }
 
 // Size returns the size of the Heap-on-Node.
