@@ -17,8 +17,10 @@
 package writer
 
 import (
+	"bytes"
 	pst "github.com/mooijtech/go-pst/v6/pkg"
 	"github.com/rotisserie/eris"
+	"io"
 )
 
 // BTreeWriter represents a writer for B-Trees.
@@ -32,67 +34,70 @@ func NewBTreeWriter(formatType pst.FormatType) *BTreeWriter {
 	return &BTreeWriter{FormatType: formatType}
 }
 
-// Write writes the B-Tree.
-// References TODO
-func (btreeWriter *BTreeWriter) Write() error {
-	return nil
-}
+// WriteTo writes the B-Tree.
+// References https://github.com/mooijtech/go-pst/blob/main/docs/README.md#btpage
+func (btreeWriter *BTreeWriter) WriteTo(writer io.Writer, btreeType pst.BTreeType, btreeEntries [][]byte, level int) (int64, error) {
+	btree := bytes.NewBuffer(make([]byte, 512)) // Same for Unicode and ANSI.
 
-// WriteBTree writes the node- and block b-tree.
-// References TODO
-func (btreeWriter *BTreeWriter) WriteBTree(btreeType pst.BTreeType, level int) error {
-	btree := make([]byte, 512) // Same size for Unicode and ANSI.
-
-	if err := btreeWriter.WriteBTreeNode(); err != nil {
-		return eris.Wrap(err, "failed to write b-tree node")
+	// Entries
+	// TODO make a structure for this.
+	// TODO Check maximum b-tree entry size and return error on overflow
+	for _, btreeEntry := range btreeEntries {
+		btree.Write(btreeEntry)
 	}
 
 	// The number of BTree entries stored in the page data.
-	if level > 0 {
-		// Branch
-		WriteBuffer([]byte{}, btree)
-	} else {
-		// Leaf
-		WriteBuffer([]byte{}, btree)
-	}
+	btree.WriteByte(byte(len(btreeEntries)))
 
 	// The maximum number of entries that can fit inside the page data.
-	WriteBuffer([]byte{255}, btree)
+	btree.Write(make([]byte, 1)) // TODO
 
 	// The size of each BTree entry, in bytes.
 	if btreeType == pst.BTreeTypeNode && level == 0 {
 		switch btreeWriter.FormatType {
 		case pst.FormatTypeUnicode:
-			WriteBuffer([]byte{32}, btree)
+			btree.Write([]byte{32})
 		case pst.FormatTypeANSI:
-			WriteBuffer([]byte{16}, btree)
+			btree.Write([]byte{16})
 		default:
-			return pst.ErrFormatTypeUnsupported
+			panic(pst.ErrFormatTypeUnsupported)
 		}
 	} else {
 		switch btreeWriter.FormatType {
 		case pst.FormatTypeUnicode:
-			WriteBuffer([]byte{24}, btree)
+			btree.Write([]byte{24})
 		case pst.FormatTypeANSI:
-			WriteBuffer([]byte{12}, btree)
+			btree.Write([]byte{12})
 		default:
-			return pst.ErrFormatTypeUnsupported
+			panic(pst.ErrFormatTypeUnsupported)
 		}
 	}
 
-	// The depth level of this page. Leaf pages have a level of zero, whereas intermediate pages have a level greater than 0.
+	// The depth level of this page.
+	btree.WriteByte(byte(level))
 
 	if btreeWriter.FormatType == pst.FormatTypeUnicode {
 		// Padding; MUST be set to zero.
-		WriteBuffer(make([]byte, 4), btree)
+		// Unicode only.
+		btree.Write(make([]byte, 4))
 	}
 
-	// A PAGETRAILER structure (section 2.2.2.7.1).
+	// Page trailer.
+	if _, err := btreeWriter.WritePageTrailer(btree); err != nil {
+		return 0, eris.Wrap(err, "failed to write page trailer")
+	}
 
-	return nil
+	return btree.WriteTo(writer)
 }
 
-func (btreeWriter *BTreeWriter) WriteBTreeNode() error {
+// WritePageTrailer writes the page tailer of the b-tree.
+// References https://github.com/mooijtech/go-pst/blob/main/docs/README.md#pagetrailer
+func (btreeWriter *BTreeWriter) WritePageTrailer(writer io.Writer) (int64, error) {
+	return 0, nil
+}
+
+// WriteBTreeNode writes the b-tree node entry.
+func (btreeWriter *BTreeWriter) WriteBTreeNode(writer io.Writer) (int64, error) {
 	var btreeNodeSize int
 
 	switch btreeWriter.FormatType {
@@ -101,12 +106,12 @@ func (btreeWriter *BTreeWriter) WriteBTreeNode() error {
 	case pst.FormatTypeANSI:
 		btreeNodeSize = 496
 	default:
-		return pst.ErrFormatTypeUnsupported
+		panic(pst.ErrFormatTypeUnsupported)
 	}
 
-	btreeNode := make([]byte, btreeNodeSize)
+	btreeNode := bytes.NewBuffer(make([]byte, btreeNodeSize))
 
-	//
+	// TODO -
 
-	return nil
+	return btreeNode.WriteTo(writer)
 }

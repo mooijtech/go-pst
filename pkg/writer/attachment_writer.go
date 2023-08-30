@@ -19,6 +19,7 @@ package writer
 import (
 	"github.com/mooijtech/go-pst/v6/pkg/properties"
 	"github.com/rotisserie/eris"
+	"io"
 )
 
 // AttachmentWriter represents a writer for attachments.
@@ -34,11 +35,13 @@ func NewAttachmentWriter(properties *properties.Attachment) *AttachmentWriter {
 	}
 }
 
-// Write writes the attachment pst.TableContext.
-func (attachmentWriter *AttachmentWriter) Write() error {
-	if err := attachmentWriter.PropertyContextWriter.Write(); err != nil {
-		return eris.Wrap(err, "failed to write Table Context")
+// WriteTo writes the attachment pst.TableContext.
+func (attachmentWriter *AttachmentWriter) WriteTo(writer io.Writer) (int64, error) {
+	propertyContextWrittenSize, err := attachmentWriter.PropertyContextWriter.WriteTo(writer)
+
+	if err != nil {
+		return 0, eris.Wrap(err, "failed to write Table Context")
 	}
 
-	return nil
+	return propertyContextWrittenSize, nil
 }

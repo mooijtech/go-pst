@@ -17,8 +17,10 @@
 package writer
 
 import (
+	"bytes"
 	pst "github.com/mooijtech/go-pst/v6/pkg"
 	"github.com/rotisserie/eris"
+	"io"
 )
 
 // TableContextWriter represents a writer for a pst.TableContext.
@@ -39,29 +41,35 @@ func NewTableContextWriter() *TableContextWriter {
 	}
 }
 
-// Write writes the pst.TableContext.
-func (tableContextWriter *TableContextWriter) Write() error {
-	if err := tableContextWriter.BTreeOnHeapWriter.Write(); err != nil {
-		return eris.Wrap(err, "failed to write BTree-on-Heap")
+// WriteTo writes the pst.TableContext.
+func (tableContextWriter *TableContextWriter) WriteTo(writer io.Writer) (int64, error) {
+	btreeOnHeapWrittenSize, err := tableContextWriter.BTreeOnHeapWriter.WriteTo(writer)
+
+	if err != nil {
+		return 0, eris.Wrap(err, "failed to write BTree-on-Heap")
 	}
 
-	if err := tableContextWriter.WriteHeader(); err != nil {
-		return eris.Wrap(err, "failed to write Table Context header")
+	headerWrittenSize, err := tableContextWriter.WriteHeader(writer)
+
+	if err != nil {
+		return 0, eris.Wrap(err, "failed to write Table Context header")
 	}
 
-	return nil
+	return btreeOnHeapWrittenSize + headerWrittenSize, nil
 }
 
 // WriteHeader writes the pst.TableContext header.
 // References https://github.com/mooijtech/go-pst/blob/main/docs/README.md#tcinfo
-func (tableContextWriter *TableContextWriter) WriteHeader() error {
+func (tableContextWriter *TableContextWriter) WriteHeader(writer io.Writer) (int64, error) {
 	// ?+?+?+entries
-	header := make([]byte, 0) // TODO - fix size
+	header := bytes.NewBuffer(make([]byte, 0)) // TODO - fix size
 
-	WriteBuffer([]byte{byte(pst.SignatureTypeTableContext)}, header)      // MUST be set to bTypeTC
-	WriteBuffer([]byte{byte(len(tableContextWriter.Properties))}, header) // Column count
+	// MUST be set to bTypeTC
+	header.Write([]byte{byte(pst.SignatureTypeTableContext)})
+	// Column count
+	header.Write([]byte{byte(len(tableContextWriter.Properties))})
 
 	// Array of Column Descriptors.
 
-	return nil
+	return header.WriteTo(writer)
 }

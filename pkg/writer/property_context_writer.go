@@ -20,6 +20,7 @@ import (
 	pst "github.com/mooijtech/go-pst/v6/pkg"
 	"github.com/rotisserie/eris"
 	"google.golang.org/protobuf/proto"
+	"io"
 )
 
 // PropertyContextWriter represents a writer for a pst.PropertyContext.
@@ -43,11 +44,13 @@ func NewPropertyContextWriter(properties proto.Message) *PropertyContextWriter {
 	}
 }
 
-// Write writes the pst.PropertyContext.
-func (propertyContextWriter *PropertyContextWriter) Write() error {
-	if err := propertyContextWriter.BTreeOnHeapWriter.Write(); err != nil {
-		return eris.Wrap(err, "failed to write Heap-on-Node")
+// WriteTo writes the pst.PropertyContext.
+func (propertyContextWriter *PropertyContextWriter) WriteTo(writer io.Writer) (int64, error) {
+	btreeOnHeapWrittenSize, err := propertyContextWriter.BTreeOnHeapWriter.WriteTo(writer)
+
+	if err != nil {
+		return 0, eris.Wrap(err, "failed to write Heap-on-Node")
 	}
 
-	return nil
+	return btreeOnHeapWrittenSize, nil
 }

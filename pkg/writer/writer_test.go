@@ -32,7 +32,8 @@ func TestWritePSTFile(t *testing.T) {
 		t.Fatalf("Failed to create output file: %+v", err)
 	}
 
-	writer := NewWriter(outputFile, NewWriteOptions(pst.FormatTypeUnicode, pst.EncryptionTypePermute))
+	writeOptions := NewWriteOptions(pst.FormatTypeUnicode, pst.EncryptionTypePermute)
+	writer := NewWriter(writeOptions)
 
 	// Create messages to write.
 	messageProperties := &properties.Message{
@@ -48,9 +49,12 @@ func TestWritePSTFile(t *testing.T) {
 
 	message := NewMessageWriter(messageProperties, messageAttachments)
 
-	writer.AddMessage(message)
+	folderProperties := NewFolderProperties("root")
+	rootFolder := NewFolderWriter(folderProperties, []*MessageWriter{message})
 
-	if err := writer.Write(); err != nil {
+	writer.AddFolder(rootFolder)
+
+	if _, err := writer.WriteTo(outputFile); err != nil {
 		t.Fatalf("Failed to write PST file: %+v", err)
 	}
 }

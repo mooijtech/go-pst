@@ -16,7 +16,10 @@
 
 package writer
 
-import "github.com/rotisserie/eris"
+import (
+	"github.com/rotisserie/eris"
+	"io"
+)
 
 // FolderWriter represents a writer for folders.
 type FolderWriter struct {
@@ -42,39 +45,46 @@ func NewFolderProperties(name string) FolderProperties {
 }
 
 // NewFolderWriter creates a new FolderWriter.
-func NewFolderWriter(folderProperties FolderProperties, messages []*MessageWriter, tableContextWriter *TableContextWriter) *FolderWriter {
+func NewFolderWriter(folderProperties FolderProperties, messages []*MessageWriter) *FolderWriter {
 	return &FolderWriter{
 		Properties:         folderProperties,
 		Messages:           messages,
-		TableContextWriter: tableContextWriter,
+		TableContextWriter: NewTableContextWriter(),
 	}
 }
 
-// Write writes the folder containing messages.
-func (folderWriter *FolderWriter) Write() error {
-	if err := folderWriter.TableContextWriter.Write(); err != nil {
-		return eris.Wrap(err, "failed to write Table Context")
+// WriteTo writes the folder containing messages.
+// Returns the amount of bytes written to the output buffer.
+// References TODO
+func (folderWriter *FolderWriter) WriteTo(writer io.Writer) (int64, error) {
+	tableContextWrittenSize, err := folderWriter.TableContextWriter.WriteTo(writer)
+
+	if err != nil {
+		return 0, eris.Wrap(err, "failed to write Table Context")
 	}
 
-	if err := folderWriter.WriteMessages(); err != nil {
-		return eris.Wrap(err, "failed to write messages")
+	messagesWrittenSize, err := folderWriter.WriteMessages(writer)
+
+	if err != nil {
+		return 0, eris.Wrap(err, "failed to write messages")
 	}
 
-	return nil
-}
-
-// WriteFolders writes the pst.TableContext of the folders.
-func (folderWriter *FolderWriter) WriteFolders() error {
-	return nil
+	return tableContextWrittenSize + messagesWrittenSize, nil
 }
 
 // WriteMessages writes the messages of the folder.
-func (folderWriter *FolderWriter) WriteMessages() error {
+func (folderWriter *FolderWriter) WriteMessages(writer io.Writer) (int64, error) {
+	var totalSize int64
+
 	for _, messageWriter := range folderWriter.Messages {
-		if err := messageWriter.Write(); err != nil {
-			return eris.Wrap(err, "failed to write message")
+		written, err := messageWriter.WriteTo(writer)
+
+		if err != nil {
+			return 0, eris.Wrap(err, "failed to write message")
 		}
+
+		totalSize += written
 	}
 
-	return nil
+	return totalSize, nil
 }
