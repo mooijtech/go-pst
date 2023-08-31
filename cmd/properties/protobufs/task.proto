@@ -21,81 +21,81 @@ option go_package = "github.com/mooijtech/go-pst;properties";
 
 message Task {
   // Contains an index identifying one of a set of pre-defined text strings to be associated with the flag.
-  optional int32 flag_string = 1; // @gotags: msg:"2676483,omitempty"
+  optional int32 flag_string = 1; // @gotags: msg:"267648,omitempty" type:"3,omitempty"
   // Indicates whether a time-flagged Message object is complete.
-  optional double percent_complete = 3; // @gotags: msg:"2631705,omitempty"
+  optional double percent_complete = 3; // @gotags: msg:"263170,omitempty" type:"5,omitempty"
   // Indicates the acceptance state of the task.
-  optional int32 task_acceptance_state = 4; // @gotags: msg:"2632423,omitempty"
+  optional int32 task_acceptance_state = 4; // @gotags: msg:"263242,omitempty" type:"3,omitempty"
   // Indicates whether a task assignee has replied to a task request for this Task object.
-  optional bool task_accepted = 5; // @gotags: msg:"26317611,omitempty"
+  optional bool task_accepted = 5; // @gotags: msg:"263176,omitempty" type:"11,omitempty"
   // Indicates the number of minutes that the user actually spent working on a task.
-  optional int32 task_actual_effort = 6; // @gotags: msg:"2632003,omitempty"
+  optional int32 task_actual_effort = 6; // @gotags: msg:"263200,omitempty" type:"3,omitempty"
   // Specifies the name of the user that last assigned the task.
-  optional string task_assigner = 7; // @gotags: msg:"26323331,omitempty"
+  optional string task_assigner = 7; // @gotags: msg:"263233,omitempty" type:"31,omitempty"
   // Indicates that the task is complete.
-  optional bool task_complete = 9; // @gotags: msg:"26321211,omitempty"
+  optional bool task_complete = 9; // @gotags: msg:"263212,omitempty" type:"11,omitempty"
   // The client can set this property, but it has no impact on the Task-Related Objects Protocol and is ignored by the server.
-  optional int32 task_custom_flags = 10; // @gotags: msg:"2632733,omitempty"
+  optional int32 task_custom_flags = 10; // @gotags: msg:"263273,omitempty" type:"3,omitempty"
   // Specifies the date when the user completed work on the task.
-  optional int64 task_date_completed = 11; // @gotags: msg:"26318364,omitempty"
+  optional int64 task_date_completed = 11; // @gotags: msg:"263183,omitempty" type:"64,omitempty"
   // Indicates whether new occurrences remain to be generated.
-  optional bool task_dead_occurrence = 12; // @gotags: msg:"26317711,omitempty"
+  optional bool task_dead_occurrence = 12; // @gotags: msg:"263177,omitempty" type:"11,omitempty"
   // Specifies the date by which the user expects work on the task to be complete.
-  optional int64 task_due_date = 13; // @gotags: msg:"26317364,omitempty"
+  optional int64 task_due_date = 13; // @gotags: msg:"263173,omitempty" type:"64,omitempty"
   // Indicates the number of minutes that the user expects to work on a task.
-  optional int32 task_estimated_effort = 14; // @gotags: msg:"2632013,omitempty"
+  optional int32 task_estimated_effort = 14; // @gotags: msg:"263201,omitempty" type:"3,omitempty"
   // Indicates that the Task object was originally created by the action of the current user or user agent instead of by the processing of a task request.
-  optional bool taskf_creator = 15; // @gotags: msg:"26321411,omitempty"
+  optional bool taskf_creator = 15; // @gotags: msg:"263214,omitempty" type:"11,omitempty"
   // Indicates the accuracy of the PidLidTaskOwner property (section 2.328).
-  optional bool taskf_fix_offline = 16; // @gotags: msg:"26324411,omitempty"
+  optional bool taskf_fix_offline = 16; // @gotags: msg:"263244,omitempty" type:"11,omitempty"
   // Indicates whether the task includes a recurrence pattern.
-  optional bool taskf_recurring = 17; // @gotags: msg:"26323811,omitempty"
+  optional bool taskf_recurring = 17; // @gotags: msg:"263238,omitempty" type:"11,omitempty"
   // Indicates the type of change that was last made to the Task object.
-  optional int32 task_history = 19; // @gotags: msg:"2632103,omitempty"
+  optional int32 task_history = 19; // @gotags: msg:"263210,omitempty" type:"3,omitempty"
   // Contains the name of the user who most recently assigned the task, or the user to whom it was most recently assigned.
-  optional string task_last_delegate = 20; // @gotags: msg:"26323731,omitempty"
+  optional string task_last_delegate = 20; // @gotags: msg:"263237,omitempty" type:"31,omitempty"
   // Contains the date and time of the most recent change made to the Task object.
-  optional int64 task_last_update = 21; // @gotags: msg:"26320564,omitempty"
+  optional int64 task_last_update = 21; // @gotags: msg:"263205,omitempty" type:"64,omitempty"
   // Contains the name of the most recent user to have been the owner of the task.
-  optional string task_last_user = 22; // @gotags: msg:"26323431,omitempty"
+  optional string task_last_user = 22; // @gotags: msg:"263234,omitempty" type:"31,omitempty"
   // Specifies the assignment status of the embedded Task object.
-  optional int32 task_mode = 23; // @gotags: msg:"2673043,omitempty"
+  optional int32 task_mode = 23; // @gotags: msg:"267304,omitempty" type:"3,omitempty"
   // Provides optimization hints about the recipients of a Task object.
-  optional int32 task_multiple_recipients = 24; // @gotags: msg:"2632323,omitempty"
+  optional int32 task_multiple_recipients = 24; // @gotags: msg:"263232,omitempty" type:"3,omitempty"
   // Not used. The client can set this property, but it has no impact on the Task-Related Objects Protocol and is ignored by the server.
-  optional bool task_no_compute = 25; // @gotags: msg:"26323611,omitempty"
+  optional bool task_no_compute = 25; // @gotags: msg:"263236,omitempty" type:"11,omitempty"
   // Provides an aid to custom sorting of Task objects.
-  optional int32 task_ordinal = 26; // @gotags: msg:"2632353,omitempty"
+  optional int32 task_ordinal = 26; // @gotags: msg:"263235,omitempty" type:"3,omitempty"
   // Contains the name of the owner of the task.
-  optional string task_owner = 27; // @gotags: msg:"26321531,omitempty"
+  optional string task_owner = 27; // @gotags: msg:"263215,omitempty" type:"31,omitempty"
   // Indicates the role of the current user relative to the Task object.
-  optional int32 task_ownership = 28; // @gotags: msg:"2632413,omitempty"
+  optional int32 task_ownership = 28; // @gotags: msg:"263241,omitempty" type:"3,omitempty"
   // Indicates whether future instances of recurring tasks need reminders, even though the value of the PidLidReminderSet property (section 2.222) is 0x00.
-  optional bool task_reset_reminder = 30; // @gotags: msg:"26317511,omitempty"
+  optional bool task_reset_reminder = 30; // @gotags: msg:"263175,omitempty" type:"11,omitempty"
   // Not used. The client can set this property, but it has no impact on the Task-Related Objects Protocol and is ignored by the server.
-  optional string task_role = 31; // @gotags: msg:"26323931,omitempty"
+  optional string task_role = 31; // @gotags: msg:"263239,omitempty" type:"31,omitempty"
   // Specifies the date on which the user expects work on the task to begin.
-  optional int64 task_start_date = 32; // @gotags: msg:"26317264,omitempty"
+  optional int64 task_start_date = 32; // @gotags: msg:"263172,omitempty" type:"64,omitempty"
   // Indicates the current assignment state of the Task object.
-  optional int32 task_state = 33; // @gotags: msg:"2632033,omitempty"
+  optional int32 task_state = 33; // @gotags: msg:"263203,omitempty" type:"3,omitempty"
   // Specifies the status of a task.
-  optional int32 task_status = 34; // @gotags: msg:"2631693,omitempty"
+  optional int32 task_status = 34; // @gotags: msg:"263169,omitempty" type:"3,omitempty"
   // Indicates whether the task assignee has been requested to send an email message update upon completion of the assigned task.
-  optional bool task_status_on_complete = 35; // @gotags: msg:"26320911,omitempty"
+  optional bool task_status_on_complete = 35; // @gotags: msg:"263209,omitempty" type:"11,omitempty"
   // Indicates whether the task assignee has been requested to send a task update when the assigned Task object changes.
-  optional bool task_updates = 36; // @gotags: msg:"26321111,omitempty"
+  optional bool task_updates = 36; // @gotags: msg:"263211,omitempty" type:"11,omitempty"
   // Indicates which copy is the latest update of a Task object.
-  optional int32 task_version = 37; // @gotags: msg:"2632023,omitempty"
+  optional int32 task_version = 37; // @gotags: msg:"263202,omitempty" type:"3,omitempty"
   // This property is set by the client but is ignored by the server.
-  optional bool team_task = 38; // @gotags: msg:"26317111,omitempty"
+  optional bool team_task = 38; // @gotags: msg:"263171,omitempty" type:"11,omitempty"
   // Contains the current time, in UTC, which is used to determine the sort order of objects in a consolidated to-do list.
-  optional int64 to_do_ordinal_date = 39; // @gotags: msg:"26758464,omitempty"
+  optional int64 to_do_ordinal_date = 39; // @gotags: msg:"267584,omitempty" type:"64,omitempty"
   // Contains the numerals 0 through 9 that are used to break a tie when the PidLidToDoOrdinalDate property (section 2.344) is used to perform a sort of objects.
-  optional string to_do_sub_ordinal = 40; // @gotags: msg:"26758531,omitempty"
+  optional string to_do_sub_ordinal = 40; // @gotags: msg:"267585,omitempty" type:"31,omitempty"
   // Contains user-specifiable text to identify this Message object in a consolidated to-do list.
-  optional string to_do_title = 41; // @gotags: msg:"26758831,omitempty"
+  optional string to_do_title = 41; // @gotags: msg:"267588,omitempty" type:"31,omitempty"
   // Contains the value of the PidTagMessageDeliveryTime  property (section 2.789) when modifying the PidLidFlagRequest property (section 2.136).
-  optional int64 valid_flag_string_proof = 42; // @gotags: msg:"26763164,omitempty"
+  optional int64 valid_flag_string_proof = 42; // @gotags: msg:"267631,omitempty" type:"64,omitempty"
   // Contains a positive number whose negative is less than or equal to the value of the PidLidTaskOrdinal property (section 2.327) of all of the Task objects in the folder.
-  optional int32 ordinal_most = 43; // @gotags: msg:"140503,omitempty"
+  optional int32 ordinal_most = 43; // @gotags: msg:"14050,omitempty" type:"3,omitempty"
 }

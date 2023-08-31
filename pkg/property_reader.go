@@ -60,7 +60,7 @@ func NewPropertyReader(property Property, heapOnNode *HeapOnNode, file *File, lo
 // WriteMessagePackValue writes the Message Pack format of the property value.
 // Used to populate struct fields.
 func (propertyReader *PropertyReader) WriteMessagePackValue(writer *msgp.Writer) error {
-	key := fmt.Sprintf("%d%d", propertyReader.Property.ID, propertyReader.Property.Type)
+	key := fmt.Sprintf("%d", propertyReader.Property.ID)
 
 	switch propertyReader.Property.Type {
 	case PropertyTypeString:

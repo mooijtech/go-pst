@@ -17,6 +17,7 @@
 package writer
 
 import (
+	"github.com/mooijtech/go-pst/v6/pkg/properties"
 	"github.com/rotisserie/eris"
 	"io"
 )
@@ -24,32 +25,19 @@ import (
 // FolderWriter represents a writer for folders.
 type FolderWriter struct {
 	// Properties represents the FolderProperties.
-	Properties FolderProperties
+	Properties *properties.Folder
 	// Messages represents the messages in this folder.
 	Messages []*MessageWriter
 	// TableContextWriter writes the pst.TableContext of the pst.Folder.
 	TableContextWriter *TableContextWriter
 }
 
-// FolderProperties represents the properties of a pst.Folder.
-// TODO - Move to properties.Folder.
-type FolderProperties struct {
-	Name string
-}
-
-// NewFolderProperties creates a new FolderProperties.
-func NewFolderProperties(name string) FolderProperties {
-	return FolderProperties{
-		Name: name,
-	}
-}
-
 // NewFolderWriter creates a new FolderWriter.
-func NewFolderWriter(folderProperties FolderProperties, messages []*MessageWriter) *FolderWriter {
+func NewFolderWriter(folderProperties *properties.Folder, messages []*MessageWriter) *FolderWriter {
 	return &FolderWriter{
 		Properties:         folderProperties,
 		Messages:           messages,
-		TableContextWriter: NewTableContextWriter(),
+		TableContextWriter: NewTableContextWriter(folderProperties),
 	}
 }
 

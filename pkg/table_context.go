@@ -226,7 +226,8 @@ func (file *File) GetTableContextProperty(tableRowMatrixReader io.ReaderAt, rowO
 }
 
 // ColumnDescriptor represents a column in the Table Context.
-// References "Table Context", "Table Context Column Descriptor".
+// References:
+// - https://github.com/mooijtech/go-pst/blob/main/docs/README.md#tcoldesc
 type ColumnDescriptor struct {
 	PropertyType             PropertyType
 	PropertyID               uint16

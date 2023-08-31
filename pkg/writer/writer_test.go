@@ -49,7 +49,7 @@ func TestWritePSTFile(t *testing.T) {
 
 	message := NewMessageWriter(messageProperties, messageAttachments)
 
-	folderProperties := NewFolderProperties("root")
+	folderProperties := &properties.Folder{Name: "root"}
 	rootFolder := NewFolderWriter(folderProperties, []*MessageWriter{message})
 
 	writer.AddFolder(rootFolder)
@@ -59,14 +59,14 @@ func TestWritePSTFile(t *testing.T) {
 	}
 }
 
-// TestWritePSTFileFromExisting writes a PST file from an existing PST file.
-func TestWritePSTFileFromExisting(t *testing.T) {
+func TestWriteTableContext(t *testing.T) {
+	attachmentProperties := properties.Attachment{
+		AttachLongFilename: proto.String("nudes.png"),
+	}
 
-}
+	tableContextWriter := NewTableContextWriter(&attachmentProperties)
 
-// TestReadWrittenPSTFile tests if go-pst can read the written PST file without errors.
-func TestReadWrittenPSTFile(t *testing.T) {
-	TestWritePSTFile(t)
-
-	// TODO - Read
+	if _, err := tableContextWriter.WriteTo(os.Stdout); err != nil {
+		t.Fatalf("Failed to write Table Context: %+v", err)
+	}
 }

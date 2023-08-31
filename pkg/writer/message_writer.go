@@ -28,7 +28,6 @@ type MessageWriter struct {
 	Properties *properties.Message
 	// Attachments represents the attachments of a pst.Message.
 	Attachments []*AttachmentWriter
-
 	// PropertyContextWriter writes the pst.PropertyContext of a pst.Message.
 	PropertyContextWriter *PropertyContextWriter
 }

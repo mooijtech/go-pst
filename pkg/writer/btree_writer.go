@@ -31,7 +31,9 @@ type BTreeWriter struct {
 
 // NewBTreeWriter creates a new BTreeWriter.
 func NewBTreeWriter(formatType pst.FormatType) *BTreeWriter {
-	return &BTreeWriter{FormatType: formatType}
+	return &BTreeWriter{
+		FormatType: formatType,
+	}
 }
 
 // WriteTo writes the B-Tree.
@@ -94,24 +96,4 @@ func (btreeWriter *BTreeWriter) WriteTo(writer io.Writer, btreeType pst.BTreeTyp
 // References https://github.com/mooijtech/go-pst/blob/main/docs/README.md#pagetrailer
 func (btreeWriter *BTreeWriter) WritePageTrailer(writer io.Writer) (int64, error) {
 	return 0, nil
-}
-
-// WriteBTreeNode writes the b-tree node entry.
-func (btreeWriter *BTreeWriter) WriteBTreeNode(writer io.Writer) (int64, error) {
-	var btreeNodeSize int
-
-	switch btreeWriter.FormatType {
-	case pst.FormatTypeUnicode:
-		btreeNodeSize = 488
-	case pst.FormatTypeANSI:
-		btreeNodeSize = 496
-	default:
-		panic(pst.ErrFormatTypeUnsupported)
-	}
-
-	btreeNode := bytes.NewBuffer(make([]byte, btreeNodeSize))
-
-	// TODO -
-
-	return btreeNode.WriteTo(writer)
 }

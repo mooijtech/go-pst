@@ -35,7 +35,7 @@ func NewAttachmentWriter(properties *properties.Attachment) *AttachmentWriter {
 	}
 }
 
-// WriteTo writes the attachment pst.TableContext.
+// WriteTo writes the attachment.
 func (attachmentWriter *AttachmentWriter) WriteTo(writer io.Writer) (int64, error) {
 	propertyContextWrittenSize, err := attachmentWriter.PropertyContextWriter.WriteTo(writer)
 

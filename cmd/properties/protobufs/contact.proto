@@ -21,221 +21,221 @@ option go_package = "github.com/mooijtech/go-pst;properties";
 
 message Contact {
   // Specifies the state of the electronic addresses of the contact and represents a set of bit flags.
-  optional int32 address_book_provider_array_type = 1; // @gotags: msg:"2622173,omitempty"
+  optional int32 address_book_provider_array_type = 1; // @gotags: msg:"262217,omitempty" type:"3,omitempty"
   // Specifies the country code portion of the mailing address of the contact.
-  optional string address_country_code = 3; // @gotags: msg:"26257331,omitempty"
+  optional string address_country_code = 3; // @gotags: msg:"262573,omitempty" type:"31,omitempty"
   // Specifies to the application whether to create a Journal object for each action associated with this Contact object.
-  optional bool auto_log = 5; // @gotags: msg:"26221311,omitempty"
+  optional bool auto_log = 5; // @gotags: msg:"262213,omitempty" type:"11,omitempty"
   // Specifies the birthday of a contact.
-  optional int64 birthday_local = 7; // @gotags: msg:"26257464,omitempty"
+  optional int64 birthday_local = 7; // @gotags: msg:"262574,omitempty" type:"64,omitempty"
   // Specifies the character set used for a Contact object.
-  optional int32 contact_character_set = 10; // @gotags: msg:"2622113,omitempty"
+  optional int32 contact_character_set = 10; // @gotags: msg:"262211,omitempty" type:"3,omitempty"
   // Specifies the GUID of the GAL contact to which the duplicate contact is linked.
-  optional uint64 contact_link_global_address_list_link_id = 14; // @gotags: msg:"26260072,omitempty"
+  optional uint64 contact_link_global_address_list_link_id = 14; // @gotags: msg:"262600,omitempty" type:"72,omitempty"
   // Specifies the state of the linking between the GAL contact and the duplicate contact.
-  optional int32 contact_link_global_address_list_link_state = 15; // @gotags: msg:"2625983,omitempty"
+  optional int32 contact_link_global_address_list_link_state = 15; // @gotags: msg:"262598,omitempty" type:"3,omitempty"
   // 
-  optional string contact_link_name = 17; // @gotags: msg:"26752631,omitempty"
+  optional string contact_link_name = 17; // @gotags: msg:"267526,omitempty" type:"31,omitempty"
   // Contains text used to add custom text to a business card representation of a Contact object.
-  optional string contact_user_field1 = 20; // @gotags: msg:"26228731,omitempty"
+  optional string contact_user_field1 = 20; // @gotags: msg:"262287,omitempty" type:"31,omitempty"
   // Contains text used to add custom text to a business card representation of a Contact object.
-  optional string contact_user_field2 = 21; // @gotags: msg:"26230431,omitempty"
+  optional string contact_user_field2 = 21; // @gotags: msg:"262304,omitempty" type:"31,omitempty"
   // Contains text used to add custom text to a business card representation of a Contact object.
-  optional string contact_user_field3 = 22; // @gotags: msg:"26230531,omitempty"
+  optional string contact_user_field3 = 22; // @gotags: msg:"262305,omitempty" type:"31,omitempty"
   // Contains text used to add custom text to a business card representation of a Contact object.
-  optional string contact_user_field4 = 23; // @gotags: msg:"26230631,omitempty"
+  optional string contact_user_field4 = 23; // @gotags: msg:"262306,omitempty" type:"31,omitempty"
   // This property is ignored by the server and is set to an empty string by the client.
-  optional string department = 24; // @gotags: msg:"26217631,omitempty"
+  optional string department = 24; // @gotags: msg:"262176,omitempty" type:"31,omitempty"
   // Specifies the 32-bit cyclic redundancy check (CRC) polynomial checksum, as specified in [ISO/IEC8802-3], calculated on the value of the PidLidDistributionListMembers property (section 2.96).
-  optional int32 distribution_list_checksum = 25; // @gotags: msg:"2622843,omitempty"
+  optional int32 distribution_list_checksum = 25; // @gotags: msg:"262284,omitempty" type:"3,omitempty"
   // Specifies the name of the personal distribution list.
-  optional string distribution_list_name = 27; // @gotags: msg:"26230731,omitempty"
+  optional string distribution_list_name = 27; // @gotags: msg:"262307,omitempty" type:"31,omitempty"
   // Specifies the address type of an electronic address.
-  optional string email1_address_type = 30; // @gotags: msg:"26240231,omitempty"
+  optional string email1_address_type = 30; // @gotags: msg:"262402,omitempty" type:"31,omitempty"
   // Specifies the user-readable display name for the email address.
-  optional string email1_display_name = 31; // @gotags: msg:"26240031,omitempty"
+  optional string email1_display_name = 31; // @gotags: msg:"262400,omitempty" type:"31,omitempty"
   // Specifies the email address of the contact.
-  optional string email1_email_address = 32; // @gotags: msg:"26240331,omitempty"
+  optional string email1_email_address = 32; // @gotags: msg:"262403,omitempty" type:"31,omitempty"
   // Specifies the SMTP email address that corresponds to the email address for the Contact object.
-  optional string email1_original_display_name = 33; // @gotags: msg:"26240431,omitempty"
+  optional string email1_original_display_name = 33; // @gotags: msg:"262404,omitempty" type:"31,omitempty"
   // Specifies the address type of the electronic address.
-  optional string email2_address_type = 35; // @gotags: msg:"26243431,omitempty"
+  optional string email2_address_type = 35; // @gotags: msg:"262434,omitempty" type:"31,omitempty"
   // Specifies the user-readable display name for the email address.
-  optional string email2_display_name = 36; // @gotags: msg:"26243231,omitempty"
+  optional string email2_display_name = 36; // @gotags: msg:"262432,omitempty" type:"31,omitempty"
   // Specifies the email address of the contact.
-  optional string email2_email_address = 37; // @gotags: msg:"26243531,omitempty"
+  optional string email2_email_address = 37; // @gotags: msg:"262435,omitempty" type:"31,omitempty"
   // Specifies the SMTP email address that corresponds to the email address for the Contact object.
-  optional string email2_original_display_name = 38; // @gotags: msg:"26243631,omitempty"
+  optional string email2_original_display_name = 38; // @gotags: msg:"262436,omitempty" type:"31,omitempty"
   // Specifies the address type of the electronic address.
-  optional string email3_address_type = 40; // @gotags: msg:"26246631,omitempty"
+  optional string email3_address_type = 40; // @gotags: msg:"262466,omitempty" type:"31,omitempty"
   // Specifies the user-readable display name for the email address.
-  optional string email3_display_name = 41; // @gotags: msg:"26246431,omitempty"
+  optional string email3_display_name = 41; // @gotags: msg:"262464,omitempty" type:"31,omitempty"
   // Specifies the email address of the contact.
-  optional string email3_email_address = 42; // @gotags: msg:"26246731,omitempty"
+  optional string email3_email_address = 42; // @gotags: msg:"262467,omitempty" type:"31,omitempty"
   // Specifies the SMTP email address that corresponds to the email address for the Contact object.
-  optional string email3_original_display_name = 43; // @gotags: msg:"26246831,omitempty"
+  optional string email3_original_display_name = 43; // @gotags: msg:"262468,omitempty" type:"31,omitempty"
   // Contains the string value "FAX".
-  optional string fax1_address_type = 45; // @gotags: msg:"26249831,omitempty"
+  optional string fax1_address_type = 45; // @gotags: msg:"262498,omitempty" type:"31,omitempty"
   // Contains a user-readable display name, followed by the "@" character, followed by a fax number.
-  optional string fax1_email_address = 46; // @gotags: msg:"26249931,omitempty"
+  optional string fax1_email_address = 46; // @gotags: msg:"262499,omitempty" type:"31,omitempty"
   // Contains the same value as the PidTagNormalizedSubject property (section 2.812).
-  optional string fax1_original_display_name = 47; // @gotags: msg:"26250031,omitempty"
+  optional string fax1_original_display_name = 47; // @gotags: msg:"262500,omitempty" type:"31,omitempty"
   // Contains the string value "FAX".
-  optional string fax2_address_type = 49; // @gotags: msg:"26253031,omitempty"
+  optional string fax2_address_type = 49; // @gotags: msg:"262530,omitempty" type:"31,omitempty"
   // Contains a user-readable display name, followed by the "@" character, followed by a fax number.
-  optional string fax2_email_address = 50; // @gotags: msg:"26253131,omitempty"
+  optional string fax2_email_address = 50; // @gotags: msg:"262531,omitempty" type:"31,omitempty"
   // Contains the same value as the PidTagNormalizedSubject property (section 2.812).
-  optional string fax2_original_display_name = 51; // @gotags: msg:"26253231,omitempty"
+  optional string fax2_original_display_name = 51; // @gotags: msg:"262532,omitempty" type:"31,omitempty"
   // Contains the string value "FAX".
-  optional string fax3_address_type = 53; // @gotags: msg:"26256231,omitempty"
+  optional string fax3_address_type = 53; // @gotags: msg:"262562,omitempty" type:"31,omitempty"
   // Contains a user-readable display name, followed by the "@" character, followed by a fax number.
-  optional string fax3_email_address = 54; // @gotags: msg:"26256331,omitempty"
+  optional string fax3_email_address = 54; // @gotags: msg:"262563,omitempty" type:"31,omitempty"
   // Contains the same value as the PidTagNormalizedSubject property (section 2.812).
-  optional string fax3_original_display_name = 55; // @gotags: msg:"26256431,omitempty"
+  optional string fax3_original_display_name = 55; // @gotags: msg:"262564,omitempty" type:"31,omitempty"
   // Specifies the name under which to file a contact when displaying a list of contacts.
-  optional string file_under = 57; // @gotags: msg:"26214931,omitempty"
+  optional string file_under = 57; // @gotags: msg:"262149,omitempty" type:"31,omitempty"
   // Specifies how to generate and recompute the value of the PidLidFileUnder property (section 2.132) when other contact name properties change.
-  optional int32 file_under_id = 58; // @gotags: msg:"2621503,omitempty"
+  optional int32 file_under_id = 58; // @gotags: msg:"262150,omitempty" type:"3,omitempty"
   // Specifies a URL path from which a client can retrieve free/busy status information for the contact.
-  optional string free_busy_location = 60; // @gotags: msg:"26256831,omitempty"
+  optional string free_busy_location = 60; // @gotags: msg:"262568,omitempty" type:"31,omitempty"
   // Specifies whether the attachment has a picture.
-  optional bool has_picture = 61; // @gotags: msg:"26218111,omitempty"
+  optional bool has_picture = 61; // @gotags: msg:"262181,omitempty" type:"11,omitempty"
   // Specifies the complete address of the home address of the contact.
-  optional string home_address = 62; // @gotags: msg:"26218631,omitempty"
+  optional string home_address = 62; // @gotags: msg:"262186,omitempty" type:"31,omitempty"
   // Specifies the country code portion of the home address of the contact.
-  optional string home_address_country_code = 63; // @gotags: msg:"26257031,omitempty"
+  optional string home_address_country_code = 63; // @gotags: msg:"262570,omitempty" type:"31,omitempty"
   // Specifies the business webpage URL of the contact.
-  optional string html = 64; // @gotags: msg:"26221931,omitempty"
+  optional string html = 64; // @gotags: msg:"262219,omitempty" type:"31,omitempty"
   // Specifies the instant messaging address of the contact.
-  optional string instant_messaging_address = 65; // @gotags: msg:"26233831,omitempty"
+  optional string instant_messaging_address = 65; // @gotags: msg:"262338,omitempty" type:"31,omitempty"
   // Specifies whether the contact is linked to other contacts.
-  optional bool is_contact_linked = 66; // @gotags: msg:"26259211,omitempty"
+  optional bool is_contact_linked = 66; // @gotags: msg:"262592,omitempty" type:"11,omitempty"
   // Specifies the complete address of the other address of the contact.
-  optional string other_address = 67; // @gotags: msg:"26218831,omitempty"
+  optional string other_address = 67; // @gotags: msg:"262188,omitempty" type:"31,omitempty"
   // Specifies the country code portion of the other address of the contact.
-  optional string other_address_country_code = 68; // @gotags: msg:"26257231,omitempty"
+  optional string other_address_country_code = 68; // @gotags: msg:"262572,omitempty" type:"31,omitempty"
   // Specifies which physical address is the mailing address for this contact.
-  optional int32 postal_address_id = 69; // @gotags: msg:"2622103,omitempty"
+  optional int32 postal_address_id = 69; // @gotags: msg:"262210,omitempty" type:"3,omitempty"
   // Specifies the wedding anniversary of the contact, at midnight in the client's local time zone, and is saved without any time zone conversions.
-  optional int64 wedding_anniversary_local = 71; // @gotags: msg:"26257564,omitempty"
+  optional int64 wedding_anniversary_local = 71; // @gotags: msg:"262575,omitempty" type:"64,omitempty"
   // Specifies the complete address of the work address of the contact.
-  optional string work_address = 72; // @gotags: msg:"26218731,omitempty"
+  optional string work_address = 72; // @gotags: msg:"262187,omitempty" type:"31,omitempty"
   // Specifies the city or locality portion of the work address of the contact.
-  optional string work_address_city = 73; // @gotags: msg:"26227831,omitempty"
+  optional string work_address_city = 73; // @gotags: msg:"262278,omitempty" type:"31,omitempty"
   // Specifies the country or region portion of the work address of the contact.
-  optional string work_address_country = 74; // @gotags: msg:"26228131,omitempty"
+  optional string work_address_country = 74; // @gotags: msg:"262281,omitempty" type:"31,omitempty"
   // Specifies the country code portion of the work address of the contact.
-  optional string work_address_country_code = 75; // @gotags: msg:"26257131,omitempty"
+  optional string work_address_country_code = 75; // @gotags: msg:"262571,omitempty" type:"31,omitempty"
   // Specifies the postal code (ZIP code) portion of the work address of the contact.
-  optional string work_address_postal_code = 76; // @gotags: msg:"26228031,omitempty"
+  optional string work_address_postal_code = 76; // @gotags: msg:"262280,omitempty" type:"31,omitempty"
   // Specifies the post office box portion of the work address of the contact.
-  optional string work_address_post_office_box = 77; // @gotags: msg:"26228231,omitempty"
+  optional string work_address_post_office_box = 77; // @gotags: msg:"262282,omitempty" type:"31,omitempty"
   // Specifies the state or province portion of the work address of the contact.
-  optional string work_address_state = 78; // @gotags: msg:"26227931,omitempty"
+  optional string work_address_state = 78; // @gotags: msg:"262279,omitempty" type:"31,omitempty"
   // Specifies the street portion of the work address of the contact.
-  optional string work_address_street = 79; // @gotags: msg:"26227731,omitempty"
+  optional string work_address_street = 79; // @gotags: msg:"262277,omitempty" type:"31,omitempty"
   // Specifies the phonetic pronunciation of the company name of the contact.
-  optional string yomi_company_name = 80; // @gotags: msg:"26222231,omitempty"
+  optional string yomi_company_name = 80; // @gotags: msg:"262222,omitempty" type:"31,omitempty"
   // Specifies the phonetic pronunciation of the given name of the contact.
-  optional string yomi_first_name = 81; // @gotags: msg:"26222031,omitempty"
+  optional string yomi_first_name = 81; // @gotags: msg:"262220,omitempty" type:"31,omitempty"
   // Specifies the phonetic pronunciation of the surname of the contact.
-  optional string yomi_last_name = 82; // @gotags: msg:"26222131,omitempty"
+  optional string yomi_last_name = 82; // @gotags: msg:"262221,omitempty" type:"31,omitempty"
   // Indicates the name of the contact associated with the birthday event.
   optional string birthday_contact_attribution_display_name = 83; 
   // Indicates whether the contact associated with the birthday event is writable.
   optional bool is_birthday_contact_writable = 86; 
   // Contains the date of the mail user's birthday at midnight.
-  optional int64 birthday = 87; // @gotags: msg:"1491464,omitempty"
+  optional int64 birthday = 87; // @gotags: msg:"14914,omitempty" type:"64,omitempty"
   // Contains a secondary telephone number at the mail user's place of business.
-  optional string business2_telephone_number = 88; // @gotags: msg:"1487531,omitempty"
+  optional string business2_telephone_number = 88; // @gotags: msg:"14875,omitempty" type:"31,omitempty"
   // Contains the telephone number of the mail user's business fax machine.
-  optional string business_fax_number = 90; // @gotags: msg:"1488431,omitempty"
+  optional string business_fax_number = 90; // @gotags: msg:"14884,omitempty" type:"31,omitempty"
   // Contains the URL of the mail user's business home page.
-  optional string business_home_page = 91; // @gotags: msg:"1492931,omitempty"
+  optional string business_home_page = 91; // @gotags: msg:"14929,omitempty" type:"31,omitempty"
   // Contains the primary telephone number of the mail user's place of business.
-  optional string business_telephone_number = 92; // @gotags: msg:"1485631,omitempty"
+  optional string business_telephone_number = 92; // @gotags: msg:"14856,omitempty" type:"31,omitempty"
   // Contains a telephone number to reach the mail user.
-  optional string callback_telephone_number = 93; // @gotags: msg:"1485031,omitempty"
+  optional string callback_telephone_number = 93; // @gotags: msg:"14850,omitempty" type:"31,omitempty"
   // Contains the mail user's car telephone number.
-  optional string car_telephone_number = 94; // @gotags: msg:"1487831,omitempty"
+  optional string car_telephone_number = 94; // @gotags: msg:"14878,omitempty" type:"31,omitempty"
   // Contains the main telephone number of the mail user's company.
-  optional string company_main_telephone_number = 96; // @gotags: msg:"1493531,omitempty"
+  optional string company_main_telephone_number = 96; // @gotags: msg:"14935,omitempty" type:"31,omitempty"
   // Contains the mail user's company name.
-  optional string company_name = 97; // @gotags: msg:"1487031,omitempty"
+  optional string company_name = 97; // @gotags: msg:"14870,omitempty" type:"31,omitempty"
   // Contains the name of the mail user's computer network.
-  optional string computer_network_name = 98; // @gotags: msg:"1492131,omitempty"
+  optional string computer_network_name = 98; // @gotags: msg:"14921,omitempty" type:"31,omitempty"
   // Contains the name of the mail user's country/region.
-  optional string country = 99; // @gotags: msg:"1488631,omitempty"
+  optional string country = 99; // @gotags: msg:"14886,omitempty" type:"31,omitempty"
   // Contains the mail user's customer identification number.
-  optional string customer_id = 100; // @gotags: msg:"1492231,omitempty"
+  optional string customer_id = 100; // @gotags: msg:"14922,omitempty" type:"31,omitempty"
   // Contains a name for the department in which the mail user works.
-  optional string department_name = 101; // @gotags: msg:"1487231,omitempty"
+  optional string department_name = 101; // @gotags: msg:"14872,omitempty" type:"31,omitempty"
   // Contains the mail user's honorific title.
-  optional string display_name_prefix = 102; // @gotags: msg:"1491731,omitempty"
+  optional string display_name_prefix = 102; // @gotags: msg:"14917,omitempty" type:"31,omitempty"
   // Contains the File Transfer Protocol (FTP) site address of the mail user.
-  optional string ftp_site = 103; // @gotags: msg:"1492431,omitempty"
+  optional string ftp_site = 103; // @gotags: msg:"14924,omitempty" type:"31,omitempty"
   // Contains a value that represents the mail user's gender.
-  optional int32 gender = 104; // @gotags: msg:"149252,omitempty"
+  optional int32 gender = 104; // @gotags: msg:"14925,omitempty" type:"2,omitempty"
   // Contains a generational abbreviation that follows the full name of the mail user.
-  optional string generation = 105; // @gotags: msg:"1485331,omitempty"
+  optional string generation = 105; // @gotags: msg:"14853,omitempty" type:"31,omitempty"
   // Contains the mail user's given name.
-  optional string given_name = 106; // @gotags: msg:"1485431,omitempty"
+  optional string given_name = 106; // @gotags: msg:"14854,omitempty" type:"31,omitempty"
   // Contains a government identifier for the mail user.
-  optional string government_id_number = 107; // @gotags: msg:"1485531,omitempty"
+  optional string government_id_number = 107; // @gotags: msg:"14855,omitempty" type:"31,omitempty"
   // Contains the names of the mail user's hobbies.
-  optional string hobbies = 108; // @gotags: msg:"1491531,omitempty"
+  optional string hobbies = 108; // @gotags: msg:"14915,omitempty" type:"31,omitempty"
   // Contains a secondary telephone number at the mail user's home.
-  optional string home2_telephone_number = 109; // @gotags: msg:"1489531,omitempty"
+  optional string home2_telephone_number = 109; // @gotags: msg:"14895,omitempty" type:"31,omitempty"
   // Contains the name of the mail user's home locality, such as the town or city.
-  optional string home_address_city = 111; // @gotags: msg:"1493731,omitempty"
+  optional string home_address_city = 111; // @gotags: msg:"14937,omitempty" type:"31,omitempty"
   // Contains the name of the mail user's home country/region.
-  optional string home_address_country = 112; // @gotags: msg:"1493831,omitempty"
+  optional string home_address_country = 112; // @gotags: msg:"14938,omitempty" type:"31,omitempty"
   // Contains the postal code for the mail user's home postal address.
-  optional string home_address_postal_code = 113; // @gotags: msg:"1493931,omitempty"
+  optional string home_address_postal_code = 113; // @gotags: msg:"14939,omitempty" type:"31,omitempty"
   // Contains the number or identifier of the mail user's home post office box.
-  optional string home_address_post_office_box = 114; // @gotags: msg:"1494231,omitempty"
+  optional string home_address_post_office_box = 114; // @gotags: msg:"14942,omitempty" type:"31,omitempty"
   // Contains the name of the mail user's home state or province.
-  optional string home_address_state_or_province = 115; // @gotags: msg:"1494031,omitempty"
+  optional string home_address_state_or_province = 115; // @gotags: msg:"14940,omitempty" type:"31,omitempty"
   // Contains the mail user's home street address.
-  optional string home_address_street = 116; // @gotags: msg:"1494131,omitempty"
+  optional string home_address_street = 116; // @gotags: msg:"14941,omitempty" type:"31,omitempty"
   // Contains the telephone number of the mail user's home fax machine.
-  optional string home_fax_number = 117; // @gotags: msg:"1488531,omitempty"
+  optional string home_fax_number = 117; // @gotags: msg:"14885,omitempty" type:"31,omitempty"
   // Contains the primary telephone number of the mail user's home.
-  optional string home_telephone_number = 118; // @gotags: msg:"1485731,omitempty"
+  optional string home_telephone_number = 118; // @gotags: msg:"14857,omitempty" type:"31,omitempty"
   // Specifies whether contact synchronization with an external source is handled by the server.
-  optional bool osc_sync_enabled = 119; // @gotags: msg:"3178011,omitempty"
+  optional bool osc_sync_enabled = 119; // @gotags: msg:"31780,omitempty" type:"11,omitempty"
   // Contains the URL of the mail user's personal home page.
-  optional string personal_home_page = 120; // @gotags: msg:"1492831,omitempty"
+  optional string personal_home_page = 120; // @gotags: msg:"14928,omitempty" type:"31,omitempty"
   // Contains the mail user's postal address.
-  optional string postal_address = 121; // @gotags: msg:"1486931,omitempty"
+  optional string postal_address = 121; // @gotags: msg:"14869,omitempty" type:"31,omitempty"
   // Contains the postal code for the mail user's postal address.
-  optional string postal_code = 122; // @gotags: msg:"1489031,omitempty"
+  optional string postal_code = 122; // @gotags: msg:"14890,omitempty" type:"31,omitempty"
   // Contains the number or identifier of the mail user's post office box.
-  optional string post_office_box = 123; // @gotags: msg:"1489131,omitempty"
+  optional string post_office_box = 123; // @gotags: msg:"14891,omitempty" type:"31,omitempty"
   // Contains the telephone number of the mail user's primary fax machine.
-  optional string primary_fax_number = 124; // @gotags: msg:"1488331,omitempty"
+  optional string primary_fax_number = 124; // @gotags: msg:"14883,omitempty" type:"31,omitempty"
   // Contains the mail user's primary telephone number.
-  optional string primary_telephone_number = 125; // @gotags: msg:"1487431,omitempty"
+  optional string primary_telephone_number = 125; // @gotags: msg:"14874,omitempty" type:"31,omitempty"
   // Contains the name of the mail user's line of business.
-  optional string profession = 126; // @gotags: msg:"1491831,omitempty"
+  optional string profession = 126; // @gotags: msg:"14918,omitempty" type:"31,omitempty"
   // Contains the mail user's radio telephone number.
-  optional string radio_telephone_number = 127; // @gotags: msg:"1487731,omitempty"
+  optional string radio_telephone_number = 127; // @gotags: msg:"14877,omitempty" type:"31,omitempty"
   // Contains the name of the mail user's referral.
-  optional string referred_by_name = 128; // @gotags: msg:"1491931,omitempty"
+  optional string referred_by_name = 128; // @gotags: msg:"14919,omitempty" type:"31,omitempty"
   // Contains the name of the mail user's spouse/partner.
-  optional string spouse_name = 129; // @gotags: msg:"1492031,omitempty"
+  optional string spouse_name = 129; // @gotags: msg:"14920,omitempty" type:"31,omitempty"
   // Contains the name of the mail user's state or province.
-  optional string state_or_province = 130; // @gotags: msg:"1488831,omitempty"
+  optional string state_or_province = 130; // @gotags: msg:"14888,omitempty" type:"31,omitempty"
   // Contains the mail user's street address.
-  optional string street_address = 131; // @gotags: msg:"1488931,omitempty"
+  optional string street_address = 131; // @gotags: msg:"14889,omitempty" type:"31,omitempty"
   // Contains the mail user's family name.
-  optional string surname = 132; // @gotags: msg:"1486531,omitempty"
+  optional string surname = 132; // @gotags: msg:"14865,omitempty" type:"31,omitempty"
   // Contains the mail user's telecommunication device for the deaf (TTY/TDD) telephone number.
-  optional string telecommunications_device_for_deaf_telephone_number = 133; // @gotags: msg:"1492331,omitempty"
+  optional string telecommunications_device_for_deaf_telephone_number = 133; // @gotags: msg:"14923,omitempty" type:"31,omitempty"
   // Contains the mail user's telex number. This property is returned from an NSPI server as a PtypMultipleBinary. Otherwise, the data type is PtypString.
-  optional string telex_number = 134; // @gotags: msg:"1489231,omitempty"
+  optional string telex_number = 134; // @gotags: msg:"14892,omitempty" type:"31,omitempty"
   // Contains the mail user's job title.
-  optional string title = 135; // @gotags: msg:"1487131,omitempty"
+  optional string title = 135; // @gotags: msg:"14871,omitempty" type:"31,omitempty"
   // Contains the date of the mail user's wedding anniversary.
-  optional int64 wedding_anniversary = 138; // @gotags: msg:"1491364,omitempty"
+  optional int64 wedding_anniversary = 138; // @gotags: msg:"14913,omitempty" type:"64,omitempty"
 }

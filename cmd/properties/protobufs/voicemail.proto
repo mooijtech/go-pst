@@ -37,15 +37,15 @@ message Voicemail {
   // Contains the name of the caller who left the attached voice message, as provided by the voice network's caller ID system.
   optional string x_voice_message_sender_name = 9; 
   // Contains a unique identifier associated with the phone call.
-  optional string call_id = 10; // @gotags: msg:"2663031,omitempty"
+  optional string call_id = 10; // @gotags: msg:"26630,omitempty" type:"31,omitempty"
   // Contains the number of pages in a Fax object.
-  optional int32 fax_number_of_pages = 11; // @gotags: msg:"266283,omitempty"
+  optional int32 fax_number_of_pages = 11; // @gotags: msg:"26628,omitempty" type:"3,omitempty"
   // Contains the telephone number of the caller associated with a voice mail message.
-  optional string sender_telephone_number = 12; // @gotags: msg:"2662631,omitempty"
+  optional string sender_telephone_number = 12; // @gotags: msg:"26626,omitempty" type:"31,omitempty"
   // Contains a list of file names for the audio file attachments that are to be played as part of a message.
-  optional string voice_message_attachment_order = 13; // @gotags: msg:"2662931,omitempty"
+  optional string voice_message_attachment_order = 13; // @gotags: msg:"26629,omitempty" type:"31,omitempty"
   // Specifies the length of the attached audio message, in seconds.
-  optional int32 voice_message_duration = 14; // @gotags: msg:"266253,omitempty"
+  optional int32 voice_message_duration = 14; // @gotags: msg:"26625,omitempty" type:"3,omitempty"
   // Specifies the name of the caller who left the attached voice message, as provided by the voice network's caller ID system.
-  optional string voice_message_sender_name = 15; // @gotags: msg:"2662731,omitempty"
+  optional string voice_message_sender_name = 15; // @gotags: msg:"26627,omitempty" type:"31,omitempty"
 }

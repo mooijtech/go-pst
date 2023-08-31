@@ -16,6 +16,8 @@
 
 package writer
 
+import "io"
+
 // LocalDescriptorsWriter represents a writer for Local Descriptors.
 // (B-Tree Nodes pointing to other B-Tree Nodes)
 type LocalDescriptorsWriter struct {
@@ -26,7 +28,7 @@ func NewLocalDescriptorsWriter() *LocalDescriptorsWriter {
 	return &LocalDescriptorsWriter{}
 }
 
-// Write writes the Local Descriptors.
-func (localDescriptorsWriter *LocalDescriptorsWriter) Write() error {
-	return nil
+// WriteTo writes the Local Descriptors.
+func (localDescriptorsWriter *LocalDescriptorsWriter) WriteTo(writer io.Writer) (int64, error) {
+	return 0, nil
 }

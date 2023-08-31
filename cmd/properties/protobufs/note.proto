@@ -21,13 +21,13 @@ option go_package = "github.com/mooijtech/go-pst;properties";
 
 message Note {
   // Specifies the suggested background color of the Note object.
-  optional int32 note_color = 1; // @gotags: msg:"2734083,omitempty"
+  optional int32 note_color = 1; // @gotags: msg:"273408,omitempty" type:"3,omitempty"
   // Specifies the height of the visible message window in pixels.
-  optional int32 note_height = 2; // @gotags: msg:"2734113,omitempty"
+  optional int32 note_height = 2; // @gotags: msg:"273411,omitempty" type:"3,omitempty"
   // Specifies the width of the visible message window in pixels.
-  optional int32 note_width = 3; // @gotags: msg:"2734103,omitempty"
+  optional int32 note_width = 3; // @gotags: msg:"273410,omitempty" type:"3,omitempty"
   // Specifies the distance, in pixels, from the left edge of the screen that a user interface displays a Note object.
-  optional int32 note_x = 4; // @gotags: msg:"2734123,omitempty"
+  optional int32 note_x = 4; // @gotags: msg:"273412,omitempty" type:"3,omitempty"
   // Specifies the distance, in pixels, from the top edge of the screen that a user interface displays a Note object.
-  optional int32 note_y = 5; // @gotags: msg:"2734133,omitempty"
+  optional int32 note_y = 5; // @gotags: msg:"273413,omitempty" type:"3,omitempty"
 }

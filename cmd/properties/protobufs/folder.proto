@@ -14,26 +14,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package writer
+//go:generate msgp -tests=false
 
-import (
-	"io"
-)
+syntax = "proto3";
+option go_package = "github.com/mooijtech/go-pst;properties";
 
-// MessageStoreWriter represents a writer for Message Stores.
-type MessageStoreWriter struct {
-	// PropertyContextWriter represents the pst.PropertyContext writer.
-	PropertyContextWriter *PropertyContextWriter
-}
-
-// NewMessageStoreWriter creates a new MessageStoreWriter.
-func NewMessageStoreWriter(propertyContextWriter *PropertyContextWriter) *MessageStoreWriter {
-	return &MessageStoreWriter{
-		PropertyContextWriter: propertyContextWriter,
-	}
-}
-
-// WriteTo writes the Message Store.
-func (messageStoreWriter *MessageStoreWriter) WriteTo(writer io.Writer) (int64, error) {
-	return messageStoreWriter.PropertyContextWriter.WriteTo(writer)
+message Folder {
+  string name = 1;
 }
