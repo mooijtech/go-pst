@@ -560,7 +560,7 @@ func createProtoFileField(property xmlProperty, protocolBufferFieldType string, 
 
 		if property.PropertyID != 0 {
 			// TODO - There may be multiple property types.
-			goTags.WriteString(fmt.Sprintf("// @gotags: msg:\"%d,omitempty\" type:\"%d,omitempty\"", property.PropertyID, property.PropertyTypes[0]))
+			goTags.WriteString(fmt.Sprintf("// @gotags: msg:\"%d-%d,omitempty\"", property.PropertyID, property.PropertyTypes[0]))
 		} // PropertySets are mapped via the PropertyMap in property_context.go
 
 		// Write.

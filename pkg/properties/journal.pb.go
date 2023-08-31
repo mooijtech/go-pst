@@ -44,25 +44,25 @@ type Journal struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Indicates whether the document was sent by email or posted to a server folder during journaling.
-	LogDocumentPosted *bool `protobuf:"varint,1,opt,name=log_document_posted,json=logDocumentPosted,proto3,oneof" json:"log_document_posted,omitempty" msg:"269345,omitempty" type:"11,omitempty"`  
+	LogDocumentPosted *bool `protobuf:"varint,1,opt,name=log_document_posted,json=logDocumentPosted,proto3,oneof" json:"log_document_posted,omitempty" msg:"269345-11,omitempty"`  
 	// Indicates whether the document was printed during journaling.
-	LogDocumentPrinted *bool `protobuf:"varint,2,opt,name=log_document_printed,json=logDocumentPrinted,proto3,oneof" json:"log_document_printed,omitempty" msg:"269326,omitempty" type:"11,omitempty"`  
+	LogDocumentPrinted *bool `protobuf:"varint,2,opt,name=log_document_printed,json=logDocumentPrinted,proto3,oneof" json:"log_document_printed,omitempty" msg:"269326-11,omitempty"`  
 	// Indicates whether the document was sent to a routing recipient during journaling.
-	LogDocumentRouted *bool `protobuf:"varint,3,opt,name=log_document_routed,json=logDocumentRouted,proto3,oneof" json:"log_document_routed,omitempty" msg:"269344,omitempty" type:"11,omitempty"`  
+	LogDocumentRouted *bool `protobuf:"varint,3,opt,name=log_document_routed,json=logDocumentRouted,proto3,oneof" json:"log_document_routed,omitempty" msg:"269344-11,omitempty"`  
 	// Indicates whether the document was saved during journaling.
-	LogDocumentSaved *bool `protobuf:"varint,4,opt,name=log_document_saved,json=logDocumentSaved,proto3,oneof" json:"log_document_saved,omitempty" msg:"269327,omitempty" type:"11,omitempty"`  
+	LogDocumentSaved *bool `protobuf:"varint,4,opt,name=log_document_saved,json=logDocumentSaved,proto3,oneof" json:"log_document_saved,omitempty" msg:"269327-11,omitempty"`  
 	// Contains the duration, in minutes, of the activity.
-	LogDuration *int32 `protobuf:"varint,5,opt,name=log_duration,json=logDuration,proto3,oneof" json:"log_duration,omitempty" msg:"269319,omitempty" type:"3,omitempty"`  
+	LogDuration *int32 `protobuf:"varint,5,opt,name=log_duration,json=logDuration,proto3,oneof" json:"log_duration,omitempty" msg:"269319-3,omitempty"`  
 	// Contains the time, in UTC, at which the activity ended.
-	LogEnd *int64 `protobuf:"varint,6,opt,name=log_end,json=logEnd,proto3,oneof" json:"log_end,omitempty" msg:"269320,omitempty" type:"64,omitempty"`  
+	LogEnd *int64 `protobuf:"varint,6,opt,name=log_end,json=logEnd,proto3,oneof" json:"log_end,omitempty" msg:"269320-64,omitempty"`  
 	// Contains metadata about the Journal object.
-	LogFlags *int32 `protobuf:"varint,7,opt,name=log_flags,json=logFlags,proto3,oneof" json:"log_flags,omitempty" msg:"269324,omitempty" type:"3,omitempty"`  
+	LogFlags *int32 `protobuf:"varint,7,opt,name=log_flags,json=logFlags,proto3,oneof" json:"log_flags,omitempty" msg:"269324-3,omitempty"`  
 	// Contains the time, in UTC, at which the activity began.
-	LogStart *int64 `protobuf:"varint,8,opt,name=log_start,json=logStart,proto3,oneof" json:"log_start,omitempty" msg:"269318,omitempty" type:"64,omitempty"`  
+	LogStart *int64 `protobuf:"varint,8,opt,name=log_start,json=logStart,proto3,oneof" json:"log_start,omitempty" msg:"269318-64,omitempty"`  
 	// Briefly describes the journal activity that is being recorded.
-	LogType *string `protobuf:"bytes,9,opt,name=log_type,json=logType,proto3,oneof" json:"log_type,omitempty" msg:"269312,omitempty" type:"31,omitempty"`  
+	LogType *string `protobuf:"bytes,9,opt,name=log_type,json=logType,proto3,oneof" json:"log_type,omitempty" msg:"269312-31,omitempty"`  
 	// Contains an expanded description of the journal activity that is being recorded.
-	LogTypeDesc *string `protobuf:"bytes,10,opt,name=log_type_desc,json=logTypeDesc,proto3,oneof" json:"log_type_desc,omitempty" msg:"269346,omitempty" type:"31,omitempty"`  
+	LogTypeDesc *string `protobuf:"bytes,10,opt,name=log_type_desc,json=logTypeDesc,proto3,oneof" json:"log_type_desc,omitempty" msg:"269346-31,omitempty"`  
 }
 
 func (x *Journal) Reset() {

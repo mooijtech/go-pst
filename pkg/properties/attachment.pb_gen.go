@@ -96,7 +96,7 @@ func (z *Attachment) DecodeMsg(dc *msgp.Reader) (err error) {
 					return
 				}
 			}
-		case "14097":
+		case "14097-31":
 			if dc.IsNil() {
 				err = dc.ReadNil()
 				if err != nil {
@@ -114,7 +114,7 @@ func (z *Attachment) DecodeMsg(dc *msgp.Reader) (err error) {
 					return
 				}
 			}
-		case "14098":
+		case "14098-31":
 			if dc.IsNil() {
 				err = dc.ReadNil()
 				if err != nil {
@@ -132,7 +132,7 @@ func (z *Attachment) DecodeMsg(dc *msgp.Reader) (err error) {
 					return
 				}
 			}
-		case "14099":
+		case "14099-31":
 			if dc.IsNil() {
 				err = dc.ReadNil()
 				if err != nil {
@@ -150,7 +150,7 @@ func (z *Attachment) DecodeMsg(dc *msgp.Reader) (err error) {
 					return
 				}
 			}
-		case "14083":
+		case "14083-31":
 			if dc.IsNil() {
 				err = dc.ReadNil()
 				if err != nil {
@@ -168,7 +168,7 @@ func (z *Attachment) DecodeMsg(dc *msgp.Reader) (err error) {
 					return
 				}
 			}
-		case "14084":
+		case "14084-31":
 			if dc.IsNil() {
 				err = dc.ReadNil()
 				if err != nil {
@@ -186,7 +186,7 @@ func (z *Attachment) DecodeMsg(dc *msgp.Reader) (err error) {
 					return
 				}
 			}
-		case "14100":
+		case "14100-3":
 			if dc.IsNil() {
 				err = dc.ReadNil()
 				if err != nil {
@@ -204,7 +204,7 @@ func (z *Attachment) DecodeMsg(dc *msgp.Reader) (err error) {
 					return
 				}
 			}
-		case "14087":
+		case "14087-31":
 			if dc.IsNil() {
 				err = dc.ReadNil()
 				if err != nil {
@@ -222,7 +222,7 @@ func (z *Attachment) DecodeMsg(dc *msgp.Reader) (err error) {
 					return
 				}
 			}
-		case "14093":
+		case "14093-31":
 			if dc.IsNil() {
 				err = dc.ReadNil()
 				if err != nil {
@@ -240,7 +240,7 @@ func (z *Attachment) DecodeMsg(dc *msgp.Reader) (err error) {
 					return
 				}
 			}
-		case "32767":
+		case "32767-11":
 			if dc.IsNil() {
 				err = dc.ReadNil()
 				if err != nil {
@@ -258,7 +258,7 @@ func (z *Attachment) DecodeMsg(dc *msgp.Reader) (err error) {
 					return
 				}
 			}
-		case "32765":
+		case "32765-3":
 			if dc.IsNil() {
 				err = dc.ReadNil()
 				if err != nil {
@@ -276,7 +276,7 @@ func (z *Attachment) DecodeMsg(dc *msgp.Reader) (err error) {
 					return
 				}
 			}
-		case "32766":
+		case "32766-11":
 			if dc.IsNil() {
 				err = dc.ReadNil()
 				if err != nil {
@@ -294,7 +294,7 @@ func (z *Attachment) DecodeMsg(dc *msgp.Reader) (err error) {
 					return
 				}
 			}
-		case "32762":
+		case "32762-3":
 			if dc.IsNil() {
 				err = dc.ReadNil()
 				if err != nil {
@@ -312,7 +312,7 @@ func (z *Attachment) DecodeMsg(dc *msgp.Reader) (err error) {
 					return
 				}
 			}
-		case "14085":
+		case "14085-3":
 			if dc.IsNil() {
 				err = dc.ReadNil()
 				if err != nil {
@@ -330,7 +330,7 @@ func (z *Attachment) DecodeMsg(dc *msgp.Reader) (err error) {
 					return
 				}
 			}
-		case "14094":
+		case "14094-31":
 			if dc.IsNil() {
 				err = dc.ReadNil()
 				if err != nil {
@@ -348,7 +348,7 @@ func (z *Attachment) DecodeMsg(dc *msgp.Reader) (err error) {
 					return
 				}
 			}
-		case "3617":
+		case "3617-3":
 			if dc.IsNil() {
 				err = dc.ReadNil()
 				if err != nil {
@@ -366,7 +366,7 @@ func (z *Attachment) DecodeMsg(dc *msgp.Reader) (err error) {
 					return
 				}
 			}
-		case "14088":
+		case "14088-31":
 			if dc.IsNil() {
 				err = dc.ReadNil()
 				if err != nil {
@@ -384,7 +384,7 @@ func (z *Attachment) DecodeMsg(dc *msgp.Reader) (err error) {
 					return
 				}
 			}
-		case "3616":
+		case "3616-3":
 			if dc.IsNil() {
 				err = dc.ReadNil()
 				if err != nil {
@@ -402,7 +402,7 @@ func (z *Attachment) DecodeMsg(dc *msgp.Reader) (err error) {
 					return
 				}
 			}
-		case "14092":
+		case "14092-31":
 			if dc.IsNil() {
 				err = dc.ReadNil()
 				if err != nil {
@@ -420,7 +420,7 @@ func (z *Attachment) DecodeMsg(dc *msgp.Reader) (err error) {
 					return
 				}
 			}
-		case "14107":
+		case "14107-31":
 			if dc.IsNil() {
 				err = dc.ReadNil()
 				if err != nil {
@@ -607,8 +607,8 @@ func (z *Attachment) EncodeMsg(en *msgp.Writer) (err error) {
 		}
 	}
 	if (zb0001Mask & 0x10) == 0 { // if not empty
-		// write "14097"
-		err = en.Append(0xa5, 0x31, 0x34, 0x30, 0x39, 0x37)
+		// write "14097-31"
+		err = en.Append(0xa8, 0x31, 0x34, 0x30, 0x39, 0x37, 0x2d, 0x33, 0x31)
 		if err != nil {
 			return
 		}
@@ -626,8 +626,8 @@ func (z *Attachment) EncodeMsg(en *msgp.Writer) (err error) {
 		}
 	}
 	if (zb0001Mask & 0x20) == 0 { // if not empty
-		// write "14098"
-		err = en.Append(0xa5, 0x31, 0x34, 0x30, 0x39, 0x38)
+		// write "14098-31"
+		err = en.Append(0xa8, 0x31, 0x34, 0x30, 0x39, 0x38, 0x2d, 0x33, 0x31)
 		if err != nil {
 			return
 		}
@@ -645,8 +645,8 @@ func (z *Attachment) EncodeMsg(en *msgp.Writer) (err error) {
 		}
 	}
 	if (zb0001Mask & 0x40) == 0 { // if not empty
-		// write "14099"
-		err = en.Append(0xa5, 0x31, 0x34, 0x30, 0x39, 0x39)
+		// write "14099-31"
+		err = en.Append(0xa8, 0x31, 0x34, 0x30, 0x39, 0x39, 0x2d, 0x33, 0x31)
 		if err != nil {
 			return
 		}
@@ -664,8 +664,8 @@ func (z *Attachment) EncodeMsg(en *msgp.Writer) (err error) {
 		}
 	}
 	if (zb0001Mask & 0x80) == 0 { // if not empty
-		// write "14083"
-		err = en.Append(0xa5, 0x31, 0x34, 0x30, 0x38, 0x33)
+		// write "14083-31"
+		err = en.Append(0xa8, 0x31, 0x34, 0x30, 0x38, 0x33, 0x2d, 0x33, 0x31)
 		if err != nil {
 			return
 		}
@@ -683,8 +683,8 @@ func (z *Attachment) EncodeMsg(en *msgp.Writer) (err error) {
 		}
 	}
 	if (zb0001Mask & 0x100) == 0 { // if not empty
-		// write "14084"
-		err = en.Append(0xa5, 0x31, 0x34, 0x30, 0x38, 0x34)
+		// write "14084-31"
+		err = en.Append(0xa8, 0x31, 0x34, 0x30, 0x38, 0x34, 0x2d, 0x33, 0x31)
 		if err != nil {
 			return
 		}
@@ -702,8 +702,8 @@ func (z *Attachment) EncodeMsg(en *msgp.Writer) (err error) {
 		}
 	}
 	if (zb0001Mask & 0x200) == 0 { // if not empty
-		// write "14100"
-		err = en.Append(0xa5, 0x31, 0x34, 0x31, 0x30, 0x30)
+		// write "14100-3"
+		err = en.Append(0xa7, 0x31, 0x34, 0x31, 0x30, 0x30, 0x2d, 0x33)
 		if err != nil {
 			return
 		}
@@ -721,8 +721,8 @@ func (z *Attachment) EncodeMsg(en *msgp.Writer) (err error) {
 		}
 	}
 	if (zb0001Mask & 0x400) == 0 { // if not empty
-		// write "14087"
-		err = en.Append(0xa5, 0x31, 0x34, 0x30, 0x38, 0x37)
+		// write "14087-31"
+		err = en.Append(0xa8, 0x31, 0x34, 0x30, 0x38, 0x37, 0x2d, 0x33, 0x31)
 		if err != nil {
 			return
 		}
@@ -740,8 +740,8 @@ func (z *Attachment) EncodeMsg(en *msgp.Writer) (err error) {
 		}
 	}
 	if (zb0001Mask & 0x800) == 0 { // if not empty
-		// write "14093"
-		err = en.Append(0xa5, 0x31, 0x34, 0x30, 0x39, 0x33)
+		// write "14093-31"
+		err = en.Append(0xa8, 0x31, 0x34, 0x30, 0x39, 0x33, 0x2d, 0x33, 0x31)
 		if err != nil {
 			return
 		}
@@ -759,8 +759,8 @@ func (z *Attachment) EncodeMsg(en *msgp.Writer) (err error) {
 		}
 	}
 	if (zb0001Mask & 0x1000) == 0 { // if not empty
-		// write "32767"
-		err = en.Append(0xa5, 0x33, 0x32, 0x37, 0x36, 0x37)
+		// write "32767-11"
+		err = en.Append(0xa8, 0x33, 0x32, 0x37, 0x36, 0x37, 0x2d, 0x31, 0x31)
 		if err != nil {
 			return
 		}
@@ -778,8 +778,8 @@ func (z *Attachment) EncodeMsg(en *msgp.Writer) (err error) {
 		}
 	}
 	if (zb0001Mask & 0x2000) == 0 { // if not empty
-		// write "32765"
-		err = en.Append(0xa5, 0x33, 0x32, 0x37, 0x36, 0x35)
+		// write "32765-3"
+		err = en.Append(0xa7, 0x33, 0x32, 0x37, 0x36, 0x35, 0x2d, 0x33)
 		if err != nil {
 			return
 		}
@@ -797,8 +797,8 @@ func (z *Attachment) EncodeMsg(en *msgp.Writer) (err error) {
 		}
 	}
 	if (zb0001Mask & 0x4000) == 0 { // if not empty
-		// write "32766"
-		err = en.Append(0xa5, 0x33, 0x32, 0x37, 0x36, 0x36)
+		// write "32766-11"
+		err = en.Append(0xa8, 0x33, 0x32, 0x37, 0x36, 0x36, 0x2d, 0x31, 0x31)
 		if err != nil {
 			return
 		}
@@ -816,8 +816,8 @@ func (z *Attachment) EncodeMsg(en *msgp.Writer) (err error) {
 		}
 	}
 	if (zb0001Mask & 0x8000) == 0 { // if not empty
-		// write "32762"
-		err = en.Append(0xa5, 0x33, 0x32, 0x37, 0x36, 0x32)
+		// write "32762-3"
+		err = en.Append(0xa7, 0x33, 0x32, 0x37, 0x36, 0x32, 0x2d, 0x33)
 		if err != nil {
 			return
 		}
@@ -835,8 +835,8 @@ func (z *Attachment) EncodeMsg(en *msgp.Writer) (err error) {
 		}
 	}
 	if (zb0001Mask & 0x10000) == 0 { // if not empty
-		// write "14085"
-		err = en.Append(0xa5, 0x31, 0x34, 0x30, 0x38, 0x35)
+		// write "14085-3"
+		err = en.Append(0xa7, 0x31, 0x34, 0x30, 0x38, 0x35, 0x2d, 0x33)
 		if err != nil {
 			return
 		}
@@ -854,8 +854,8 @@ func (z *Attachment) EncodeMsg(en *msgp.Writer) (err error) {
 		}
 	}
 	if (zb0001Mask & 0x20000) == 0 { // if not empty
-		// write "14094"
-		err = en.Append(0xa5, 0x31, 0x34, 0x30, 0x39, 0x34)
+		// write "14094-31"
+		err = en.Append(0xa8, 0x31, 0x34, 0x30, 0x39, 0x34, 0x2d, 0x33, 0x31)
 		if err != nil {
 			return
 		}
@@ -873,8 +873,8 @@ func (z *Attachment) EncodeMsg(en *msgp.Writer) (err error) {
 		}
 	}
 	if (zb0001Mask & 0x40000) == 0 { // if not empty
-		// write "3617"
-		err = en.Append(0xa4, 0x33, 0x36, 0x31, 0x37)
+		// write "3617-3"
+		err = en.Append(0xa6, 0x33, 0x36, 0x31, 0x37, 0x2d, 0x33)
 		if err != nil {
 			return
 		}
@@ -892,8 +892,8 @@ func (z *Attachment) EncodeMsg(en *msgp.Writer) (err error) {
 		}
 	}
 	if (zb0001Mask & 0x80000) == 0 { // if not empty
-		// write "14088"
-		err = en.Append(0xa5, 0x31, 0x34, 0x30, 0x38, 0x38)
+		// write "14088-31"
+		err = en.Append(0xa8, 0x31, 0x34, 0x30, 0x38, 0x38, 0x2d, 0x33, 0x31)
 		if err != nil {
 			return
 		}
@@ -911,8 +911,8 @@ func (z *Attachment) EncodeMsg(en *msgp.Writer) (err error) {
 		}
 	}
 	if (zb0001Mask & 0x100000) == 0 { // if not empty
-		// write "3616"
-		err = en.Append(0xa4, 0x33, 0x36, 0x31, 0x36)
+		// write "3616-3"
+		err = en.Append(0xa6, 0x33, 0x36, 0x31, 0x36, 0x2d, 0x33)
 		if err != nil {
 			return
 		}
@@ -930,8 +930,8 @@ func (z *Attachment) EncodeMsg(en *msgp.Writer) (err error) {
 		}
 	}
 	if (zb0001Mask & 0x200000) == 0 { // if not empty
-		// write "14092"
-		err = en.Append(0xa5, 0x31, 0x34, 0x30, 0x39, 0x32)
+		// write "14092-31"
+		err = en.Append(0xa8, 0x31, 0x34, 0x30, 0x39, 0x32, 0x2d, 0x33, 0x31)
 		if err != nil {
 			return
 		}
@@ -949,8 +949,8 @@ func (z *Attachment) EncodeMsg(en *msgp.Writer) (err error) {
 		}
 	}
 	if (zb0001Mask & 0x400000) == 0 { // if not empty
-		// write "14107"
-		err = en.Append(0xa5, 0x31, 0x34, 0x31, 0x30, 0x37)
+		// write "14107-31"
+		err = en.Append(0xa8, 0x31, 0x34, 0x31, 0x30, 0x37, 0x2d, 0x33, 0x31)
 		if err != nil {
 			return
 		}
@@ -1086,8 +1086,8 @@ func (z *Attachment) MarshalMsg(b []byte) (o []byte, err error) {
 		o = msgp.AppendString(o, *z.AttachmentProviderType)
 	}
 	if (zb0001Mask & 0x10) == 0 { // if not empty
-		// string "14097"
-		o = append(o, 0xa5, 0x31, 0x34, 0x30, 0x39, 0x37)
+		// string "14097-31"
+		o = append(o, 0xa8, 0x31, 0x34, 0x30, 0x39, 0x37, 0x2d, 0x33, 0x31)
 		if z.AttachContentBase == nil {
 			o = msgp.AppendNil(o)
 		} else {
@@ -1095,8 +1095,8 @@ func (z *Attachment) MarshalMsg(b []byte) (o []byte, err error) {
 		}
 	}
 	if (zb0001Mask & 0x20) == 0 { // if not empty
-		// string "14098"
-		o = append(o, 0xa5, 0x31, 0x34, 0x30, 0x39, 0x38)
+		// string "14098-31"
+		o = append(o, 0xa8, 0x31, 0x34, 0x30, 0x39, 0x38, 0x2d, 0x33, 0x31)
 		if z.AttachContentId == nil {
 			o = msgp.AppendNil(o)
 		} else {
@@ -1104,8 +1104,8 @@ func (z *Attachment) MarshalMsg(b []byte) (o []byte, err error) {
 		}
 	}
 	if (zb0001Mask & 0x40) == 0 { // if not empty
-		// string "14099"
-		o = append(o, 0xa5, 0x31, 0x34, 0x30, 0x39, 0x39)
+		// string "14099-31"
+		o = append(o, 0xa8, 0x31, 0x34, 0x30, 0x39, 0x39, 0x2d, 0x33, 0x31)
 		if z.AttachContentLocation == nil {
 			o = msgp.AppendNil(o)
 		} else {
@@ -1113,8 +1113,8 @@ func (z *Attachment) MarshalMsg(b []byte) (o []byte, err error) {
 		}
 	}
 	if (zb0001Mask & 0x80) == 0 { // if not empty
-		// string "14083"
-		o = append(o, 0xa5, 0x31, 0x34, 0x30, 0x38, 0x33)
+		// string "14083-31"
+		o = append(o, 0xa8, 0x31, 0x34, 0x30, 0x38, 0x33, 0x2d, 0x33, 0x31)
 		if z.AttachExtension == nil {
 			o = msgp.AppendNil(o)
 		} else {
@@ -1122,8 +1122,8 @@ func (z *Attachment) MarshalMsg(b []byte) (o []byte, err error) {
 		}
 	}
 	if (zb0001Mask & 0x100) == 0 { // if not empty
-		// string "14084"
-		o = append(o, 0xa5, 0x31, 0x34, 0x30, 0x38, 0x34)
+		// string "14084-31"
+		o = append(o, 0xa8, 0x31, 0x34, 0x30, 0x38, 0x34, 0x2d, 0x33, 0x31)
 		if z.AttachFilename == nil {
 			o = msgp.AppendNil(o)
 		} else {
@@ -1131,8 +1131,8 @@ func (z *Attachment) MarshalMsg(b []byte) (o []byte, err error) {
 		}
 	}
 	if (zb0001Mask & 0x200) == 0 { // if not empty
-		// string "14100"
-		o = append(o, 0xa5, 0x31, 0x34, 0x31, 0x30, 0x30)
+		// string "14100-3"
+		o = append(o, 0xa7, 0x31, 0x34, 0x31, 0x30, 0x30, 0x2d, 0x33)
 		if z.AttachFlags == nil {
 			o = msgp.AppendNil(o)
 		} else {
@@ -1140,8 +1140,8 @@ func (z *Attachment) MarshalMsg(b []byte) (o []byte, err error) {
 		}
 	}
 	if (zb0001Mask & 0x400) == 0 { // if not empty
-		// string "14087"
-		o = append(o, 0xa5, 0x31, 0x34, 0x30, 0x38, 0x37)
+		// string "14087-31"
+		o = append(o, 0xa8, 0x31, 0x34, 0x30, 0x38, 0x37, 0x2d, 0x33, 0x31)
 		if z.AttachLongFilename == nil {
 			o = msgp.AppendNil(o)
 		} else {
@@ -1149,8 +1149,8 @@ func (z *Attachment) MarshalMsg(b []byte) (o []byte, err error) {
 		}
 	}
 	if (zb0001Mask & 0x800) == 0 { // if not empty
-		// string "14093"
-		o = append(o, 0xa5, 0x31, 0x34, 0x30, 0x39, 0x33)
+		// string "14093-31"
+		o = append(o, 0xa8, 0x31, 0x34, 0x30, 0x39, 0x33, 0x2d, 0x33, 0x31)
 		if z.AttachLongPathname == nil {
 			o = msgp.AppendNil(o)
 		} else {
@@ -1158,8 +1158,8 @@ func (z *Attachment) MarshalMsg(b []byte) (o []byte, err error) {
 		}
 	}
 	if (zb0001Mask & 0x1000) == 0 { // if not empty
-		// string "32767"
-		o = append(o, 0xa5, 0x33, 0x32, 0x37, 0x36, 0x37)
+		// string "32767-11"
+		o = append(o, 0xa8, 0x33, 0x32, 0x37, 0x36, 0x37, 0x2d, 0x31, 0x31)
 		if z.AttachmentContactPhoto == nil {
 			o = msgp.AppendNil(o)
 		} else {
@@ -1167,8 +1167,8 @@ func (z *Attachment) MarshalMsg(b []byte) (o []byte, err error) {
 		}
 	}
 	if (zb0001Mask & 0x2000) == 0 { // if not empty
-		// string "32765"
-		o = append(o, 0xa5, 0x33, 0x32, 0x37, 0x36, 0x35)
+		// string "32765-3"
+		o = append(o, 0xa7, 0x33, 0x32, 0x37, 0x36, 0x35, 0x2d, 0x33)
 		if z.AttachmentFlags == nil {
 			o = msgp.AppendNil(o)
 		} else {
@@ -1176,8 +1176,8 @@ func (z *Attachment) MarshalMsg(b []byte) (o []byte, err error) {
 		}
 	}
 	if (zb0001Mask & 0x4000) == 0 { // if not empty
-		// string "32766"
-		o = append(o, 0xa5, 0x33, 0x32, 0x37, 0x36, 0x36)
+		// string "32766-11"
+		o = append(o, 0xa8, 0x33, 0x32, 0x37, 0x36, 0x36, 0x2d, 0x31, 0x31)
 		if z.AttachmentHidden == nil {
 			o = msgp.AppendNil(o)
 		} else {
@@ -1185,8 +1185,8 @@ func (z *Attachment) MarshalMsg(b []byte) (o []byte, err error) {
 		}
 	}
 	if (zb0001Mask & 0x8000) == 0 { // if not empty
-		// string "32762"
-		o = append(o, 0xa5, 0x33, 0x32, 0x37, 0x36, 0x32)
+		// string "32762-3"
+		o = append(o, 0xa7, 0x33, 0x32, 0x37, 0x36, 0x32, 0x2d, 0x33)
 		if z.AttachmentLinkId == nil {
 			o = msgp.AppendNil(o)
 		} else {
@@ -1194,8 +1194,8 @@ func (z *Attachment) MarshalMsg(b []byte) (o []byte, err error) {
 		}
 	}
 	if (zb0001Mask & 0x10000) == 0 { // if not empty
-		// string "14085"
-		o = append(o, 0xa5, 0x31, 0x34, 0x30, 0x38, 0x35)
+		// string "14085-3"
+		o = append(o, 0xa7, 0x31, 0x34, 0x30, 0x38, 0x35, 0x2d, 0x33)
 		if z.AttachMethod == nil {
 			o = msgp.AppendNil(o)
 		} else {
@@ -1203,8 +1203,8 @@ func (z *Attachment) MarshalMsg(b []byte) (o []byte, err error) {
 		}
 	}
 	if (zb0001Mask & 0x20000) == 0 { // if not empty
-		// string "14094"
-		o = append(o, 0xa5, 0x31, 0x34, 0x30, 0x39, 0x34)
+		// string "14094-31"
+		o = append(o, 0xa8, 0x31, 0x34, 0x30, 0x39, 0x34, 0x2d, 0x33, 0x31)
 		if z.AttachMimeTag == nil {
 			o = msgp.AppendNil(o)
 		} else {
@@ -1212,8 +1212,8 @@ func (z *Attachment) MarshalMsg(b []byte) (o []byte, err error) {
 		}
 	}
 	if (zb0001Mask & 0x40000) == 0 { // if not empty
-		// string "3617"
-		o = append(o, 0xa4, 0x33, 0x36, 0x31, 0x37)
+		// string "3617-3"
+		o = append(o, 0xa6, 0x33, 0x36, 0x31, 0x37, 0x2d, 0x33)
 		if z.AttachNumber == nil {
 			o = msgp.AppendNil(o)
 		} else {
@@ -1221,8 +1221,8 @@ func (z *Attachment) MarshalMsg(b []byte) (o []byte, err error) {
 		}
 	}
 	if (zb0001Mask & 0x80000) == 0 { // if not empty
-		// string "14088"
-		o = append(o, 0xa5, 0x31, 0x34, 0x30, 0x38, 0x38)
+		// string "14088-31"
+		o = append(o, 0xa8, 0x31, 0x34, 0x30, 0x38, 0x38, 0x2d, 0x33, 0x31)
 		if z.AttachPathname == nil {
 			o = msgp.AppendNil(o)
 		} else {
@@ -1230,8 +1230,8 @@ func (z *Attachment) MarshalMsg(b []byte) (o []byte, err error) {
 		}
 	}
 	if (zb0001Mask & 0x100000) == 0 { // if not empty
-		// string "3616"
-		o = append(o, 0xa4, 0x33, 0x36, 0x31, 0x36)
+		// string "3616-3"
+		o = append(o, 0xa6, 0x33, 0x36, 0x31, 0x36, 0x2d, 0x33)
 		if z.AttachSize == nil {
 			o = msgp.AppendNil(o)
 		} else {
@@ -1239,8 +1239,8 @@ func (z *Attachment) MarshalMsg(b []byte) (o []byte, err error) {
 		}
 	}
 	if (zb0001Mask & 0x200000) == 0 { // if not empty
-		// string "14092"
-		o = append(o, 0xa5, 0x31, 0x34, 0x30, 0x39, 0x32)
+		// string "14092-31"
+		o = append(o, 0xa8, 0x31, 0x34, 0x30, 0x39, 0x32, 0x2d, 0x33, 0x31)
 		if z.AttachTransportName == nil {
 			o = msgp.AppendNil(o)
 		} else {
@@ -1248,8 +1248,8 @@ func (z *Attachment) MarshalMsg(b []byte) (o []byte, err error) {
 		}
 	}
 	if (zb0001Mask & 0x400000) == 0 { // if not empty
-		// string "14107"
-		o = append(o, 0xa5, 0x31, 0x34, 0x31, 0x30, 0x37)
+		// string "14107-31"
+		o = append(o, 0xa8, 0x31, 0x34, 0x31, 0x30, 0x37, 0x2d, 0x33, 0x31)
 		if z.TextAttachmentCharset == nil {
 			o = msgp.AppendNil(o)
 		} else {
@@ -1345,7 +1345,7 @@ func (z *Attachment) UnmarshalMsg(bts []byte) (o []byte, err error) {
 					return
 				}
 			}
-		case "14097":
+		case "14097-31":
 			if msgp.IsNil(bts) {
 				bts, err = msgp.ReadNilBytes(bts)
 				if err != nil {
@@ -1362,7 +1362,7 @@ func (z *Attachment) UnmarshalMsg(bts []byte) (o []byte, err error) {
 					return
 				}
 			}
-		case "14098":
+		case "14098-31":
 			if msgp.IsNil(bts) {
 				bts, err = msgp.ReadNilBytes(bts)
 				if err != nil {
@@ -1379,7 +1379,7 @@ func (z *Attachment) UnmarshalMsg(bts []byte) (o []byte, err error) {
 					return
 				}
 			}
-		case "14099":
+		case "14099-31":
 			if msgp.IsNil(bts) {
 				bts, err = msgp.ReadNilBytes(bts)
 				if err != nil {
@@ -1396,7 +1396,7 @@ func (z *Attachment) UnmarshalMsg(bts []byte) (o []byte, err error) {
 					return
 				}
 			}
-		case "14083":
+		case "14083-31":
 			if msgp.IsNil(bts) {
 				bts, err = msgp.ReadNilBytes(bts)
 				if err != nil {
@@ -1413,7 +1413,7 @@ func (z *Attachment) UnmarshalMsg(bts []byte) (o []byte, err error) {
 					return
 				}
 			}
-		case "14084":
+		case "14084-31":
 			if msgp.IsNil(bts) {
 				bts, err = msgp.ReadNilBytes(bts)
 				if err != nil {
@@ -1430,7 +1430,7 @@ func (z *Attachment) UnmarshalMsg(bts []byte) (o []byte, err error) {
 					return
 				}
 			}
-		case "14100":
+		case "14100-3":
 			if msgp.IsNil(bts) {
 				bts, err = msgp.ReadNilBytes(bts)
 				if err != nil {
@@ -1447,7 +1447,7 @@ func (z *Attachment) UnmarshalMsg(bts []byte) (o []byte, err error) {
 					return
 				}
 			}
-		case "14087":
+		case "14087-31":
 			if msgp.IsNil(bts) {
 				bts, err = msgp.ReadNilBytes(bts)
 				if err != nil {
@@ -1464,7 +1464,7 @@ func (z *Attachment) UnmarshalMsg(bts []byte) (o []byte, err error) {
 					return
 				}
 			}
-		case "14093":
+		case "14093-31":
 			if msgp.IsNil(bts) {
 				bts, err = msgp.ReadNilBytes(bts)
 				if err != nil {
@@ -1481,7 +1481,7 @@ func (z *Attachment) UnmarshalMsg(bts []byte) (o []byte, err error) {
 					return
 				}
 			}
-		case "32767":
+		case "32767-11":
 			if msgp.IsNil(bts) {
 				bts, err = msgp.ReadNilBytes(bts)
 				if err != nil {
@@ -1498,7 +1498,7 @@ func (z *Attachment) UnmarshalMsg(bts []byte) (o []byte, err error) {
 					return
 				}
 			}
-		case "32765":
+		case "32765-3":
 			if msgp.IsNil(bts) {
 				bts, err = msgp.ReadNilBytes(bts)
 				if err != nil {
@@ -1515,7 +1515,7 @@ func (z *Attachment) UnmarshalMsg(bts []byte) (o []byte, err error) {
 					return
 				}
 			}
-		case "32766":
+		case "32766-11":
 			if msgp.IsNil(bts) {
 				bts, err = msgp.ReadNilBytes(bts)
 				if err != nil {
@@ -1532,7 +1532,7 @@ func (z *Attachment) UnmarshalMsg(bts []byte) (o []byte, err error) {
 					return
 				}
 			}
-		case "32762":
+		case "32762-3":
 			if msgp.IsNil(bts) {
 				bts, err = msgp.ReadNilBytes(bts)
 				if err != nil {
@@ -1549,7 +1549,7 @@ func (z *Attachment) UnmarshalMsg(bts []byte) (o []byte, err error) {
 					return
 				}
 			}
-		case "14085":
+		case "14085-3":
 			if msgp.IsNil(bts) {
 				bts, err = msgp.ReadNilBytes(bts)
 				if err != nil {
@@ -1566,7 +1566,7 @@ func (z *Attachment) UnmarshalMsg(bts []byte) (o []byte, err error) {
 					return
 				}
 			}
-		case "14094":
+		case "14094-31":
 			if msgp.IsNil(bts) {
 				bts, err = msgp.ReadNilBytes(bts)
 				if err != nil {
@@ -1583,7 +1583,7 @@ func (z *Attachment) UnmarshalMsg(bts []byte) (o []byte, err error) {
 					return
 				}
 			}
-		case "3617":
+		case "3617-3":
 			if msgp.IsNil(bts) {
 				bts, err = msgp.ReadNilBytes(bts)
 				if err != nil {
@@ -1600,7 +1600,7 @@ func (z *Attachment) UnmarshalMsg(bts []byte) (o []byte, err error) {
 					return
 				}
 			}
-		case "14088":
+		case "14088-31":
 			if msgp.IsNil(bts) {
 				bts, err = msgp.ReadNilBytes(bts)
 				if err != nil {
@@ -1617,7 +1617,7 @@ func (z *Attachment) UnmarshalMsg(bts []byte) (o []byte, err error) {
 					return
 				}
 			}
-		case "3616":
+		case "3616-3":
 			if msgp.IsNil(bts) {
 				bts, err = msgp.ReadNilBytes(bts)
 				if err != nil {
@@ -1634,7 +1634,7 @@ func (z *Attachment) UnmarshalMsg(bts []byte) (o []byte, err error) {
 					return
 				}
 			}
-		case "14092":
+		case "14092-31":
 			if msgp.IsNil(bts) {
 				bts, err = msgp.ReadNilBytes(bts)
 				if err != nil {
@@ -1651,7 +1651,7 @@ func (z *Attachment) UnmarshalMsg(bts []byte) (o []byte, err error) {
 					return
 				}
 			}
-		case "14107":
+		case "14107-31":
 			if msgp.IsNil(bts) {
 				bts, err = msgp.ReadNilBytes(bts)
 				if err != nil {
@@ -1706,115 +1706,115 @@ func (z *Attachment) Msgsize() (s int) {
 	} else {
 		s += msgp.StringPrefixSize + len(*z.AttachmentProviderType)
 	}
-	s += 6
+	s += 9
 	if z.AttachContentBase == nil {
 		s += msgp.NilSize
 	} else {
 		s += msgp.StringPrefixSize + len(*z.AttachContentBase)
 	}
-	s += 6
+	s += 9
 	if z.AttachContentId == nil {
 		s += msgp.NilSize
 	} else {
 		s += msgp.StringPrefixSize + len(*z.AttachContentId)
 	}
-	s += 6
+	s += 9
 	if z.AttachContentLocation == nil {
 		s += msgp.NilSize
 	} else {
 		s += msgp.StringPrefixSize + len(*z.AttachContentLocation)
 	}
-	s += 6
+	s += 9
 	if z.AttachExtension == nil {
 		s += msgp.NilSize
 	} else {
 		s += msgp.StringPrefixSize + len(*z.AttachExtension)
 	}
-	s += 6
+	s += 9
 	if z.AttachFilename == nil {
 		s += msgp.NilSize
 	} else {
 		s += msgp.StringPrefixSize + len(*z.AttachFilename)
 	}
-	s += 6
+	s += 8
 	if z.AttachFlags == nil {
 		s += msgp.NilSize
 	} else {
 		s += msgp.Int32Size
 	}
-	s += 6
+	s += 9
 	if z.AttachLongFilename == nil {
 		s += msgp.NilSize
 	} else {
 		s += msgp.StringPrefixSize + len(*z.AttachLongFilename)
 	}
-	s += 6
+	s += 9
 	if z.AttachLongPathname == nil {
 		s += msgp.NilSize
 	} else {
 		s += msgp.StringPrefixSize + len(*z.AttachLongPathname)
 	}
-	s += 6
+	s += 9
 	if z.AttachmentContactPhoto == nil {
 		s += msgp.NilSize
 	} else {
 		s += msgp.BoolSize
 	}
-	s += 6
+	s += 8
 	if z.AttachmentFlags == nil {
 		s += msgp.NilSize
 	} else {
 		s += msgp.Int32Size
 	}
-	s += 6
+	s += 9
 	if z.AttachmentHidden == nil {
 		s += msgp.NilSize
 	} else {
 		s += msgp.BoolSize
 	}
-	s += 6
+	s += 8
 	if z.AttachmentLinkId == nil {
 		s += msgp.NilSize
 	} else {
 		s += msgp.Int32Size
 	}
-	s += 6
+	s += 8
 	if z.AttachMethod == nil {
 		s += msgp.NilSize
 	} else {
 		s += msgp.Int32Size
 	}
-	s += 6
+	s += 9
 	if z.AttachMimeTag == nil {
 		s += msgp.NilSize
 	} else {
 		s += msgp.StringPrefixSize + len(*z.AttachMimeTag)
 	}
-	s += 5
+	s += 7
 	if z.AttachNumber == nil {
 		s += msgp.NilSize
 	} else {
 		s += msgp.Int32Size
 	}
-	s += 6
+	s += 9
 	if z.AttachPathname == nil {
 		s += msgp.NilSize
 	} else {
 		s += msgp.StringPrefixSize + len(*z.AttachPathname)
 	}
-	s += 5
+	s += 7
 	if z.AttachSize == nil {
 		s += msgp.NilSize
 	} else {
 		s += msgp.Int32Size
 	}
-	s += 6
+	s += 9
 	if z.AttachTransportName == nil {
 		s += msgp.NilSize
 	} else {
 		s += msgp.StringPrefixSize + len(*z.AttachTransportName)
 	}
-	s += 6
+	s += 9
 	if z.TextAttachmentCharset == nil {
 		s += msgp.NilSize
 	} else {

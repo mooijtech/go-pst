@@ -44,35 +44,35 @@ type Message struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Specifies the options used in the automatic processing of email messages.
-	AutoProcessState *int32 `protobuf:"varint,1,opt,name=auto_process_state,json=autoProcessState,proto3,oneof" json:"auto_process_state,omitempty" msg:"267306,omitempty" type:"3,omitempty"`  
+	AutoProcessState *int32 `protobuf:"varint,1,opt,name=auto_process_state,json=autoProcessState,proto3,oneof" json:"auto_process_state,omitempty" msg:"267306-3,omitempty"`  
 	// Specifies billing information for the contact.
-	Billing *string `protobuf:"bytes,2,opt,name=billing,proto3,oneof" json:"billing,omitempty" msg:"267365,omitempty" type:"31,omitempty"`  
+	Billing *string `protobuf:"bytes,2,opt,name=billing,proto3,oneof" json:"billing,omitempty" msg:"267365-31,omitempty"`  
 	// Contains a list of the classification categories to which the associated Message object has been assigned.
-	Classification *string `protobuf:"bytes,3,opt,name=classification,proto3,oneof" json:"classification,omitempty" msg:"267622,omitempty" type:"31,omitempty"`  
+	Classification *string `protobuf:"bytes,3,opt,name=classification,proto3,oneof" json:"classification,omitempty" msg:"267622-31,omitempty"`  
 	// Contains a human-readable summary of each of the classification categories included in the PidLidClassification property (section 2.53).
-	ClassificationDescription *string `protobuf:"bytes,4,opt,name=classification_description,json=classificationDescription,proto3,oneof" json:"classification_description,omitempty" msg:"267623,omitempty" type:"31,omitempty"`  
+	ClassificationDescription *string `protobuf:"bytes,4,opt,name=classification_description,json=classificationDescription,proto3,oneof" json:"classification_description,omitempty" msg:"267623-31,omitempty"`  
 	// Contains the GUID that identifies the list of email classification categories used by a Message object.
-	ClassificationGuid *string `protobuf:"bytes,5,opt,name=classification_guid,json=classificationGuid,proto3,oneof" json:"classification_guid,omitempty" msg:"267624,omitempty" type:"31,omitempty"`  
+	ClassificationGuid *string `protobuf:"bytes,5,opt,name=classification_guid,json=classificationGuid,proto3,oneof" json:"classification_guid,omitempty" msg:"267624-31,omitempty"`  
 	// Indicates whether the message uses any classification categories.
-	ClassificationKeep *bool `protobuf:"varint,6,opt,name=classification_keep,json=classificationKeep,proto3,oneof" json:"classification_keep,omitempty" msg:"267626,omitempty" type:"11,omitempty"`  
+	ClassificationKeep *bool `protobuf:"varint,6,opt,name=classification_keep,json=classificationKeep,proto3,oneof" json:"classification_keep,omitempty" msg:"267626-11,omitempty"`  
 	// Indicates whether the contents of this message are regarded as classified information.
-	Classified *bool `protobuf:"varint,7,opt,name=classified,proto3,oneof" json:"classified,omitempty" msg:"267621,omitempty" type:"11,omitempty"`  
+	Classified *bool `protobuf:"varint,7,opt,name=classified,proto3,oneof" json:"classified,omitempty" msg:"267621-11,omitempty"`  
 	// Indicates the end time for the Message object.
-	CommonEnd *int64 `protobuf:"varint,8,opt,name=common_end,json=commonEnd,proto3,oneof" json:"common_end,omitempty" msg:"267303,omitempty" type:"64,omitempty"`  
+	CommonEnd *int64 `protobuf:"varint,8,opt,name=common_end,json=commonEnd,proto3,oneof" json:"common_end,omitempty" msg:"267303-64,omitempty"`  
 	// Indicates the start time for the Message object.
-	CommonStart *int64 `protobuf:"varint,9,opt,name=common_start,json=commonStart,proto3,oneof" json:"common_start,omitempty" msg:"267302,omitempty" type:"64,omitempty"`  
+	CommonStart *int64 `protobuf:"varint,9,opt,name=common_start,json=commonStart,proto3,oneof" json:"common_start,omitempty" msg:"267302-64,omitempty"`  
 	// Specifies the build number of the client application that sent the message.
-	CurrentVersion *int32 `protobuf:"varint,12,opt,name=current_version,json=currentVersion,proto3,oneof" json:"current_version,omitempty" msg:"267426,omitempty" type:"3,omitempty"`  
+	CurrentVersion *int32 `protobuf:"varint,12,opt,name=current_version,json=currentVersion,proto3,oneof" json:"current_version,omitempty" msg:"267426-3,omitempty"`  
 	// Specifies the name of the client application that sent the message.
-	CurrentVersionName *string `protobuf:"bytes,13,opt,name=current_version_name,json=currentVersionName,proto3,oneof" json:"current_version_name,omitempty" msg:"267428,omitempty" type:"31,omitempty"`  
+	CurrentVersionName *string `protobuf:"bytes,13,opt,name=current_version_name,json=currentVersionName,proto3,oneof" json:"current_version_name,omitempty" msg:"267428-31,omitempty"`  
 	// Specifies the user-visible email account name through which the email message is sent.
-	InternetAccountName *string `protobuf:"bytes,14,opt,name=internet_account_name,json=internetAccountName,proto3,oneof" json:"internet_account_name,omitempty" msg:"267520,omitempty" type:"31,omitempty"`  
+	InternetAccountName *string `protobuf:"bytes,14,opt,name=internet_account_name,json=internetAccountName,proto3,oneof" json:"internet_account_name,omitempty" msg:"267520-31,omitempty"`  
 	// Specifies the email account ID through which the email message is sent.
-	InternetAccountStamp *string `protobuf:"bytes,15,opt,name=internet_account_stamp,json=internetAccountStamp,proto3,oneof" json:"internet_account_stamp,omitempty" msg:"267521,omitempty" type:"31,omitempty"`  
+	InternetAccountStamp *string `protobuf:"bytes,15,opt,name=internet_account_stamp,json=internetAccountStamp,proto3,oneof" json:"internet_account_stamp,omitempty" msg:"267521-31,omitempty"`  
 	// Indicates whether the end user wishes for this Message object to be hidden from other users who have access to the Message object.
-	Private *bool `protobuf:"varint,19,opt,name=private,proto3,oneof" json:"private,omitempty" msg:"267270,omitempty" type:"11,omitempty"`  
+	Private *bool `protobuf:"varint,19,opt,name=private,proto3,oneof" json:"private,omitempty" msg:"267270-11,omitempty"`  
 	// Specifies the voting option that a respondent has selected.
-	VerbResponse *string `protobuf:"bytes,20,opt,name=verb_response,json=verbResponse,proto3,oneof" json:"verb_response,omitempty" msg:"267332,omitempty" type:"31,omitempty"`  
+	VerbResponse *string `protobuf:"bytes,20,opt,name=verb_response,json=verbResponse,proto3,oneof" json:"verb_response,omitempty" msg:"267332-31,omitempty"`  
 	// Contains the value of the MIME Accept-Language header.
 	AcceptLanguage *string `protobuf:"bytes,21,opt,name=accept_language,json=acceptLanguage,proto3,oneof" json:"accept_language,omitempty"`
 	// Specifies the value of the MIME Content-Base header, which defines the base URI for resolving relative URLs contained within the message body.
@@ -94,226 +94,226 @@ type Message struct {
 	// Indicates whether a message is likely to be phishing.
 	PhishingStamp *int32 `protobuf:"varint,31,opt,name=phishing_stamp,json=phishingStamp,proto3,oneof" json:"phishing_stamp,omitempty"`
 	// Contains the email address type of a Message object.
-	AddressType *string `protobuf:"bytes,33,opt,name=address_type,json=addressType,proto3,oneof" json:"address_type,omitempty" msg:"12290,omitempty" type:"31,omitempty"`  
+	AddressType *string `protobuf:"bytes,33,opt,name=address_type,json=addressType,proto3,oneof" json:"address_type,omitempty" msg:"12290-31,omitempty"`  
 	// Specifies whether the sender permits the message to be auto-forwarded.
-	AlternateRecipientAllowed *bool `protobuf:"varint,34,opt,name=alternate_recipient_allowed,json=alternateRecipientAllowed,proto3,oneof" json:"alternate_recipient_allowed,omitempty" msg:"2,omitempty" type:"11,omitempty"`  
+	AlternateRecipientAllowed *bool `protobuf:"varint,34,opt,name=alternate_recipient_allowed,json=alternateRecipientAllowed,proto3,oneof" json:"alternate_recipient_allowed,omitempty" msg:"2-11,omitempty"`  
 	// Specifies the date, in UTC, after which a Message object is archived by the server.
-	ArchiveDate *int64 `protobuf:"varint,35,opt,name=archive_date,json=archiveDate,proto3,oneof" json:"archive_date,omitempty" msg:"12319,omitempty" type:"64,omitempty"`  
+	ArchiveDate *int64 `protobuf:"varint,35,opt,name=archive_date,json=archiveDate,proto3,oneof" json:"archive_date,omitempty" msg:"12319-64,omitempty"`  
 	// Specifies the number of days that a Message object can remain unarchived.
-	ArchivePeriod *int32 `protobuf:"varint,36,opt,name=archive_period,json=archivePeriod,proto3,oneof" json:"archive_period,omitempty" msg:"12318,omitempty" type:"3,omitempty"`  
+	ArchivePeriod *int32 `protobuf:"varint,36,opt,name=archive_period,json=archivePeriod,proto3,oneof" json:"archive_period,omitempty" msg:"12318-3,omitempty"`  
 	// Contains the name of the mail user's administrative assistant.
-	Assistant *string `protobuf:"bytes,38,opt,name=assistant,proto3,oneof" json:"assistant,omitempty" msg:"14896,omitempty" type:"31,omitempty"`  
+	Assistant *string `protobuf:"bytes,38,opt,name=assistant,proto3,oneof" json:"assistant,omitempty" msg:"14896-31,omitempty"`  
 	// Contains the telephone number of the mail user's administrative assistant.
-	AssistantTelephoneNumber *string `protobuf:"bytes,39,opt,name=assistant_telephone_number,json=assistantTelephoneNumber,proto3,oneof" json:"assistant_telephone_number,omitempty" msg:"14894,omitempty" type:"31,omitempty"`  
+	AssistantTelephoneNumber *string `protobuf:"bytes,39,opt,name=assistant_telephone_number,json=assistantTelephoneNumber,proto3,oneof" json:"assistant_telephone_number,omitempty" msg:"14894-31,omitempty"`  
 	// Specifies whether a client or server application will forego sending automated replies in response to this message.
-	AutoResponseSuppress *int32 `protobuf:"varint,40,opt,name=auto_response_suppress,json=autoResponseSuppress,proto3,oneof" json:"auto_response_suppress,omitempty" msg:"16351,omitempty" type:"3,omitempty"`  
+	AutoResponseSuppress *int32 `protobuf:"varint,40,opt,name=auto_response_suppress,json=autoResponseSuppress,proto3,oneof" json:"auto_response_suppress,omitempty" msg:"16351-3,omitempty"`  
 	// Indicates the user's preference for viewing external content (such as links to images on an HTTP server) in the message body.
-	BlockStatus *int32 `protobuf:"varint,41,opt,name=block_status,json=blockStatus,proto3,oneof" json:"block_status,omitempty" msg:"4246,omitempty" type:"3,omitempty"`  
+	BlockStatus *int32 `protobuf:"varint,41,opt,name=block_status,json=blockStatus,proto3,oneof" json:"block_status,omitempty" msg:"4246-3,omitempty"`  
 	// Contains message body text in plain text format.
-	Body *string `protobuf:"bytes,42,opt,name=body,proto3,oneof" json:"body,omitempty" msg:"4096,omitempty" type:"31,omitempty"`  
+	Body *string `protobuf:"bytes,42,opt,name=body,proto3,oneof" json:"body,omitempty" msg:"4096-31,omitempty"`  
 	// Contains a globally unique Uniform Resource Identifier (URI) that serves as a label for the current message body.
-	BodyContentLocation *string `protobuf:"bytes,43,opt,name=body_content_location,json=bodyContentLocation,proto3,oneof" json:"body_content_location,omitempty" msg:"4116,omitempty" type:"31,omitempty"`  
+	BodyContentLocation *string `protobuf:"bytes,43,opt,name=body_content_location,json=bodyContentLocation,proto3,oneof" json:"body_content_location,omitempty" msg:"4116-31,omitempty"`  
 	// Contains the HTML body of the Message object.
-	BodyHtml *string `protobuf:"bytes,44,opt,name=body_html,json=bodyHtml,proto3,oneof" json:"body_html,omitempty" msg:"4115,omitempty" type:"31,omitempty"`  
+	BodyHtml *string `protobuf:"bytes,44,opt,name=body_html,json=bodyHtml,proto3,oneof" json:"body_html,omitempty" msg:"4115-31,omitempty"`  
 	// Contains the current time, in UTC, when the email message is submitted.
-	ClientSubmitTime *int64 `protobuf:"varint,45,opt,name=client_submit_time,json=clientSubmitTime,proto3,oneof" json:"client_submit_time,omitempty" msg:"57,omitempty" type:"64,omitempty"`  
+	ClientSubmitTime *int64 `protobuf:"varint,45,opt,name=client_submit_time,json=clientSubmitTime,proto3,oneof" json:"client_submit_time,omitempty" msg:"57-64,omitempty"`  
 	// Indicates a confidence level that the message is spam.
-	ContentFilterSpamConfidenceLevel *int32 `protobuf:"varint,46,opt,name=content_filter_spam_confidence_level,json=contentFilterSpamConfidenceLevel,proto3,oneof" json:"content_filter_spam_confidence_level,omitempty" msg:"16502,omitempty" type:"3,omitempty"`  
+	ContentFilterSpamConfidenceLevel *int32 `protobuf:"varint,46,opt,name=content_filter_spam_confidence_level,json=contentFilterSpamConfidenceLevel,proto3,oneof" json:"content_filter_spam_confidence_level,omitempty" msg:"16502-3,omitempty"`  
 	// Contains an unchanging copy of the original subject.
-	ConversationTopic *string `protobuf:"bytes,48,opt,name=conversation_topic,json=conversationTopic,proto3,oneof" json:"conversation_topic,omitempty" msg:"112,omitempty" type:"31,omitempty"`  
+	ConversationTopic *string `protobuf:"bytes,48,opt,name=conversation_topic,json=conversationTopic,proto3,oneof" json:"conversation_topic,omitempty" msg:"112-31,omitempty"`  
 	// Contains the time, in UTC, that the object was created.
-	CreationTime *int64 `protobuf:"varint,49,opt,name=creation_time,json=creationTime,proto3,oneof" json:"creation_time,omitempty" msg:"12295,omitempty" type:"64,omitempty"`  
+	CreationTime *int64 `protobuf:"varint,49,opt,name=creation_time,json=creationTime,proto3,oneof" json:"creation_time,omitempty" msg:"12295-64,omitempty"`  
 	// Contains the name of the creator of a Message object.
-	CreatorName *string `protobuf:"bytes,50,opt,name=creator_name,json=creatorName,proto3,oneof" json:"creator_name,omitempty" msg:"16376,omitempty" type:"31,omitempty"`  
+	CreatorName *string `protobuf:"bytes,50,opt,name=creator_name,json=creatorName,proto3,oneof" json:"creator_name,omitempty" msg:"16376-31,omitempty"`  
 	// Contains the delivery time for a delivery status notification, as specified [RFC3464], or a message disposition notification, as specified in [RFC3798].
-	DeliverTime *int64 `protobuf:"varint,51,opt,name=deliver_time,json=deliverTime,proto3,oneof" json:"deliver_time,omitempty" msg:"16,omitempty" type:"64,omitempty"`  
+	DeliverTime *int64 `protobuf:"varint,51,opt,name=deliver_time,json=deliverTime,proto3,oneof" json:"deliver_time,omitempty" msg:"16-64,omitempty"`  
 	// Contains a list of blind carbon copy (Bcc) recipient display names.
-	DisplayBcc *string `protobuf:"bytes,52,opt,name=display_bcc,json=displayBcc,proto3,oneof" json:"display_bcc,omitempty" msg:"3586,omitempty" type:"31,omitempty"`  
+	DisplayBcc *string `protobuf:"bytes,52,opt,name=display_bcc,json=displayBcc,proto3,oneof" json:"display_bcc,omitempty" msg:"3586-31,omitempty"`  
 	// Contains a list of carbon copy (Cc) recipient display names.
-	DisplayCc *string `protobuf:"bytes,53,opt,name=display_cc,json=displayCc,proto3,oneof" json:"display_cc,omitempty" msg:"3587,omitempty" type:"31,omitempty"`  
+	DisplayCc *string `protobuf:"bytes,53,opt,name=display_cc,json=displayCc,proto3,oneof" json:"display_cc,omitempty" msg:"3587-31,omitempty"`  
 	// Contains a list of the primary recipient display names, separated by semicolons, when an email message has primary recipients .
-	DisplayTo *string `protobuf:"bytes,54,opt,name=display_to,json=displayTo,proto3,oneof" json:"display_to,omitempty" msg:"3588,omitempty" type:"31,omitempty"`  
+	DisplayTo *string `protobuf:"bytes,54,opt,name=display_to,json=displayTo,proto3,oneof" json:"display_to,omitempty" msg:"3588-31,omitempty"`  
 	// Specifies which icon is to be used by a user interface when displaying a group of Message objects.
-	IconIndex *int32 `protobuf:"varint,56,opt,name=icon_index,json=iconIndex,proto3,oneof" json:"icon_index,omitempty" msg:"4224,omitempty" type:"3,omitempty"`  
+	IconIndex *int32 `protobuf:"varint,56,opt,name=icon_index,json=iconIndex,proto3,oneof" json:"icon_index,omitempty" msg:"4224-3,omitempty"`  
 	// Indicates the level of importance assigned by the end user to the Message object.
-	Importance *int32 `protobuf:"varint,57,opt,name=importance,proto3,oneof" json:"importance,omitempty" msg:"23,omitempty" type:"3,omitempty"`  
+	Importance *int32 `protobuf:"varint,57,opt,name=importance,proto3,oneof" json:"importance,omitempty" msg:"23-3,omitempty"`  
 	// Contains the initials for parts of the full name of the mail user.
-	Initials *string `protobuf:"bytes,58,opt,name=initials,proto3,oneof" json:"initials,omitempty" msg:"14858,omitempty" type:"31,omitempty"`  
+	Initials *string `protobuf:"bytes,58,opt,name=initials,proto3,oneof" json:"initials,omitempty" msg:"14858-31,omitempty"`  
 	// Contains the value of the original message's PidTagInternetMessageId property (section 2.748) value.
-	InReplyToId *string `protobuf:"bytes,59,opt,name=in_reply_to_id,json=inReplyToId,proto3,oneof" json:"in_reply_to_id,omitempty" msg:"4162,omitempty" type:"31,omitempty"`  
+	InReplyToId *string `protobuf:"bytes,59,opt,name=in_reply_to_id,json=inReplyToId,proto3,oneof" json:"in_reply_to_id,omitempty" msg:"4162-31,omitempty"`  
 	// Indicates the encoding method and HTML inclusion for attachments.
-	InternetMailOverrideFormat *int32 `protobuf:"varint,60,opt,name=internet_mail_override_format,json=internetMailOverrideFormat,proto3,oneof" json:"internet_mail_override_format,omitempty" msg:"22786,omitempty" type:"3,omitempty"`  
+	InternetMailOverrideFormat *int32 `protobuf:"varint,60,opt,name=internet_mail_override_format,json=internetMailOverrideFormat,proto3,oneof" json:"internet_mail_override_format,omitempty" msg:"22786-3,omitempty"`  
 	// Corresponds to the message-id field.
-	InternetMessageId *string `protobuf:"bytes,61,opt,name=internet_message_id,json=internetMessageId,proto3,oneof" json:"internet_message_id,omitempty" msg:"4149,omitempty" type:"31,omitempty"`  
+	InternetMessageId *string `protobuf:"bytes,61,opt,name=internet_message_id,json=internetMessageId,proto3,oneof" json:"internet_message_id,omitempty" msg:"4149-31,omitempty"`  
 	// Contains a list of message IDs that specify the messages to which this reply is related.
-	InternetReferences *string `protobuf:"bytes,62,opt,name=internet_references,json=internetReferences,proto3,oneof" json:"internet_references,omitempty" msg:"4153,omitempty" type:"31,omitempty"`  
+	InternetReferences *string `protobuf:"bytes,62,opt,name=internet_references,json=internetReferences,proto3,oneof" json:"internet_references,omitempty" msg:"4153-31,omitempty"`  
 	// Contains the Integrated Services Digital Network (ISDN) telephone number of the mail user.
-	IsdnNumber *string `protobuf:"bytes,63,opt,name=isdn_number,json=isdnNumber,proto3,oneof" json:"isdn_number,omitempty" msg:"14893,omitempty" type:"31,omitempty"`  
+	IsdnNumber *string `protobuf:"bytes,63,opt,name=isdn_number,json=isdnNumber,proto3,oneof" json:"isdn_number,omitempty" msg:"14893-31,omitempty"`  
 	// Contains a keyword that identifies the mail user to the mail user's system administrator.
-	Keyword *string `protobuf:"bytes,64,opt,name=keyword,proto3,oneof" json:"keyword,omitempty" msg:"14859,omitempty" type:"31,omitempty"`  
+	Keyword *string `protobuf:"bytes,64,opt,name=keyword,proto3,oneof" json:"keyword,omitempty" msg:"14859-31,omitempty"`  
 	// Contains a value that indicates the language in which the messaging user is writing messages.
-	Language *string `protobuf:"bytes,65,opt,name=language,proto3,oneof" json:"language,omitempty" msg:"14860,omitempty" type:"31,omitempty"`  
+	Language *string `protobuf:"bytes,65,opt,name=language,proto3,oneof" json:"language,omitempty" msg:"14860-31,omitempty"`  
 	// Contains the time, in UTC, of the last modification to the object.
-	LastModificationTime *int64 `protobuf:"varint,66,opt,name=last_modification_time,json=lastModificationTime,proto3,oneof" json:"last_modification_time,omitempty" msg:"12296,omitempty" type:"64,omitempty"`  
+	LastModificationTime *int64 `protobuf:"varint,66,opt,name=last_modification_time,json=lastModificationTime,proto3,oneof" json:"last_modification_time,omitempty" msg:"12296-64,omitempty"`  
 	// Contains the name of the mail user's locality, such as the town or city.
-	Locality *string `protobuf:"bytes,67,opt,name=locality,proto3,oneof" json:"locality,omitempty" msg:"14887,omitempty" type:"31,omitempty"`  
+	Locality *string `protobuf:"bytes,67,opt,name=locality,proto3,oneof" json:"locality,omitempty" msg:"14887-31,omitempty"`  
 	// Contains the location of the mail user.
-	Location *string `protobuf:"bytes,68,opt,name=location,proto3,oneof" json:"location,omitempty" msg:"14861,omitempty" type:"31,omitempty"`  
+	Location *string `protobuf:"bytes,68,opt,name=location,proto3,oneof" json:"location,omitempty" msg:"14861-31,omitempty"`  
 	// Contains the name of the mail user's manager.
-	ManagerName *string `protobuf:"bytes,69,opt,name=manager_name,json=managerName,proto3,oneof" json:"manager_name,omitempty" msg:"14926,omitempty" type:"31,omitempty"`  
-	MessageCcMe *bool `protobuf:"varint,70,opt,name=message_cc_me,json=messageCcMe,proto3,oneof" json:"message_cc_me,omitempty" msg:"88,omitempty" type:"11,omitempty"`  
+	ManagerName *string `protobuf:"bytes,69,opt,name=manager_name,json=managerName,proto3,oneof" json:"manager_name,omitempty" msg:"14926-31,omitempty"`  
+	MessageCcMe *bool `protobuf:"varint,70,opt,name=message_cc_me,json=messageCcMe,proto3,oneof" json:"message_cc_me,omitempty" msg:"88-11,omitempty"`  
 	// Specifies the time (in UTC) when the server received the message.
-	MessageDeliveryTime *int64 `protobuf:"varint,71,opt,name=message_delivery_time,json=messageDeliveryTime,proto3,oneof" json:"message_delivery_time,omitempty" msg:"3590,omitempty" type:"64,omitempty"`  
+	MessageDeliveryTime *int64 `protobuf:"varint,71,opt,name=message_delivery_time,json=messageDeliveryTime,proto3,oneof" json:"message_delivery_time,omitempty" msg:"3590-64,omitempty"`  
 	// Specifies the status of the Message object.
-	MessageFlags *int32 `protobuf:"varint,72,opt,name=message_flags,json=messageFlags,proto3,oneof" json:"message_flags,omitempty" msg:"3591,omitempty" type:"3,omitempty"`  
+	MessageFlags *int32 `protobuf:"varint,72,opt,name=message_flags,json=messageFlags,proto3,oneof" json:"message_flags,omitempty" msg:"3591-3,omitempty"`  
 	// Contains the common name of a messaging user for use in a message header.
-	MessageHandlingSystemCommonName *string `protobuf:"bytes,73,opt,name=message_handling_system_common_name,json=messageHandlingSystemCommonName,proto3,oneof" json:"message_handling_system_common_name,omitempty" msg:"14863,omitempty" type:"31,omitempty"`  
+	MessageHandlingSystemCommonName *string `protobuf:"bytes,73,opt,name=message_handling_system_common_name,json=messageHandlingSystemCommonName,proto3,oneof" json:"message_handling_system_common_name,omitempty" msg:"14863-31,omitempty"`  
 	// Indicates that the receiving mailbox owner is a primary or a carbon copy (Cc) recipient of this email message.
-	MessageRecipientMe *bool `protobuf:"varint,74,opt,name=message_recipient_me,json=messageRecipientMe,proto3,oneof" json:"message_recipient_me,omitempty" msg:"89,omitempty" type:"11,omitempty"`  
+	MessageRecipientMe *bool `protobuf:"varint,74,opt,name=message_recipient_me,json=messageRecipientMe,proto3,oneof" json:"message_recipient_me,omitempty" msg:"89-11,omitempty"`  
 	// Contains the size, in bytes, consumed by the Message object on the server.
-	MessageSize *int32 `protobuf:"varint,76,opt,name=message_size,json=messageSize,proto3,oneof" json:"message_size,omitempty" msg:"3592,omitempty" type:"3,omitempty"`  
+	MessageSize *int32 `protobuf:"varint,76,opt,name=message_size,json=messageSize,proto3,oneof" json:"message_size,omitempty" msg:"3592-3,omitempty"`  
 	// Specifies the 64-bit version of the PidTagMessageSize property (section 2.796).
-	MessageSizeExtended *float64 `protobuf:"fixed64,77,opt,name=message_size_extended,json=messageSizeExtended,proto3,oneof" json:"message_size_extended,omitempty" msg:"3592,omitempty" type:"20,omitempty"`  
+	MessageSizeExtended *float64 `protobuf:"fixed64,77,opt,name=message_size_extended,json=messageSizeExtended,proto3,oneof" json:"message_size_extended,omitempty" msg:"3592-20,omitempty"`  
 	// Specifies the status of a message in a contents table.
-	MessageStatus *int32 `protobuf:"varint,78,opt,name=message_status,json=messageStatus,proto3,oneof" json:"message_status,omitempty" msg:"3607,omitempty" type:"3,omitempty"`  
+	MessageStatus *int32 `protobuf:"varint,78,opt,name=message_status,json=messageStatus,proto3,oneof" json:"message_status,omitempty" msg:"3607-3,omitempty"`  
 	// Indicates that the receiving mailbox owner is one of the primary recipients of this email message.
-	MessageToMe *bool `protobuf:"varint,80,opt,name=message_to_me,json=messageToMe,proto3,oneof" json:"message_to_me,omitempty" msg:"87,omitempty" type:"11,omitempty"`  
+	MessageToMe *bool `protobuf:"varint,80,opt,name=message_to_me,json=messageToMe,proto3,oneof" json:"message_to_me,omitempty" msg:"87-11,omitempty"`  
 	// Specifies the middle name(s) of the contact.
-	MiddleName *string `protobuf:"bytes,81,opt,name=middle_name,json=middleName,proto3,oneof" json:"middle_name,omitempty" msg:"14916,omitempty" type:"31,omitempty"`  
+	MiddleName *string `protobuf:"bytes,81,opt,name=middle_name,json=middleName,proto3,oneof" json:"middle_name,omitempty" msg:"14916-31,omitempty"`  
 	// Contains the mail user's cellular telephone number.
-	MobileTelephoneNumber *string `protobuf:"bytes,82,opt,name=mobile_telephone_number,json=mobileTelephoneNumber,proto3,oneof" json:"mobile_telephone_number,omitempty" msg:"14876,omitempty" type:"31,omitempty"`  
+	MobileTelephoneNumber *string `protobuf:"bytes,82,opt,name=mobile_telephone_number,json=mobileTelephoneNumber,proto3,oneof" json:"mobile_telephone_number,omitempty" msg:"14876-31,omitempty"`  
 	// Contains the mail user's nickname.
-	Nickname *string `protobuf:"bytes,83,opt,name=nickname,proto3,oneof" json:"nickname,omitempty" msg:"14927,omitempty" type:"31,omitempty"`  
+	Nickname *string `protobuf:"bytes,83,opt,name=nickname,proto3,oneof" json:"nickname,omitempty" msg:"14927-31,omitempty"`  
 	// Contains the diagnostic code for a delivery status notification, as specified in [RFC3464].
-	NonDeliveryReportDiagCode *int32 `protobuf:"varint,84,opt,name=non_delivery_report_diag_code,json=nonDeliveryReportDiagCode,proto3,oneof" json:"non_delivery_report_diag_code,omitempty" msg:"3077,omitempty" type:"3,omitempty"`  
+	NonDeliveryReportDiagCode *int32 `protobuf:"varint,84,opt,name=non_delivery_report_diag_code,json=nonDeliveryReportDiagCode,proto3,oneof" json:"non_delivery_report_diag_code,omitempty" msg:"3077-3,omitempty"`  
 	// Contains an integer value that indicates a reason for delivery failure.
-	NonDeliveryReportReasonCode *int32 `protobuf:"varint,85,opt,name=non_delivery_report_reason_code,json=nonDeliveryReportReasonCode,proto3,oneof" json:"non_delivery_report_reason_code,omitempty" msg:"3076,omitempty" type:"3,omitempty"`  
+	NonDeliveryReportReasonCode *int32 `protobuf:"varint,85,opt,name=non_delivery_report_reason_code,json=nonDeliveryReportReasonCode,proto3,oneof" json:"non_delivery_report_reason_code,omitempty" msg:"3076-3,omitempty"`  
 	// Specifies whether the client sends a non-read receipt.
-	NonDeliveryReportStatusCode *int32 `protobuf:"varint,86,opt,name=non_delivery_report_status_code,json=nonDeliveryReportStatusCode,proto3,oneof" json:"non_delivery_report_status_code,omitempty" msg:"3078,omitempty" type:"3,omitempty"`  
+	NonDeliveryReportStatusCode *int32 `protobuf:"varint,86,opt,name=non_delivery_report_status_code,json=nonDeliveryReportStatusCode,proto3,oneof" json:"non_delivery_report_status_code,omitempty" msg:"3078-3,omitempty"`  
 	// Contains the normalized subject of the message.
-	NormalizedSubject *string `protobuf:"bytes,87,opt,name=normalized_subject,json=normalizedSubject,proto3,oneof" json:"normalized_subject,omitempty" msg:"3613,omitempty" type:"31,omitempty"`  
+	NormalizedSubject *string `protobuf:"bytes,87,opt,name=normalized_subject,json=normalizedSubject,proto3,oneof" json:"normalized_subject,omitempty" msg:"3613-31,omitempty"`  
 	// Contains the mail user's office location.
-	OfficeLocation *string `protobuf:"bytes,88,opt,name=office_location,json=officeLocation,proto3,oneof" json:"office_location,omitempty" msg:"14873,omitempty" type:"31,omitempty"`  
+	OfficeLocation *string `protobuf:"bytes,88,opt,name=office_location,json=officeLocation,proto3,oneof" json:"office_location,omitempty" msg:"14873-31,omitempty"`  
 	// Contains an identifier for the mail user used within the mail user's organization.
-	OrganizationalIdNumber *string `protobuf:"bytes,89,opt,name=organizational_id_number,json=organizationalIdNumber,proto3,oneof" json:"organizational_id_number,omitempty" msg:"14864,omitempty" type:"31,omitempty"`  
+	OrganizationalIdNumber *string `protobuf:"bytes,89,opt,name=organizational_id_number,json=organizationalIdNumber,proto3,oneof" json:"organizational_id_number,omitempty" msg:"14864-31,omitempty"`  
 	// Contains the display name of the sender of the original message referenced by a report message.
-	OriginalAuthorName *string `protobuf:"bytes,91,opt,name=original_author_name,json=originalAuthorName,proto3,oneof" json:"original_author_name,omitempty" msg:"77,omitempty" type:"31,omitempty"`  
+	OriginalAuthorName *string `protobuf:"bytes,91,opt,name=original_author_name,json=originalAuthorName,proto3,oneof" json:"original_author_name,omitempty" msg:"77-31,omitempty"`  
 	// Contains the delivery time, in UTC, from the original message.
-	OriginalDeliveryTime *int64 `protobuf:"varint,92,opt,name=original_delivery_time,json=originalDeliveryTime,proto3,oneof" json:"original_delivery_time,omitempty" msg:"85,omitempty" type:"64,omitempty"`  
+	OriginalDeliveryTime *int64 `protobuf:"varint,92,opt,name=original_delivery_time,json=originalDeliveryTime,proto3,oneof" json:"original_delivery_time,omitempty" msg:"85-64,omitempty"`  
 	// Contains the value of the PidTagDisplayBcc property (section 2.674) from the original message.
-	OriginalDisplayBcc *string `protobuf:"bytes,93,opt,name=original_display_bcc,json=originalDisplayBcc,proto3,oneof" json:"original_display_bcc,omitempty" msg:"114,omitempty" type:"31,omitempty"`  
+	OriginalDisplayBcc *string `protobuf:"bytes,93,opt,name=original_display_bcc,json=originalDisplayBcc,proto3,oneof" json:"original_display_bcc,omitempty" msg:"114-31,omitempty"`  
 	// Contains the value of the PidTagDisplayCc property(section 2.675) from the original message.
-	OriginalDisplayCc *string `protobuf:"bytes,94,opt,name=original_display_cc,json=originalDisplayCc,proto3,oneof" json:"original_display_cc,omitempty" msg:"115,omitempty" type:"31,omitempty"`  
+	OriginalDisplayCc *string `protobuf:"bytes,94,opt,name=original_display_cc,json=originalDisplayCc,proto3,oneof" json:"original_display_cc,omitempty" msg:"115-31,omitempty"`  
 	// Contains the value of the PidTagDisplayTo property (section 2.678) from the original message.
-	OriginalDisplayTo *string `protobuf:"bytes,95,opt,name=original_display_to,json=originalDisplayTo,proto3,oneof" json:"original_display_to,omitempty" msg:"116,omitempty" type:"31,omitempty"`  
+	OriginalDisplayTo *string `protobuf:"bytes,95,opt,name=original_display_to,json=originalDisplayTo,proto3,oneof" json:"original_display_to,omitempty" msg:"116-31,omitempty"`  
 	// Designates the PidTagMessageClass property ([MS-OXCMSG] section 2.2.1.3) from the original message.
-	OriginalMessageClass *string `protobuf:"bytes,97,opt,name=original_message_class,json=originalMessageClass,proto3,oneof" json:"original_message_class,omitempty" msg:"75,omitempty" type:"31,omitempty"`  
+	OriginalMessageClass *string `protobuf:"bytes,97,opt,name=original_message_class,json=originalMessageClass,proto3,oneof" json:"original_message_class,omitempty" msg:"75-31,omitempty"`  
 	// Contains the value of the original message sender's PidTagSenderAddressType property (section 2.1000).
-	OriginalSenderAddressType *string `protobuf:"bytes,98,opt,name=original_sender_address_type,json=originalSenderAddressType,proto3,oneof" json:"original_sender_address_type,omitempty" msg:"102,omitempty" type:"31,omitempty"`  
+	OriginalSenderAddressType *string `protobuf:"bytes,98,opt,name=original_sender_address_type,json=originalSenderAddressType,proto3,oneof" json:"original_sender_address_type,omitempty" msg:"102-31,omitempty"`  
 	// Contains the value of the original message sender's PidTagSenderEmailAddress property (section 2.1001).
-	OriginalSenderEmailAddress *string `protobuf:"bytes,99,opt,name=original_sender_email_address,json=originalSenderEmailAddress,proto3,oneof" json:"original_sender_email_address,omitempty" msg:"103,omitempty" type:"31,omitempty"`  
+	OriginalSenderEmailAddress *string `protobuf:"bytes,99,opt,name=original_sender_email_address,json=originalSenderEmailAddress,proto3,oneof" json:"original_sender_email_address,omitempty" msg:"103-31,omitempty"`  
 	// Contains the value of the original message sender's PidTagSenderName property (section 2.1004), and is set on delivery report messages.
-	OriginalSenderName *string `protobuf:"bytes,101,opt,name=original_sender_name,json=originalSenderName,proto3,oneof" json:"original_sender_name,omitempty" msg:"90,omitempty" type:"31,omitempty"`  
+	OriginalSenderName *string `protobuf:"bytes,101,opt,name=original_sender_name,json=originalSenderName,proto3,oneof" json:"original_sender_name,omitempty" msg:"90-31,omitempty"`  
 	// Contains the sensitivity value of the original email message.
-	OriginalSensitivity *int32 `protobuf:"varint,103,opt,name=original_sensitivity,json=originalSensitivity,proto3,oneof" json:"original_sensitivity,omitempty" msg:"46,omitempty" type:"3,omitempty"`  
+	OriginalSensitivity *int32 `protobuf:"varint,103,opt,name=original_sensitivity,json=originalSensitivity,proto3,oneof" json:"original_sensitivity,omitempty" msg:"46-3,omitempty"`  
 	// Contains the address type of the end user who is represented by the original email message sender.
-	OriginalSentRepresentingAddressType *string `protobuf:"bytes,104,opt,name=original_sent_representing_address_type,json=originalSentRepresentingAddressType,proto3,oneof" json:"original_sent_representing_address_type,omitempty" msg:"104,omitempty" type:"31,omitempty"`  
+	OriginalSentRepresentingAddressType *string `protobuf:"bytes,104,opt,name=original_sent_representing_address_type,json=originalSentRepresentingAddressType,proto3,oneof" json:"original_sent_representing_address_type,omitempty" msg:"104-31,omitempty"`  
 	// Contains the email address of the end user who is represented by the original email message sender.
-	OriginalSentRepresentingEmailAddress *string `protobuf:"bytes,105,opt,name=original_sent_representing_email_address,json=originalSentRepresentingEmailAddress,proto3,oneof" json:"original_sent_representing_email_address,omitempty" msg:"105,omitempty" type:"31,omitempty"`  
+	OriginalSentRepresentingEmailAddress *string `protobuf:"bytes,105,opt,name=original_sent_representing_email_address,json=originalSentRepresentingEmailAddress,proto3,oneof" json:"original_sent_representing_email_address,omitempty" msg:"105-31,omitempty"`  
 	// Contains the display name of the end user who is represented by the original email message sender.
-	OriginalSentRepresentingName *string `protobuf:"bytes,107,opt,name=original_sent_representing_name,json=originalSentRepresentingName,proto3,oneof" json:"original_sent_representing_name,omitempty" msg:"93,omitempty" type:"31,omitempty"`  
+	OriginalSentRepresentingName *string `protobuf:"bytes,107,opt,name=original_sent_representing_name,json=originalSentRepresentingName,proto3,oneof" json:"original_sent_representing_name,omitempty" msg:"93-31,omitempty"`  
 	// Specifies the subject of the original message.
-	OriginalSubject *string `protobuf:"bytes,109,opt,name=original_subject,json=originalSubject,proto3,oneof" json:"original_subject,omitempty" msg:"73,omitempty" type:"31,omitempty"`  
+	OriginalSubject *string `protobuf:"bytes,109,opt,name=original_subject,json=originalSubject,proto3,oneof" json:"original_subject,omitempty" msg:"73-31,omitempty"`  
 	// Specifies the original email message's submission date and time, in UTC.
-	OriginalSubmitTime *int64 `protobuf:"varint,110,opt,name=original_submit_time,json=originalSubmitTime,proto3,oneof" json:"original_submit_time,omitempty" msg:"78,omitempty" type:"64,omitempty"`  
+	OriginalSubmitTime *int64 `protobuf:"varint,110,opt,name=original_submit_time,json=originalSubmitTime,proto3,oneof" json:"original_submit_time,omitempty" msg:"78-64,omitempty"`  
 	// Indicates whether an email sender requests an email delivery receipt from the messaging system.
-	OriginatorDeliveryReportRequested *bool `protobuf:"varint,111,opt,name=originator_delivery_report_requested,json=originatorDeliveryReportRequested,proto3,oneof" json:"originator_delivery_report_requested,omitempty" msg:"35,omitempty" type:"11,omitempty"`  
+	OriginatorDeliveryReportRequested *bool `protobuf:"varint,111,opt,name=originator_delivery_report_requested,json=originatorDeliveryReportRequested,proto3,oneof" json:"originator_delivery_report_requested,omitempty" msg:"35-11,omitempty"`  
 	// Specifies whether an email sender requests suppression of nondelivery receipts.
-	OriginatorNonDeliveryReportRequested *bool `protobuf:"varint,112,opt,name=originator_non_delivery_report_requested,json=originatorNonDeliveryReportRequested,proto3,oneof" json:"originator_non_delivery_report_requested,omitempty" msg:"3080,omitempty" type:"11,omitempty"`  
+	OriginatorNonDeliveryReportRequested *bool `protobuf:"varint,112,opt,name=originator_non_delivery_report_requested,json=originatorNonDeliveryReportRequested,proto3,oneof" json:"originator_non_delivery_report_requested,omitempty" msg:"3080-11,omitempty"`  
 	// Contains the name of the mail user's other locality, such as the town or city.
-	OtherAddressCity *string `protobuf:"bytes,113,opt,name=other_address_city,json=otherAddressCity,proto3,oneof" json:"other_address_city,omitempty" msg:"14943,omitempty" type:"31,omitempty"`  
+	OtherAddressCity *string `protobuf:"bytes,113,opt,name=other_address_city,json=otherAddressCity,proto3,oneof" json:"other_address_city,omitempty" msg:"14943-31,omitempty"`  
 	// Contains the name of the mail user's other country/region.
-	OtherAddressCountry *string `protobuf:"bytes,114,opt,name=other_address_country,json=otherAddressCountry,proto3,oneof" json:"other_address_country,omitempty" msg:"14944,omitempty" type:"31,omitempty"`  
+	OtherAddressCountry *string `protobuf:"bytes,114,opt,name=other_address_country,json=otherAddressCountry,proto3,oneof" json:"other_address_country,omitempty" msg:"14944-31,omitempty"`  
 	// Contains the postal code for the mail user's other postal address.
-	OtherAddressPostalCode *string `protobuf:"bytes,115,opt,name=other_address_postal_code,json=otherAddressPostalCode,proto3,oneof" json:"other_address_postal_code,omitempty" msg:"14945,omitempty" type:"31,omitempty"`  
+	OtherAddressPostalCode *string `protobuf:"bytes,115,opt,name=other_address_postal_code,json=otherAddressPostalCode,proto3,oneof" json:"other_address_postal_code,omitempty" msg:"14945-31,omitempty"`  
 	// Contains the number or identifier of the mail user's other post office box.
-	OtherAddressPostOfficeBox *string `protobuf:"bytes,116,opt,name=other_address_post_office_box,json=otherAddressPostOfficeBox,proto3,oneof" json:"other_address_post_office_box,omitempty" msg:"14948,omitempty" type:"31,omitempty"`  
+	OtherAddressPostOfficeBox *string `protobuf:"bytes,116,opt,name=other_address_post_office_box,json=otherAddressPostOfficeBox,proto3,oneof" json:"other_address_post_office_box,omitempty" msg:"14948-31,omitempty"`  
 	// Contains the name of the mail user's other state or province.
-	OtherAddressStateOrProvince *string `protobuf:"bytes,117,opt,name=other_address_state_or_province,json=otherAddressStateOrProvince,proto3,oneof" json:"other_address_state_or_province,omitempty" msg:"14946,omitempty" type:"31,omitempty"`  
+	OtherAddressStateOrProvince *string `protobuf:"bytes,117,opt,name=other_address_state_or_province,json=otherAddressStateOrProvince,proto3,oneof" json:"other_address_state_or_province,omitempty" msg:"14946-31,omitempty"`  
 	// Contains the mail user's other street address.
-	OtherAddressStreet *string `protobuf:"bytes,118,opt,name=other_address_street,json=otherAddressStreet,proto3,oneof" json:"other_address_street,omitempty" msg:"14947,omitempty" type:"31,omitempty"`  
+	OtherAddressStreet *string `protobuf:"bytes,118,opt,name=other_address_street,json=otherAddressStreet,proto3,oneof" json:"other_address_street,omitempty" msg:"14947-31,omitempty"`  
 	// Contains an alternate telephone number for the mail user.
-	OtherTelephoneNumber *string `protobuf:"bytes,119,opt,name=other_telephone_number,json=otherTelephoneNumber,proto3,oneof" json:"other_telephone_number,omitempty" msg:"14879,omitempty" type:"31,omitempty"`  
+	OtherTelephoneNumber *string `protobuf:"bytes,119,opt,name=other_telephone_number,json=otherTelephoneNumber,proto3,oneof" json:"other_telephone_number,omitempty" msg:"14879-31,omitempty"`  
 	// Contains the mail user's pager telephone number.
-	PagerTelephoneNumber *string `protobuf:"bytes,120,opt,name=pager_telephone_number,json=pagerTelephoneNumber,proto3,oneof" json:"pager_telephone_number,omitempty" msg:"14881,omitempty" type:"31,omitempty"`  
+	PagerTelephoneNumber *string `protobuf:"bytes,120,opt,name=pager_telephone_number,json=pagerTelephoneNumber,proto3,oneof" json:"pager_telephone_number,omitempty" msg:"14881-31,omitempty"`  
 	// Indicates the client's request for the priority with which the message is to be sent by the messaging system.
-	Priority *int32 `protobuf:"varint,122,opt,name=priority,proto3,oneof" json:"priority,omitempty" msg:"38,omitempty" type:"3,omitempty"`  
+	Priority *int32 `protobuf:"varint,122,opt,name=priority,proto3,oneof" json:"priority,omitempty" msg:"38-3,omitempty"`  
 	// Specifies whether the email sender requests a read receipt from all recipients when this email message is read or opened.
-	ReadReceiptRequested *bool `protobuf:"varint,123,opt,name=read_receipt_requested,json=readReceiptRequested,proto3,oneof" json:"read_receipt_requested,omitempty" msg:"41,omitempty" type:"11,omitempty"`  
+	ReadReceiptRequested *bool `protobuf:"varint,123,opt,name=read_receipt_requested,json=readReceiptRequested,proto3,oneof" json:"read_receipt_requested,omitempty" msg:"41-11,omitempty"`  
 	// Contains the sent time for a message disposition notification, as specified in [RFC3798].
-	ReceiptTime *int64 `protobuf:"varint,124,opt,name=receipt_time,json=receiptTime,proto3,oneof" json:"receipt_time,omitempty" msg:"42,omitempty" type:"64,omitempty"`  
+	ReceiptTime *int64 `protobuf:"varint,124,opt,name=receipt_time,json=receiptTime,proto3,oneof" json:"receipt_time,omitempty" msg:"42-64,omitempty"`  
 	// Contains the email message receiver's email address.
-	ReceivedByEmailAddress *string `protobuf:"bytes,125,opt,name=received_by_email_address,json=receivedByEmailAddress,proto3,oneof" json:"received_by_email_address,omitempty" msg:"118,omitempty" type:"31,omitempty"`  
+	ReceivedByEmailAddress *string `protobuf:"bytes,125,opt,name=received_by_email_address,json=receivedByEmailAddress,proto3,oneof" json:"received_by_email_address,omitempty" msg:"118-31,omitempty"`  
 	// Contains the email message receiver's display name.
-	ReceivedByName *string `protobuf:"bytes,127,opt,name=received_by_name,json=receivedByName,proto3,oneof" json:"received_by_name,omitempty" msg:"64,omitempty" type:"31,omitempty"`  
+	ReceivedByName *string `protobuf:"bytes,127,opt,name=received_by_name,json=receivedByName,proto3,oneof" json:"received_by_name,omitempty" msg:"64-31,omitempty"`  
 	// Contains the email address type for the end user represented by the receiving mailbox owner.
-	ReceivedRepresentingAddressType *string `protobuf:"bytes,129,opt,name=received_representing_address_type,json=receivedRepresentingAddressType,proto3,oneof" json:"received_representing_address_type,omitempty" msg:"119,omitempty" type:"31,omitempty"`  
+	ReceivedRepresentingAddressType *string `protobuf:"bytes,129,opt,name=received_representing_address_type,json=receivedRepresentingAddressType,proto3,oneof" json:"received_representing_address_type,omitempty" msg:"119-31,omitempty"`  
 	// Contains the email address for the end user represented by the receiving mailbox owner.
-	ReceivedRepresentingEmailAddress *string `protobuf:"bytes,130,opt,name=received_representing_email_address,json=receivedRepresentingEmailAddress,proto3,oneof" json:"received_representing_email_address,omitempty" msg:"120,omitempty" type:"31,omitempty"`  
+	ReceivedRepresentingEmailAddress *string `protobuf:"bytes,130,opt,name=received_representing_email_address,json=receivedRepresentingEmailAddress,proto3,oneof" json:"received_representing_email_address,omitempty" msg:"120-31,omitempty"`  
 	// Contains the display name for the end user represented by the receiving mailbox owner.
-	ReceivedRepresentingName *string `protobuf:"bytes,132,opt,name=received_representing_name,json=receivedRepresentingName,proto3,oneof" json:"received_representing_name,omitempty" msg:"68,omitempty" type:"31,omitempty"`  
+	ReceivedRepresentingName *string `protobuf:"bytes,132,opt,name=received_representing_name,json=receivedRepresentingName,proto3,oneof" json:"received_representing_name,omitempty" msg:"68-31,omitempty"`  
 	// Represents the recipient type of a recipient on the message.
-	RecipientType *int32 `protobuf:"varint,134,opt,name=recipient_type,json=recipientType,proto3,oneof" json:"recipient_type,omitempty" msg:"3093,omitempty" type:"3,omitempty"`  
+	RecipientType *int32 `protobuf:"varint,134,opt,name=recipient_type,json=recipientType,proto3,oneof" json:"recipient_type,omitempty" msg:"3093-3,omitempty"`  
 	// Contains the value of the Remote-MTA field for a delivery status notification, as specified in [RFC3464].
-	RemoteMessageTransferAgent *string `protobuf:"bytes,135,opt,name=remote_message_transfer_agent,json=remoteMessageTransferAgent,proto3,oneof" json:"remote_message_transfer_agent,omitempty" msg:"3105,omitempty" type:"31,omitempty"`  
+	RemoteMessageTransferAgent *string `protobuf:"bytes,135,opt,name=remote_message_transfer_agent,json=remoteMessageTransferAgent,proto3,oneof" json:"remote_message_transfer_agent,omitempty" msg:"3105-31,omitempty"`  
 	// Indicates whether a reply is requested to a Message object.
-	ReplyRequested *bool `protobuf:"varint,136,opt,name=reply_requested,json=replyRequested,proto3,oneof" json:"reply_requested,omitempty" msg:"3095,omitempty" type:"11,omitempty"`  
+	ReplyRequested *bool `protobuf:"varint,136,opt,name=reply_requested,json=replyRequested,proto3,oneof" json:"reply_requested,omitempty" msg:"3095-11,omitempty"`  
 	// Contains a string indicating whether the original message was displayed to the user or deleted (report messages only).
-	ReportDisposition *string `protobuf:"bytes,137,opt,name=report_disposition,json=reportDisposition,proto3,oneof" json:"report_disposition,omitempty" msg:"128,omitempty" type:"31,omitempty"`  
+	ReportDisposition *string `protobuf:"bytes,137,opt,name=report_disposition,json=reportDisposition,proto3,oneof" json:"report_disposition,omitempty" msg:"128-31,omitempty"`  
 	// Contains a description of the action that a client has performed on behalf of a user (report messages only).
-	ReportDispositionMode *string `protobuf:"bytes,138,opt,name=report_disposition_mode,json=reportDispositionMode,proto3,oneof" json:"report_disposition_mode,omitempty" msg:"129,omitempty" type:"31,omitempty"`  
+	ReportDispositionMode *string `protobuf:"bytes,138,opt,name=report_disposition_mode,json=reportDispositionMode,proto3,oneof" json:"report_disposition_mode,omitempty" msg:"129-31,omitempty"`  
 	// Contains the value of the Reporting-MTA field for a delivery status notification, as specified in [RFC3464].
-	ReportingMessageTransferAgent *string `protobuf:"bytes,139,opt,name=reporting_message_transfer_agent,json=reportingMessageTransferAgent,proto3,oneof" json:"reporting_message_transfer_agent,omitempty" msg:"26656,omitempty" type:"31,omitempty"`  
+	ReportingMessageTransferAgent *string `protobuf:"bytes,139,opt,name=reporting_message_transfer_agent,json=reportingMessageTransferAgent,proto3,oneof" json:"reporting_message_transfer_agent,omitempty" msg:"26656-31,omitempty"`  
 	// Specifies the date, in UTC, after which a Message object is expired by the server.
-	RetentionDate *int64 `protobuf:"varint,140,opt,name=retention_date,json=retentionDate,proto3,oneof" json:"retention_date,omitempty" msg:"12316,omitempty" type:"64,omitempty"`  
+	RetentionDate *int64 `protobuf:"varint,140,opt,name=retention_date,json=retentionDate,proto3,oneof" json:"retention_date,omitempty" msg:"12316-64,omitempty"`  
 	// Contains flags that specify the status or nature of an item's retention tag or archive tag.
-	RetentionFlags *int32 `protobuf:"varint,141,opt,name=retention_flags,json=retentionFlags,proto3,oneof" json:"retention_flags,omitempty" msg:"12317,omitempty" type:"3,omitempty"`  
+	RetentionFlags *int32 `protobuf:"varint,141,opt,name=retention_flags,json=retentionFlags,proto3,oneof" json:"retention_flags,omitempty" msg:"12317-3,omitempty"`  
 	// Specifies the number of days that a Message object can remain unarchived.
-	RetentionPeriod *int32 `protobuf:"varint,142,opt,name=retention_period,json=retentionPeriod,proto3,oneof" json:"retention_period,omitempty" msg:"12314,omitempty" type:"3,omitempty"`  
+	RetentionPeriod *int32 `protobuf:"varint,142,opt,name=retention_period,json=retentionPeriod,proto3,oneof" json:"retention_period,omitempty" msg:"12314-3,omitempty"`  
 	// Indicates whether the PidTagBody property (section 2.618) and the PidTagRtfCompressed property (section 2.941) contain the same text (ignoring formatting).
-	RtfInSync *bool `protobuf:"varint,144,opt,name=rtf_in_sync,json=rtfInSync,proto3,oneof" json:"rtf_in_sync,omitempty" msg:"3615,omitempty" type:"11,omitempty"`  
+	RtfInSync *bool `protobuf:"varint,144,opt,name=rtf_in_sync,json=rtfInSync,proto3,oneof" json:"rtf_in_sync,omitempty" msg:"3615-11,omitempty"`  
 	// Contains the email address type of the sending mailbox owner.
-	SenderAddressType *string `protobuf:"bytes,145,opt,name=sender_address_type,json=senderAddressType,proto3,oneof" json:"sender_address_type,omitempty" msg:"3102,omitempty" type:"31,omitempty"`  
+	SenderAddressType *string `protobuf:"bytes,145,opt,name=sender_address_type,json=senderAddressType,proto3,oneof" json:"sender_address_type,omitempty" msg:"3102-31,omitempty"`  
 	// Contains the email address of the sending mailbox owner.
-	SenderEmailAddress *string `protobuf:"bytes,146,opt,name=sender_email_address,json=senderEmailAddress,proto3,oneof" json:"sender_email_address,omitempty" msg:"3103,omitempty" type:"31,omitempty"`  
+	SenderEmailAddress *string `protobuf:"bytes,146,opt,name=sender_email_address,json=senderEmailAddress,proto3,oneof" json:"sender_email_address,omitempty" msg:"3103-31,omitempty"`  
 	// Reports the results of a Sender-ID check.
-	SenderIdStatus *int32 `protobuf:"varint,148,opt,name=sender_id_status,json=senderIdStatus,proto3,oneof" json:"sender_id_status,omitempty" msg:"16505,omitempty" type:"3,omitempty"`  
+	SenderIdStatus *int32 `protobuf:"varint,148,opt,name=sender_id_status,json=senderIdStatus,proto3,oneof" json:"sender_id_status,omitempty" msg:"16505-3,omitempty"`  
 	// Contains the display name of the sending mailbox owner.
-	SenderName *string `protobuf:"bytes,149,opt,name=sender_name,json=senderName,proto3,oneof" json:"sender_name,omitempty" msg:"3098,omitempty" type:"31,omitempty"`  
+	SenderName *string `protobuf:"bytes,149,opt,name=sender_name,json=senderName,proto3,oneof" json:"sender_name,omitempty" msg:"3098-31,omitempty"`  
 	// Contains a bitmask of message encoding preferences for email sent to an email-enabled entity that is represented by this Address Book object.
-	SendInternetEncoding *int32 `protobuf:"varint,151,opt,name=send_internet_encoding,json=sendInternetEncoding,proto3,oneof" json:"send_internet_encoding,omitempty" msg:"14961,omitempty" type:"3,omitempty"`  
+	SendInternetEncoding *int32 `protobuf:"varint,151,opt,name=send_internet_encoding,json=sendInternetEncoding,proto3,oneof" json:"send_internet_encoding,omitempty" msg:"14961-3,omitempty"`  
 	// Indicates whether the email-enabled entity represented by the Address Book object can receive all message content, including Rich Text Format (RTF) and other embedded objects.
-	SendRichInfo *bool `protobuf:"varint,152,opt,name=send_rich_info,json=sendRichInfo,proto3,oneof" json:"send_rich_info,omitempty" msg:"14912,omitempty" type:"11,omitempty"`  
+	SendRichInfo *bool `protobuf:"varint,152,opt,name=send_rich_info,json=sendRichInfo,proto3,oneof" json:"send_rich_info,omitempty" msg:"14912-11,omitempty"`  
 	// Indicates the sender's assessment of the sensitivity of the Message object.
-	Sensitivity *int32 `protobuf:"varint,153,opt,name=sensitivity,proto3,oneof" json:"sensitivity,omitempty" msg:"54,omitempty" type:"3,omitempty"`  
+	Sensitivity *int32 `protobuf:"varint,153,opt,name=sensitivity,proto3,oneof" json:"sensitivity,omitempty" msg:"54-3,omitempty"`  
 	// Contains an email address type.
-	SentRepresentingAddressType *string `protobuf:"bytes,154,opt,name=sent_representing_address_type,json=sentRepresentingAddressType,proto3,oneof" json:"sent_representing_address_type,omitempty" msg:"100,omitempty" type:"31,omitempty"`  
+	SentRepresentingAddressType *string `protobuf:"bytes,154,opt,name=sent_representing_address_type,json=sentRepresentingAddressType,proto3,oneof" json:"sent_representing_address_type,omitempty" msg:"100-31,omitempty"`  
 	// Contains an email address for the end user who is represented by the sending mailbox owner.
-	SentRepresentingEmailAddress *string `protobuf:"bytes,155,opt,name=sent_representing_email_address,json=sentRepresentingEmailAddress,proto3,oneof" json:"sent_representing_email_address,omitempty" msg:"101,omitempty" type:"31,omitempty"`  
+	SentRepresentingEmailAddress *string `protobuf:"bytes,155,opt,name=sent_representing_email_address,json=sentRepresentingEmailAddress,proto3,oneof" json:"sent_representing_email_address,omitempty" msg:"101-31,omitempty"`  
 	// Contains the display name for the end user who is represented by the sending mailbox owner.
-	SentRepresentingName *string `protobuf:"bytes,157,opt,name=sent_representing_name,json=sentRepresentingName,proto3,oneof" json:"sent_representing_name,omitempty" msg:"66,omitempty" type:"31,omitempty"`  
+	SentRepresentingName *string `protobuf:"bytes,157,opt,name=sent_representing_name,json=sentRepresentingName,proto3,oneof" json:"sent_representing_name,omitempty" msg:"66-31,omitempty"`  
 	// Contains the SMTP address of the Message object.
-	SmtpAddress *string `protobuf:"bytes,159,opt,name=smtp_address,json=smtpAddress,proto3,oneof" json:"smtp_address,omitempty" msg:"14846,omitempty" type:"31,omitempty"`  
+	SmtpAddress *string `protobuf:"bytes,159,opt,name=smtp_address,json=smtpAddress,proto3,oneof" json:"smtp_address,omitempty" msg:"14846-31,omitempty"`  
 	// Contains the subject of the email message.
-	Subject *string `protobuf:"bytes,161,opt,name=subject,proto3,oneof" json:"subject,omitempty" msg:"55,omitempty" type:"31,omitempty"`  
+	Subject *string `protobuf:"bytes,161,opt,name=subject,proto3,oneof" json:"subject,omitempty" msg:"55-31,omitempty"`  
 	// Contains the prefix for the subject of the message.
-	SubjectPrefix *string `protobuf:"bytes,162,opt,name=subject_prefix,json=subjectPrefix,proto3,oneof" json:"subject_prefix,omitempty" msg:"61,omitempty" type:"31,omitempty"`  
+	SubjectPrefix *string `protobuf:"bytes,162,opt,name=subject_prefix,json=subjectPrefix,proto3,oneof" json:"subject_prefix,omitempty" msg:"61-31,omitempty"`  
 	// Contains supplementary information about a delivery status notification, as specified in [RFC3464].
-	SupplementaryInfo *string `protobuf:"bytes,163,opt,name=supplementary_info,json=supplementaryInfo,proto3,oneof" json:"supplementary_info,omitempty" msg:"3099,omitempty" type:"31,omitempty"`  
+	SupplementaryInfo *string `protobuf:"bytes,163,opt,name=supplementary_info,json=supplementaryInfo,proto3,oneof" json:"supplementary_info,omitempty" msg:"3099-31,omitempty"`  
 	// Contains an Address Book object's display name that is transmitted with the message.
-	TransmittableDisplayName *string `protobuf:"bytes,164,opt,name=transmittable_display_name,json=transmittableDisplayName,proto3,oneof" json:"transmittable_display_name,omitempty" msg:"14880,omitempty" type:"31,omitempty"`  
+	TransmittableDisplayName *string `protobuf:"bytes,164,opt,name=transmittable_display_name,json=transmittableDisplayName,proto3,oneof" json:"transmittable_display_name,omitempty" msg:"14880-31,omitempty"`  
 	// Contains transport-specific message envelope information for email.
-	TransportMessageHeaders *string `protobuf:"bytes,165,opt,name=transport_message_headers,json=transportMessageHeaders,proto3,oneof" json:"transport_message_headers,omitempty" msg:"125,omitempty" type:"31,omitempty"`  
+	TransportMessageHeaders *string `protobuf:"bytes,165,opt,name=transport_message_headers,json=transportMessageHeaders,proto3,oneof" json:"transport_message_headers,omitempty" msg:"125-31,omitempty"`  
 }
 
 func (x *Message) Reset() {

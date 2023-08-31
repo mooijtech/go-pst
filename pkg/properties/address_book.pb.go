@@ -44,95 +44,95 @@ type AddressBook struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Contains the alias of an Address Book object, which is an alternative name by which the object can be identified.
-	Account *string `protobuf:"bytes,1,opt,name=account,proto3,oneof" json:"account,omitempty" msg:"14848,omitempty" type:"31,omitempty"`  
+	Account *string `protobuf:"bytes,1,opt,name=account,proto3,oneof" json:"account,omitempty" msg:"14848-31,omitempty"`  
 	// Contains the ID of a container on an NSPI server.
-	AddressBookContainerId *int32 `protobuf:"varint,3,opt,name=address_book_container_id,json=addressBookContainerId,proto3,oneof" json:"address_book_container_id,omitempty" msg:"65533,omitempty" type:"3,omitempty"`  
+	AddressBookContainerId *int32 `protobuf:"varint,3,opt,name=address_book_container_id,json=addressBookContainerId,proto3,oneof" json:"address_book_container_id,omitempty" msg:"65533-3,omitempty"`  
 	// Specifies the maximum size, in bytes, of a message that a recipient can receive.
-	AddressBookDeliveryContentLength *int32 `protobuf:"varint,4,opt,name=address_book_delivery_content_length,json=addressBookDeliveryContentLength,proto3,oneof" json:"address_book_delivery_content_length,omitempty" msg:"32874,omitempty" type:"3,omitempty"`  
+	AddressBookDeliveryContentLength *int32 `protobuf:"varint,4,opt,name=address_book_delivery_content_length,json=addressBookDeliveryContentLength,proto3,oneof" json:"address_book_delivery_content_length,omitempty" msg:"32874-3,omitempty"`  
 	// Contains the printable string version of the display name.
-	AddressBookDisplayNamePrintable *string `protobuf:"bytes,5,opt,name=address_book_display_name_printable,json=addressBookDisplayNamePrintable,proto3,oneof" json:"address_book_display_name_printable,omitempty" msg:"14847,omitempty" type:"31,omitempty"`  
+	AddressBookDisplayNamePrintable *string `protobuf:"bytes,5,opt,name=address_book_display_name_printable,json=addressBookDisplayNamePrintable,proto3,oneof" json:"address_book_display_name_printable,omitempty" msg:"14847-31,omitempty"`  
 	// Contains a value that indicates how to display an Address Book object in a table or as a recipient on a message.
-	AddressBookDisplayTypeExtended *int32 `protobuf:"varint,6,opt,name=address_book_display_type_extended,json=addressBookDisplayTypeExtended,proto3,oneof" json:"address_book_display_type_extended,omitempty" msg:"35987,omitempty" type:"3,omitempty"`  
+	AddressBookDisplayTypeExtended *int32 `protobuf:"varint,6,opt,name=address_book_display_type_extended,json=addressBookDisplayTypeExtended,proto3,oneof" json:"address_book_display_type_extended,omitempty" msg:"35987-3,omitempty"`  
 	// Contains the number of external recipients in the distribution list.
-	AddressBookDistributionListExternalMemberCount *int32 `protobuf:"varint,7,opt,name=address_book_distribution_list_external_member_count,json=addressBookDistributionListExternalMemberCount,proto3,oneof" json:"address_book_distribution_list_external_member_count,omitempty" msg:"36067,omitempty" type:"3,omitempty"`  
+	AddressBookDistributionListExternalMemberCount *int32 `protobuf:"varint,7,opt,name=address_book_distribution_list_external_member_count,json=addressBookDistributionListExternalMemberCount,proto3,oneof" json:"address_book_distribution_list_external_member_count,omitempty" msg:"36067-3,omitempty"`  
 	// Contains the total number of recipients in the distribution list.
-	AddressBookDistributionListMemberCount *int32 `protobuf:"varint,8,opt,name=address_book_distribution_list_member_count,json=addressBookDistributionListMemberCount,proto3,oneof" json:"address_book_distribution_list_member_count,omitempty" msg:"36066,omitempty" type:"3,omitempty"`  
+	AddressBookDistributionListMemberCount *int32 `protobuf:"varint,8,opt,name=address_book_distribution_list_member_count,json=addressBookDistributionListMemberCount,proto3,oneof" json:"address_book_distribution_list_member_count,omitempty" msg:"36066-3,omitempty"`  
 	// Contains custom values defined and populated by the organization that modified the display templates.
-	AddressBookExtensionAttribute1 *string `protobuf:"bytes,12,opt,name=address_book_extension_attribute1,json=addressBookExtensionAttribute1,proto3,oneof" json:"address_book_extension_attribute1,omitempty" msg:"32813,omitempty" type:"31,omitempty"`  
+	AddressBookExtensionAttribute1 *string `protobuf:"bytes,12,opt,name=address_book_extension_attribute1,json=addressBookExtensionAttribute1,proto3,oneof" json:"address_book_extension_attribute1,omitempty" msg:"32813-31,omitempty"`  
 	// Contains custom values defined and populated by the organization that modified the display templates.
-	AddressBookExtensionAttribute10 *string `protobuf:"bytes,13,opt,name=address_book_extension_attribute10,json=addressBookExtensionAttribute10,proto3,oneof" json:"address_book_extension_attribute10,omitempty" msg:"32822,omitempty" type:"31,omitempty"`  
+	AddressBookExtensionAttribute10 *string `protobuf:"bytes,13,opt,name=address_book_extension_attribute10,json=addressBookExtensionAttribute10,proto3,oneof" json:"address_book_extension_attribute10,omitempty" msg:"32822-31,omitempty"`  
 	// Contains custom values defined and populated by the organization that modified the display templates.
-	AddressBookExtensionAttribute11 *string `protobuf:"bytes,14,opt,name=address_book_extension_attribute11,json=addressBookExtensionAttribute11,proto3,oneof" json:"address_book_extension_attribute11,omitempty" msg:"35927,omitempty" type:"31,omitempty"`  
+	AddressBookExtensionAttribute11 *string `protobuf:"bytes,14,opt,name=address_book_extension_attribute11,json=addressBookExtensionAttribute11,proto3,oneof" json:"address_book_extension_attribute11,omitempty" msg:"35927-31,omitempty"`  
 	// Contains custom values defined and populated by the organization that modified the display templates.
-	AddressBookExtensionAttribute12 *string `protobuf:"bytes,15,opt,name=address_book_extension_attribute12,json=addressBookExtensionAttribute12,proto3,oneof" json:"address_book_extension_attribute12,omitempty" msg:"35928,omitempty" type:"31,omitempty"`  
+	AddressBookExtensionAttribute12 *string `protobuf:"bytes,15,opt,name=address_book_extension_attribute12,json=addressBookExtensionAttribute12,proto3,oneof" json:"address_book_extension_attribute12,omitempty" msg:"35928-31,omitempty"`  
 	// Contains custom values defined and populated by the organization that modified the display templates.
-	AddressBookExtensionAttribute13 *string `protobuf:"bytes,16,opt,name=address_book_extension_attribute13,json=addressBookExtensionAttribute13,proto3,oneof" json:"address_book_extension_attribute13,omitempty" msg:"35929,omitempty" type:"31,omitempty"`  
+	AddressBookExtensionAttribute13 *string `protobuf:"bytes,16,opt,name=address_book_extension_attribute13,json=addressBookExtensionAttribute13,proto3,oneof" json:"address_book_extension_attribute13,omitempty" msg:"35929-31,omitempty"`  
 	// Contains custom values defined and populated by the organization that modified the display templates.
-	AddressBookExtensionAttribute14 *string `protobuf:"bytes,17,opt,name=address_book_extension_attribute14,json=addressBookExtensionAttribute14,proto3,oneof" json:"address_book_extension_attribute14,omitempty" msg:"35936,omitempty" type:"31,omitempty"`  
+	AddressBookExtensionAttribute14 *string `protobuf:"bytes,17,opt,name=address_book_extension_attribute14,json=addressBookExtensionAttribute14,proto3,oneof" json:"address_book_extension_attribute14,omitempty" msg:"35936-31,omitempty"`  
 	// Contains custom values defined and populated by the organization that modified the display templates.
-	AddressBookExtensionAttribute15 *string `protobuf:"bytes,18,opt,name=address_book_extension_attribute15,json=addressBookExtensionAttribute15,proto3,oneof" json:"address_book_extension_attribute15,omitempty" msg:"35937,omitempty" type:"31,omitempty"`  
+	AddressBookExtensionAttribute15 *string `protobuf:"bytes,18,opt,name=address_book_extension_attribute15,json=addressBookExtensionAttribute15,proto3,oneof" json:"address_book_extension_attribute15,omitempty" msg:"35937-31,omitempty"`  
 	// Contains custom values defined and populated by the organization that modified the display templates.
-	AddressBookExtensionAttribute2 *string `protobuf:"bytes,19,opt,name=address_book_extension_attribute2,json=addressBookExtensionAttribute2,proto3,oneof" json:"address_book_extension_attribute2,omitempty" msg:"32814,omitempty" type:"31,omitempty"`  
+	AddressBookExtensionAttribute2 *string `protobuf:"bytes,19,opt,name=address_book_extension_attribute2,json=addressBookExtensionAttribute2,proto3,oneof" json:"address_book_extension_attribute2,omitempty" msg:"32814-31,omitempty"`  
 	// Contains custom values defined and populated by the organization that modified the display templates.
-	AddressBookExtensionAttribute3 *string `protobuf:"bytes,20,opt,name=address_book_extension_attribute3,json=addressBookExtensionAttribute3,proto3,oneof" json:"address_book_extension_attribute3,omitempty" msg:"32815,omitempty" type:"31,omitempty"`  
+	AddressBookExtensionAttribute3 *string `protobuf:"bytes,20,opt,name=address_book_extension_attribute3,json=addressBookExtensionAttribute3,proto3,oneof" json:"address_book_extension_attribute3,omitempty" msg:"32815-31,omitempty"`  
 	// Contains custom values defined and populated by the organization that modified the display templates.
-	AddressBookExtensionAttribute4 *string `protobuf:"bytes,21,opt,name=address_book_extension_attribute4,json=addressBookExtensionAttribute4,proto3,oneof" json:"address_book_extension_attribute4,omitempty" msg:"32816,omitempty" type:"31,omitempty"`  
+	AddressBookExtensionAttribute4 *string `protobuf:"bytes,21,opt,name=address_book_extension_attribute4,json=addressBookExtensionAttribute4,proto3,oneof" json:"address_book_extension_attribute4,omitempty" msg:"32816-31,omitempty"`  
 	// Contains custom values defined and populated by the organization that modified the display templates.
-	AddressBookExtensionAttribute5 *string `protobuf:"bytes,22,opt,name=address_book_extension_attribute5,json=addressBookExtensionAttribute5,proto3,oneof" json:"address_book_extension_attribute5,omitempty" msg:"32817,omitempty" type:"31,omitempty"`  
+	AddressBookExtensionAttribute5 *string `protobuf:"bytes,22,opt,name=address_book_extension_attribute5,json=addressBookExtensionAttribute5,proto3,oneof" json:"address_book_extension_attribute5,omitempty" msg:"32817-31,omitempty"`  
 	// Contains custom values defined and populated by the organization that modified the display templates.
-	AddressBookExtensionAttribute6 *string `protobuf:"bytes,23,opt,name=address_book_extension_attribute6,json=addressBookExtensionAttribute6,proto3,oneof" json:"address_book_extension_attribute6,omitempty" msg:"32818,omitempty" type:"31,omitempty"`  
+	AddressBookExtensionAttribute6 *string `protobuf:"bytes,23,opt,name=address_book_extension_attribute6,json=addressBookExtensionAttribute6,proto3,oneof" json:"address_book_extension_attribute6,omitempty" msg:"32818-31,omitempty"`  
 	// Contains custom values defined and populated by the organization that modified the display templates.
-	AddressBookExtensionAttribute7 *string `protobuf:"bytes,24,opt,name=address_book_extension_attribute7,json=addressBookExtensionAttribute7,proto3,oneof" json:"address_book_extension_attribute7,omitempty" msg:"32819,omitempty" type:"31,omitempty"`  
+	AddressBookExtensionAttribute7 *string `protobuf:"bytes,24,opt,name=address_book_extension_attribute7,json=addressBookExtensionAttribute7,proto3,oneof" json:"address_book_extension_attribute7,omitempty" msg:"32819-31,omitempty"`  
 	// Contains custom values defined and populated by the organization that modified the display templates.
-	AddressBookExtensionAttribute8 *string `protobuf:"bytes,25,opt,name=address_book_extension_attribute8,json=addressBookExtensionAttribute8,proto3,oneof" json:"address_book_extension_attribute8,omitempty" msg:"32820,omitempty" type:"31,omitempty"`  
+	AddressBookExtensionAttribute8 *string `protobuf:"bytes,25,opt,name=address_book_extension_attribute8,json=addressBookExtensionAttribute8,proto3,oneof" json:"address_book_extension_attribute8,omitempty" msg:"32820-31,omitempty"`  
 	// Contains custom values defined and populated by the organization that modified the display templates.
-	AddressBookExtensionAttribute9 *string `protobuf:"bytes,26,opt,name=address_book_extension_attribute9,json=addressBookExtensionAttribute9,proto3,oneof" json:"address_book_extension_attribute9,omitempty" msg:"32821,omitempty" type:"31,omitempty"`  
+	AddressBookExtensionAttribute9 *string `protobuf:"bytes,26,opt,name=address_book_extension_attribute9,json=addressBookExtensionAttribute9,proto3,oneof" json:"address_book_extension_attribute9,omitempty" msg:"32821-31,omitempty"`  
 	// This property is deprecated and is to be ignored.
-	AddressBookFolderPathname *string `protobuf:"bytes,27,opt,name=address_book_folder_pathname,json=addressBookFolderPathname,proto3,oneof" json:"address_book_folder_pathname,omitempty" msg:"32772,omitempty" type:"31,omitempty"`  
+	AddressBookFolderPathname *string `protobuf:"bytes,27,opt,name=address_book_folder_pathname,json=addressBookFolderPathname,proto3,oneof" json:"address_book_folder_pathname,omitempty" msg:"32772-31,omitempty"`  
 	// Indicates whether the distribution list represents a departmental group.
-	AddressBookHierarchicalIsHierarchicalGroup *bool `protobuf:"varint,30,opt,name=address_book_hierarchical_is_hierarchical_group,json=addressBookHierarchicalIsHierarchicalGroup,proto3,oneof" json:"address_book_hierarchical_is_hierarchical_group,omitempty" msg:"36061,omitempty" type:"11,omitempty"`  
+	AddressBookHierarchicalIsHierarchicalGroup *bool `protobuf:"varint,30,opt,name=address_book_hierarchical_is_hierarchical_group,json=addressBookHierarchicalIsHierarchicalGroup,proto3,oneof" json:"address_book_hierarchical_is_hierarchical_group,omitempty" msg:"36061-11,omitempty"`  
 	// Contains the distinguished name (DN) of either the root Department object or the root departmental group in the department hierarchy for the organization.
-	AddressBookHierarchicalRootDepartment *string `protobuf:"bytes,32,opt,name=address_book_hierarchical_root_department,json=addressBookHierarchicalRootDepartment,proto3,oneof" json:"address_book_hierarchical_root_department,omitempty" msg:"35992,omitempty" type:"30,omitempty"`  
+	AddressBookHierarchicalRootDepartment *string `protobuf:"bytes,32,opt,name=address_book_hierarchical_root_department,json=addressBookHierarchicalRootDepartment,proto3,oneof" json:"address_book_hierarchical_root_department,omitempty" msg:"35992-30,omitempty"`  
 	// Contains the DN expressed in the X500 DN format. This property is returned from a name service provider interface (NSPI) server as a PtypEmbeddedTable. Otherwise, the data type is PtypString8.
-	AddressBookHomeMessageDatabase *string `protobuf:"bytes,34,opt,name=address_book_home_message_database,json=addressBookHomeMessageDatabase,proto3,oneof" json:"address_book_home_message_database,omitempty" msg:"32774,omitempty" type:"30,omitempty"`  
+	AddressBookHomeMessageDatabase *string `protobuf:"bytes,34,opt,name=address_book_home_message_database,json=addressBookHomeMessageDatabase,proto3,oneof" json:"address_book_home_message_database,omitempty" msg:"32774-30,omitempty"`  
 	// Contains a Boolean value of TRUE if it is possible to create Address Book objects in that container, and FALSE otherwise.
-	AddressBookIsMaster *bool `protobuf:"varint,35,opt,name=address_book_is_master,json=addressBookIsMaster,proto3,oneof" json:"address_book_is_master,omitempty" msg:"65531,omitempty" type:"11,omitempty"`  
+	AddressBookIsMaster *bool `protobuf:"varint,35,opt,name=address_book_is_master,json=addressBookIsMaster,proto3,oneof" json:"address_book_is_master,omitempty" msg:"65531-11,omitempty"`  
 	// Lists all of the distribution lists for which the object is a member. This property is returned from an NSPI server as a PtypEmbeddedTable. Otherwise, the data type is PtypString8.
-	AddressBookIsMemberOfDistributionList *string `protobuf:"bytes,36,opt,name=address_book_is_member_of_distribution_list,json=addressBookIsMemberOfDistributionList,proto3,oneof" json:"address_book_is_member_of_distribution_list,omitempty" msg:"32776,omitempty" type:"30,omitempty"`  
+	AddressBookIsMemberOfDistributionList *string `protobuf:"bytes,36,opt,name=address_book_is_member_of_distribution_list,json=addressBookIsMemberOfDistributionList,proto3,oneof" json:"address_book_is_member_of_distribution_list,omitempty" msg:"32776-30,omitempty"`  
 	// Contains the DN of the mail user's manager.
-	AddressBookManagerDistinguishedName *string `protobuf:"bytes,39,opt,name=address_book_manager_distinguished_name,json=addressBookManagerDistinguishedName,proto3,oneof" json:"address_book_manager_distinguished_name,omitempty" msg:"32773,omitempty" type:"31,omitempty"`  
+	AddressBookManagerDistinguishedName *string `protobuf:"bytes,39,opt,name=address_book_manager_distinguished_name,json=addressBookManagerDistinguishedName,proto3,oneof" json:"address_book_manager_distinguished_name,omitempty" msg:"32773-31,omitempty"`  
 	// Indicates whether moderation is enabled for the mail user or distribution list.
-	AddressBookModerationEnabled *bool `protobuf:"varint,41,opt,name=address_book_moderation_enabled,json=addressBookModerationEnabled,proto3,oneof" json:"address_book_moderation_enabled,omitempty" msg:"36021,omitempty" type:"11,omitempty"`  
+	AddressBookModerationEnabled *bool `protobuf:"varint,41,opt,name=address_book_moderation_enabled,json=addressBookModerationEnabled,proto3,oneof" json:"address_book_moderation_enabled,omitempty" msg:"36021-11,omitempty"`  
 	// Contains the DN of the Address Book object.
-	AddressBookObjectDistinguishedName *string `protobuf:"bytes,43,opt,name=address_book_object_distinguished_name,json=addressBookObjectDistinguishedName,proto3,oneof" json:"address_book_object_distinguished_name,omitempty" msg:"32828,omitempty" type:"31,omitempty"`  
+	AddressBookObjectDistinguishedName *string `protobuf:"bytes,43,opt,name=address_book_object_distinguished_name,json=addressBookObjectDistinguishedName,proto3,oneof" json:"address_book_object_distinguished_name,omitempty" msg:"32828-31,omitempty"`  
 	// Contains the DN of the Organization object of the mail user's organization.
-	AddressBookOrganizationalUnitRootDistinguishedName *string `protobuf:"bytes,45,opt,name=address_book_organizational_unit_root_distinguished_name,json=addressBookOrganizationalUnitRootDistinguishedName,proto3,oneof" json:"address_book_organizational_unit_root_distinguished_name,omitempty" msg:"36008,omitempty" type:"31,omitempty"`  
+	AddressBookOrganizationalUnitRootDistinguishedName *string `protobuf:"bytes,45,opt,name=address_book_organizational_unit_root_distinguished_name,json=addressBookOrganizationalUnitRootDistinguishedName,proto3,oneof" json:"address_book_organizational_unit_root_distinguished_name,omitempty" msg:"36008-31,omitempty"`  
 	// Contains the phonetic representation of the PidTagCompanyName property (section 2.639).
-	AddressBookPhoneticCompanyName *string `protobuf:"bytes,49,opt,name=address_book_phonetic_company_name,json=addressBookPhoneticCompanyName,proto3,oneof" json:"address_book_phonetic_company_name,omitempty" msg:"35985,omitempty" type:"31,omitempty"`  
+	AddressBookPhoneticCompanyName *string `protobuf:"bytes,49,opt,name=address_book_phonetic_company_name,json=addressBookPhoneticCompanyName,proto3,oneof" json:"address_book_phonetic_company_name,omitempty" msg:"35985-31,omitempty"`  
 	// Contains the phonetic representation of the PidTagDepartmentName property (section 2.672).
-	AddressBookPhoneticDepartmentName *string `protobuf:"bytes,50,opt,name=address_book_phonetic_department_name,json=addressBookPhoneticDepartmentName,proto3,oneof" json:"address_book_phonetic_department_name,omitempty" msg:"35984,omitempty" type:"31,omitempty"`  
+	AddressBookPhoneticDepartmentName *string `protobuf:"bytes,50,opt,name=address_book_phonetic_department_name,json=addressBookPhoneticDepartmentName,proto3,oneof" json:"address_book_phonetic_department_name,omitempty" msg:"35984-31,omitempty"`  
 	// Contains the phonetic representation of the PidTagDisplayName property (section 2.676).
-	AddressBookPhoneticDisplayName *string `protobuf:"bytes,51,opt,name=address_book_phonetic_display_name,json=addressBookPhoneticDisplayName,proto3,oneof" json:"address_book_phonetic_display_name,omitempty" msg:"35986,omitempty" type:"31,omitempty"`  
+	AddressBookPhoneticDisplayName *string `protobuf:"bytes,51,opt,name=address_book_phonetic_display_name,json=addressBookPhoneticDisplayName,proto3,oneof" json:"address_book_phonetic_display_name,omitempty" msg:"35986-31,omitempty"`  
 	// Contains the phonetic representation of the PidTagGivenName property (section 2.714).
-	AddressBookPhoneticGivenName *string `protobuf:"bytes,52,opt,name=address_book_phonetic_given_name,json=addressBookPhoneticGivenName,proto3,oneof" json:"address_book_phonetic_given_name,omitempty" msg:"35982,omitempty" type:"31,omitempty"`  
+	AddressBookPhoneticGivenName *string `protobuf:"bytes,52,opt,name=address_book_phonetic_given_name,json=addressBookPhoneticGivenName,proto3,oneof" json:"address_book_phonetic_given_name,omitempty" msg:"35982-31,omitempty"`  
 	// Contains the phonetic representation of the PidTagSurname property (section 2.1036).
-	AddressBookPhoneticSurname *string `protobuf:"bytes,53,opt,name=address_book_phonetic_surname,json=addressBookPhoneticSurname,proto3,oneof" json:"address_book_phonetic_surname,omitempty" msg:"35983,omitempty" type:"31,omitempty"`  
+	AddressBookPhoneticSurname *string `protobuf:"bytes,53,opt,name=address_book_phonetic_surname,json=addressBookPhoneticSurname,proto3,oneof" json:"address_book_phonetic_surname,omitempty" msg:"35983-31,omitempty"`  
 	// Contains the maximum occupancy of the room.
-	AddressBookRoomCapacity *int32 `protobuf:"varint,57,opt,name=address_book_room_capacity,json=addressBookRoomCapacity,proto3,oneof" json:"address_book_room_capacity,omitempty" msg:"2055,omitempty" type:"3,omitempty"`  
+	AddressBookRoomCapacity *int32 `protobuf:"varint,57,opt,name=address_book_room_capacity,json=addressBookRoomCapacity,proto3,oneof" json:"address_book_room_capacity,omitempty" msg:"2055-3,omitempty"`  
 	// Contains a description of the Resource object.
-	AddressBookRoomDescription *string `protobuf:"bytes,59,opt,name=address_book_room_description,json=addressBookRoomDescription,proto3,oneof" json:"address_book_room_description,omitempty" msg:"2057,omitempty" type:"31,omitempty"`  
+	AddressBookRoomDescription *string `protobuf:"bytes,59,opt,name=address_book_room_description,json=addressBookRoomDescription,proto3,oneof" json:"address_book_room_description,omitempty" msg:"2057-31,omitempty"`  
 	// Contains a signed integer that specifies the seniority order of Address Book objects that represent members of a department and are referenced by a Department object or departmental group, with larger values specifying members that are more senior.
-	AddressBookSeniorityIndex *int32 `protobuf:"varint,61,opt,name=address_book_seniority_index,json=addressBookSeniorityIndex,proto3,oneof" json:"address_book_seniority_index,omitempty" msg:"36000,omitempty" type:"3,omitempty"`  
+	AddressBookSeniorityIndex *int32 `protobuf:"varint,61,opt,name=address_book_seniority_index,json=addressBookSeniorityIndex,proto3,oneof" json:"address_book_seniority_index,omitempty" msg:"36000-3,omitempty"`  
 	// Contains the foreign system email address of an Address Book object.
-	AddressBookTargetAddress *string `protobuf:"bytes,62,opt,name=address_book_target_address,json=addressBookTargetAddress,proto3,oneof" json:"address_book_target_address,omitempty" msg:"32785,omitempty" type:"31,omitempty"`  
+	AddressBookTargetAddress *string `protobuf:"bytes,62,opt,name=address_book_target_address,json=addressBookTargetAddress,proto3,oneof" json:"address_book_target_address,omitempty" msg:"32785-31,omitempty"`  
 	// Contains a filter value used in ambiguous name resolution.
-	Anr *string `protobuf:"bytes,65,opt,name=anr,proto3,oneof" json:"anr,omitempty" msg:"13836,omitempty" type:"31,omitempty"`  
+	Anr *string `protobuf:"bytes,65,opt,name=anr,proto3,oneof" json:"anr,omitempty" msg:"13836-31,omitempty"`  
 	// Contains a bitmask of flags that describe capabilities of an address book container.
-	ContainerFlags *int32 `protobuf:"varint,66,opt,name=container_flags,json=containerFlags,proto3,oneof" json:"container_flags,omitempty" msg:"13824,omitempty" type:"3,omitempty"`  
+	ContainerFlags *int32 `protobuf:"varint,66,opt,name=container_flags,json=containerFlags,proto3,oneof" json:"container_flags,omitempty" msg:"13824-3,omitempty"`  
 	// Contains an integer value that indicates how to display an Address Book object in a table or as an addressee on a message.
-	DisplayType *int32 `protobuf:"varint,67,opt,name=display_type,json=displayType,proto3,oneof" json:"display_type,omitempty" msg:"14592,omitempty" type:"3,omitempty"`  
+	DisplayType *int32 `protobuf:"varint,67,opt,name=display_type,json=displayType,proto3,oneof" json:"display_type,omitempty" msg:"14592-3,omitempty"`  
 	// Contains an integer value that indicates how to display an Address Book object in a table or as a recipient on a message.
-	DisplayTypeEx *int32 `protobuf:"varint,68,opt,name=display_type_ex,json=displayTypeEx,proto3,oneof" json:"display_type_ex,omitempty" msg:"14597,omitempty" type:"3,omitempty"`  
+	DisplayTypeEx *int32 `protobuf:"varint,68,opt,name=display_type_ex,json=displayTypeEx,proto3,oneof" json:"display_type_ex,omitempty" msg:"14597-3,omitempty"`  
 }
 
 func (x *AddressBook) Reset() {

@@ -44,83 +44,83 @@ type Task struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Contains an index identifying one of a set of pre-defined text strings to be associated with the flag.
-	FlagString *int32 `protobuf:"varint,1,opt,name=flag_string,json=flagString,proto3,oneof" json:"flag_string,omitempty" msg:"267648,omitempty" type:"3,omitempty"`  
+	FlagString *int32 `protobuf:"varint,1,opt,name=flag_string,json=flagString,proto3,oneof" json:"flag_string,omitempty" msg:"267648-3,omitempty"`  
 	// Indicates whether a time-flagged Message object is complete.
-	PercentComplete *float64 `protobuf:"fixed64,3,opt,name=percent_complete,json=percentComplete,proto3,oneof" json:"percent_complete,omitempty" msg:"263170,omitempty" type:"5,omitempty"`  
+	PercentComplete *float64 `protobuf:"fixed64,3,opt,name=percent_complete,json=percentComplete,proto3,oneof" json:"percent_complete,omitempty" msg:"263170-5,omitempty"`  
 	// Indicates the acceptance state of the task.
-	TaskAcceptanceState *int32 `protobuf:"varint,4,opt,name=task_acceptance_state,json=taskAcceptanceState,proto3,oneof" json:"task_acceptance_state,omitempty" msg:"263242,omitempty" type:"3,omitempty"`  
+	TaskAcceptanceState *int32 `protobuf:"varint,4,opt,name=task_acceptance_state,json=taskAcceptanceState,proto3,oneof" json:"task_acceptance_state,omitempty" msg:"263242-3,omitempty"`  
 	// Indicates whether a task assignee has replied to a task request for this Task object.
-	TaskAccepted *bool `protobuf:"varint,5,opt,name=task_accepted,json=taskAccepted,proto3,oneof" json:"task_accepted,omitempty" msg:"263176,omitempty" type:"11,omitempty"`  
+	TaskAccepted *bool `protobuf:"varint,5,opt,name=task_accepted,json=taskAccepted,proto3,oneof" json:"task_accepted,omitempty" msg:"263176-11,omitempty"`  
 	// Indicates the number of minutes that the user actually spent working on a task.
-	TaskActualEffort *int32 `protobuf:"varint,6,opt,name=task_actual_effort,json=taskActualEffort,proto3,oneof" json:"task_actual_effort,omitempty" msg:"263200,omitempty" type:"3,omitempty"`  
+	TaskActualEffort *int32 `protobuf:"varint,6,opt,name=task_actual_effort,json=taskActualEffort,proto3,oneof" json:"task_actual_effort,omitempty" msg:"263200-3,omitempty"`  
 	// Specifies the name of the user that last assigned the task.
-	TaskAssigner *string `protobuf:"bytes,7,opt,name=task_assigner,json=taskAssigner,proto3,oneof" json:"task_assigner,omitempty" msg:"263233,omitempty" type:"31,omitempty"`  
+	TaskAssigner *string `protobuf:"bytes,7,opt,name=task_assigner,json=taskAssigner,proto3,oneof" json:"task_assigner,omitempty" msg:"263233-31,omitempty"`  
 	// Indicates that the task is complete.
-	TaskComplete *bool `protobuf:"varint,9,opt,name=task_complete,json=taskComplete,proto3,oneof" json:"task_complete,omitempty" msg:"263212,omitempty" type:"11,omitempty"`  
+	TaskComplete *bool `protobuf:"varint,9,opt,name=task_complete,json=taskComplete,proto3,oneof" json:"task_complete,omitempty" msg:"263212-11,omitempty"`  
 	// The client can set this property, but it has no impact on the Task-Related Objects Protocol and is ignored by the server.
-	TaskCustomFlags *int32 `protobuf:"varint,10,opt,name=task_custom_flags,json=taskCustomFlags,proto3,oneof" json:"task_custom_flags,omitempty" msg:"263273,omitempty" type:"3,omitempty"`  
+	TaskCustomFlags *int32 `protobuf:"varint,10,opt,name=task_custom_flags,json=taskCustomFlags,proto3,oneof" json:"task_custom_flags,omitempty" msg:"263273-3,omitempty"`  
 	// Specifies the date when the user completed work on the task.
-	TaskDateCompleted *int64 `protobuf:"varint,11,opt,name=task_date_completed,json=taskDateCompleted,proto3,oneof" json:"task_date_completed,omitempty" msg:"263183,omitempty" type:"64,omitempty"`  
+	TaskDateCompleted *int64 `protobuf:"varint,11,opt,name=task_date_completed,json=taskDateCompleted,proto3,oneof" json:"task_date_completed,omitempty" msg:"263183-64,omitempty"`  
 	// Indicates whether new occurrences remain to be generated.
-	TaskDeadOccurrence *bool `protobuf:"varint,12,opt,name=task_dead_occurrence,json=taskDeadOccurrence,proto3,oneof" json:"task_dead_occurrence,omitempty" msg:"263177,omitempty" type:"11,omitempty"`  
+	TaskDeadOccurrence *bool `protobuf:"varint,12,opt,name=task_dead_occurrence,json=taskDeadOccurrence,proto3,oneof" json:"task_dead_occurrence,omitempty" msg:"263177-11,omitempty"`  
 	// Specifies the date by which the user expects work on the task to be complete.
-	TaskDueDate *int64 `protobuf:"varint,13,opt,name=task_due_date,json=taskDueDate,proto3,oneof" json:"task_due_date,omitempty" msg:"263173,omitempty" type:"64,omitempty"`  
+	TaskDueDate *int64 `protobuf:"varint,13,opt,name=task_due_date,json=taskDueDate,proto3,oneof" json:"task_due_date,omitempty" msg:"263173-64,omitempty"`  
 	// Indicates the number of minutes that the user expects to work on a task.
-	TaskEstimatedEffort *int32 `protobuf:"varint,14,opt,name=task_estimated_effort,json=taskEstimatedEffort,proto3,oneof" json:"task_estimated_effort,omitempty" msg:"263201,omitempty" type:"3,omitempty"`  
+	TaskEstimatedEffort *int32 `protobuf:"varint,14,opt,name=task_estimated_effort,json=taskEstimatedEffort,proto3,oneof" json:"task_estimated_effort,omitempty" msg:"263201-3,omitempty"`  
 	// Indicates that the Task object was originally created by the action of the current user or user agent instead of by the processing of a task request.
-	TaskfCreator *bool `protobuf:"varint,15,opt,name=taskf_creator,json=taskfCreator,proto3,oneof" json:"taskf_creator,omitempty" msg:"263214,omitempty" type:"11,omitempty"`  
+	TaskfCreator *bool `protobuf:"varint,15,opt,name=taskf_creator,json=taskfCreator,proto3,oneof" json:"taskf_creator,omitempty" msg:"263214-11,omitempty"`  
 	// Indicates the accuracy of the PidLidTaskOwner property (section 2.328).
-	TaskfFixOffline *bool `protobuf:"varint,16,opt,name=taskf_fix_offline,json=taskfFixOffline,proto3,oneof" json:"taskf_fix_offline,omitempty" msg:"263244,omitempty" type:"11,omitempty"`  
+	TaskfFixOffline *bool `protobuf:"varint,16,opt,name=taskf_fix_offline,json=taskfFixOffline,proto3,oneof" json:"taskf_fix_offline,omitempty" msg:"263244-11,omitempty"`  
 	// Indicates whether the task includes a recurrence pattern.
-	TaskfRecurring *bool `protobuf:"varint,17,opt,name=taskf_recurring,json=taskfRecurring,proto3,oneof" json:"taskf_recurring,omitempty" msg:"263238,omitempty" type:"11,omitempty"`  
+	TaskfRecurring *bool `protobuf:"varint,17,opt,name=taskf_recurring,json=taskfRecurring,proto3,oneof" json:"taskf_recurring,omitempty" msg:"263238-11,omitempty"`  
 	// Indicates the type of change that was last made to the Task object.
-	TaskHistory *int32 `protobuf:"varint,19,opt,name=task_history,json=taskHistory,proto3,oneof" json:"task_history,omitempty" msg:"263210,omitempty" type:"3,omitempty"`  
+	TaskHistory *int32 `protobuf:"varint,19,opt,name=task_history,json=taskHistory,proto3,oneof" json:"task_history,omitempty" msg:"263210-3,omitempty"`  
 	// Contains the name of the user who most recently assigned the task, or the user to whom it was most recently assigned.
-	TaskLastDelegate *string `protobuf:"bytes,20,opt,name=task_last_delegate,json=taskLastDelegate,proto3,oneof" json:"task_last_delegate,omitempty" msg:"263237,omitempty" type:"31,omitempty"`  
+	TaskLastDelegate *string `protobuf:"bytes,20,opt,name=task_last_delegate,json=taskLastDelegate,proto3,oneof" json:"task_last_delegate,omitempty" msg:"263237-31,omitempty"`  
 	// Contains the date and time of the most recent change made to the Task object.
-	TaskLastUpdate *int64 `protobuf:"varint,21,opt,name=task_last_update,json=taskLastUpdate,proto3,oneof" json:"task_last_update,omitempty" msg:"263205,omitempty" type:"64,omitempty"`  
+	TaskLastUpdate *int64 `protobuf:"varint,21,opt,name=task_last_update,json=taskLastUpdate,proto3,oneof" json:"task_last_update,omitempty" msg:"263205-64,omitempty"`  
 	// Contains the name of the most recent user to have been the owner of the task.
-	TaskLastUser *string `protobuf:"bytes,22,opt,name=task_last_user,json=taskLastUser,proto3,oneof" json:"task_last_user,omitempty" msg:"263234,omitempty" type:"31,omitempty"`  
+	TaskLastUser *string `protobuf:"bytes,22,opt,name=task_last_user,json=taskLastUser,proto3,oneof" json:"task_last_user,omitempty" msg:"263234-31,omitempty"`  
 	// Specifies the assignment status of the embedded Task object.
-	TaskMode *int32 `protobuf:"varint,23,opt,name=task_mode,json=taskMode,proto3,oneof" json:"task_mode,omitempty" msg:"267304,omitempty" type:"3,omitempty"`  
+	TaskMode *int32 `protobuf:"varint,23,opt,name=task_mode,json=taskMode,proto3,oneof" json:"task_mode,omitempty" msg:"267304-3,omitempty"`  
 	// Provides optimization hints about the recipients of a Task object.
-	TaskMultipleRecipients *int32 `protobuf:"varint,24,opt,name=task_multiple_recipients,json=taskMultipleRecipients,proto3,oneof" json:"task_multiple_recipients,omitempty" msg:"263232,omitempty" type:"3,omitempty"`  
+	TaskMultipleRecipients *int32 `protobuf:"varint,24,opt,name=task_multiple_recipients,json=taskMultipleRecipients,proto3,oneof" json:"task_multiple_recipients,omitempty" msg:"263232-3,omitempty"`  
 	// Not used. The client can set this property, but it has no impact on the Task-Related Objects Protocol and is ignored by the server.
-	TaskNoCompute *bool `protobuf:"varint,25,opt,name=task_no_compute,json=taskNoCompute,proto3,oneof" json:"task_no_compute,omitempty" msg:"263236,omitempty" type:"11,omitempty"`  
+	TaskNoCompute *bool `protobuf:"varint,25,opt,name=task_no_compute,json=taskNoCompute,proto3,oneof" json:"task_no_compute,omitempty" msg:"263236-11,omitempty"`  
 	// Provides an aid to custom sorting of Task objects.
-	TaskOrdinal *int32 `protobuf:"varint,26,opt,name=task_ordinal,json=taskOrdinal,proto3,oneof" json:"task_ordinal,omitempty" msg:"263235,omitempty" type:"3,omitempty"`  
+	TaskOrdinal *int32 `protobuf:"varint,26,opt,name=task_ordinal,json=taskOrdinal,proto3,oneof" json:"task_ordinal,omitempty" msg:"263235-3,omitempty"`  
 	// Contains the name of the owner of the task.
-	TaskOwner *string `protobuf:"bytes,27,opt,name=task_owner,json=taskOwner,proto3,oneof" json:"task_owner,omitempty" msg:"263215,omitempty" type:"31,omitempty"`  
+	TaskOwner *string `protobuf:"bytes,27,opt,name=task_owner,json=taskOwner,proto3,oneof" json:"task_owner,omitempty" msg:"263215-31,omitempty"`  
 	// Indicates the role of the current user relative to the Task object.
-	TaskOwnership *int32 `protobuf:"varint,28,opt,name=task_ownership,json=taskOwnership,proto3,oneof" json:"task_ownership,omitempty" msg:"263241,omitempty" type:"3,omitempty"`  
+	TaskOwnership *int32 `protobuf:"varint,28,opt,name=task_ownership,json=taskOwnership,proto3,oneof" json:"task_ownership,omitempty" msg:"263241-3,omitempty"`  
 	// Indicates whether future instances of recurring tasks need reminders, even though the value of the PidLidReminderSet property (section 2.222) is 0x00.
-	TaskResetReminder *bool `protobuf:"varint,30,opt,name=task_reset_reminder,json=taskResetReminder,proto3,oneof" json:"task_reset_reminder,omitempty" msg:"263175,omitempty" type:"11,omitempty"`  
+	TaskResetReminder *bool `protobuf:"varint,30,opt,name=task_reset_reminder,json=taskResetReminder,proto3,oneof" json:"task_reset_reminder,omitempty" msg:"263175-11,omitempty"`  
 	// Not used. The client can set this property, but it has no impact on the Task-Related Objects Protocol and is ignored by the server.
-	TaskRole *string `protobuf:"bytes,31,opt,name=task_role,json=taskRole,proto3,oneof" json:"task_role,omitempty" msg:"263239,omitempty" type:"31,omitempty"`  
+	TaskRole *string `protobuf:"bytes,31,opt,name=task_role,json=taskRole,proto3,oneof" json:"task_role,omitempty" msg:"263239-31,omitempty"`  
 	// Specifies the date on which the user expects work on the task to begin.
-	TaskStartDate *int64 `protobuf:"varint,32,opt,name=task_start_date,json=taskStartDate,proto3,oneof" json:"task_start_date,omitempty" msg:"263172,omitempty" type:"64,omitempty"`  
+	TaskStartDate *int64 `protobuf:"varint,32,opt,name=task_start_date,json=taskStartDate,proto3,oneof" json:"task_start_date,omitempty" msg:"263172-64,omitempty"`  
 	// Indicates the current assignment state of the Task object.
-	TaskState *int32 `protobuf:"varint,33,opt,name=task_state,json=taskState,proto3,oneof" json:"task_state,omitempty" msg:"263203,omitempty" type:"3,omitempty"`  
+	TaskState *int32 `protobuf:"varint,33,opt,name=task_state,json=taskState,proto3,oneof" json:"task_state,omitempty" msg:"263203-3,omitempty"`  
 	// Specifies the status of a task.
-	TaskStatus *int32 `protobuf:"varint,34,opt,name=task_status,json=taskStatus,proto3,oneof" json:"task_status,omitempty" msg:"263169,omitempty" type:"3,omitempty"`  
+	TaskStatus *int32 `protobuf:"varint,34,opt,name=task_status,json=taskStatus,proto3,oneof" json:"task_status,omitempty" msg:"263169-3,omitempty"`  
 	// Indicates whether the task assignee has been requested to send an email message update upon completion of the assigned task.
-	TaskStatusOnComplete *bool `protobuf:"varint,35,opt,name=task_status_on_complete,json=taskStatusOnComplete,proto3,oneof" json:"task_status_on_complete,omitempty" msg:"263209,omitempty" type:"11,omitempty"`  
+	TaskStatusOnComplete *bool `protobuf:"varint,35,opt,name=task_status_on_complete,json=taskStatusOnComplete,proto3,oneof" json:"task_status_on_complete,omitempty" msg:"263209-11,omitempty"`  
 	// Indicates whether the task assignee has been requested to send a task update when the assigned Task object changes.
-	TaskUpdates *bool `protobuf:"varint,36,opt,name=task_updates,json=taskUpdates,proto3,oneof" json:"task_updates,omitempty" msg:"263211,omitempty" type:"11,omitempty"`  
+	TaskUpdates *bool `protobuf:"varint,36,opt,name=task_updates,json=taskUpdates,proto3,oneof" json:"task_updates,omitempty" msg:"263211-11,omitempty"`  
 	// Indicates which copy is the latest update of a Task object.
-	TaskVersion *int32 `protobuf:"varint,37,opt,name=task_version,json=taskVersion,proto3,oneof" json:"task_version,omitempty" msg:"263202,omitempty" type:"3,omitempty"`  
+	TaskVersion *int32 `protobuf:"varint,37,opt,name=task_version,json=taskVersion,proto3,oneof" json:"task_version,omitempty" msg:"263202-3,omitempty"`  
 	// This property is set by the client but is ignored by the server.
-	TeamTask *bool `protobuf:"varint,38,opt,name=team_task,json=teamTask,proto3,oneof" json:"team_task,omitempty" msg:"263171,omitempty" type:"11,omitempty"`  
+	TeamTask *bool `protobuf:"varint,38,opt,name=team_task,json=teamTask,proto3,oneof" json:"team_task,omitempty" msg:"263171-11,omitempty"`  
 	// Contains the current time, in UTC, which is used to determine the sort order of objects in a consolidated to-do list.
-	ToDoOrdinalDate *int64 `protobuf:"varint,39,opt,name=to_do_ordinal_date,json=toDoOrdinalDate,proto3,oneof" json:"to_do_ordinal_date,omitempty" msg:"267584,omitempty" type:"64,omitempty"`  
+	ToDoOrdinalDate *int64 `protobuf:"varint,39,opt,name=to_do_ordinal_date,json=toDoOrdinalDate,proto3,oneof" json:"to_do_ordinal_date,omitempty" msg:"267584-64,omitempty"`  
 	// Contains the numerals 0 through 9 that are used to break a tie when the PidLidToDoOrdinalDate property (section 2.344) is used to perform a sort of objects.
-	ToDoSubOrdinal *string `protobuf:"bytes,40,opt,name=to_do_sub_ordinal,json=toDoSubOrdinal,proto3,oneof" json:"to_do_sub_ordinal,omitempty" msg:"267585,omitempty" type:"31,omitempty"`  
+	ToDoSubOrdinal *string `protobuf:"bytes,40,opt,name=to_do_sub_ordinal,json=toDoSubOrdinal,proto3,oneof" json:"to_do_sub_ordinal,omitempty" msg:"267585-31,omitempty"`  
 	// Contains user-specifiable text to identify this Message object in a consolidated to-do list.
-	ToDoTitle *string `protobuf:"bytes,41,opt,name=to_do_title,json=toDoTitle,proto3,oneof" json:"to_do_title,omitempty" msg:"267588,omitempty" type:"31,omitempty"`  
+	ToDoTitle *string `protobuf:"bytes,41,opt,name=to_do_title,json=toDoTitle,proto3,oneof" json:"to_do_title,omitempty" msg:"267588-31,omitempty"`  
 	// Contains the value of the PidTagMessageDeliveryTime  property (section 2.789) when modifying the PidLidFlagRequest property (section 2.136).
-	ValidFlagStringProof *int64 `protobuf:"varint,42,opt,name=valid_flag_string_proof,json=validFlagStringProof,proto3,oneof" json:"valid_flag_string_proof,omitempty" msg:"267631,omitempty" type:"64,omitempty"`  
+	ValidFlagStringProof *int64 `protobuf:"varint,42,opt,name=valid_flag_string_proof,json=validFlagStringProof,proto3,oneof" json:"valid_flag_string_proof,omitempty" msg:"267631-64,omitempty"`  
 	// Contains a positive number whose negative is less than or equal to the value of the PidLidTaskOrdinal property (section 2.327) of all of the Task objects in the folder.
-	OrdinalMost *int32 `protobuf:"varint,43,opt,name=ordinal_most,json=ordinalMost,proto3,oneof" json:"ordinal_most,omitempty" msg:"14050,omitempty" type:"3,omitempty"`  
+	OrdinalMost *int32 `protobuf:"varint,43,opt,name=ordinal_most,json=ordinalMost,proto3,oneof" json:"ordinal_most,omitempty" msg:"14050-3,omitempty"`  
 }
 
 func (x *Task) Reset() {

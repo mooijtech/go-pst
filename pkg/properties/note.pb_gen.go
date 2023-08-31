@@ -24,7 +24,7 @@ func (z *Note) DecodeMsg(dc *msgp.Reader) (err error) {
 			return
 		}
 		switch msgp.UnsafeString(field) {
-		case "273408":
+		case "273408-3":
 			if dc.IsNil() {
 				err = dc.ReadNil()
 				if err != nil {
@@ -42,7 +42,7 @@ func (z *Note) DecodeMsg(dc *msgp.Reader) (err error) {
 					return
 				}
 			}
-		case "273411":
+		case "273411-3":
 			if dc.IsNil() {
 				err = dc.ReadNil()
 				if err != nil {
@@ -60,7 +60,7 @@ func (z *Note) DecodeMsg(dc *msgp.Reader) (err error) {
 					return
 				}
 			}
-		case "273410":
+		case "273410-3":
 			if dc.IsNil() {
 				err = dc.ReadNil()
 				if err != nil {
@@ -78,7 +78,7 @@ func (z *Note) DecodeMsg(dc *msgp.Reader) (err error) {
 					return
 				}
 			}
-		case "273412":
+		case "273412-3":
 			if dc.IsNil() {
 				err = dc.ReadNil()
 				if err != nil {
@@ -96,7 +96,7 @@ func (z *Note) DecodeMsg(dc *msgp.Reader) (err error) {
 					return
 				}
 			}
-		case "273413":
+		case "273413-3":
 			if dc.IsNil() {
 				err = dc.ReadNil()
 				if err != nil {
@@ -159,8 +159,8 @@ func (z *Note) EncodeMsg(en *msgp.Writer) (err error) {
 		return
 	}
 	if (zb0001Mask & 0x1) == 0 { // if not empty
-		// write "273408"
-		err = en.Append(0xa6, 0x32, 0x37, 0x33, 0x34, 0x30, 0x38)
+		// write "273408-3"
+		err = en.Append(0xa8, 0x32, 0x37, 0x33, 0x34, 0x30, 0x38, 0x2d, 0x33)
 		if err != nil {
 			return
 		}
@@ -178,8 +178,8 @@ func (z *Note) EncodeMsg(en *msgp.Writer) (err error) {
 		}
 	}
 	if (zb0001Mask & 0x2) == 0 { // if not empty
-		// write "273411"
-		err = en.Append(0xa6, 0x32, 0x37, 0x33, 0x34, 0x31, 0x31)
+		// write "273411-3"
+		err = en.Append(0xa8, 0x32, 0x37, 0x33, 0x34, 0x31, 0x31, 0x2d, 0x33)
 		if err != nil {
 			return
 		}
@@ -197,8 +197,8 @@ func (z *Note) EncodeMsg(en *msgp.Writer) (err error) {
 		}
 	}
 	if (zb0001Mask & 0x4) == 0 { // if not empty
-		// write "273410"
-		err = en.Append(0xa6, 0x32, 0x37, 0x33, 0x34, 0x31, 0x30)
+		// write "273410-3"
+		err = en.Append(0xa8, 0x32, 0x37, 0x33, 0x34, 0x31, 0x30, 0x2d, 0x33)
 		if err != nil {
 			return
 		}
@@ -216,8 +216,8 @@ func (z *Note) EncodeMsg(en *msgp.Writer) (err error) {
 		}
 	}
 	if (zb0001Mask & 0x8) == 0 { // if not empty
-		// write "273412"
-		err = en.Append(0xa6, 0x32, 0x37, 0x33, 0x34, 0x31, 0x32)
+		// write "273412-3"
+		err = en.Append(0xa8, 0x32, 0x37, 0x33, 0x34, 0x31, 0x32, 0x2d, 0x33)
 		if err != nil {
 			return
 		}
@@ -235,8 +235,8 @@ func (z *Note) EncodeMsg(en *msgp.Writer) (err error) {
 		}
 	}
 	if (zb0001Mask & 0x10) == 0 { // if not empty
-		// write "273413"
-		err = en.Append(0xa6, 0x32, 0x37, 0x33, 0x34, 0x31, 0x33)
+		// write "273413-3"
+		err = en.Append(0xa8, 0x32, 0x37, 0x33, 0x34, 0x31, 0x33, 0x2d, 0x33)
 		if err != nil {
 			return
 		}
@@ -288,8 +288,8 @@ func (z *Note) MarshalMsg(b []byte) (o []byte, err error) {
 		return
 	}
 	if (zb0001Mask & 0x1) == 0 { // if not empty
-		// string "273408"
-		o = append(o, 0xa6, 0x32, 0x37, 0x33, 0x34, 0x30, 0x38)
+		// string "273408-3"
+		o = append(o, 0xa8, 0x32, 0x37, 0x33, 0x34, 0x30, 0x38, 0x2d, 0x33)
 		if z.NoteColor == nil {
 			o = msgp.AppendNil(o)
 		} else {
@@ -297,8 +297,8 @@ func (z *Note) MarshalMsg(b []byte) (o []byte, err error) {
 		}
 	}
 	if (zb0001Mask & 0x2) == 0 { // if not empty
-		// string "273411"
-		o = append(o, 0xa6, 0x32, 0x37, 0x33, 0x34, 0x31, 0x31)
+		// string "273411-3"
+		o = append(o, 0xa8, 0x32, 0x37, 0x33, 0x34, 0x31, 0x31, 0x2d, 0x33)
 		if z.NoteHeight == nil {
 			o = msgp.AppendNil(o)
 		} else {
@@ -306,8 +306,8 @@ func (z *Note) MarshalMsg(b []byte) (o []byte, err error) {
 		}
 	}
 	if (zb0001Mask & 0x4) == 0 { // if not empty
-		// string "273410"
-		o = append(o, 0xa6, 0x32, 0x37, 0x33, 0x34, 0x31, 0x30)
+		// string "273410-3"
+		o = append(o, 0xa8, 0x32, 0x37, 0x33, 0x34, 0x31, 0x30, 0x2d, 0x33)
 		if z.NoteWidth == nil {
 			o = msgp.AppendNil(o)
 		} else {
@@ -315,8 +315,8 @@ func (z *Note) MarshalMsg(b []byte) (o []byte, err error) {
 		}
 	}
 	if (zb0001Mask & 0x8) == 0 { // if not empty
-		// string "273412"
-		o = append(o, 0xa6, 0x32, 0x37, 0x33, 0x34, 0x31, 0x32)
+		// string "273412-3"
+		o = append(o, 0xa8, 0x32, 0x37, 0x33, 0x34, 0x31, 0x32, 0x2d, 0x33)
 		if z.NoteX == nil {
 			o = msgp.AppendNil(o)
 		} else {
@@ -324,8 +324,8 @@ func (z *Note) MarshalMsg(b []byte) (o []byte, err error) {
 		}
 	}
 	if (zb0001Mask & 0x10) == 0 { // if not empty
-		// string "273413"
-		o = append(o, 0xa6, 0x32, 0x37, 0x33, 0x34, 0x31, 0x33)
+		// string "273413-3"
+		o = append(o, 0xa8, 0x32, 0x37, 0x33, 0x34, 0x31, 0x33, 0x2d, 0x33)
 		if z.NoteY == nil {
 			o = msgp.AppendNil(o)
 		} else {
@@ -353,7 +353,7 @@ func (z *Note) UnmarshalMsg(bts []byte) (o []byte, err error) {
 			return
 		}
 		switch msgp.UnsafeString(field) {
-		case "273408":
+		case "273408-3":
 			if msgp.IsNil(bts) {
 				bts, err = msgp.ReadNilBytes(bts)
 				if err != nil {
@@ -370,7 +370,7 @@ func (z *Note) UnmarshalMsg(bts []byte) (o []byte, err error) {
 					return
 				}
 			}
-		case "273411":
+		case "273411-3":
 			if msgp.IsNil(bts) {
 				bts, err = msgp.ReadNilBytes(bts)
 				if err != nil {
@@ -387,7 +387,7 @@ func (z *Note) UnmarshalMsg(bts []byte) (o []byte, err error) {
 					return
 				}
 			}
-		case "273410":
+		case "273410-3":
 			if msgp.IsNil(bts) {
 				bts, err = msgp.ReadNilBytes(bts)
 				if err != nil {
@@ -404,7 +404,7 @@ func (z *Note) UnmarshalMsg(bts []byte) (o []byte, err error) {
 					return
 				}
 			}
-		case "273412":
+		case "273412-3":
 			if msgp.IsNil(bts) {
 				bts, err = msgp.ReadNilBytes(bts)
 				if err != nil {
@@ -421,7 +421,7 @@ func (z *Note) UnmarshalMsg(bts []byte) (o []byte, err error) {
 					return
 				}
 			}
-		case "273413":
+		case "273413-3":
 			if msgp.IsNil(bts) {
 				bts, err = msgp.ReadNilBytes(bts)
 				if err != nil {
@@ -452,31 +452,31 @@ func (z *Note) UnmarshalMsg(bts []byte) (o []byte, err error) {
 
 // Msgsize returns an upper bound estimate of the number of bytes occupied by the serialized message
 func (z *Note) Msgsize() (s int) {
-	s = 1 + 7
+	s = 1 + 9
 	if z.NoteColor == nil {
 		s += msgp.NilSize
 	} else {
 		s += msgp.Int32Size
 	}
-	s += 7
+	s += 9
 	if z.NoteHeight == nil {
 		s += msgp.NilSize
 	} else {
 		s += msgp.Int32Size
 	}
-	s += 7
+	s += 9
 	if z.NoteWidth == nil {
 		s += msgp.NilSize
 	} else {
 		s += msgp.Int32Size
 	}
-	s += 7
+	s += 9
 	if z.NoteX == nil {
 		s += msgp.NilSize
 	} else {
 		s += msgp.Int32Size
 	}
-	s += 7
+	s += 9
 	if z.NoteY == nil {
 		s += msgp.NilSize
 	} else {

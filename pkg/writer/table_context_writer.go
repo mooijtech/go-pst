@@ -28,6 +28,7 @@ import (
 	"reflect"
 	"slices"
 	"strconv"
+	"strings"
 )
 
 // TableContextWriter represents a writer for a pst.TableContext.
@@ -95,28 +96,21 @@ func (tableContextWriter *TableContextWriter) GetColumnDescriptors() ([][]byte, 
 			continue
 		}
 
-		tagPropertyID, ok := propertyField.Tag.Lookup("msg")
+		tag := strings.ReplaceAll(propertyField.Tag.Get("msg"), ",omitempty", "")
 
-		if !ok {
+		if tag == "" {
 			// No property ID in the tag.
-			fmt.Printf("Skipping property without ID: %s\n", propertyField.Name)
+			fmt.Printf("Skipping property without tag: %s\n", propertyField.Name)
 			continue
 		}
 
-		tagPropertyType, ok := propertyField.Tag.Lookup("type")
-
-		if !ok {
-			fmt.Printf("Skipping property without type: %s\n", propertyField.Name)
-			continue
-		}
-
-		propertyID, err := strconv.Atoi(tagPropertyID)
+		propertyID, err := strconv.Atoi(strings.Split(tag, "-")[0])
 
 		if err != nil {
 			return nil, eris.Wrap(err, "failed to convert propertyID to int")
 		}
 
-		propertyType, err := strconv.Atoi(tagPropertyType)
+		propertyType, err := strconv.Atoi(strings.Split(tag, "-")[1])
 
 		if err != nil {
 			return nil, eris.Wrap(err, "failed to convert propertyType to int")
@@ -124,6 +118,8 @@ func (tableContextWriter *TableContextWriter) GetColumnDescriptors() ([][]byte, 
 
 		// Write column descriptor.
 		columnDescriptorBuffer := bytes.NewBuffer(make([]byte, 8))
+
+		fmt.Printf("Writing property %d - %d\n", propertyID, propertyType)
 
 		columnDescriptorBuffer.Write(GetUint16(uint16(propertyID)))
 		columnDescriptorBuffer.Write(GetUint16(uint16(propertyType)))
