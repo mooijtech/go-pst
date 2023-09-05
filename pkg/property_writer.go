@@ -1,10 +1,9 @@
-package writer
+package pst
 
 import (
 	"bytes"
 	"encoding/binary"
 	"fmt"
-	pst "github.com/mooijtech/go-pst/v6/pkg"
 	"github.com/rotisserie/eris"
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/protobuf/proto"
@@ -41,11 +40,6 @@ func NewPropertyWriter(writeGroup *errgroup.Group, propertyWriteCallbackChannel 
 	return propertyWriter
 }
 
-//// SetProperties sets the properties  the properties to write.
-//func (propertyWriter *PropertyWriter) SetProperties(properties proto.Message) {
-//	propertyWriter.PropertyWriteChannel <- properties
-//}
-
 // AddProperties sends the properties to the write queue.
 func (propertyWriter *PropertyWriter) AddProperties(properties ...proto.Message) {
 	for _, property := range properties {
@@ -79,8 +73,8 @@ func (propertyWriter *PropertyWriter) StartPropertyWriteChannel(writeGroup *errg
 
 // Property represents a property that can be written.
 type Property struct {
-	ID    pst.Identifier
-	Type  pst.PropertyType
+	ID    Identifier
+	Type  PropertyType
 	Value bytes.Buffer
 }
 
@@ -141,8 +135,8 @@ func (propertyWriter *PropertyWriter) GetProperties(properties proto.Message) ([
 		}
 
 		writableProperties = append(writableProperties, Property{
-			ID:    pst.Identifier(propertyID),
-			Type:  pst.PropertyType(propertyType),
+			ID:    Identifier(propertyID),
+			Type:  PropertyType(propertyType),
 			Value: propertyBuffer,
 		})
 	}

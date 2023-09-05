@@ -14,12 +14,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package writer
+package pst
 
 import (
 	"context"
-	pst "github.com/mooijtech/go-pst/v6/pkg"
-	"github.com/mooijtech/go-pst/v6/pkg/properties"
 	"github.com/rotisserie/eris"
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/protobuf/proto"
@@ -28,12 +26,14 @@ import (
 
 // MessageWriter represents a message that can be written to a PST file.
 type MessageWriter struct {
+	// Writer represents the io.Writer used while writing.
+	Writer io.Writer
 	// FormatType represents the FormatType used while writing.
-	FormatType pst.FormatType
+	FormatType FormatType
 	// PropertyWriter represents the writer for properties to the PropertyContextWriter.
 	PropertyWriter *PropertyWriter
-	// AttachmentWriteChannel represents the Go channel for writing attachments.
-	AttachmentWriteChannel chan *AttachmentWriter
+	// AttachmentWriter represents a writer for attachments.
+	AttachmentWriter *AttachmentWriter
 	// PropertyContextWriter writes the pst.PropertyContext of a pst.Message.
 	PropertyContextWriter *PropertyContextWriter
 	// MessageWriteChannel represents the Go channel used to process writing messages.
@@ -42,36 +42,44 @@ type MessageWriter struct {
 	//MessageWriteCallback represents the callback called for each written message.
 	//MessageWriteCallback chan *
 	// Identifier represents the identifier of this message, which is used in the B-Tree.
-	Identifier pst.Identifier
+	Identifier Identifier
 }
 
 //type MessageWriteCallback func()
 
 // NewMessageWriter creates a new MessageWriter.
-func NewMessageWriter(formatType pst.FormatType, writeGroup *errgroup.Group) *MessageWriter {
+func NewMessageWriter(writer io.Writer, writeGroup *errgroup.Group, formatType FormatType) *MessageWriter {
 	propertyWriteCallbackChannel := make(chan Property)
 
 	return &MessageWriter{
-		FormatType: formatType,
-		PropertyWriter: NewPropertyWriter(writeGroup, propertyWriteCallbackChannel),
+		Writer:                writer,
+		FormatType:            formatType,
+		PropertyWriter:        NewPropertyWriter(writeGroup, propertyWriteCallbackChannel),
 		PropertyContextWriter: NewPropertyContextWriter(writeGroup),
 	}
 
 	propertyWriteCallbackChannel := NewMessageCallbackHandler()
 }
 
-// MessageCallbackHandler writes the received messages.
-type MessageCallbackHandler struct {
-	MessageWriter *MessageWriter
-}
+// StartMessageWriteChannel receives messages to write.
+func (messageWriter *MessageWriter) StartMessageWriteChannel(writeGroup *errgroup.Group) {
+	writeGroup.Go(func() error {
+		// Listen for messages to write.
+		for receivedMessage := range messageWriter.MessageWriteChannel {
+			// Write the message.
+			messageWrittenSize, err := receivedMessage.WriteTo(messageWriter.Writer)
 
-// NewMessageCallbackHandler creates a new MessageCallbackHandler.
-func NewMessageCallbackHandler() *MessageCallbackHandler {
-	return &MessageCallbackHandler{}
-}
+			if err != nil {
+				return eris.Wrap(err, "failed to write message")
+			}
 
-func (messageCallbackHandler *MessageCallbackHandler) Handle(message *properties.Message) {
-	messageCallbackHandler.MessageWriter.AddRawProperties(message)
+			totalSize += messageWrittenSize
+		}
+
+		folderWriter.TotalSize.Add(totalSize)
+
+		return nil
+	})
 }
 
 // AddProperties add the message properties (properties.Message).
@@ -97,7 +105,7 @@ func (messageWriter *MessageWriter) StartAttachmentWriteChannel(writeContext con
 }
 
 func (messageWriter *MessageWriter) UpdateIdentifier() error {
-	identifier, err := pst.NewIdentifier(messageWriter.FormatType)
+	identifier, err := NewIdentifier(messageWriter.FormatType)
 
 	if err != nil {
 		return eris.Wrap(err, "failed to create identifier")

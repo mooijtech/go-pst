@@ -14,14 +14,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package writer
+package pst
 
 import (
 	"bytes"
 	"cmp"
 	"context"
 	"encoding/binary"
-	pst "github.com/mooijtech/go-pst/v6/pkg"
 	"github.com/rotisserie/eris"
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/protobuf/proto"
@@ -35,7 +34,7 @@ import (
 // TableContextWriter represents a writer for a pst.TableContext.
 type TableContextWriter struct {
 	// FormatType represents the FormatType.
-	FormatType pst.FormatType
+	FormatType FormatType
 	// Properties represents the properties to write (properties.Attachment, properties.Folder etc).
 	Properties []*proto.Message
 	// BTreeOnHeapWriter represents the BTreeOnHeapWriter.
@@ -54,8 +53,8 @@ type TableContextWriter struct {
 }
 
 // NewTableContextWriter creates a new TableContextWriter.
-func NewTableContextWriter(writer io.Writer, writeGroup *errgroup.Group, formatType pst.FormatType) *TableContextWriter {
-	heapOnNodeWriter := NewHeapOnNodeWriter(pst.SignatureTypeTableContext)
+func NewTableContextWriter(writer io.Writer, writeGroup *errgroup.Group, formatType FormatType) *TableContextWriter {
+	heapOnNodeWriter := NewHeapOnNodeWriter(SignatureTypeTableContext)
 	btreeOnHeapWriter := NewBTreeOnHeapWriter(heapOnNodeWriter)
 	propertyWriter := NewPropertyWriter(properties)
 
@@ -146,7 +145,7 @@ func (tableContextWriter *TableContextWriter) WriteHeader(writer io.Writer, prop
 	header := bytes.NewBuffer(make([]byte, 22+(8*len(columnDescriptors))))
 
 	// MUST be set to bTypeTC.
-	header.Write([]byte{byte(pst.SignatureTypeTableContext)})
+	header.Write([]byte{byte(SignatureTypeTableContext)})
 
 	// Column count.
 	header.WriteByte(byte(len(columnDescriptors)))

@@ -14,15 +14,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package writer
+package pst
 
 import (
-	pst "github.com/mooijtech/go-pst/v6/pkg"
 	"github.com/rotisserie/eris"
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/protobuf/proto"
 	"io"
-	"sync/atomic"
 )
 
 // FolderWriter represents a writer for folders.
@@ -30,49 +28,50 @@ type FolderWriter struct {
 	// Writer represents the io.Writer to write to.
 	Writer io.Writer
 	// FormatType represents the FormatType used while writing.
-	FormatType pst.FormatType
+	FormatType FormatType
 	// FolderWriteChannel represents the Go channel for writing sub-folders.
 	FolderWriteChannel chan *FolderWriter
-	// MessageWriteChannel represents the Go channel for writing messages to this folder.
-	MessageWriteChannel chan *MessageWriter
+	// FolderWriteCallback represents the callback which is called after writing a folder.
+	FolderWriteCallback chan WriteCallbackResponse
+	// MessageWriter represents the writer for messages.
+	MessageWriter *MessageWriter
 	// TableContextWriter writes the pst.TableContext of the pst.Folder.
 	TableContextWriter *TableContextWriter
+	// PropertyWriter represents the writer for properties.
+	PropertyWriter *PropertyWriter
 	// PropertyWriteChannel represents the Go channel for writing []pst.Property.
-	PropertyWriteChannel chan *PropertyWriter
-	// TotalSize represents the total size of the PST file so far.
-	TotalSize atomic.Int64
+	//PropertyWriteChannel chan *PropertyWriter
 	// Identifier represents the identifier of this folder.
-	Identifier pst.Identifier
+	Identifier Identifier
 }
 
 // NewFolderWriter creates a new FolderWriter.
-func NewFolderWriter(writer io.Writer, writeGroup *errgroup.Group, formatType pst.FormatType) *FolderWriter {
+func NewFolderWriter(writer io.Writer, writeGroup *errgroup.Group, formatType FormatType) *FolderWriter {
 	folderWriter := &FolderWriter{
-		Writer:               writer,
-		FormatType:           formatType,
-		FolderWriteChannel:   make(chan *FolderWriter),
-		MessageWriteChannel:  make(chan *MessageWriter),
-		TableContextWriter:   NewTableContextWriter(writer, writeGroup, formatType),
-		PropertyWriteChannel: make(chan *PropertyWriter),
+		Writer:             writer,
+		FormatType:         formatType,
+		MessageWriter:      NewMessageWriter(writeGroup, formatType),
+		TableContextWriter: NewTableContextWriter(writer, writeGroup, formatType),
 	}
 
 	// Start channels for writing folders and messages.
-	folderWriter.StartFolderWriteChannel(writeGroup)
-	folderWriter.StartMessageWriteChannel(writeGroup)
+	go folderWriter.StartFolderWriteChannel(writeGroup)
+	go folderWriter.StartMessageWriteChannel(writeGroup)
 
 	return folderWriter
 }
 
-// SetIdentifier sets the identifier of the folder used when saving to B-Trees.
+// SetIdentifier sets the identifier of the folder.
 // This is mainly used for the pst.IdentifierRootFolder.
-// Usually the identifier is automatically set by UpdateIdentifier which is called after WriteTo
-func (folderWriter *FolderWriter) SetIdentifier(identifier pst.Identifier) {
+// Usually the identifier is automatically set by UpdateIdentifier after a WriteTo call.
+func (folderWriter *FolderWriter) SetIdentifier(identifier Identifier) {
 	folderWriter.Identifier = identifier
 }
 
-// UpdateIdentifier is called after WriteTo so this folder can be identified in the B-Tree.
+// UpdateIdentifier sets the identifier of the folder, so it can be identified in the B-Tree.
+// Called after WriteTo.
 func (folderWriter *FolderWriter) UpdateIdentifier() error {
-	identifier, err := pst.NewIdentifier(folderWriter.FormatType)
+	identifier, err := NewIdentifier(folderWriter.FormatType)
 
 	if err != nil {
 		return eris.Wrap(err, "failed to create identifier")
@@ -90,32 +89,8 @@ func (folderWriter *FolderWriter) AddProperties(properties ...proto.Message) {
 }
 
 // AddMessages adds a message to the channel to be written.
-func (folderWriter *FolderWriter) AddMessages(messageWriters ...*MessageWriter) {
-	for _, messageWriter := range messageWriters {
-		folderWriter.MessageWriteChannel <- messageWriter
-	}
-}
-
-// StartMessageWriteChannel receives messages to write.
-func (folderWriter *FolderWriter) StartMessageWriteChannel(writeGroup *errgroup.Group) {
-	writeGroup.Go(func() error {
-		var totalSize int64
-
-		for receivedMessage := range folderWriter.MessageWriteChannel {
-			// Write the message.
-			messageWrittenSize, err := receivedMessage.WriteTo(folderWriter.Writer)
-
-			if err != nil {
-				return eris.Wrap(err, "failed to write message")
-			}
-
-			totalSize += messageWrittenSize
-		}
-
-		folderWriter.TotalSize.Add(totalSize)
-
-		return nil
-	})
+func (folderWriter *FolderWriter) AddMessages(messages ...proto.Message) {
+	folderWriter.MessageWriter.AddProperties(messages...)
 }
 
 // AddFolder queues the folder to be written, picked up by a Go channel.
@@ -129,14 +104,15 @@ func (folderWriter *FolderWriter) AddFolder(folders ...*FolderWriter) {
 // StartFolderWriteChannel listens for sub-folders to write.
 // The called is responsible for starting the write channel.
 func (folderWriter *FolderWriter) StartFolderWriteChannel(writeGroup *errgroup.Group) {
-	writeGroup.Go(func() error {
-		for receivedFolder := range folderWriter.FolderWriteChannel {
+	for receivedFolder := range folderWriter.FolderWriteChannel {
+		// Listen for folders to write.
+		writeGroup.Go(func() error {
 			// Add folder to TableContextWriter write queue.
 			folderWriter.TableContextWriter.AddFolder(receivedFolder)
-		}
 
-		return nil
-	})
+			return nil
+		})
+	}
 }
 
 // WriteTo writes the folder containing messages.

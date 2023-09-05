@@ -20,7 +20,6 @@ import (
 	"bytes"
 	"crypto/rand"
 	"encoding/binary"
-	"github.com/mooijtech/go-pst/v6/pkg/writer"
 	"github.com/pkg/errors"
 	"github.com/rotisserie/eris"
 	"io"
@@ -329,9 +328,20 @@ func NewIdentifier(formatType FormatType) (Identifier, error) {
 
 // Constants defining the special b-tree node identifiers.
 const (
-	IdentifierRootFolder   Identifier = 290
-	IdentifierMessageStore Identifier = 33
-	IdentifierNameToIDMap  Identifier = 97
+	IdentifierRootFolder                Identifier = 290
+	IdentifierMessageStore              Identifier = 33
+	IdentifierNameToIDMap               Identifier = 97
+	IdentifierNormalFolderTemplate      Identifier = 161
+	IdentifierSearchFolderTemplate      Identifier = 193
+	IdentifierSearchManagementQueue     Identifier = 481
+	IdentifierSearchActivityList        Identifier = 513
+	IdentifierReserved1                 Identifier = 577
+	IdentifierSearchDomainObject        Identifier = 609
+	IdentifierSearchGathererQueue       Identifier = 641
+	IdentifierSearchGathererDescriptor  Identifier = 673
+	IdentifierReserved2                 Identifier = 737
+	IdentifierReserved3                 Identifier = 769
+	IdentifierSearchGathererFolderQueue Identifier = 801
 )
 
 // GetType returns the IdentifierType of this Identifier.
@@ -343,13 +353,18 @@ func (identifier Identifier) GetType() IdentifierType {
 	return IdentifierType(identifier & 0x1F)
 }
 
+// WriteTo writes the byte representation of the identifier.
+func (identifier Identifier) WriteTo(writer io.Writer, formatType FormatType) (int, error) {
+	return writer.Write(identifier.Bytes(formatType))
+}
+
 // Bytes returns the byte representation of the pst.Identifier.
 func (identifier Identifier) Bytes(formatType FormatType) []byte {
 	switch formatType {
 	case FormatTypeUnicode:
-		return writer.GetUint64(uint64(identifier))
+		return GetUint64(uint64(identifier))
 	case FormatTypeANSI:
-		return writer.GetUint32(uint32(identifier))
+		return GetUint32(uint32(identifier))
 	default:
 		// TODO - Support Unicode4k
 		panic(ErrFormatTypeUnsupported)

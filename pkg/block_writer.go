@@ -1,8 +1,7 @@
-package writer
+package pst
 
 import (
 	"bytes"
-	pst "github.com/mooijtech/go-pst/v6/pkg"
 	"github.com/rotisserie/eris"
 	"io"
 )
@@ -11,16 +10,17 @@ import (
 // References https://github.com/mooijtech/go-pst/blob/main/docs/README.md#data-tree
 type BlockWriter struct {
 	// FormatType represents the FormatType used while writing.
-	FormatType pst.FormatType
-	// Identifiers pointing to B-Tree nodes.
-	Identifiers []pst.Identifier
+	FormatType FormatType
+	// BlockWriteChannel represents a Go channel used for writing blocks.
+	BlockWriteChannel chan Identifier
+	// BlockWriteCallback represents the callback which is called once a block is written.
+	BlockWriteCallback chan int
 }
 
 // NewBlockWriter creates a new BlockWriter.
-func NewBlockWriter(formatType pst.FormatType, identifiers []pst.Identifier) *BlockWriter {
+func NewBlockWriter(formatType FormatType) *BlockWriter {
 	return &BlockWriter{
-		FormatType:  formatType,
-		Identifiers: identifiers,
+		FormatType: formatType,
 	}
 }
 
@@ -48,12 +48,12 @@ func (blockWriter *BlockWriter) WriteXBlock(writer io.Writer) (int64, error) {
 	// (8 bytes for Unicode PST files, 4 bytes for ANSI PST files).
 	for _, identifier := range blockWriter.Identifiers {
 		switch blockWriter.FormatType {
-		case pst.FormatTypeUnicode:
+		case FormatTypeUnicode:
 			xBlockBuffer.Write(GetUint64(uint64(identifier)))
-		case pst.FormatTypeANSI:
+		case FormatTypeANSI:
 			xBlockBuffer.Write(GetUint32(uint32(identifier)))
 		default:
-			return 0, pst.ErrFormatTypeUnsupported
+			return 0, ErrFormatTypeUnsupported
 		}
 	}
 	// This field is present if the total size of all the other fields is not a multiple of 64.

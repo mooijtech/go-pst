@@ -1,43 +1,29 @@
-// go-pst is a library for reading Personal Storage Table (.pst) files (written in Go/Golang).
-//
-// Copyright 2023 Marten Mooij
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-package writer
+package main
 
 import (
-	"context"
+	"flag"
 	"fmt"
 	"github.com/dustin/go-humanize"
-	"github.com/mooijtech/go-pst/v6/pkg"
+	pst "github.com/mooijtech/go-pst/v6/pkg"
 	"github.com/mooijtech/go-pst/v6/pkg/properties"
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/protobuf/proto"
 	"log/slog"
 	"os"
-	"testing"
 	"time"
 )
 
-// TestWritePSTFile writes a new PST file.
-func TestWritePSTFile(t *testing.T) {
+func main() {
+	outputName := *flag.String("output", "1337.pst", "Specifies the output path of the PST file.")
+
+	flag.Parse()
+
 	slog.Info("Starting go-pst...")
 
 	startTime := time.Now()
 
 	// Output file.
-	outputFile, err := os.Create("1337.pst")
+	outputFile, err := os.Create(outputName)
 
 	if err != nil {
 		t.Fatalf("Failed to create output file: %+v", err)
@@ -64,7 +50,7 @@ func TestWritePSTFile(t *testing.T) {
 		t.Fatalf("Failed to create folder writer: %+v", err)
 	}
 
-	rootFolder.SetIdentifier(pst.IdentifierRootFolder) // Other folders automatically update their identifier.
+	rootFolder.SetIdentifier(pst.IdentifierRootFolder)
 	rootFolder.AddProperties(&properties.Folder{
 		Name: "IdentifierRootFolder",
 	})

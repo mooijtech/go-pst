@@ -14,11 +14,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package writer
+package pst
 
 import (
 	"bytes"
-	pst "github.com/mooijtech/go-pst/v6/pkg"
 	"github.com/rotisserie/eris"
 	"io"
 )
@@ -62,7 +61,7 @@ func (btreeOnHeapWriter *BTreeOnHeapWriter) WriteHeader(writer io.Writer) (int64
 	header := bytes.NewBuffer(make([]byte, 8))
 
 	// MUST be bTypeBTH.
-	header.WriteByte(byte(pst.SignatureTypeBTreeOnHeap))
+	header.WriteByte(byte(SignatureTypeBTreeOnHeap))
 	// Size of the BTree Key value, in bytes.
 	// This value MUST be set to 2, 4, 8, or 16.
 	header.Write([]byte{8})

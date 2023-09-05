@@ -14,11 +14,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package writer
+package pst
 
 import (
 	"bytes"
-	pst "github.com/mooijtech/go-pst/v6/pkg"
 	"github.com/rotisserie/eris"
 	"io"
 )
@@ -26,11 +25,11 @@ import (
 // HeapOnNodeWriter represents a writer for pst.HeapOnNode.
 type HeapOnNodeWriter struct {
 	// SignatureType represents the higher level data structure of this Heap-on-Node.
-	SignatureType pst.SignatureType
+	SignatureType SignatureType
 }
 
 // NewHeapOnNodeWriter creates a new HeapOnNodeWriter.
-func NewHeapOnNodeWriter(signatureType pst.SignatureType) *HeapOnNodeWriter {
+func NewHeapOnNodeWriter(signatureType SignatureType) *HeapOnNodeWriter {
 	return &HeapOnNodeWriter{
 		SignatureType: signatureType,
 	}

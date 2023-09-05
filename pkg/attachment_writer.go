@@ -14,10 +14,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package writer
+package pst
 
 import (
+	"github.com/mooijtech/go-pst/v6/pkg/properties"
 	"github.com/rotisserie/eris"
+	"golang.org/x/sync/errgroup"
 	"google.golang.org/protobuf/proto"
 	"io"
 )
@@ -26,16 +28,25 @@ import (
 type AttachmentWriter struct {
 	// PropertyContextWriter represents the PropertyContextWriter.
 	PropertyContextWriter *PropertyContextWriter
+	// AttachmentWriteChannel represents the Go channel for writing attachments.
+	AttachmentWriteChannel chan *properties.Attachment
 }
 
 // NewAttachmentWriter creates a new AttachmentWriter.
-func NewAttachmentWriter() *AttachmentWriter {
-	return &AttachmentWriter{}
+func NewAttachmentWriter(writer io.Writer, writeGroup *errgroup.Group, formatType FormatType, btreeType BTreeType) *AttachmentWriter {
+	propertyWriteCallbackChannel := make(chan WriteCallbackResponse)
+	propertyContextWriter := NewPropertyContextWriter(writer, writeGroup, propertyWriteCallbackChannel, formatType, btreeType)
+	attachmentWriteChannel := make(chan *properties.Attachment)
+
+	return &AttachmentWriter{
+		PropertyContextWriter:  propertyContextWriter,
+		AttachmentWriteChannel: attachmentWriteChannel,
+	}
 }
 
-// AddProperties adds the properties of the attachment (properties.Attachment).
-func (attachmentWriter *AttachmentWriter) AddProperties(properties ...proto.Message) {
-	attachmentWriter.PropertyContextWriter.AddProperties(properties...)
+// AddAttachments adds the properties of the attachment (properties.Attachment).
+func (attachmentWriter *AttachmentWriter) AddAttachments(attachments ...proto.Message) {
+	attachmentWriter.PropertyContextWriter.AddProperties(attachments...)
 }
 
 // WriteTo writes the attachment.

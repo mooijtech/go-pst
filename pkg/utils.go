@@ -14,26 +14,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package writer
+package pst
 
-import (
-	"io"
-)
+import "encoding/binary"
 
-// MessageStoreWriter represents a writer for Message Stores.
-type MessageStoreWriter struct {
-	// PropertyContextWriter represents the pst.PropertyContext writer.
-	PropertyContextWriter *PropertyContextWriter
+// GetUint64 returns the Little Endian byte representation of the uint64.
+func GetUint64(integer uint64) []byte {
+	return binary.LittleEndian.AppendUint64([]byte{}, integer)
 }
 
-// NewMessageStoreWriter creates a new MessageStoreWriter.
-func NewMessageStoreWriter(propertyContextWriter *PropertyContextWriter) *MessageStoreWriter {
-	return &MessageStoreWriter{
-		PropertyContextWriter: propertyContextWriter,
-	}
+// GetUint32 returns the Little Endian byte representation of the uint32.
+func GetUint32(integer uint32) []byte {
+	return binary.LittleEndian.AppendUint32([]byte{}, integer)
 }
 
-// WriteTo writes the Message Store.
-func (messageStoreWriter *MessageStoreWriter) WriteTo(writer io.Writer) (int64, error) {
-	return messageStoreWriter.PropertyContextWriter.WriteTo(writer)
+// GetUint16 returns the Little Endian byte representation of the uint16.
+func GetUint16(integer uint16) []byte {
+	return binary.LittleEndian.AppendUint16([]byte{}, integer)
 }
