@@ -2,7 +2,6 @@ package writer
 
 import (
 	"bytes"
-	"context"
 	"encoding/binary"
 	"fmt"
 	pst "github.com/mooijtech/go-pst/v6/pkg"
@@ -18,55 +17,64 @@ import (
 // PropertyWriter represents a writer for properties.
 type PropertyWriter struct {
 	// PropertyWriteChannel represents the Go channel for writing properties.
-	PropertyWriteChannel chan *proto.Message
+	PropertyWriteChannel chan proto.Message
 	// PropertyWriteCallbackChannel is called when a property has been written.
 	PropertyWriteCallbackChannel chan Property
 }
 
 // NewPropertyWriter creates a new PropertyWriter.
-func NewPropertyWriter(propertyWriteCallbackChannel chan Property, propertyWriteChannelContext context.Context) (*PropertyWriter, *errgroup.Group, context.Context) {
+// propertyWriteCallbackChannel is not required.
+func NewPropertyWriter(writeGroup *errgroup.Group, propertyWriteCallbackChannel chan Property) *PropertyWriter {
 	propertyWriter := &PropertyWriter{
-		PropertyWriteChannel:         make(chan *proto.Message),
+		PropertyWriteChannel:         make(chan proto.Message),
 		PropertyWriteCallbackChannel: propertyWriteCallbackChannel,
 	}
 
-	propertyWriteChannelErrGroup, propertyWriteChannelContext := propertyWriter.StartPropertyWriteChannel(propertyWriteChannelContext)
+	// Start the property write channel.
+	if propertyWriteCallbackChannel == nil {
+		// TODO - Remove this.
+		fmt.Printf("Skipping propertyWriteCallbackChannel")
+	}
 
-	return propertyWriter, propertyWriteChannelErrGroup, propertyWriteChannelContext
+	go propertyWriter.StartPropertyWriteChannel(writeGroup)
+
+	return propertyWriter
 }
 
-// AddProperties adds the properties to write.
-func (propertyWriter *PropertyWriter) AddProperties(properties []*proto.Message) {
+//// SetProperties sets the properties  the properties to write.
+//func (propertyWriter *PropertyWriter) SetProperties(properties proto.Message) {
+//	propertyWriter.PropertyWriteChannel <- properties
+//}
+
+// AddProperties sends the properties to the write queue.
+func (propertyWriter *PropertyWriter) AddProperties(properties ...proto.Message) {
 	for _, property := range properties {
 		propertyWriter.PropertyWriteChannel <- property
 	}
 }
 
 // StartPropertyWriteChannel starts the Go channel for writing properties.
-func (propertyWriter *PropertyWriter) StartPropertyWriteChannel(propertyWriteChannelContext context.Context) (*errgroup.Group, context.Context) {
-	propertyWriteChannelErrGroup, propertyWriteChannelContext := errgroup.WithContext(propertyWriteChannelContext)
-
-	propertyWriteChannelErrGroup.Go(func() error {
-		for receivedProperties := range propertyWriter.PropertyWriteChannel {
-			// Create writable property.
+func (propertyWriter *PropertyWriter) StartPropertyWriteChannel(writeGroup *errgroup.Group) {
+	for receivedProperties := range propertyWriter.PropertyWriteChannel {
+		writeGroup.Go(func() error {
+			// Create writable byte representation of the property.
 			writableProperties, err := propertyWriter.GetProperties(receivedProperties)
 
 			if err != nil {
 				return eris.Wrap(err, "failed to get writable properties")
 			}
 
-			// Send writable property to callback.
+			// Send writable byte representation Property to the callback,
+			// in the callback the Property is added to the PropertyContextWriter.
 			if propertyWriter.PropertyWriteCallbackChannel != nil {
 				for _, writableProperty := range writableProperties {
 					propertyWriter.PropertyWriteCallbackChannel <- writableProperty
 				}
 			}
-		}
 
-		return nil
-	})
-
-	return propertyWriteChannelErrGroup, propertyWriteChannelContext
+			return nil
+		})
+	}
 }
 
 // Property represents a property that can be written.
@@ -85,7 +93,7 @@ func (property *Property) WriteTo(writer io.Writer) (int64, error) {
 
 // GetProperties returns the writable properties.
 // Uses reflection to convert a proto.Message (properties.Message, properties.Attachment, etc.) to a list of properties.
-func (propertyWriter *PropertyWriter) GetProperties(properties *proto.Message) ([]Property, error) {
+func (propertyWriter *PropertyWriter) GetProperties(properties proto.Message) ([]Property, error) {
 	var writableProperties []Property
 
 	propertyTypes := reflect.TypeOf(properties).Elem()

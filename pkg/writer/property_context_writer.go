@@ -20,32 +20,76 @@ import (
 	"bytes"
 	pst "github.com/mooijtech/go-pst/v6/pkg"
 	"github.com/rotisserie/eris"
+	"golang.org/x/sync/errgroup"
 	"google.golang.org/protobuf/proto"
 	"io"
+	"log/slog"
+	"sync/atomic"
 )
 
 // PropertyContextWriter represents a writer for a pst.PropertyContext.
 type PropertyContextWriter struct {
+	// Writer represents the io.Writer used when writing.
+	Writer io.Writer
 	// BTreeOnHeapWriter represents the BTreeOnHeapWriter.
 	BTreeOnHeapWriter *BTreeOnHeapWriter
-	// PropertiesWriter represents the PropertiesWriter.
-	PropertiesWriter *PropertyWriter
+	// PropertyWriter represents the PropertyWriter.
+	PropertyWriter *PropertyWriter
+	// PropertyWriteCallbackChannel represents the callback channel for writable properties.
+	PropertyWriteCallbackChannel chan Property
 	// LocalDescriptorsWriter represents the LocalDescriptorsWriter.
 	LocalDescriptorsWriter *LocalDescriptorsWriter
+	// WriteGroup represents Goroutines running writers.
+	WriteGroup *errgroup.Group
+	// TotalSize represents the total byte size written.
+	// TODO - Don't use atomic, pass int64 to callback per processed?
+	TotalSize atomic.Int64
 }
 
 // NewPropertyContextWriter creates a new PropertyContextWriter.
-func NewPropertyContextWriter(properties []*proto.Message) *PropertyContextWriter {
+func NewPropertyContextWriter(formatType pst.FormatType, btreeType pst.BTreeType, btreeNodes []pst.Identifier, writeGroup *errgroup.Group) *PropertyContextWriter {
 	heapOnNodeWriter := NewHeapOnNodeWriter(pst.SignatureTypePropertyContext)
 	btreeOnHeapWriter := NewBTreeOnHeapWriter(heapOnNodeWriter)
-	propertiesWriter := NewPropertyWriter(properties)
-	localDescriptorsWriter := NewLocalDescriptorsWriter()
+	propertyWriteCallbackChannel := make(chan Property)
+	propertyWriter := NewPropertyWriter(writeGroup, propertyWriteCallbackChannel)
+	localDescriptorsWriter := NewLocalDescriptorsWriter(formatType, btreeType, btreeNodes)
 
-	return &PropertyContextWriter{
-		BTreeOnHeapWriter:      btreeOnHeapWriter,
-		PropertiesWriter:       propertiesWriter,
-		LocalDescriptorsWriter: localDescriptorsWriter,
+	propertyContextWriter := &PropertyContextWriter{
+		BTreeOnHeapWriter:            btreeOnHeapWriter,
+		PropertyWriter:               propertyWriter,
+		PropertyWriteCallbackChannel: propertyWriteCallbackChannel,
+		LocalDescriptorsWriter:       localDescriptorsWriter,
+		WriteGroup:                   writeGroup,
 	}
+
+	// Start Go channel for the property write callback.
+	go propertyContextWriter.StartWriteCallbackHandler(propertyWriteCallbackChannel)
+
+	return propertyContextWriter
+}
+
+// StartWriteCallbackHandler handles writing a received writable Property.
+func (propertyContextWriter *PropertyContextWriter) StartWriteCallbackHandler(writeCallbackChannel chan Property) {
+	for property := range writeCallbackChannel {
+		propertyContextWriter.WriteGroup.Go(func() error {
+			slog.Debug("Writing property...", "identifier", property.ID)
+
+			// Write the property.
+			if _, err := property.WriteTo(propertyContextWriter.Writer); err != nil {
+				return eris.Wrap(err, "failed to write property")
+			}
+
+			return nil
+		})
+	}
+}
+
+func (propertyContextWriter *PropertyContextWriter) AddProperties(properties ...proto.Message) {
+	propertyContextWriter.PropertyWriter.AddProperties(properties...)
+}
+
+func (propertyContextWriter *PropertyContextWriter) AddRawProperty(property Property) {
+
 }
 
 // WriteTo writes the pst.PropertyContext.
@@ -69,7 +113,7 @@ func (propertyContextWriter *PropertyContextWriter) WriteTo(writer io.Writer) (i
 // WriteProperties writes the properties.
 // References https://github.com/mooijtech/go-pst/blob/main/docs/README.md#pc-bth-record
 func (propertyContextWriter *PropertyContextWriter) WriteProperties(writer io.Writer) (int64, error) {
-	properties, err := propertyContextWriter.PropertiesWriter.GetProperties()
+	properties, err := propertyContextWriter.PropertyWriter.GetProperties()
 
 	if err != nil {
 		return 0, eris.Wrap(err, "failed to get properties")

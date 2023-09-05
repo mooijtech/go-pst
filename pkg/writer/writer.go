@@ -19,35 +19,46 @@ package writer
 
 import (
 	"bytes"
-	"context"
 	"github.com/mooijtech/go-pst/v6/pkg"
-	"github.com/mooijtech/go-pst/v6/pkg/properties"
 	"github.com/rotisserie/eris"
 	"golang.org/x/sync/errgroup"
 	"hash/crc32"
 	"io"
+	"sync/atomic"
 )
 
 // Writer writes PST files.
 type Writer struct {
-	// WriteOptions defines options used while writing.
-	WriteOptions WriteOptions
+	// Writer represents the io.Writer to write to.
+	Writer io.Writer
 	// WriteGroup represents the writers running in Goroutines.
 	WriteGroup *errgroup.Group
+	// WriteOptions defines options used while writing.
+	WriteOptions WriteOptions
 	// FolderWriteChannel represents a Go channel for writing folders.
 	FolderWriteChannel chan *FolderWriter
+	// TotalSize represents the total bytes written.
+	// TODO - Don't use atomic?
+	TotalSize atomic.Int64
 }
 
 // NewWriter returns a writer for PST files.
-func NewWriter(writeGroup *errgroup.Group, writeOptions WriteOptions) *Writer {
-	return &Writer{
+func NewWriter(writer io.Writer, writeGroup *errgroup.Group, writeOptions WriteOptions) *Writer {
+	pstWriter := &Writer{
+		Writer:             writer,
 		WriteGroup:         writeGroup,
 		WriteOptions:       writeOptions,
 		FolderWriteChannel: make(chan *FolderWriter),
 	}
+
+	// Start write channel.
+	go pstWriter.StartFolderWriteChannel(writeGroup)
+
+	return pstWriter
 }
 
 // AddFolders adds a pst.Folder to write (used by WriteTo).
+// Must contain at least a root folder (pst.IdentifierRootFolder).
 func (pstWriter *Writer) AddFolders(folders ...*FolderWriter) {
 	for _, folder := range folders {
 		pstWriter.FolderWriteChannel <- folder
@@ -55,11 +66,20 @@ func (pstWriter *Writer) AddFolders(folders ...*FolderWriter) {
 }
 
 // StartFolderWriteChannel starts the Go channel for writing folders.
-func (pstWriter *Writer) StartFolderWriteChannel(writeGroup *errgroup.Group, writeGroupCancel context.CancelCauseFunc) {
-	writeGroup.Go(func() error {
+func (pstWriter *Writer) StartFolderWriteChannel(writeGroup *errgroup.Group) {
+	for folder := range pstWriter.FolderWriteChannel {
+		writeGroup.Go(func() error {
+			folderWrittenSize, err := folder.WriteTo(pstWriter.Writer)
 
-		return nil
-	})
+			if err != nil {
+				return eris.Wrap(err, "failed to write folder")
+			}
+
+			pstWriter.TotalSize.Add(folderWrittenSize)
+
+			return nil
+		})
+	}
 }
 
 // WriteOptions defines the options used during writing.
@@ -101,36 +121,27 @@ func NewWriteOptions(formatType pst.FormatType, encryptionType pst.EncryptionTyp
 //
 // Combining these structures we make up a PST file to write.
 func (pstWriter *Writer) WriteTo(writer io.Writer) (int64, error) {
-	var totalSize int64
+	totalSize := pstWriter.TotalSize.Load()
 
-	// Write folders.
-	for _, folderWriter := range pstWriter.Folders {
-		written, err := folderWriter.WriteTo(writer)
-
-		if err != nil {
-			return 0, eris.Wrap(err, "failed to write folder")
-		}
-
-		totalSize += written
+	// Wait for channels to finish.
+	if err := pstWriter.WriteGroup.Wait(); err != nil {
+		return 0, eris.Wrap(err, "writer failed")
 	}
 
 	// Write PST header.
-	headerWrittenSize, err := pstWriter.WriteHeader(writer, totalSize, 0, 0)
+	// TODO - Root b-tree nodes.
+	headerWrittenSize, err := pstWriter.WriteHeader(writer, pst.IdentifierRootFolder, pst.IdentifierRootFolder)
 
 	if err != nil {
 		return 0, eris.Wrap(err, "failed to write header")
 	}
 
-	// Write the root folder.
-	rootFolder := NewFolderWriter(pstWriter.WriteOptions.FormatType, &properties.Folder{Name: "root"}, nil)
-
-	return totalSize + headerWrittenSize, nil
+	return headerWrittenSize + totalSize, nil
 }
 
 // WriteHeader writes the PST header.
-// totalSize is the total size of the PST file excluding the header.
 // References https://github.com/mooijtech/go-pst/blob/main/docs/README.md#header-1
-func (pstWriter *Writer) WriteHeader(writer io.Writer, totalSize int64, rootNodeBTree pst.Identifier, rootBlockBTree pst.Identifier) (int64, error) {
+func (pstWriter *Writer) WriteHeader(writer io.Writer, rootNodeBTree pst.Identifier, rootBlockBTree pst.Identifier) (int64, error) {
 	var headerSize int
 
 	switch pstWriter.WriteOptions.FormatType {
@@ -204,7 +215,7 @@ func (pstWriter *Writer) WriteHeader(writer io.Writer, totalSize int64, rootNode
 	}
 
 	// Header root
-	if _, err := pstWriter.WriteHeaderRoot(header, totalSize, rootNodeBTree, rootBlockBTree); err != nil {
+	if _, err := pstWriter.WriteHeaderRoot(header, rootNodeBTree, rootBlockBTree); err != nil {
 		return 0, eris.Wrap(err, "failed to write header root")
 	}
 
@@ -256,7 +267,7 @@ func (pstWriter *Writer) WriteHeader(writer io.Writer, totalSize int64, rootNode
 
 // WriteHeaderRoot writes the header root.
 // References https://github.com/mooijtech/go-pst/blob/main/docs/README.md#root
-func (pstWriter *Writer) WriteHeaderRoot(writer io.Writer, totalSize int64, rootNodeBTree pst.Identifier, rootBlockBTree pst.Identifier) (int64, error) {
+func (pstWriter *Writer) WriteHeaderRoot(writer io.Writer, rootNodeBTree pst.Identifier, rootBlockBTree pst.Identifier) (int64, error) {
 	var headerSize int
 
 	switch pstWriter.WriteOptions.FormatType {

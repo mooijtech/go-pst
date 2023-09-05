@@ -18,6 +18,7 @@ package pst
 
 import (
 	"bytes"
+	"crypto/rand"
 	"encoding/binary"
 	"github.com/mooijtech/go-pst/v6/pkg/writer"
 	"github.com/pkg/errors"
@@ -301,6 +302,30 @@ func GetIdentifierSize(formatType FormatType) uint8 {
 // Identifier represents a b-tree node identifier.
 // TODO - Document the int types per use case and use separate types.
 type Identifier int64
+
+// NewIdentifier creates a new identifier.
+// Used by the writer so the B-Tree node can be identified.
+func NewIdentifier(formatType FormatType) (Identifier, error) {
+	var identifierSize int
+
+	switch formatType {
+	case FormatTypeUnicode:
+		identifierSize = 8
+	case FormatTypeANSI:
+		identifierSize = 4
+	default:
+		// TODO - Support FormatTypeUnicode4k
+		return 0, ErrFormatTypeUnsupported
+	}
+
+	identifierBytes := make([]byte, identifierSize)
+
+	if _, err := rand.Read(identifierBytes); err != nil {
+		return 0, eris.Wrap(err, "failed to read random bytes using crypto/rand")
+	}
+
+	return Identifier(binary.LittleEndian.Uint64(identifierBytes)), nil
+}
 
 // Constants defining the special b-tree node identifiers.
 const (

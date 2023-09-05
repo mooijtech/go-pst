@@ -17,8 +17,8 @@
 package writer
 
 import (
-	"github.com/mooijtech/go-pst/v6/pkg/properties"
 	"github.com/rotisserie/eris"
+	"google.golang.org/protobuf/proto"
 	"io"
 )
 
@@ -29,10 +29,13 @@ type AttachmentWriter struct {
 }
 
 // NewAttachmentWriter creates a new AttachmentWriter.
-func NewAttachmentWriter(properties []*properties.Attachment) *AttachmentWriter {
-	return &AttachmentWriter{
-		PropertyContextWriter: NewPropertyContextWriter(properties),
-	}
+func NewAttachmentWriter() *AttachmentWriter {
+	return &AttachmentWriter{}
+}
+
+// AddProperties adds the properties of the attachment (properties.Attachment).
+func (attachmentWriter *AttachmentWriter) AddProperties(properties ...proto.Message) {
+	attachmentWriter.PropertyContextWriter.AddProperties(properties...)
 }
 
 // WriteTo writes the attachment.

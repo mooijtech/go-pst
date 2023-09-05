@@ -107,6 +107,10 @@ func main() {
 	} else if err := propertyMap.Close(); err != nil {
 		panic(errors.WithStack(err))
 	}
+
+	// TODO - Validate properties exist, parse DOCX in the same way:
+	// TODO - [MS-OXCMSG]: Message and Attachment Object Protocol
+	// TODO - [MS-OXCFOLD]: Folder Object Protocol and
 }
 
 // download the latest version of [MS-OXPROPS].docx and returns the downloaded file.

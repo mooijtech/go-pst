@@ -1,6 +1,6 @@
 module github.com/mooijtech/go-pst/v6
 
-go 1.20
+go 1.21
 
 require (
 	github.com/emersion/go-message v0.16.0
@@ -15,6 +15,7 @@ require (
 )
 
 require (
+	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/emersion/go-textwrapper v0.0.0-20200911093747-65d896831594 // indirect
 	github.com/libp2p/go-sockaddr v0.1.1 // indirect
 	github.com/philhofer/fwd v1.1.2 // indirect

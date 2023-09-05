@@ -54,7 +54,7 @@ type TableContextWriter struct {
 }
 
 // NewTableContextWriter creates a new TableContextWriter.
-func NewTableContextWriter(writer io.Writer, writeContext context.Context, writeLimit int, formatType pst.FormatType) *TableContextWriter {
+func NewTableContextWriter(writer io.Writer, writeGroup *errgroup.Group, formatType pst.FormatType) *TableContextWriter {
 	heapOnNodeWriter := NewHeapOnNodeWriter(pst.SignatureTypeTableContext)
 	btreeOnHeapWriter := NewBTreeOnHeapWriter(heapOnNodeWriter)
 	propertyWriter := NewPropertyWriter(properties)
@@ -97,6 +97,10 @@ func (tableContextWriter *TableContextWriter) StartFolderWriteChannel(writer io.
 // AddFolder sends the folder to a write channel.
 func (tableContextWriter *TableContextWriter) AddFolder(folder *FolderWriter) {
 	tableContextWriter.FolderWriteChannel <- folder
+}
+
+func (tableContextWriter *TableContextWriter) AddProperties(properties ...proto.Message) {
+	tableContextWriter.PropertyWriter.AddProperties(properties...)
 }
 
 // WriteTo writes the pst.TableContext.
