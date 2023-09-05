@@ -19,13 +19,17 @@ package writer
 import (
 	"bytes"
 	"cmp"
+	"context"
 	"encoding/binary"
 	pst "github.com/mooijtech/go-pst/v6/pkg"
 	"github.com/rotisserie/eris"
+	"golang.org/x/sync/errgroup"
 	"google.golang.org/protobuf/proto"
 	"io"
 	"math"
 	"slices"
+	"sync"
+	"sync/atomic"
 )
 
 // TableContextWriter represents a writer for a pst.TableContext.
@@ -33,30 +37,70 @@ type TableContextWriter struct {
 	// FormatType represents the FormatType.
 	FormatType pst.FormatType
 	// Properties represents the properties to write (properties.Attachment, properties.Folder etc).
-	Properties proto.Message
+	Properties []*proto.Message
 	// BTreeOnHeapWriter represents the BTreeOnHeapWriter.
 	BTreeOnHeapWriter *BTreeOnHeapWriter
-	// PropertiesWriter represents the PropertiesWriter.
-	PropertiesWriter *PropertiesWriter
+	// PropertyWriter represents the PropertyWriter.
+	PropertyWriter *PropertyWriter
+	// FolderWriteChannel represents a Go channel for writing folders.
+	FolderWriteChannel chan *FolderWriter
+	// FolderWritePool represents the pool used when writing.
+	// Used to limit the running writers.
+	FolderWritePool sync.Pool
+	// FolderWaitGroup is used to wait for the writers to complete.
+	FolderWaitGroup sync.WaitGroup
+	// TotalSize represents the total size in bytes of the written folders and underlying structures.
+	TotalSize atomic.Int64
 }
 
 // NewTableContextWriter creates a new TableContextWriter.
-func NewTableContextWriter(formatType pst.FormatType, properties proto.Message) *TableContextWriter {
+func NewTableContextWriter(writer io.Writer, writeContext context.Context, writeLimit int, formatType pst.FormatType) *TableContextWriter {
 	heapOnNodeWriter := NewHeapOnNodeWriter(pst.SignatureTypeTableContext)
 	btreeOnHeapWriter := NewBTreeOnHeapWriter(heapOnNodeWriter)
-	propertiesWriter := NewPropertiesWriter(properties)
+	propertyWriter := NewPropertyWriter(properties)
 
-	return &TableContextWriter{
+	tableContextWriter := &TableContextWriter{
 		FormatType:        formatType,
 		Properties:        properties,
 		BTreeOnHeapWriter: btreeOnHeapWriter,
-		PropertiesWriter:  propertiesWriter,
+		PropertyWriter:    propertyWriter,
 	}
+
+	tableContextWriter.StartFolderWriteChannel(writer, writeContext, writeLimit)
+
+	return tableContextWriter
+}
+
+// StartFolderWriteChannel listens for folders to write to the Table Context.
+func (tableContextWriter *TableContextWriter) StartFolderWriteChannel(writer io.Writer, writeContext context.Context, writeLimit int) (*errgroup.Group, context.Context) {
+	errGroup, folderWriteContext := errgroup.WithContext(writeContext)
+
+	errGroup.SetLimit(writeLimit)
+	errGroup.Go(func() error {
+		for folder := range tableContextWriter.FolderWriteChannel {
+			folderWrittenSize, err := folder.WriteTo(writer)
+
+			if err != nil {
+				return eris.Wrap(err, "failed to write folder")
+			}
+
+			// Total size is used by the PST header to indicate the total size of the PST file.
+			tableContextWriter.TotalSize.Add(folderWrittenSize)
+		}
+
+		return nil
+	})
+
+	return errGroup, folderWriteContext
+}
+
+// AddFolder sends the folder to a write channel.
+func (tableContextWriter *TableContextWriter) AddFolder(folder *FolderWriter) {
+	tableContextWriter.FolderWriteChannel <- folder
 }
 
 // WriteTo writes the pst.TableContext.
-// References:
-// - https://github.com/mooijtech/go-pst/blob/main/docs/README.md#creating-a-tc
+// References https://github.com/mooijtech/go-pst/blob/main/docs/README.md#creating-a-tc
 func (tableContextWriter *TableContextWriter) WriteTo(writer io.Writer) (int64, error) {
 	btreeOnHeapWrittenSize, err := tableContextWriter.BTreeOnHeapWriter.WriteTo(writer)
 
@@ -64,7 +108,7 @@ func (tableContextWriter *TableContextWriter) WriteTo(writer io.Writer) (int64, 
 		return 0, eris.Wrap(err, "failed to write BTree-on-Heap")
 	}
 
-	properties, err := tableContextWriter.PropertiesWriter.GetProperties()
+	properties, err := tableContextWriter.PropertyWriter.GetProperties()
 
 	if err != nil {
 		return 0, eris.Wrap(err, "failed to get properties")

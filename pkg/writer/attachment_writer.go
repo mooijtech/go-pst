@@ -29,7 +29,7 @@ type AttachmentWriter struct {
 }
 
 // NewAttachmentWriter creates a new AttachmentWriter.
-func NewAttachmentWriter(properties *properties.Attachment) *AttachmentWriter {
+func NewAttachmentWriter(properties []*properties.Attachment) *AttachmentWriter {
 	return &AttachmentWriter{
 		PropertyContextWriter: NewPropertyContextWriter(properties),
 	}

@@ -17,33 +17,104 @@
 package writer
 
 import (
+	"context"
+	pst "github.com/mooijtech/go-pst/v6/pkg"
 	"github.com/mooijtech/go-pst/v6/pkg/properties"
 	"github.com/rotisserie/eris"
+	"golang.org/x/sync/errgroup"
 	"io"
+	"sync/atomic"
 )
 
 // FolderWriter represents a writer for folders.
 type FolderWriter struct {
-	// Properties represents the FolderProperties.
-	Properties *properties.Folder
-	// Messages represents the messages in this folder.
-	Messages []*MessageWriter
+	// FormatType represents the FormatType used while writing.
+	FormatType pst.FormatType
+	// FolderWriteChannel represents the Go channel for writing sub-folders.
+	FolderWriteChannel chan *FolderWriter
+	// MessageWriteChannel represents the Go channel for writing messages to this folder.
+	MessageWriteChannel chan *MessageWriter
 	// TableContextWriter writes the pst.TableContext of the pst.Folder.
 	TableContextWriter *TableContextWriter
+	// PropertyWriteChannel represents the Go channel for writing []pst.Property.
+	PropertyWriteChannel chan *PropertyWriter
+	// TotalSize represents the total size of the PST file so far.
+	TotalSize atomic.Int64
 }
 
 // NewFolderWriter creates a new FolderWriter.
-func NewFolderWriter(folderProperties *properties.Folder, messages []*MessageWriter) *FolderWriter {
-	return &FolderWriter{
-		Properties:         folderProperties,
-		Messages:           messages,
-		TableContextWriter: NewTableContextWriter(folderProperties),
+func NewFolderWriter(writer io.Writer, writeContext context.Context, writeLimit int, writeGroup *errgroup.Group, formatType pst.FormatType) (*FolderWriter, error) {
+	folderWriter := &FolderWriter{
+		FormatType:           formatType,
+		FolderWriteChannel:   make(chan *FolderWriter),
+		MessageWriteChannel:  make(chan *MessageWriter),
+		TableContextWriter:   NewTableContextWriter(writer, writeContext, writeLimit, formatType),
+		PropertyWriteChannel: make(chan *PropertyWriter),
 	}
+
+	// Start channels.
+	folderWriteChannelErrGroup, folderWriteChannelContext := folderWriter.StartFolderWriteChannel(writeContext)
+	messageWriteChannelErrGroup, messageWriteChannelContext := folderWriter.StartMessageWriteChannel(writeContext)
+
+	return folderWriter, subFolderChannel
+}
+
+// SetProperties writes the properties of this folder.
+func (folderWriter *FolderWriter) SetProperties(properties *properties.Folder) {
+
+}
+
+// AddMessages adds a message to the channel to be written.
+func (folderWriter *FolderWriter) AddMessages(messageWriters ...*MessageWriter) {
+	for _, messageWriter := range messageWriters {
+		folderWriter.MessageWriteChannel <- messageWriter
+	}
+}
+
+func (folderWriter *FolderWriter) StartMessageWriteChannel(writeContext context.Context) (*errgroup.Group, context.Context) {
+	messageWriteChannelErrGroup, messageWriteChannelContext := errgroup.WithContext(writeContext)
+
+	messageWriteChannelErrGroup.Go(func() error {
+		return nil
+	})
+
+	return messageWriteChannelErrGroup, messageWriteChannelContext
+}
+
+// AddFolder queues the folder to be written, picked up by a Go channel.
+// This is added to the TableContextWriter, so we can find these folders.
+func (folderWriter *FolderWriter) AddFolder(folders ...*FolderWriter) {
+	for _, folder := range folders {
+		folderWriter.FolderWriteChannel <- folder
+	}
+}
+
+// StartFolderWriteChannel listens for sub-folders to write.
+// The called is responsible for starting the write channel.
+func (folderWriter *FolderWriter) StartFolderWriteChannel(folderChannelContext context.Context) (*errgroup.Group, context.Context) {
+	folderWriteChannelErrGroup, folderWriteChannelContext := errgroup.WithContext(folderChannelContext)
+
+	folderWriteChannelErrGroup.Go(func() error {
+		for receivedFolder := range folderWriter.FolderWriteChannel {
+			writtenSize, err := folderWriter.TableContextWriter.AddFolder(receivedFolder)
+
+			if err != nil {
+				return eris.Wrap(err, "failed to add folder to Table Context")
+			}
+
+			// Callback
+			folderWriter
+		}
+
+		return nil
+	})
+
+	return folderWriteChannelErrGroup, folderWriteChannelContext
 }
 
 // WriteTo writes the folder containing messages.
 // Returns the amount of bytes written to the output buffer.
-// References TODO
+// References https://github.com/mooijtech/go-pst/blob/main/docs/README.md#folders
 func (folderWriter *FolderWriter) WriteTo(writer io.Writer) (int64, error) {
 	tableContextWrittenSize, err := folderWriter.TableContextWriter.WriteTo(writer)
 

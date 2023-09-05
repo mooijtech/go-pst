@@ -17,6 +17,7 @@
 package writer
 
 import (
+	"bytes"
 	pst "github.com/mooijtech/go-pst/v6/pkg"
 	"github.com/rotisserie/eris"
 	"google.golang.org/protobuf/proto"
@@ -24,27 +25,31 @@ import (
 )
 
 // PropertyContextWriter represents a writer for a pst.PropertyContext.
-// References https://github.com/mooijtech/go-pst/blob/main/docs/README.md#property-context-pc
 type PropertyContextWriter struct {
-	// Properties represents the properties in the pst.PropertyContext.
-	// See properties.Message, properties.Attachment etc.
-	Properties proto.Message
 	// BTreeOnHeapWriter represents the BTreeOnHeapWriter.
 	BTreeOnHeapWriter *BTreeOnHeapWriter
+	// PropertiesWriter represents the PropertiesWriter.
+	PropertiesWriter *PropertyWriter
+	// LocalDescriptorsWriter represents the LocalDescriptorsWriter.
+	LocalDescriptorsWriter *LocalDescriptorsWriter
 }
 
 // NewPropertyContextWriter creates a new PropertyContextWriter.
-func NewPropertyContextWriter(properties proto.Message) *PropertyContextWriter {
+func NewPropertyContextWriter(properties []*proto.Message) *PropertyContextWriter {
 	heapOnNodeWriter := NewHeapOnNodeWriter(pst.SignatureTypePropertyContext)
 	btreeOnHeapWriter := NewBTreeOnHeapWriter(heapOnNodeWriter)
+	propertiesWriter := NewPropertyWriter(properties)
+	localDescriptorsWriter := NewLocalDescriptorsWriter()
 
 	return &PropertyContextWriter{
-		Properties:        properties,
-		BTreeOnHeapWriter: btreeOnHeapWriter,
+		BTreeOnHeapWriter:      btreeOnHeapWriter,
+		PropertiesWriter:       propertiesWriter,
+		LocalDescriptorsWriter: localDescriptorsWriter,
 	}
 }
 
 // WriteTo writes the pst.PropertyContext.
+// References https://github.com/mooijtech/go-pst/blob/main/docs/README.md#property-context-pc
 func (propertyContextWriter *PropertyContextWriter) WriteTo(writer io.Writer) (int64, error) {
 	btreeOnHeapWrittenSize, err := propertyContextWriter.BTreeOnHeapWriter.WriteTo(writer)
 
@@ -52,5 +57,53 @@ func (propertyContextWriter *PropertyContextWriter) WriteTo(writer io.Writer) (i
 		return 0, eris.Wrap(err, "failed to write Heap-on-Node")
 	}
 
-	return btreeOnHeapWrittenSize, nil
+	propertiesWrittenSize, err := propertyContextWriter.WriteProperties(writer)
+
+	if err != nil {
+		return 0, eris.Wrap(err, "failed to write properties")
+	}
+
+	return btreeOnHeapWrittenSize + propertiesWrittenSize, nil
+}
+
+// WriteProperties writes the properties.
+// References https://github.com/mooijtech/go-pst/blob/main/docs/README.md#pc-bth-record
+func (propertyContextWriter *PropertyContextWriter) WriteProperties(writer io.Writer) (int64, error) {
+	properties, err := propertyContextWriter.PropertiesWriter.GetProperties()
+
+	if err != nil {
+		return 0, eris.Wrap(err, "failed to get properties")
+	}
+
+	var totalSize int64
+
+	// Write properties.
+	for _, property := range properties {
+		propertyBuffer := bytes.NewBuffer(make([]byte, 8))
+
+		// Property ID
+		propertyBuffer.Write(GetUint16(uint16(property.ID)))
+		// Property Type
+		propertyBuffer.Write(GetUint16(uint16(property.Type)))
+		// Value
+		if property.Value.Len() <= 4 {
+			if _, err := property.Value.WriteTo(propertyBuffer); err != nil {
+				return 0, eris.Wrap(err, "failed to write property value")
+			}
+		} else if property.Value.Len() <= 3580 {
+			// HID
+		} else {
+			// NID Local Descriptor
+		}
+
+		written, err := propertyBuffer.WriteTo(writer)
+
+		if err != nil {
+			return 0, eris.Wrap(err, "failed to write property")
+		}
+
+		totalSize += written
+	}
+
+	return totalSize, nil
 }

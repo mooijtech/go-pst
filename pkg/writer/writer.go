@@ -19,8 +19,11 @@ package writer
 
 import (
 	"bytes"
+	"context"
 	"github.com/mooijtech/go-pst/v6/pkg"
+	"github.com/mooijtech/go-pst/v6/pkg/properties"
 	"github.com/rotisserie/eris"
+	"golang.org/x/sync/errgroup"
 	"hash/crc32"
 	"io"
 )
@@ -29,18 +32,34 @@ import (
 type Writer struct {
 	// WriteOptions defines options used while writing.
 	WriteOptions WriteOptions
-	// Folders to write.
-	Folders []*FolderWriter
+	// WriteGroup represents the writers running in Goroutines.
+	WriteGroup *errgroup.Group
+	// FolderWriteChannel represents a Go channel for writing folders.
+	FolderWriteChannel chan *FolderWriter
 }
 
 // NewWriter returns a writer for PST files.
-func NewWriter(writeOptions WriteOptions) *Writer {
-	return &Writer{WriteOptions: writeOptions}
+func NewWriter(writeGroup *errgroup.Group, writeOptions WriteOptions) *Writer {
+	return &Writer{
+		WriteGroup:         writeGroup,
+		WriteOptions:       writeOptions,
+		FolderWriteChannel: make(chan *FolderWriter),
+	}
 }
 
-// AddFolder adds a pst.Folder to write (used by WriteTo).
-func (pstWriter *Writer) AddFolder(folder *FolderWriter) {
-	pstWriter.Folders = append(pstWriter.Folders, folder)
+// AddFolders adds a pst.Folder to write (used by WriteTo).
+func (pstWriter *Writer) AddFolders(folders ...*FolderWriter) {
+	for _, folder := range folders {
+		pstWriter.FolderWriteChannel <- folder
+	}
+}
+
+// StartFolderWriteChannel starts the Go channel for writing folders.
+func (pstWriter *Writer) StartFolderWriteChannel(writeGroup *errgroup.Group, writeGroupCancel context.CancelCauseFunc) {
+	writeGroup.Go(func() error {
+
+		return nil
+	})
 }
 
 // WriteOptions defines the options used during writing.
@@ -60,6 +79,27 @@ func NewWriteOptions(formatType pst.FormatType, encryptionType pst.EncryptionTyp
 }
 
 // WriteTo writes the PST file.
+// WriteTo follows the path to root folder (fixed pst.Identifier, pst.IdentifierRootFolder) then to the pst.TableContext of the root folder.
+// Once there, we can get the child folders ([]pst.Identifier, see FolderWriter), each folder can contain messages (see MessageWriter).
+// Each message uses the pst.BTreeOnHeapHeader to construct a pst.HeapOnNode (this is where the data is).
+//
+// Extending the pst.HeapOnNode (where the data is) we can also use Local Descriptors (extend where this data is):
+// pst.LocalDescriptor (see LocalDescriptorsWriter) are B-Tree nodes pointing to other B-Tree nodes.
+// These local descriptors also have the pst.HeapOnNode structure which can be built upon (explained below).
+// Local Descriptors are used to store more data in the pst.HeapOnNode structure (B-Tree with the nodes containing the data).
+// XBlocks and XXBlocks include an array of []pst.Identifier pointing to B-Tree nodes, it is the format used to store data (see BlockWriter).
+// This structure is used by the Local Descriptors.
+//
+// Each pst.HeapOnNode can contain either a pst.TableContext or pst.PropertyContext:
+// pst.TableContext (see TableContextWriter):
+// The pst.TableContext contains a Row Matrix structure to store data, used by folders (to find data such as the folder identifiers ([]pst.Identifier)).
+// The pst.TableContext is column structured with data exceeding 8 bytes moving to different B-Tree nodes:
+// pst.HeapOnNode which is <= 3580 bytes.
+// pst.LocalDescriptor which is > 3580 bytes.
+// pst.PropertyContext (see PropertyContextWriter):
+// The pst.PropertyContext contains a list of properties ([]pst.Property) of the message, we can write this with PropertyWriter.
+//
+// Combining these structures we make up a PST file to write.
 func (pstWriter *Writer) WriteTo(writer io.Writer) (int64, error) {
 	var totalSize int64
 
@@ -75,12 +115,14 @@ func (pstWriter *Writer) WriteTo(writer io.Writer) (int64, error) {
 	}
 
 	// Write PST header.
-	// TODO - Root B-Trees
 	headerWrittenSize, err := pstWriter.WriteHeader(writer, totalSize, 0, 0)
 
 	if err != nil {
 		return 0, eris.Wrap(err, "failed to write header")
 	}
+
+	// Write the root folder.
+	rootFolder := NewFolderWriter(pstWriter.WriteOptions.FormatType, &properties.Folder{Name: "root"}, nil)
 
 	return totalSize + headerWrittenSize, nil
 }

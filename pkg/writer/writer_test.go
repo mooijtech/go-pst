@@ -17,6 +17,7 @@
 package writer
 
 import (
+	"context"
 	"github.com/mooijtech/go-pst/v6/pkg"
 	"github.com/mooijtech/go-pst/v6/pkg/properties"
 	"google.golang.org/protobuf/proto"
@@ -26,32 +27,53 @@ import (
 
 // TestWritePSTFile writes a new PST file.
 func TestWritePSTFile(t *testing.T) {
+	// Output file.
 	outputFile, err := os.Create("1337.pst")
 
 	if err != nil {
 		t.Fatalf("Failed to create output file: %+v", err)
 	}
 
-	writeOptions := NewWriteOptions(pst.FormatTypeUnicode, pst.EncryptionTypePermute)
+	// TODO - Unsupported Unicode4k, note that go-pst does not write OST files (I also don't have a test OST).
+	formatType := pst.FormatTypeUnicode
+	encryptionType := pst.EncryptionTypePermute
+
+	// Define writer.
+	writeContext, writeCancel := context.WithCancel(context.Background())
+	writeOptions := NewWriteOptions(formatType, encryptionType)
 	writer := NewWriter(writeOptions)
 
 	// Create messages to write.
-	messageProperties := &properties.Message{
+	var messageProperties []*properties.Message
+
+	messageProperties = append(messageProperties, &properties.Message{
 		Subject: proto.String("Hello world!"),
 		From:    proto.String("info@mooijtech.com"),
 		Body:    proto.String("go-pst now supports writing PST files."),
-	}
-	attachmentProperties := &properties.Attachment{
+	})
+
+	// Attachment properties.
+	var attachmentProperties []*properties.Attachment
+
+	attachmentProperties = append(attachmentProperties, &properties.Attachment{
 		AttachFilename:     proto.String("nudes.png"),
 		AttachLongFilename: proto.String("nudes.png"),
-	}
+	})
+
+	// Message attachments.
 	messageAttachments := []*AttachmentWriter{NewAttachmentWriter(attachmentProperties)}
 
+	// Message
 	message := NewMessageWriter(messageProperties, messageAttachments)
 
-	folderProperties := &properties.Folder{Name: "root"}
-	rootFolder := NewFolderWriter(folderProperties, []*MessageWriter{message})
+	// Folder
+	rootFolder, err := NewFolderWriter(outputFile, context.Background(), -1, formatType)
 
+	if err != nil {
+		t.Fatalf("Failed to create folder writer: %+v", err)
+	}
+
+	// Writer
 	writer.AddFolder(rootFolder)
 
 	if _, err := writer.WriteTo(outputFile); err != nil {
@@ -64,7 +86,7 @@ func TestWriteTableContext(t *testing.T) {
 		AttachLongFilename: proto.String("nudes.png"),
 	}
 
-	tableContextWriter := NewTableContextWriter(&attachmentProperties)
+	tableContextWriter := NewTableContextWriter(pst.FormatTypeUnicode, &attachmentProperties)
 
 	if _, err := tableContextWriter.WriteTo(os.Stdout); err != nil {
 		t.Fatalf("Failed to write Table Context: %+v", err)
