@@ -21,93 +21,93 @@ option go_package = "github.com/mooijtech/go-pst;properties";
 
 message AddressBook {
   // Contains the alias of an Address Book object, which is an alternative name by which the object can be identified.
-  optional string account = 1; // @gotags: msg:"1484831,omitempty"
+  optional string account = 1; // @gotags: msg:"14848-31,omitempty"
   // Contains the ID of a container on an NSPI server.
-  optional int32 address_book_container_id = 3; // @gotags: msg:"655333,omitempty"
+  optional int32 address_book_container_id = 3; // @gotags: msg:"65533-3,omitempty"
   // Specifies the maximum size, in bytes, of a message that a recipient can receive.
-  optional int32 address_book_delivery_content_length = 4; // @gotags: msg:"328743,omitempty"
+  optional int32 address_book_delivery_content_length = 4; // @gotags: msg:"32874-3,omitempty"
   // Contains the printable string version of the display name.
-  optional string address_book_display_name_printable = 5; // @gotags: msg:"1484731,omitempty"
+  optional string address_book_display_name_printable = 5; // @gotags: msg:"14847-31,omitempty"
   // Contains a value that indicates how to display an Address Book object in a table or as a recipient on a message.
-  optional int32 address_book_display_type_extended = 6; // @gotags: msg:"359873,omitempty"
+  optional int32 address_book_display_type_extended = 6; // @gotags: msg:"35987-3,omitempty"
   // Contains the number of external recipients in the distribution list.
-  optional int32 address_book_distribution_list_external_member_count = 7; // @gotags: msg:"360673,omitempty"
+  optional int32 address_book_distribution_list_external_member_count = 7; // @gotags: msg:"36067-3,omitempty"
   // Contains the total number of recipients in the distribution list.
-  optional int32 address_book_distribution_list_member_count = 8; // @gotags: msg:"360663,omitempty"
+  optional int32 address_book_distribution_list_member_count = 8; // @gotags: msg:"36066-3,omitempty"
   // Contains custom values defined and populated by the organization that modified the display templates.
-  optional string address_book_extension_attribute1 = 12; // @gotags: msg:"3281331,omitempty"
+  optional string address_book_extension_attribute1 = 12; // @gotags: msg:"32813-31,omitempty"
   // Contains custom values defined and populated by the organization that modified the display templates.
-  optional string address_book_extension_attribute10 = 13; // @gotags: msg:"3282231,omitempty"
+  optional string address_book_extension_attribute10 = 13; // @gotags: msg:"32822-31,omitempty"
   // Contains custom values defined and populated by the organization that modified the display templates.
-  optional string address_book_extension_attribute11 = 14; // @gotags: msg:"3592731,omitempty"
+  optional string address_book_extension_attribute11 = 14; // @gotags: msg:"35927-31,omitempty"
   // Contains custom values defined and populated by the organization that modified the display templates.
-  optional string address_book_extension_attribute12 = 15; // @gotags: msg:"3592831,omitempty"
+  optional string address_book_extension_attribute12 = 15; // @gotags: msg:"35928-31,omitempty"
   // Contains custom values defined and populated by the organization that modified the display templates.
-  optional string address_book_extension_attribute13 = 16; // @gotags: msg:"3592931,omitempty"
+  optional string address_book_extension_attribute13 = 16; // @gotags: msg:"35929-31,omitempty"
   // Contains custom values defined and populated by the organization that modified the display templates.
-  optional string address_book_extension_attribute14 = 17; // @gotags: msg:"3593631,omitempty"
+  optional string address_book_extension_attribute14 = 17; // @gotags: msg:"35936-31,omitempty"
   // Contains custom values defined and populated by the organization that modified the display templates.
-  optional string address_book_extension_attribute15 = 18; // @gotags: msg:"3593731,omitempty"
+  optional string address_book_extension_attribute15 = 18; // @gotags: msg:"35937-31,omitempty"
   // Contains custom values defined and populated by the organization that modified the display templates.
-  optional string address_book_extension_attribute2 = 19; // @gotags: msg:"3281431,omitempty"
+  optional string address_book_extension_attribute2 = 19; // @gotags: msg:"32814-31,omitempty"
   // Contains custom values defined and populated by the organization that modified the display templates.
-  optional string address_book_extension_attribute3 = 20; // @gotags: msg:"3281531,omitempty"
+  optional string address_book_extension_attribute3 = 20; // @gotags: msg:"32815-31,omitempty"
   // Contains custom values defined and populated by the organization that modified the display templates.
-  optional string address_book_extension_attribute4 = 21; // @gotags: msg:"3281631,omitempty"
+  optional string address_book_extension_attribute4 = 21; // @gotags: msg:"32816-31,omitempty"
   // Contains custom values defined and populated by the organization that modified the display templates.
-  optional string address_book_extension_attribute5 = 22; // @gotags: msg:"3281731,omitempty"
+  optional string address_book_extension_attribute5 = 22; // @gotags: msg:"32817-31,omitempty"
   // Contains custom values defined and populated by the organization that modified the display templates.
-  optional string address_book_extension_attribute6 = 23; // @gotags: msg:"3281831,omitempty"
+  optional string address_book_extension_attribute6 = 23; // @gotags: msg:"32818-31,omitempty"
   // Contains custom values defined and populated by the organization that modified the display templates.
-  optional string address_book_extension_attribute7 = 24; // @gotags: msg:"3281931,omitempty"
+  optional string address_book_extension_attribute7 = 24; // @gotags: msg:"32819-31,omitempty"
   // Contains custom values defined and populated by the organization that modified the display templates.
-  optional string address_book_extension_attribute8 = 25; // @gotags: msg:"3282031,omitempty"
+  optional string address_book_extension_attribute8 = 25; // @gotags: msg:"32820-31,omitempty"
   // Contains custom values defined and populated by the organization that modified the display templates.
-  optional string address_book_extension_attribute9 = 26; // @gotags: msg:"3282131,omitempty"
+  optional string address_book_extension_attribute9 = 26; // @gotags: msg:"32821-31,omitempty"
   // This property is deprecated and is to be ignored.
-  optional string address_book_folder_pathname = 27; // @gotags: msg:"3277231,omitempty"
+  optional string address_book_folder_pathname = 27; // @gotags: msg:"32772-31,omitempty"
   // Indicates whether the distribution list represents a departmental group.
-  optional bool address_book_hierarchical_is_hierarchical_group = 30; // @gotags: msg:"3606111,omitempty"
+  optional bool address_book_hierarchical_is_hierarchical_group = 30; // @gotags: msg:"36061-11,omitempty"
   // Contains the distinguished name (DN) of either the root Department object or the root departmental group in the department hierarchy for the organization.
-  optional string address_book_hierarchical_root_department = 32; // @gotags: msg:"3599230,omitempty"
+  optional string address_book_hierarchical_root_department = 32; // @gotags: msg:"35992-30,omitempty"
   // Contains the DN expressed in the X500 DN format. This property is returned from a name service provider interface (NSPI) server as a PtypEmbeddedTable. Otherwise, the data type is PtypString8.
-  optional string address_book_home_message_database = 34; // @gotags: msg:"3277430,omitempty"
+  optional string address_book_home_message_database = 34; // @gotags: msg:"32774-30,omitempty"
   // Contains a Boolean value of TRUE if it is possible to create Address Book objects in that container, and FALSE otherwise.
-  optional bool address_book_is_master = 35; // @gotags: msg:"6553111,omitempty"
+  optional bool address_book_is_master = 35; // @gotags: msg:"65531-11,omitempty"
   // Lists all of the distribution lists for which the object is a member. This property is returned from an NSPI server as a PtypEmbeddedTable. Otherwise, the data type is PtypString8.
-  optional string address_book_is_member_of_distribution_list = 36; // @gotags: msg:"3277630,omitempty"
+  optional string address_book_is_member_of_distribution_list = 36; // @gotags: msg:"32776-30,omitempty"
   // Contains the DN of the mail user's manager.
-  optional string address_book_manager_distinguished_name = 39; // @gotags: msg:"3277331,omitempty"
+  optional string address_book_manager_distinguished_name = 39; // @gotags: msg:"32773-31,omitempty"
   // Indicates whether moderation is enabled for the mail user or distribution list.
-  optional bool address_book_moderation_enabled = 41; // @gotags: msg:"3602111,omitempty"
+  optional bool address_book_moderation_enabled = 41; // @gotags: msg:"36021-11,omitempty"
   // Contains the DN of the Address Book object.
-  optional string address_book_object_distinguished_name = 43; // @gotags: msg:"3282831,omitempty"
+  optional string address_book_object_distinguished_name = 43; // @gotags: msg:"32828-31,omitempty"
   // Contains the DN of the Organization object of the mail user's organization.
-  optional string address_book_organizational_unit_root_distinguished_name = 45; // @gotags: msg:"3600831,omitempty"
+  optional string address_book_organizational_unit_root_distinguished_name = 45; // @gotags: msg:"36008-31,omitempty"
   // Contains the phonetic representation of the PidTagCompanyName property (section 2.639).
-  optional string address_book_phonetic_company_name = 49; // @gotags: msg:"3598531,omitempty"
+  optional string address_book_phonetic_company_name = 49; // @gotags: msg:"35985-31,omitempty"
   // Contains the phonetic representation of the PidTagDepartmentName property (section 2.672).
-  optional string address_book_phonetic_department_name = 50; // @gotags: msg:"3598431,omitempty"
+  optional string address_book_phonetic_department_name = 50; // @gotags: msg:"35984-31,omitempty"
   // Contains the phonetic representation of the PidTagDisplayName property (section 2.676).
-  optional string address_book_phonetic_display_name = 51; // @gotags: msg:"3598631,omitempty"
+  optional string address_book_phonetic_display_name = 51; // @gotags: msg:"35986-31,omitempty"
   // Contains the phonetic representation of the PidTagGivenName property (section 2.714).
-  optional string address_book_phonetic_given_name = 52; // @gotags: msg:"3598231,omitempty"
+  optional string address_book_phonetic_given_name = 52; // @gotags: msg:"35982-31,omitempty"
   // Contains the phonetic representation of the PidTagSurname property (section 2.1036).
-  optional string address_book_phonetic_surname = 53; // @gotags: msg:"3598331,omitempty"
+  optional string address_book_phonetic_surname = 53; // @gotags: msg:"35983-31,omitempty"
   // Contains the maximum occupancy of the room.
-  optional int32 address_book_room_capacity = 57; // @gotags: msg:"20553,omitempty"
+  optional int32 address_book_room_capacity = 57; // @gotags: msg:"2055-3,omitempty"
   // Contains a description of the Resource object.
-  optional string address_book_room_description = 59; // @gotags: msg:"205731,omitempty"
+  optional string address_book_room_description = 59; // @gotags: msg:"2057-31,omitempty"
   // Contains a signed integer that specifies the seniority order of Address Book objects that represent members of a department and are referenced by a Department object or departmental group, with larger values specifying members that are more senior.
-  optional int32 address_book_seniority_index = 61; // @gotags: msg:"360003,omitempty"
+  optional int32 address_book_seniority_index = 61; // @gotags: msg:"36000-3,omitempty"
   // Contains the foreign system email address of an Address Book object.
-  optional string address_book_target_address = 62; // @gotags: msg:"3278531,omitempty"
+  optional string address_book_target_address = 62; // @gotags: msg:"32785-31,omitempty"
   // Contains a filter value used in ambiguous name resolution.
-  optional string anr = 65; // @gotags: msg:"1383631,omitempty"
+  optional string anr = 65; // @gotags: msg:"13836-31,omitempty"
   // Contains a bitmask of flags that describe capabilities of an address book container.
-  optional int32 container_flags = 66; // @gotags: msg:"138243,omitempty"
+  optional int32 container_flags = 66; // @gotags: msg:"13824-3,omitempty"
   // Contains an integer value that indicates how to display an Address Book object in a table or as an addressee on a message.
-  optional int32 display_type = 67; // @gotags: msg:"145923,omitempty"
+  optional int32 display_type = 67; // @gotags: msg:"14592-3,omitempty"
   // Contains an integer value that indicates how to display an Address Book object in a table or as a recipient on a message.
-  optional int32 display_type_ex = 68; // @gotags: msg:"145973,omitempty"
+  optional int32 display_type_ex = 68; // @gotags: msg:"14597-3,omitempty"
 }

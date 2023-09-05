@@ -21,24 +21,17 @@ import (
 	"github.com/mooijtech/go-pst/v6/pkg"
 	"github.com/mooijtech/go-pst/v6/pkg/properties"
 	"github.com/rotisserie/eris"
-	"golang.org/x/text/encoding"
 	"os"
 	"testing"
 	"time"
-
-	charsets "github.com/emersion/go-message/charset"
 )
 
-func TestExample(t *testing.T) {
-	pst.ExtendCharsets(func(name string, enc encoding.Encoding) {
-		charsets.RegisterEncoding(name, enc)
-	})
-
+func TestRead(t *testing.T) {
 	startTime := time.Now()
 
 	fmt.Println("Initializing...")
 
-	reader, err := os.Open("../data/enron.pst")
+	reader, err := os.Open("../data/mcflip.pst")
 
 	if err != nil {
 		panic(fmt.Sprintf("Failed to open PST file: %+v\n", err))
@@ -119,7 +112,7 @@ func TestExample(t *testing.T) {
 				if attachment.GetAttachLongFilename() != "" {
 					attachmentOutputPath = fmt.Sprintf("attachments/%d-%s", attachment.Identifier, attachment.GetAttachLongFilename())
 				} else {
-					attachmentOutputPath = fmt.Sprintf("attachments/UNKNOWN_%d", attachment.Identifier)
+					attachmentOutputPath = "attachments/UNKNOWN_testing"
 				}
 
 				attachmentOutput, err := os.Create(attachmentOutputPath)

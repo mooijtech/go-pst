@@ -21,13 +21,13 @@ option go_package = "github.com/mooijtech/go-pst;properties";
 
 message Spam {
   // Indicates whether email recipients are to be added to the safe senders list.
-  optional int32 junk_add_recipients_to_safe_senders_list = 2; // @gotags: msg:"248353,omitempty"
+  optional int32 junk_add_recipients_to_safe_senders_list = 2; // @gotags: msg:"24835-3,omitempty"
   // Indicates whether email addresses of the contacts in the Contacts folder are treated in a special way with respect to the spam filter.
-  optional int32 junk_include_contacts = 3; // @gotags: msg:"248323,omitempty"
+  optional int32 junk_include_contacts = 3; // @gotags: msg:"24832-3,omitempty"
   // Indicates whether messages identified as spam can be permanently deleted.
-  optional int32 junk_permanently_delete = 4; // @gotags: msg:"248343,omitempty"
+  optional int32 junk_permanently_delete = 4; // @gotags: msg:"24834-3,omitempty"
   // Indicated whether the phishing stamp on a message is to be ignored.
-  optional bool junk_phishing_enable_links = 5; // @gotags: msg:"2483911,omitempty"
+  optional bool junk_phishing_enable_links = 5; // @gotags: msg:"24839-11,omitempty"
   // Indicates how aggressively incoming email is to be sent to the Junk Email folder.
-  optional int32 junk_threshold = 6; // @gotags: msg:"248333,omitempty"
+  optional int32 junk_threshold = 6; // @gotags: msg:"24833-3,omitempty"
 }

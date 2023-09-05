@@ -17,7 +17,10 @@
 package pst
 
 import (
+	"bytes"
+	"crypto/rand"
 	"encoding/binary"
+	"github.com/mooijtech/go-pst/v6/pkg/writer"
 	"github.com/pkg/errors"
 	"github.com/rotisserie/eris"
 	"io"
@@ -129,6 +132,7 @@ func (file *File) GetBTreeNodeLevel(btreeNode []byte) uint8 {
 }
 
 // BTreeNode represents an entry in a b-tree node.
+// Fields are set depending on the NodeLevel (branch or leaf).
 type BTreeNode struct {
 	// Identifier is only unique to the node level.
 	Identifier                 Identifier `json:"identifier"`
@@ -137,6 +141,40 @@ type BTreeNode struct {
 	LocalDescriptorsIdentifier Identifier `json:"localDescriptorsIdentifier"`
 	Size                       uint16     `json:"size"`
 	NodeLevel                  uint8      `json:"nodeLevel"`
+}
+
+// NewBTreeNodeBranch creates a new BTreeNode with a NodeLevel > 0
+func NewBTreeNodeBranch(identifier Identifier) BTreeNode {
+	return BTreeNode{
+		Identifier: identifier,
+	}
+}
+
+// NewBTreeNodeLeaf creates a new BTreeNode leaf with a NodeLevel == 0
+func NewBTreeNodeLeaf(identifier Identifier) BTreeNode {
+	return BTreeNode{
+		Identifier: identifier,
+		NodeLevel:  0,
+	}
+}
+
+// WriteTo writes the byte representation of the B-Tree node.
+func (btreeNode *BTreeNode) WriteTo(writer io.Writer) (int64, error) {
+	if btreeNode.NodeLevel > 0 {
+		// Branch
+		btreeNodeBuffer := bytes.NewBuffer(make([]byte, 0))
+
+		//
+
+		return btreeNodeBuffer.WriteTo(writer)
+	} else {
+		// Leaf
+		btreeNodeBuffer := bytes.NewBuffer(make([]byte, 0))
+
+		//
+
+		return btreeNodeBuffer.WriteTo(writer)
+	}
 }
 
 // NewBTreeNodeReader is used by the Heap-on-Node.
@@ -265,6 +303,30 @@ func GetIdentifierSize(formatType FormatType) uint8 {
 // TODO - Document the int types per use case and use separate types.
 type Identifier int64
 
+// NewIdentifier creates a new identifier.
+// Used by the writer so the B-Tree node can be identified.
+func NewIdentifier(formatType FormatType) (Identifier, error) {
+	var identifierSize int
+
+	switch formatType {
+	case FormatTypeUnicode:
+		identifierSize = 8
+	case FormatTypeANSI:
+		identifierSize = 4
+	default:
+		// TODO - Support FormatTypeUnicode4k
+		return 0, ErrFormatTypeUnsupported
+	}
+
+	identifierBytes := make([]byte, identifierSize)
+
+	if _, err := rand.Read(identifierBytes); err != nil {
+		return 0, eris.Wrap(err, "failed to read random bytes using crypto/rand")
+	}
+
+	return Identifier(binary.LittleEndian.Uint64(identifierBytes)), nil
+}
+
 // Constants defining the special b-tree node identifiers.
 const (
 	IdentifierRootFolder   Identifier = 290
@@ -279,6 +341,19 @@ func (identifier Identifier) GetType() IdentifierType {
 	// 11111 (binary) = 0x1F (hex), which with bitwise ANDing extracts the first 5 bits.
 	// See: https://www.rapidtables.com/convert/number/binary-to-hex.html
 	return IdentifierType(identifier & 0x1F)
+}
+
+// Bytes returns the byte representation of the pst.Identifier.
+func (identifier Identifier) Bytes(formatType FormatType) []byte {
+	switch formatType {
+	case FormatTypeUnicode:
+		return writer.GetUint64(uint64(identifier))
+	case FormatTypeANSI:
+		return writer.GetUint32(uint32(identifier))
+	default:
+		// TODO - Support Unicode4k
+		panic(ErrFormatTypeUnsupported)
+	}
 }
 
 // IdentifierType represents the type of Identifier.
@@ -362,12 +437,12 @@ func GetBTreeNodeEntrySize(btreeNodeEntryData []byte, formatType FormatType) uin
 }
 
 // BTreeType represents either the node b-tree or block b-tree.
-type BTreeType uint8
+type BTreeType byte
 
 // Constants defining the b-tree types.
 const (
-	BTreeTypeNode BTreeType = iota
-	BTreeTypeBlock
+	BTreeTypeNode  BTreeType = 129
+	BTreeTypeBlock BTreeType = 128
 )
 
 // GetParentBTreeNodeLevel returns the level of the b-tree node.

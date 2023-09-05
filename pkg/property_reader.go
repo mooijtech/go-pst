@@ -20,6 +20,7 @@ import (
 	"encoding/binary"
 	"fmt"
 	"github.com/tinylib/msgp/msgp"
+	"io"
 	"math"
 	"time"
 
@@ -59,7 +60,7 @@ func NewPropertyReader(property Property, heapOnNode *HeapOnNode, file *File, lo
 // WriteMessagePackValue writes the Message Pack format of the property value.
 // Used to populate struct fields.
 func (propertyReader *PropertyReader) WriteMessagePackValue(writer *msgp.Writer) error {
-	key := fmt.Sprintf("%d%d", propertyReader.Property.ID, propertyReader.Property.Type)
+	key := fmt.Sprintf("%d-%d", propertyReader.Property.ID, propertyReader.Property.Type)
 
 	switch propertyReader.Property.Type {
 	case PropertyTypeString:
@@ -160,6 +161,10 @@ func (propertyReader *PropertyReader) WriteMessagePackValue(writer *msgp.Writer)
 		}
 
 		return nil
+	case PropertyTypeObject:
+		//
+		//panic("Got object!")
+		return ErrPropertyNoData
 	default:
 		// TODO - Write Nil?
 		return ErrPropertyNoData
@@ -310,6 +315,14 @@ func (propertyReader *PropertyReader) GetBoolean() (bool, error) {
 // ReadAt reads the underlying Heap-on-Node.
 func (propertyReader *PropertyReader) ReadAt(outputBuffer []byte, offset int64) (int, error) {
 	return propertyReader.HeapOnNodeReader.ReadAt(outputBuffer, offset)
+}
+
+func (propertyReader *PropertyReader) Read(outputBuffer []byte) (int, error) {
+	// TODO - Just use ReadAt for now
+
+	sectionReader := io.NewSectionReader(propertyReader.HeapOnNodeReader, 0, propertyReader.Size())
+
+	return sectionReader.Read(outputBuffer)
 }
 
 // Size returns the size of the Heap-on-Node.
