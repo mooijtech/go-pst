@@ -26,31 +26,36 @@ import (
 
 // Writer writes PST files.
 type Writer struct {
-	// Writer represents the io.Writer used while writing.
-	Writer io.Writer
+	// Writer represents the writer.
+	Writer io.WriteSeeker
 	// WriteGroup represents the writers running in Goroutines.
 	WriteGroup *errgroup.Group
 	// WriteOptions represents options used while writing.
 	WriteOptions WriteOptions
-	// FolderWriteChannel represents a Go channel queue for writing folders.
-	FolderWriteChannel chan *FolderWriter
-	// FolderWriteCallback represents a Go channel callback for when a folder is written.
-	FolderWriteCallback chan WriteCallbackResponse
+	// FolderWriter represents the writer for folders.
+	FolderWriter *FolderWriter
+	// FolderWriteCallback represents the callback which is called after a folder is written.
+	FolderWriteCallback chan int64
 }
 
 // NewWriter returns a writer for PST files.
-func NewWriter(writer io.Writer, writeGroup *errgroup.Group, writeOptions WriteOptions) *Writer {
-	pstWriter := &Writer{
-		Writer:             writer,
-		WriteGroup:         writeGroup,
-		WriteOptions:       writeOptions,
-		FolderWriteChannel: make(chan *FolderWriter),
+func NewWriter(writer io.WriteSeeker, writeGroup *errgroup.Group, writeOptions WriteOptions) (*Writer, error) {
+	folderWriteCallback := make(chan int64)
+	folderWriter, err := NewFolderWriter(writer, writeGroup, writeOptions.FormatType, folderWriteCallback)
+
+	if err != nil {
+		return nil, eris.Wrap(err, "failed to create folder writer")
 	}
 
-	// Start write channel.
-	go pstWriter.StartFolderWriteChannel(writeGroup)
+	pstWriter := &Writer{
+		Writer:              writer,
+		WriteGroup:          writeGroup,
+		WriteOptions:        writeOptions,
+		FolderWriter:        folderWriter,
+		FolderWriteCallback: folderWriteCallback,
+	}
 
-	return pstWriter
+	return pstWriter, nil
 }
 
 // WriteOptions defines the options used during writing.
@@ -69,45 +74,10 @@ func NewWriteOptions(formatType FormatType, encryptionType EncryptionType) Write
 	}
 }
 
-// WriteCallbackResponse represents a response of a completed write.
-type WriteCallbackResponse struct {
-	// Written represents the amount of bytes written.
-	Written int64
-	// Errors are already returned by calling Wait on the writeGroup (errgroup.Group).
-}
-
-// NewWriteCallbackResponse creates a new WriteCallbackResponse.
-func NewWriteCallbackResponse(written int64) WriteCallbackResponse {
-	return WriteCallbackResponse{
-		Written: written,
-	}
-}
-
-// AddFolders adds a pst.Folder to write.
-// Must contain at least a root folder (pst.IdentifierRootFolder).
-func (pstWriter *Writer) AddFolders(folders ...*FolderWriter) {
-	for _, folder := range folders {
-		pstWriter.FolderWriteChannel <- folder
-	}
-}
-
-// StartFolderWriteChannel starts the Go channel for writing folders.
-func (pstWriter *Writer) StartFolderWriteChannel(writeGroup *errgroup.Group) {
-	// Listen for folders to write.
-	for folder := range pstWriter.FolderWriteChannel {
-		writeGroup.Go(func() error {
-			// Write the folder.
-			folderWrittenSize, err := folder.WriteTo(pstWriter.Writer)
-
-			if err != nil {
-				return eris.Wrap(err, "failed to write folder")
-			}
-
-			pstWriter.FolderWriteCallback <- NewWriteCallbackResponse(folderWrittenSize)
-
-			return nil
-		})
-	}
+// AddFolders adds the folders to the FolderWriter write queue.
+// See AddRootFolder.
+func (pstWriter *Writer) AddFolders(folders ...*Folder) {
+	pstWriter.FolderWriter.AddFolders(folders...)
 }
 
 // WriteTo writes the PST file.
@@ -132,12 +102,14 @@ func (pstWriter *Writer) StartFolderWriteChannel(writeGroup *errgroup.Group) {
 // The pst.PropertyContext contains a list of properties ([]pst.Property) of the message, we can write this with PropertyWriter.
 //
 // Combining these structures we make up a PST file to write.
+// Each writer communicates with Go channels and Goroutines.
 func (pstWriter *Writer) WriteTo(writer io.Writer) (int64, error) {
 	var totalSize int64
 
-	// Wait for responses that all folders are written.
-	for writeCallbackResponse := range pstWriter.FolderWriteCallback {
-		totalSize += writeCallbackResponse.Written
+	// Wait for all folders to be written.
+	// "Share memory by communicating; don't communicate by sharing memory."
+	for folderWrittenSize := range pstWriter.FolderWriter.FolderWriteCallback {
+		totalSize += folderWrittenSize
 	}
 
 	// Wait for channels to finish.
@@ -161,7 +133,8 @@ func (pstWriter *Writer) WriteHeader(writer io.Writer, totalSize int64, rootNode
 	var headerSize int
 
 	switch pstWriter.WriteOptions.FormatType {
-	case FormatTypeUnicode:
+	case FormatTypeUnicode4k, FormatTypeUnicode:
+		// TODO - Where is the documentation for Unicode4k?
 		// 4+4+2+2+2+1+1+4+4+8+8+4+128+8+ROOT+4+128+128+1+1+2+8+4+3+1+32
 		// Header + header root
 		headerSize = 492 + 72
@@ -170,7 +143,7 @@ func (pstWriter *Writer) WriteHeader(writer io.Writer, totalSize int64, rootNode
 		// Header + header root
 		headerSize = 472 + 40
 	default:
-		panic(ErrFormatTypeUnsupported)
+		return 0, ErrFormatTypeUnsupported
 	}
 
 	header := bytes.NewBuffer(make([]byte, headerSize))
@@ -181,29 +154,36 @@ func (pstWriter *Writer) WriteHeader(writer io.Writer, totalSize int64, rootNode
 
 	// File format version
 	switch pstWriter.WriteOptions.FormatType {
-	case FormatTypeUnicode:
+	case FormatTypeUnicode4k, FormatTypeUnicode:
+		// TODO - Where is the documentation for Unicode4k?
 		// MUST be greater than 23 if the file is a Unicode PST file.
 		header.Write([]byte{30})
 	case FormatTypeANSI:
 		// This value MUST be 14 or 15 if the file is an ANSI PST file.
 		header.Write([]byte{15})
 	default:
-		panic(ErrFormatTypeUnsupported)
+		return 0, ErrFormatTypeUnsupported
 	}
 
-	header.Write([]byte{19})      // Client file format version.
-	header.Write([]byte{1})       // Platform Create
-	header.Write([]byte{1})       // Platform Access
-	header.Write(make([]byte, 4)) // Reserved1
-	header.Write(make([]byte, 4)) // Reserved2
+	// Client file format version.
+	header.Write([]byte{19})
+	// Platform Create
+	header.Write([]byte{1})
+	// Platform Access
+	header.Write([]byte{1})
+	// Reserved1
+	header.Write(make([]byte, 4))
+	// Reserved2
+	header.Write(make([]byte, 4))
 
-	if pstWriter.WriteOptions.FormatType == FormatTypeUnicode {
-		// Padding (bidUnused) for Unicode.
+	// Padding (bidUnused) for Unicode.
+	if pstWriter.WriteOptions.FormatType == FormatTypeUnicode || pstWriter.WriteOptions.FormatType == FormatTypeUnicode4k {
 		header.Write(make([]byte, 8))
 	}
+
+	// Next BID (bidNextB) for ANSI only.
+	// go-pst does not read this.
 	if pstWriter.WriteOptions.FormatType == FormatTypeANSI {
-		// Next BID (bidNextB) for ANSI only.
-		// go-pst does not read this.
 		header.Write(make([]byte, 4))
 	}
 
@@ -211,10 +191,9 @@ func (pstWriter *Writer) WriteHeader(writer io.Writer, totalSize int64, rootNode
 	// This can be used to increment a value for generating identifiers used by B-Tree nodes.
 	// I assume it's faster to generate an identifier with crypto/rand instead of having to read and update this value.
 	// go-pst does not read this.
-	if pstWriter.WriteOptions.FormatType == FormatTypeUnicode {
+	if pstWriter.WriteOptions.FormatType == FormatTypeUnicode4k || pstWriter.WriteOptions.FormatType == FormatTypeUnicode {
 		header.Write(make([]byte, 8))
-	}
-	if pstWriter.WriteOptions.FormatType == FormatTypeANSI {
+	} else if pstWriter.WriteOptions.FormatType == FormatTypeANSI {
 		header.Write(make([]byte, 4))
 	}
 
@@ -224,11 +203,13 @@ func (pstWriter *Writer) WriteHeader(writer io.Writer, totalSize int64, rootNode
 
 	// Special Internal B-Tree nodes.
 	// References https://github.com/mooijtech/go-pst/blob/main/docs/README.md#special-internal-nids
-	header.Write(make([]byte, 128))
+	if _, err := pstWriter.WriteInternalBTreeNodes(header); err != nil {
+		return 0, eris.Wrap(err, "failed to write internal B-Tree nodes")
+	}
 
-	if pstWriter.WriteOptions.FormatType == FormatTypeUnicode {
-		// Unused space; MUST be set to zero. Unicode PST file format only.
-		// (qwUnused)
+	// Unused space; MUST be set to zero. Unicode PST file format only.
+	// (qwUnused)
+	if pstWriter.WriteOptions.FormatType == FormatTypeUnicode4k || pstWriter.WriteOptions.FormatType == FormatTypeUnicode {
 		header.Write(make([]byte, 8))
 	}
 
@@ -239,28 +220,30 @@ func (pstWriter *Writer) WriteHeader(writer io.Writer, totalSize int64, rootNode
 
 	// Unused alignment bytes; MUST be set to zero.
 	// Unicode PST file format only.
-	if pstWriter.WriteOptions.FormatType == FormatTypeUnicode {
+	if pstWriter.WriteOptions.FormatType == FormatTypeUnicode4k || pstWriter.WriteOptions.FormatType == FormatTypeUnicode {
 		header.Write(make([]byte, 4))
 	}
 
+	// Fill both FMaps (deprecated).
 	for i := 0; i < 128+128; i++ {
-		// Fill both FMap (deprecated).
 		header.Write([]byte{255})
 	}
 
 	// bSentinel
 	header.Write([]byte{128})
 	// Encryption. Indicates how the data within the PST file is encoded. (bCryptMethod)
-	header.Write([]byte{byte(pstWriter.WriteOptions.EncryptionType)})
+	header.WriteByte(byte(pstWriter.WriteOptions.EncryptionType))
 	// rgbReserved
 	header.Write(make([]byte, 2))
 
-	if pstWriter.WriteOptions.FormatType == FormatTypeUnicode {
-		// Next BID. go-pst does not read this value (bidNextB)
+	if pstWriter.WriteOptions.FormatType == FormatTypeUnicode4k || pstWriter.WriteOptions.FormatType == FormatTypeUnicode {
+		// Next BID.
+		// go-pst does not read this value (bidNextB)
 		header.Write(make([]byte, 8))
 
 		// The 32-bit CRC value of the 516 bytes of data starting from wMagicClient to bidNextB, inclusive.
 		// Unicode PST file format only. (dwCRCFull)
+		// TODO - Check matches the CRC algorithm used by Microsoft.
 		header.Write([]byte{byte(crc32.ChecksumIEEE(header.Bytes()[4 : 4+516]))})
 	}
 
@@ -285,23 +268,24 @@ func (pstWriter *Writer) WriteHeader(writer io.Writer, totalSize int64, rootNode
 
 // WriteInternalBTreeNodes writes the special internal B-Tree nodes.
 // References https://github.com/mooijtech/go-pst/blob/main/docs/README.md#special-internal-nids
-func (btreeWriter *BTreeWriter) WriteInternalBTreeNodes(writer io.Writer) (int64, error) {
-	internalIdentifiersBuffer := bytes.NewBuffer(make([]byte, 32*GetIdentifierSize(btreeWriter.FormatType)))
+func (pstWriter *Writer) WriteInternalBTreeNodes(writer io.Writer) (int64, error) {
+	internalIdentifiersBuffer := bytes.NewBuffer(make([]byte, 128))
+	formatType := pstWriter.WriteOptions.FormatType
 
-	internalIdentifiersBuffer.Write(IdentifierMessageStore.Bytes(btreeWriter.FormatType))
-	internalIdentifiersBuffer.Write(IdentifierNameToIDMap.Bytes(btreeWriter.FormatType))
-	internalIdentifiersBuffer.Write(IdentifierNormalFolderTemplate.Bytes(btreeWriter.FormatType))
-	internalIdentifiersBuffer.Write(IdentifierSearchFolderTemplate.Bytes(btreeWriter.FormatType))
-	internalIdentifiersBuffer.Write(IdentifierRootFolder.Bytes(btreeWriter.FormatType))
-	internalIdentifiersBuffer.Write(IdentifierSearchManagementQueue.Bytes(btreeWriter.FormatType))
-	internalIdentifiersBuffer.Write(IdentifierSearchActivityList.Bytes(btreeWriter.FormatType))
-	internalIdentifiersBuffer.Write(IdentifierReserved1.Bytes(btreeWriter.FormatType))
-	internalIdentifiersBuffer.Write(IdentifierSearchDomainObject.Bytes(btreeWriter.FormatType))
-	internalIdentifiersBuffer.Write(IdentifierSearchGathererQueue.Bytes(btreeWriter.FormatType))
-	internalIdentifiersBuffer.Write(IdentifierSearchGathererDescriptor.Bytes(btreeWriter.FormatType))
-	internalIdentifiersBuffer.Write(IdentifierReserved2.Bytes(btreeWriter.FormatType))
-	internalIdentifiersBuffer.Write(IdentifierReserved3.Bytes(btreeWriter.FormatType))
-	internalIdentifiersBuffer.Write(IdentifierSearchGathererFolderQueue.Bytes(btreeWriter.FormatType))
+	internalIdentifiersBuffer.Write(IdentifierMessageStore.Bytes(formatType))
+	internalIdentifiersBuffer.Write(IdentifierNameToIDMap.Bytes(formatType))
+	internalIdentifiersBuffer.Write(IdentifierNormalFolderTemplate.Bytes(formatType))
+	internalIdentifiersBuffer.Write(IdentifierSearchFolderTemplate.Bytes(formatType))
+	internalIdentifiersBuffer.Write(IdentifierRootFolder.Bytes(formatType))
+	internalIdentifiersBuffer.Write(IdentifierSearchManagementQueue.Bytes(formatType))
+	internalIdentifiersBuffer.Write(IdentifierSearchActivityList.Bytes(formatType))
+	internalIdentifiersBuffer.Write(IdentifierReserved1.Bytes(formatType))
+	internalIdentifiersBuffer.Write(IdentifierSearchDomainObject.Bytes(formatType))
+	internalIdentifiersBuffer.Write(IdentifierSearchGathererQueue.Bytes(formatType))
+	internalIdentifiersBuffer.Write(IdentifierSearchGathererDescriptor.Bytes(formatType))
+	internalIdentifiersBuffer.Write(IdentifierReserved2.Bytes(formatType))
+	internalIdentifiersBuffer.Write(IdentifierReserved3.Bytes(formatType))
+	internalIdentifiersBuffer.Write(IdentifierSearchGathererFolderQueue.Bytes(formatType))
 
 	return internalIdentifiersBuffer.WriteTo(writer)
 }

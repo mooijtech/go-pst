@@ -17,7 +17,6 @@
 package pst
 
 import (
-	"context"
 	"github.com/rotisserie/eris"
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/protobuf/proto"
@@ -30,42 +29,45 @@ type MessageWriter struct {
 	Writer io.Writer
 	// FormatType represents the FormatType used while writing.
 	FormatType FormatType
-	// PropertyWriter represents the writer for properties to the PropertyContextWriter.
-	PropertyWriter *PropertyWriter
 	// AttachmentWriter represents a writer for attachments.
 	AttachmentWriter *AttachmentWriter
 	// PropertyContextWriter writes the pst.PropertyContext of a pst.Message.
 	PropertyContextWriter *PropertyContextWriter
 	// MessageWriteChannel represents the Go channel used to process writing messages.
-	MessageWriteChannel chan *MessageWriter
-	// TODO - Do we need this?
-	//MessageWriteCallback represents the callback called for each written message.
-	//MessageWriteCallback chan *
+	MessageWriteChannel chan *WritableMessage
+	// MessageWriteCallback represents the callback called for each written message.
+	MessageWriteCallback chan WriteCallbackResponse
 	// Identifier represents the identifier of this message, which is used in the B-Tree.
 	Identifier Identifier
 }
 
-//type MessageWriteCallback func()
-
 // NewMessageWriter creates a new MessageWriter.
-func NewMessageWriter(writer io.Writer, writeGroup *errgroup.Group, formatType FormatType) *MessageWriter {
-	propertyWriteCallbackChannel := make(chan Property)
+func NewMessageWriter(writer io.Writer, writeGroup *errgroup.Group, messageWriteCallback chan WriteCallbackResponse, formatType FormatType) *MessageWriter {
+	// propertyWriteCallbackChannel is used to wait for the PropertyContextWriter to be finished (in WriteTo).
+	propertyWriteCallbackChannel := make(chan WriteCallbackResponse)
 
-	return &MessageWriter{
+	messageWriter := &MessageWriter{
 		Writer:                writer,
 		FormatType:            formatType,
-		PropertyWriter:        NewPropertyWriter(writeGroup, propertyWriteCallbackChannel),
-		PropertyContextWriter: NewPropertyContextWriter(writeGroup),
+		AttachmentWriter:      NewAttachmentWriter(writer, writeGroup, formatType),
+		PropertyContextWriter: NewPropertyContextWriter(writer, writeGroup, propertyWriteCallbackChannel, formatType, BTreeTypeBlock),
+		MessageWriteCallback:  messageWriteCallback,
 	}
 
-	propertyWriteCallbackChannel := NewMessageCallbackHandler()
+	// Attached the folder.
+	messageWriter.Identifier = folderIdentifier + 12
+
+	// Start the message write channel which processes writing messages.
+	go messageWriter.StartMessageWriteChannel(writeGroup)
+
+	return messageWriter
 }
 
 // StartMessageWriteChannel receives messages to write.
 func (messageWriter *MessageWriter) StartMessageWriteChannel(writeGroup *errgroup.Group) {
-	writeGroup.Go(func() error {
-		// Listen for messages to write.
-		for receivedMessage := range messageWriter.MessageWriteChannel {
+	// The caller already starts a Goroutine.
+	for receivedMessage := range messageWriter.MessageWriteChannel {
+		writeGroup.Go(func() error {
 			// Write the message.
 			messageWrittenSize, err := receivedMessage.WriteTo(messageWriter.Writer)
 
@@ -73,35 +75,31 @@ func (messageWriter *MessageWriter) StartMessageWriteChannel(writeGroup *errgrou
 				return eris.Wrap(err, "failed to write message")
 			}
 
-			totalSize += messageWrittenSize
-		}
+			// Callback to keep track of the total PST file size.
+			messageWriter.MessageWriteCallback <- NewWriteCallbackResponse(messageWrittenSize)
 
-		folderWriter.TotalSize.Add(totalSize)
-
-		return nil
-	})
+			return nil
+		})
+	}
 }
 
-// AddProperties add the message properties (properties.Message).
-// The messages are sent to a Go channel for processing.
-func (messageWriter *MessageWriter) AddProperties(properties ...proto.Message) {
-
+// WritableMessage represents a writable message.
+// TODO - Maybe merge to Message.
+type WritableMessage struct {
+	Identifier Identifier
+	Properties proto.Message
 }
 
-func (messageWriter *MessageWriter) AddAttachments(attachments ...*AttachmentWriter) {
-
+// Add adds the WritableMessage to the write queue.
+func (messageWriter *MessageWriter) Add(messages ...*WritableMessage) {
+	for _, message := range messages {
+		messageWriter.MessageWriteChannel <- message
+	}
 }
 
-func (messageWriter *MessageWriter) StartAttachmentWriteChannel(writeContext context.Context) (*errgroup.Group, context.Context) {
-	attachmentWriteChannelErrGroup, attachmentWriteChannelContext := errgroup.WithContext(writeContext)
-
-	attachmentWriteChannelErrGroup.Go(func() error {
-		for attachment := range messageWriter.Att
-
-		return nil
-	})
-
-	return attachmentWriteChannelErrGroup, attachmentWriteChannelContext
+// AddAttachments adds WritableAttachment to the write queue.
+func (messageWriter *MessageWriter) AddAttachments(attachments ...*WritableAttachment) {
+	messageWriter.AttachmentWriter.Add(attachments...)
 }
 
 func (messageWriter *MessageWriter) UpdateIdentifier() error {
@@ -123,7 +121,7 @@ func (messageWriter *MessageWriter) WriteTo(writer io.Writer) (int64, error) {
 		return 0, eris.Wrap(err, "failed to write Property Context")
 	}
 
-	// Write attachments.
+	// Wait for attachments to write.
 	var attachmentsWrittenSize int64
 
 	for _, attachmentWriter := range messageWriter.Attachments {

@@ -111,6 +111,7 @@ func main() {
 	// TODO - Validate properties exist, parse DOCX in the same way:
 	// TODO - [MS-OXCMSG]: Message and Attachment Object Protocol
 	// TODO - [MS-OXCFOLD]: Folder Object Protocol and
+	// TODO - Extend properties.Folder to include everything in [MS-OXCFOLD]: Folder Object Protocol.
 }
 
 // download the latest version of [MS-OXPROPS].docx and returns the downloaded file.

@@ -4,7 +4,9 @@ import (
 	"bytes"
 	"encoding/binary"
 	"fmt"
+	"github.com/mooijtech/go-pst/v6/pkg/properties"
 	"github.com/rotisserie/eris"
+	"github.com/tinylib/msgp/msgp"
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/protobuf/proto"
 	"io"
@@ -14,56 +16,63 @@ import (
 )
 
 // PropertyWriter represents a writer for properties.
+// The PropertyContext should be used as a higher structure which manages this PropertyWriter.
 type PropertyWriter struct {
+	// Writer represents the concurrent writer used while writing.
+	Writer io.Writer
+	// WriteGroup represents the writers running in Goroutines.
+	WriteGroup *errgroup.Group
 	// PropertyWriteChannel represents the Go channel for writing properties.
 	PropertyWriteChannel chan proto.Message
 	// PropertyWriteCallbackChannel is called when a property has been written.
 	PropertyWriteCallbackChannel chan Property
+	// FormatType represents the FormatType used while writing.
+	FormatType FormatType
+	// PropertyCount represents the amount of properties this PropertyWriter will write.
+	PropertyCount int
 }
 
 // NewPropertyWriter creates a new PropertyWriter.
-// propertyWriteCallbackChannel is not required.
-func NewPropertyWriter(writeGroup *errgroup.Group, propertyWriteCallbackChannel chan Property) *PropertyWriter {
+// propertyWriteCallbackChannel is started by the caller.
+func NewPropertyWriter(writer io.Writer, writeGroup *errgroup.Group, propertyWriteCallbackChannel chan Property, formatType FormatType) *PropertyWriter {
 	propertyWriter := &PropertyWriter{
+		Writer:                       writer,
+		WriteGroup:                   writeGroup,
 		PropertyWriteChannel:         make(chan proto.Message),
 		PropertyWriteCallbackChannel: propertyWriteCallbackChannel,
+		FormatType:                   formatType,
 	}
 
 	// Start the property write channel.
-	if propertyWriteCallbackChannel == nil {
-		// TODO - Remove this.
-		fmt.Printf("Skipping propertyWriteCallbackChannel")
-	}
-
-	go propertyWriter.StartPropertyWriteChannel(writeGroup)
+	go propertyWriter.StartPropertyWriteChannel()
 
 	return propertyWriter
 }
 
-// AddProperties sends the properties to the write queue.
-func (propertyWriter *PropertyWriter) AddProperties(properties ...proto.Message) {
+// Add sends the properties to the write queue, picked up by Goroutines.
+// Properties will be written to the PropertyWriteCallbackChannel (see StartPropertyWriteChannel).
+func (propertyWriter *PropertyWriter) Add(properties ...proto.Message) {
 	for _, property := range properties {
 		propertyWriter.PropertyWriteChannel <- property
+		propertyWriter.PropertyCount++
 	}
 }
 
 // StartPropertyWriteChannel starts the Go channel for writing properties.
-func (propertyWriter *PropertyWriter) StartPropertyWriteChannel(writeGroup *errgroup.Group) {
+func (propertyWriter *PropertyWriter) StartPropertyWriteChannel() {
+	// The caller is already in a Goroutine.
 	for receivedProperties := range propertyWriter.PropertyWriteChannel {
-		writeGroup.Go(func() error {
-			// Create writable byte representation of the property.
+		propertyWriter.WriteGroup.Go(func() error {
+			// Create writable byte representation of the properties.
 			writableProperties, err := propertyWriter.GetProperties(receivedProperties)
 
 			if err != nil {
 				return eris.Wrap(err, "failed to get writable properties")
 			}
 
-			// Send writable byte representation Property to the callback,
-			// in the callback the Property is added to the PropertyContextWriter.
-			if propertyWriter.PropertyWriteCallbackChannel != nil {
-				for _, writableProperty := range writableProperties {
-					propertyWriter.PropertyWriteCallbackChannel <- writableProperty
-				}
+			// Callback, the PropertyContext handles writing this to the correct place.
+			for _, writableProperty := range writableProperties {
+				propertyWriter.PropertyWriteCallbackChannel <- writableProperty
 			}
 
 			return nil
@@ -71,27 +80,30 @@ func (propertyWriter *PropertyWriter) StartPropertyWriteChannel(writeGroup *errg
 	}
 }
 
-// Property represents a property that can be written.
-type Property struct {
-	ID    Identifier
-	Type  PropertyType
-	Value bytes.Buffer
-}
-
-// WriteTo writes the byte representation of the property.
-// Used by the PropertyContextWriter.
-func (property *Property) WriteTo(writer io.Writer) (int64, error) {
-	// TODO -
-	return 0, nil
-}
-
 // GetProperties returns the writable properties.
-// Uses reflection to convert a proto.Message (properties.Message, properties.Attachment, etc.) to a list of properties.
-func (propertyWriter *PropertyWriter) GetProperties(properties proto.Message) ([]Property, error) {
-	var writableProperties []Property
+// This code is a hot-path, do not use reflection here.
+// Instead, we use code-generated setters thanks to https://github.com/tinylib/msgp (deserialize into structs).
+func (propertyWriter *PropertyWriter) GetProperties(protoMessage proto.Message) ([]Property, error) {
+	var totalSize int
 
-	propertyTypes := reflect.TypeOf(properties).Elem()
-	propertyValues := reflect.ValueOf(properties).Elem()
+	totalSize += int(GetIdentifierSize(propertyWriter.FormatType))
+	// TODO -
+
+	messagePackBuffer := bytes.NewBuffer(make([]byte, totalSize))
+	messagePackWriter := msgp.NewWriterSize(messagePackBuffer, totalSize)
+
+	switch property := protoMessage.(type) {
+	case *properties.Message:
+		// TODO - Skip nil!
+		property.MarshalMsg()
+	case *properties.Attachment:
+
+	}
+
+	var properties []Property
+
+	propertyTypes := reflect.TypeOf(protoMessage).Elem()
+	propertyValues := reflect.ValueOf(protoMessage).Elem()
 
 	for i := 0; i < propertyTypes.NumField(); i++ {
 		if !propertyTypes.Field(i).IsExported() || propertyValues.Field(i).IsNil() {
@@ -134,12 +146,12 @@ func (propertyWriter *PropertyWriter) GetProperties(properties proto.Message) ([
 			}
 		}
 
-		writableProperties = append(writableProperties, Property{
-			ID:    Identifier(propertyID),
-			Type:  PropertyType(propertyType),
-			Value: propertyBuffer,
+		properties = append(properties, Property{
+			Identifier: Identifier(propertyID),
+			Type:       PropertyType(propertyType),
+			Value:      propertyBuffer,
 		})
 	}
 
-	return writableProperties, nil
+	return properties, nil
 }

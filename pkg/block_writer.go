@@ -8,13 +8,14 @@ import (
 
 // BlockWriter represents a writer for XBlocks and XXBlocks.
 // References https://github.com/mooijtech/go-pst/blob/main/docs/README.md#data-tree
+// LocalDescriptorsWriter is a higher structure above the BlockWriter.
 type BlockWriter struct {
 	// FormatType represents the FormatType used while writing.
 	FormatType FormatType
 	// BlockWriteChannel represents a Go channel used for writing blocks.
 	BlockWriteChannel chan Identifier
 	// BlockWriteCallback represents the callback which is called once a block is written.
-	BlockWriteCallback chan int
+	BlockWriteCallback chan int64
 }
 
 // NewBlockWriter creates a new BlockWriter.

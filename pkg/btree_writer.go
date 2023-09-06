@@ -23,9 +23,9 @@ import (
 	"io"
 )
 
-// BTreeWriter represents a writer for B-Trees.
+// BTreeNodeWriter represents a writer for B-Tree nodes.
 // References https://github.com/mooijtech/go-pst/blob/main/docs/README.md#btrees
-type BTreeWriter struct {
+type BTreeNodeWriter struct {
 	// Writer represents the io.Writer which is used during writing.
 	Writer io.Writer
 	// WriteGroup represents writer running in Goroutines.
@@ -34,35 +34,39 @@ type BTreeWriter struct {
 	FormatType FormatType
 	// BTreeType represents the type of b-tree to write (node or block).
 	BTreeType BTreeType
-	// BTreeWriteChannel represents a Go channel for writing B-Tree nodes.
-	BTreeWriteChannel chan BTreeNode
-	// BTreeWriteCallback represents the callback which is called once a B-Tree node is written.
-	BTreeWriteCallback chan WriteCallbackResponse
+	// BTreeNodeWriteChannel represents a Go channel for writing B-Tree nodes.
+	BTreeNodeWriteChannel chan BTreeNode
+	// BTreeNodeWriteCallback represents the callback which is called once a B-Tree node is written.
+	BTreeNodeWriteCallback chan int64
 	// Identifier represents the identifier of the written B-Tree node so that it can be found in the B-Tree.
 	Identifier Identifier
+	// LocalDescriptorsWriter represents the LocalDescriptorsWriter.
+	LocalDescriptorsWriter *LocalDescriptorsWriter
 }
 
-// NewBTreeWriter creates a new BTreeWriter.
-func NewBTreeWriter(writer io.Writer, writeGroup *errgroup.Group, btreeWriteCallback chan WriteCallbackResponse, formatType FormatType, btreeType BTreeType) *BTreeWriter {
-	btreeWriteChannel := make(chan BTreeNode)
+// NewBTreeNodeWriter creates a new BTreeNodeWriter.
+func NewBTreeNodeWriter(writer io.Writer, writeGroup *errgroup.Group, btreeNodeWriteCallback chan int64, formatType FormatType, btreeType BTreeType) *BTreeNodeWriter {
+	// btreeNodeWriteChannel is a Go channel which is started below (see StartBTreeNodeWriteChannel).
+	btreeNodeWriteChannel := make(chan BTreeNode)
 
-	btreeWriter := &BTreeWriter{
-		Writer:             writer,
-		WriteGroup:         writeGroup,
-		FormatType:         formatType,
-		BTreeType:          btreeType,
-		BTreeWriteChannel:  btreeWriteChannel,
-		BTreeWriteCallback: btreeWriteCallback,
+	btreeWriter := &BTreeNodeWriter{
+		Writer:                 writer,
+		WriteGroup:             writeGroup,
+		FormatType:             formatType,
+		BTreeType:              btreeType,
+		BTreeNodeWriteChannel:  btreeNodeWriteChannel,
+		BTreeNodeWriteCallback: btreeNodeWriteCallback,
+		BlockWriter:            NewBlockWriter(formatType),
 	}
 
-	// Start the Go channel for writing B-Tree nodes.
-	go btreeWriter.StartBTreeNodeWriteChannel(btreeWriteChannel)
+	// Start the Go channel for writing the B-Tree.
+	btreeWriter.StartBTreeWriteChannel()
 
 	return btreeWriter
 }
 
 // UpdateIdentifier is called after WriteTo so that this B-Tree node can be found in the B-Tree.
-func (btreeWriter *BTreeWriter) UpdateIdentifier() error {
+func (btreeWriter *BTreeNodeWriter) UpdateIdentifier() error {
 	identifier, err := NewIdentifier(btreeWriter.FormatType)
 
 	if err != nil {
@@ -76,98 +80,122 @@ func (btreeWriter *BTreeWriter) UpdateIdentifier() error {
 
 // AddBTreeNodes adds the B-Trees nodes to the write queue.
 // Processed by StartBTreeNodeWriteChannel.
-func (btreeWriter *BTreeWriter) AddBTreeNodes(btreeNodes ...BTreeNode) {
+func (btreeWriter *BTreeNodeWriter) AddBTreeNodes(btreeNodes ...BTreeNode) {
+	// TODO - Add a node B-Tree node for finding.
+	// TODO - Add a block B-Tree node pointing to where the data is.
+	// TODO - NodeBTreeWriter and BlockBTreeWriter
 	for _, btreeNode := range btreeNodes {
-		btreeWriter.BTreeWriteChannel <- btreeNode
+		btreeWriter.BTreeNodeWriteChannel <- btreeNode
 	}
 }
 
-// StartBTreeNodeWriteChannel writes B-Tree nodes using Goroutines.
-func (btreeWriter *BTreeWriter) StartBTreeNodeWriteChannel(btreeNodeWriteChannel chan BTreeNode) {
-	for btreeNode := range btreeNodeWriteChannel {
+// StartBTreeNodeWriteChannel writes the B-Tree nodes.
+// References https://github.com/mooijtech/go-pst/blob/main/docs/README.md#btpage
+func (btreeWriter *BTreeNodeWriter) StartBTreeNodeWriteChannel() {
+
+	// Write B-Tree nodes.
+	for btreeNode := range btreeWriter.BTreeNodeWriteChannel {
 		btreeWriter.WriteGroup.Go(func() error {
 			// Write the B-Tree node.
-			written, err := btreeNode.WriteTo(btreeWriter.Writer)
+			btreeNodeWrittenSize, err := btreeNode.WriteTo(btreeWriter.Writer)
 
 			if err != nil {
 				return eris.Wrap(err, "failed to write B-Tree node")
 			}
 
-			// Callback, used to calculate the total size.
-			// "Share memory by communicating; don't communicate by sharing memory."
-			btreeWriter.BTreeWriteCallback <- NewWriteCallbackResponse(written)
+			// Callback, used to calculate the total PST file size.
+			btreeWriter.BTreeNodeWriteCallback <- btreeNodeWrittenSize
 
 			return nil
 		})
 	}
 }
 
-// WriteTo writes the B-Tree.
+// StartBTreeWriteChannel writes the B-Tree.
 // References https://github.com/mooijtech/go-pst/blob/main/docs/README.md#btpage
-func (btreeWriter *BTreeWriter) WriteTo(writer io.Writer, btreeNodes [][]byte, btreeNodeLevel int) (int64, error) {
-	btree := bytes.NewBuffer(make([]byte, 512)) // Same for Unicode and ANSI.
+func (btreeWriter *BTreeNodeWriter) StartBTreeWriteChannel() {
+	btreeWriter.WriteGroup.Go(func() error {
+		//
+		var maximumBTreeNodes int64
 
-	// This section contains entries of the BTree array.
-	// The node if either a branch or leaf node depending on the node level.
-	for _, btreeNode := range btreeNodes {
-		if _, err := btree.Write(btreeNode); err != nil {
-			return 0, eris.Wrap(err, "failed to write B-Tree node")
-		}
-	}
-
-	// The number of BTree entries stored in the page data.
-	// The entries depend on the value of this field.
-	btree.WriteByte(byte(len(btreeNodes)))
-
-	// The maximum number of entries that can fit inside the page data.
-	btree.Write(make([]byte, 1)) // TODO
-
-	// The size of each BTree entry, in bytes.
-	if btreeWriter.BTreeType == BTreeTypeNode && btreeNodeLevel == 0 {
 		switch btreeWriter.FormatType {
-		case FormatTypeUnicode:
-			btree.Write([]byte{32})
+		case FormatTypeUnicode4k, FormatTypeUnicode:
+			// TODO - This is not correct for branch and leaf.
+			maximumBTreeNodes = 488 / 8
 		case FormatTypeANSI:
-			btree.Write([]byte{16})
+			maximumBTreeNodes = 496 / 4
 		default:
-			return 0, ErrFormatTypeUnsupported
+			return ErrFormatTypeUnsupported
 		}
-	} else {
-		switch btreeWriter.FormatType {
-		case FormatTypeUnicode:
-			btree.Write([]byte{24})
-		case FormatTypeANSI:
-			btree.Write([]byte{12})
-		default:
-			return 0, ErrFormatTypeUnsupported
+
+		btree := bytes.NewBuffer(make([]byte, 512)) // Same for Unicode and ANSI.
+
+		// Wait for B-Tree nodes to write.
+		// TODO - Check overflow.
+		for btreeNode := range btreeWriter.BTreeNodeWriteChannel {
+			btreeNodeWrittenSize, err := btreeNode.WriteTo(btree)
+
+			if err != nil {
+				return eris.Wrap(err, "failed to write B-Tree node")
+			}
+
+			btreeWriter.BTreeNodeWriteCallback <- btreeNodeWrittenSize
 		}
-	}
 
-	// The depth level of this page.
-	// Leaf nodes have a level of 0, while branch nodes have a level greater than 0.
-	// This value determines the type of B-Tree nodes (branch or leaf).
-	btree.WriteByte(byte(btreeNodeLevel))
+		// The number of BTree entries stored in the page data.
+		// The entries depend on the value of this field.
+		btree.WriteByte(byte(len(btreeNodes)))
 
-	// Padding that should be set to zero.
-	// Note that there is no padding in the ANSI version of the structure.
-	if btreeWriter.FormatType == FormatTypeUnicode {
-		btree.Write(make([]byte, 4))
-	}
+		// The maximum number of entries that can fit inside the page data.
+		btree.Write(make([]byte, 1)) // TODO
 
-	// Page trailer.
-	// A PageTrailer structure with specific subfield values.
-	// The "ptype" subfield of "pageTrailer" should be set to "ptypeBBT" for a Block BTree page or "ptypeNBT" for a Node BTree page.
-	// The other subfields of "pageTrailer" should be set as specified in the documentation.
-	if _, err := btreeWriter.WritePageTrailer(btree, btreeWriter.BTreeType); err != nil {
-		return 0, eris.Wrap(err, "failed to write page trailer")
-	}
+		// The size of each BTree entry, in bytes.
+		if btreeWriter.BTreeType == BTreeTypeNode && btreeNodeLevel == 0 {
+			switch btreeWriter.FormatType {
+			case FormatTypeUnicode:
+				btree.Write([]byte{32})
+			case FormatTypeANSI:
+				btree.Write([]byte{16})
+			default:
+				return 0, ErrFormatTypeUnsupported
+			}
+		} else {
+			switch btreeWriter.FormatType {
+			case FormatTypeUnicode:
+				btree.Write([]byte{24})
+			case FormatTypeANSI:
+				btree.Write([]byte{12})
+			default:
+				return 0, ErrFormatTypeUnsupported
+			}
+		}
 
-	return btree.WriteTo(writer)
+		// The depth level of this page.
+		// Leaf nodes have a level of 0, while branch nodes have a level greater than 0.
+		// This value determines the type of B-Tree nodes (branch or leaf).
+		btree.WriteByte(byte(btreeNodeLevel))
+
+		// Padding that should be set to zero.
+		// Note that there is no padding in the ANSI version of the structure.
+		if btreeWriter.FormatType == FormatTypeUnicode {
+			btree.Write(make([]byte, 4))
+		}
+
+		// Page trailer.
+		// A PageTrailer structure with specific subfield values.
+		// The "ptype" subfield of "pageTrailer" should be set to "ptypeBBT" for a Block BTree page or "ptypeNBT" for a Node BTree page.
+		// The other subfields of "pageTrailer" should be set as specified in the documentation.
+		if _, err := btreeWriter.WritePageTrailer(btree, btreeWriter.BTreeType); err != nil {
+			return 0, eris.Wrap(err, "failed to write page trailer")
+		}
+
+		return btree.WriteTo(writer)
+	})
 }
 
 // WritePageTrailer writes the page tailer of the b-tree.
 // References https://github.com/mooijtech/go-pst/blob/main/docs/README.md#pagetrailer
-func (btreeWriter *BTreeWriter) WritePageTrailer(writer io.Writer, btreeType BTreeType, btreeFileOffset int64, btreeNodeIdentifier Identifier) (int64, error) {
+func (btreeWriter *BTreeNodeWriter) WritePageTrailer(writer io.Writer, btreeType BTreeType, btreeFileOffset int64, btreeNodeIdentifier Identifier) (int64, error) {
 	pageTrailerBuffer := bytes.NewBuffer(make([]byte, 0))
 
 	// This value indicates if we are writing a node or block B-Tree.
@@ -198,7 +226,7 @@ func (btreeWriter *BTreeWriter) WritePageTrailer(writer io.Writer, btreeType BTr
 
 // WriteBlockSignature writes the block signature.
 // References https://github.com/mooijtech/go-pst/blob/main/docs/README.md#block-signature
-func (btreeWriter *BTreeWriter) WriteBlockSignature(writer io.Writer, fileOffset int64, identifier Identifier) (int, error) {
+func (btreeWriter *BTreeNodeWriter) WriteBlockSignature(writer io.Writer, fileOffset int64, identifier Identifier) (int, error) {
 	// A WORD is a 16-bit unsigned integer.
 	// A DWORD is a 32-bit unsigned integer.
 	// The signature is calculated by first obtaining the DWORD XOR result between the absolute file offset of the block and its identifier.

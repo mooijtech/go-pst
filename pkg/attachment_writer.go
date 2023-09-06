@@ -20,7 +20,6 @@ import (
 	"github.com/mooijtech/go-pst/v6/pkg/properties"
 	"github.com/rotisserie/eris"
 	"golang.org/x/sync/errgroup"
-	"google.golang.org/protobuf/proto"
 	"io"
 )
 
@@ -33,9 +32,9 @@ type AttachmentWriter struct {
 }
 
 // NewAttachmentWriter creates a new AttachmentWriter.
-func NewAttachmentWriter(writer io.Writer, writeGroup *errgroup.Group, formatType FormatType, btreeType BTreeType) *AttachmentWriter {
+func NewAttachmentWriter(writer io.Writer, writeGroup *errgroup.Group, formatType FormatType) *AttachmentWriter {
 	propertyWriteCallbackChannel := make(chan WriteCallbackResponse)
-	propertyContextWriter := NewPropertyContextWriter(writer, writeGroup, propertyWriteCallbackChannel, formatType, btreeType)
+	propertyContextWriter := NewPropertyContextWriter(writer, writeGroup, propertyWriteCallbackChannel, formatType, BTreeTypeBlock)
 	attachmentWriteChannel := make(chan *properties.Attachment)
 
 	return &AttachmentWriter{
@@ -44,8 +43,12 @@ func NewAttachmentWriter(writer io.Writer, writeGroup *errgroup.Group, formatTyp
 	}
 }
 
+// TODO - Maybe merge to Attachment
+type WritableAttachment struct {
+}
+
 // AddAttachments adds the properties of the attachment (properties.Attachment).
-func (attachmentWriter *AttachmentWriter) AddAttachments(attachments ...proto.Message) {
+func (attachmentWriter *AttachmentWriter) Add(attachments ...*WritableAttachment) {
 	attachmentWriter.PropertyContextWriter.AddProperties(attachments...)
 }
 

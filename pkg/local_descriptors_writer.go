@@ -23,7 +23,7 @@ import (
 )
 
 // LocalDescriptorsWriter represents a writer for Local Descriptors (B-Tree Nodes pointing to other B-Tree Nodes).
-// The LocalDescriptorsWriter can be used multiple times to create multiple local descriptors.
+// BTreeNodeWriter is a higher structure above the LocalDescriptorsWriter.
 type LocalDescriptorsWriter struct {
 	// Writer represents the io.Writer used while writing.
 	Writer io.Writer
@@ -31,38 +31,39 @@ type LocalDescriptorsWriter struct {
 	WriteGroup *errgroup.Group
 	// FormatType represents the FormatType used while writing.
 	FormatType FormatType
-	// BTreeWriter represents the BTreeWriter.
-	BTreeWriter *BTreeWriter
-	// BlockWriter represents the BlocKWriter.
-	BlockWriter *BlockWriter
 	// Identifier represents the BTree node pst.Identifier of the Local Descriptor created after WriteTo has been called.
 	// Set by UpdateIdentifier, called after writing the Local Descriptor using WriteTo.
 	Identifier Identifier
+	// BlockWriter represents the BlockWriter.
+	BlockWriter *BlockWriter
 }
 
 // NewLocalDescriptorsWriter creates a new LocalDescriptorsWriter.
 func NewLocalDescriptorsWriter(writer io.Writer, writeGroup *errgroup.Group, formatType FormatType, btreeType BTreeType) *LocalDescriptorsWriter {
 	btreeWriteCallback := make(chan WriteCallbackResponse)
-	btreeWriter := NewBTreeWriter(writer, writeGroup, btreeWriteCallback, formatType, btreeType)
-	blockWriter := NewBlockWriter(formatType)
+	btreeWriter := NewBTreeNodeWriter(writer, writeGroup, btreeWriteCallback, formatType, btreeType)
 
 	return &LocalDescriptorsWriter{
 		Writer:      writer,
 		WriteGroup:  writeGroup,
 		FormatType:  formatType,
 		BTreeWriter: btreeWriter,
-		BlockWriter: blockWriter,
 	}
 }
 
-// AddBTreeNodes adds B-Tree nodes to the Local Descriptor.
-func (localDescriptorsWriter *LocalDescriptorsWriter) AddBTreeNodes(btreeNode ...BTreeNode) {
-	localDescriptorsWriter.BTreeWriter.AddBTreeNodes(btreeNode...)
+// Add adds the LocalDescriptor to the write queue of the LocalDescriptorsWriter.
+func (localDescriptorsWriter *LocalDescriptorsWriter) Add(localDescriptors ...LocalDescriptor) {
+	// TODO - Create node and block B-Tree node.
+	// TODO - NodeBTreeWriter and BlockBTreeWriter.
+	//localDescriptorsWriter.NodeBTreeWriter.Add(nodeBTreeNode)
+	//localDescriptorsWriter.BlockBTreeWriter.Add(blockBTreeNode)
 }
 
-// AddProperty adds a Property to the Local Descriptors.
-func (localDescriptorsWriter *LocalDescriptorsWriter) AddProperty(property Property) {
+// AddProperty adds a Property to the write queue of the Local Descriptors.
+// Use the callback.
+func (localDescriptorsWriter *LocalDescriptorsWriter) AddProperty(property Property) Identifier {
 	// Create a B-Tree node for this property.
+	// TODO - Write property.
 }
 
 // WriteTo writes the Local Descriptors.
@@ -70,6 +71,13 @@ func (localDescriptorsWriter *LocalDescriptorsWriter) WriteTo(writer io.Writer) 
 	// Set the Local Descriptors identifier.
 	if err := localDescriptorsWriter.UpdateIdentifier(); err != nil {
 		return 0, eris.Wrap(err, "failed to update identifier")
+	}
+
+	// Wait for the B-Trees to be written.
+	var totalSize int64
+
+	for written := range localDescriptorsWriter.BTreeWriter.BTreeNodeWriteCallback {
+		totalSize += written
 	}
 
 	return 0, nil

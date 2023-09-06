@@ -15,4 +15,5 @@
 // limitations under the License.
 
 // Package pst implements reading Personal Storage Table (.pst) files.
+// See cmd/reader.go and cmd/writer.go
 package pst

@@ -17,6 +17,7 @@
 package pst
 
 import (
+	"github.com/mooijtech/go-pst/v6/pkg/properties"
 	"github.com/rotisserie/eris"
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/protobuf/proto"
@@ -30,75 +31,96 @@ type FolderWriter struct {
 	// FormatType represents the FormatType used while writing.
 	FormatType FormatType
 	// FolderWriteChannel represents the Go channel for writing sub-folders.
-	FolderWriteChannel chan *FolderWriter
+	FolderWriteChannel chan *Folder
 	// FolderWriteCallback represents the callback which is called after writing a folder.
-	FolderWriteCallback chan WriteCallbackResponse
+	FolderWriteCallback chan int64
+	// FolderTableContextWriter writes the pst.TableContext of the pst.Folder.
+	// A TableContext has identifiers for finding other folders.
+	FolderTableContextWriter *TableContextWriter
+	// PropertyContextWriter represents the writer for properties of this folder (see properties.Folder).
+	PropertyContextWriter *PropertyContextWriter
 	// MessageWriter represents the writer for messages.
 	MessageWriter *MessageWriter
-	// TableContextWriter writes the pst.TableContext of the pst.Folder.
-	TableContextWriter *TableContextWriter
-	// PropertyWriter represents the writer for properties.
-	PropertyWriter *PropertyWriter
-	// PropertyWriteChannel represents the Go channel for writing []pst.Property.
-	//PropertyWriteChannel chan *PropertyWriter
+	// MessageWriteCallbackChannel represents the callback which is called after a message has been written.
+	// The message is then added to the MessageTableContextWriter of this folder.
+	MessageWriteCallbackChannel chan Identifier
+	// MessageTableContextWriter represents the message TableContext of the folder (identifiers for messages in the B-Tree).
+	// Property ID 26610 contains the message property identifier.
+	MessageTableContextWriter *TableContextWriter
 	// Identifier represents the identifier of this folder.
+	// The identifier is used to find this folder in the B-Tree.
 	Identifier Identifier
 }
 
 // NewFolderWriter creates a new FolderWriter.
-func NewFolderWriter(writer io.Writer, writeGroup *errgroup.Group, formatType FormatType) *FolderWriter {
+// folderWriteCallback is used by the caller to calculate the total PST file size written.
+func NewFolderWriter(writer io.Writer, writeGroup *errgroup.Group, formatType FormatType, folderWriteCallback chan int64) (*FolderWriter, error) {
+	// propertyWriteCallback is started (StartFolderWriteChannel) below to send the writable properties to the PropertyContext.
+	propertyWriteCallback := make(chan int64)
+	// Adds the message identifiers to the message TableContext of the folder (located at folderIdentifier + 12)
+	messageWriteCallback := make(chan int64)
+
+	// Create the folder writer.
 	folderWriter := &FolderWriter{
-		Writer:             writer,
-		FormatType:         formatType,
-		MessageWriter:      NewMessageWriter(writeGroup, formatType),
-		TableContextWriter: NewTableContextWriter(writer, writeGroup, formatType),
+		Writer:                    writer,
+		FormatType:                formatType,
+		FolderWriteChannel:        make(chan *Folder),
+		FolderWriteCallback:       folderWriteCallback,
+		MessageWriter:             NewMessageWriter(writer, writeGroup, messageWriteCallback, formatType),
+		FolderTableContextWriter:  NewTableContextWriter(writer, writeGroup, formatType),
+		MessageTableContextWriter: NewTableContextWriter(writer, writeGroup, formatType),
+		PropertyContextWriter:     NewPropertyContextWriter(writer, writeGroup, propertyWriteCallback, formatType, BTreeTypeBlock),
+		Identifier:                folderIdentifier,
 	}
 
-	// Start channels for writing folders and messages.
+	// Start channel for writing folders.
+	// The MessageWriter starts a channel for writing messages.
 	go folderWriter.StartFolderWriteChannel(writeGroup)
-	go folderWriter.StartMessageWriteChannel(writeGroup)
 
-	return folderWriter
+	return folderWriter, nil
 }
 
 // SetIdentifier sets the identifier of the folder.
 // This is mainly used for the pst.IdentifierRootFolder.
-// Usually the identifier is automatically set by UpdateIdentifier after a WriteTo call.
+// Usually the identifier is automatically set by NewFolderWriter.
 func (folderWriter *FolderWriter) SetIdentifier(identifier Identifier) {
 	folderWriter.Identifier = identifier
 }
 
-// UpdateIdentifier sets the identifier of the folder, so it can be identified in the B-Tree.
-// Called after WriteTo.
-func (folderWriter *FolderWriter) UpdateIdentifier() error {
-	identifier, err := NewIdentifier(folderWriter.FormatType)
-
-	if err != nil {
-		return eris.Wrap(err, "failed to create identifier")
+// Add adds the folder or message to this folder.
+func (folderWriter *FolderWriter) Add(protoMessages ...proto.Message) error {
+	for _, protoMessage := range protoMessages {
+		switch writableProperties := protoMessage.(type) {
+		case *properties.Folder:
+			// Add a folder.
+			folderWriter.FolderTableContextWriter.Add(writableProperties)
+		case *properties.Message:
+			// Add a message.
+			folderWriter.MessageTableContextWriter.Add(writableProperties)
+		default:
+			return eris.New("unsupported properties passed to Add")
+		}
 	}
-
-	folderWriter.Identifier = identifier
 
 	return nil
 }
 
-// AddProperties writes the properties of this folder.
-// TODO - Extend properties.Folder to include everything in [MS-OXCFOLD]: Folder Object Protocol.
-func (folderWriter *FolderWriter) AddProperties(properties ...proto.Message) {
-	folderWriter.TableContextWriter.AddProperties(properties...)
-}
-
-// AddMessages adds a message to the channel to be written.
-func (folderWriter *FolderWriter) AddMessages(messages ...proto.Message) {
-	folderWriter.MessageWriter.AddProperties(messages...)
-}
-
-// AddFolder queues the folder to be written, picked up by a Go channel.
-// The folders are added to the TableContextWriter.
-func (folderWriter *FolderWriter) AddFolder(folders ...*FolderWriter) {
+// AddFolders adds the Folder to the write queue.
+func (folderWriter *FolderWriter) AddFolders(folders ...*Folder) {
 	for _, folder := range folders {
 		folderWriter.FolderWriteChannel <- folder
 	}
+}
+
+// AddMessages adds a message to the MessageWriter, picked up by Goroutines.
+func (folderWriter *FolderWriter) AddMessages(messages ...*MessageWriter) {
+	folderWriter.MessageWriter.Add(messages...)
+	folderWriter.UpdateTableContext(messages)
+}
+
+// UpdateTableContext updates the TableContext of the folder to reference the message identifiers.
+func (folderWriter *FolderWriter) UpdateTableContext(messages ...proto.Message) {
+
 }
 
 // StartFolderWriteChannel listens for sub-folders to write.
@@ -108,7 +130,7 @@ func (folderWriter *FolderWriter) StartFolderWriteChannel(writeGroup *errgroup.G
 		// Listen for folders to write.
 		writeGroup.Go(func() error {
 			// Add folder to TableContextWriter write queue.
-			folderWriter.TableContextWriter.AddFolder(receivedFolder)
+			folderWriter.TableContextWriter.AddFolders(receivedFolder)
 
 			return nil
 		})
@@ -126,34 +148,10 @@ func (folderWriter *FolderWriter) WriteTo(writer io.Writer) (int64, error) {
 		return 0, eris.Wrap(err, "failed to write Table Context")
 	}
 
-	// Write messages.
-	messagesWrittenSize, err := folderWriter.WriteMessages(writer)
-
-	if err != nil {
-		return 0, eris.Wrap(err, "failed to write messages")
-	}
-
 	// Make this written folder findable in the B-Tree.
 	if err := folderWriter.UpdateIdentifier(); err != nil {
 		return 0, eris.Wrap(err, "failed to update identifier")
 	}
 
 	return tableContextWrittenSize + messagesWrittenSize, nil
-}
-
-// WriteMessages writes the messages of the folder.
-func (folderWriter *FolderWriter) WriteMessages(writer io.Writer) (int64, error) {
-	var totalSize int64
-
-	for _, messageWriter := range folderWriter.Messages {
-		written, err := messageWriter.WriteTo(writer)
-
-		if err != nil {
-			return 0, eris.Wrap(err, "failed to write message")
-		}
-
-		totalSize += written
-	}
-
-	return totalSize, nil
 }

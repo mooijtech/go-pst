@@ -18,137 +18,148 @@ package pst
 
 import (
 	"bytes"
-	"cmp"
-	"context"
-	"encoding/binary"
 	"github.com/rotisserie/eris"
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/protobuf/proto"
 	"io"
 	"math"
-	"slices"
-	"sync"
-	"sync/atomic"
 )
 
 // TableContextWriter represents a writer for a pst.TableContext.
+// The TableContext is used to store identifiers pointing to folders and messages.
 type TableContextWriter struct {
+	// Writer represents the io.Writer used while writing.
+	Writer io.WriteSeeker
+	// WriteGroup represents writers running in Goroutines.
+	WriteGroup *errgroup.Group
 	// FormatType represents the FormatType.
 	FormatType FormatType
-	// Properties represents the properties to write (properties.Attachment, properties.Folder etc).
-	Properties []*proto.Message
-	// BTreeOnHeapWriter represents the BTreeOnHeapWriter.
-	BTreeOnHeapWriter *BTreeOnHeapWriter
 	// PropertyWriter represents the PropertyWriter.
 	PropertyWriter *PropertyWriter
-	// FolderWriteChannel represents a Go channel for writing folders.
-	FolderWriteChannel chan *FolderWriter
-	// FolderWritePool represents the pool used when writing.
-	// Used to limit the running writers.
-	FolderWritePool sync.Pool
-	// FolderWaitGroup is used to wait for the writers to complete.
-	FolderWaitGroup sync.WaitGroup
-	// TotalSize represents the total size in bytes of the written folders and underlying structures.
-	TotalSize atomic.Int64
+	// PropertyWriteCallbackChannel represents the callback for writable properties.
+	// These writable properties are sent to the ColumnDescriptorsWriteChannel and RowMatrixWriterChannel.
+	PropertyWriteCallbackChannel chan Property
+	// HeaderWriteChannel represents the Go channel used for writing ColumnDescriptor to the header.
+	// See StartHeaderWriteChannel.
+	HeaderWriteChannel chan *bytes.Buffer
+	// RowMatrixWriteChannel represents the channel used for writing to the Row Matrix.
+	// See StartRowMatrixWriteChannel.
+	RowMatrixWriteChannel chan Property
+	// TableContextWriteCallback represents the callback used when the TableContextWriter is done writing.
+	TableContextWriteCallback chan int64
 }
 
 // NewTableContextWriter creates a new TableContextWriter.
-func NewTableContextWriter(writer io.Writer, writeGroup *errgroup.Group, formatType FormatType) *TableContextWriter {
+func NewTableContextWriter(writer io.WriteSeeker, writeGroup *errgroup.Group, formatType FormatType) (*TableContextWriter, error) {
+	// Create PropertyWriter (see StartChannels).
+	propertyWriteCallbackChannel := make(chan Property)
+	propertyWriter := NewPropertyWriter(writer, writeGroup, propertyWriteCallbackChannel, formatType)
+
+	// Create TableContextWriter
+	tableContextWriteCallback := make(chan int64)
+	tableContextWriter := &TableContextWriter{
+		Writer:                       writer,
+		WriteGroup:                   writeGroup,
+		FormatType:                   formatType,
+		PropertyWriter:               propertyWriter,
+		PropertyWriteCallbackChannel: propertyWriteCallbackChannel,
+		TableContextWriteCallback:    tableContextWriteCallback,
+	}
+
+	// Write the BTree-on-Heap.
+	if err := tableContextWriter.WriteBTreeOnHeap(); err != nil {
+		return nil, eris.Wrap(err, "failed to write BTree-on-Heap")
+	}
+
+	// Start channels for writing
+	tableContextWriter.StartChannels()
+
+	return tableContextWriter, nil
+}
+
+// WriteBTreeOnHeap writes the BTreeOnHeap of the TableContext.
+func (tableContextWriter *TableContextWriter) WriteBTreeOnHeap() error {
 	heapOnNodeWriter := NewHeapOnNodeWriter(SignatureTypeTableContext)
 	btreeOnHeapWriter := NewBTreeOnHeapWriter(heapOnNodeWriter)
-	propertyWriter := NewPropertyWriter(properties)
+	btreeOnHeapWrittenSize, err := btreeOnHeapWriter.WriteTo(tableContextWriter.Writer)
 
-	tableContextWriter := &TableContextWriter{
-		FormatType:        formatType,
-		Properties:        properties,
-		BTreeOnHeapWriter: btreeOnHeapWriter,
-		PropertyWriter:    propertyWriter,
+	if err != nil {
+		return eris.Wrap(err, "failed to write BTree-on-Heap")
 	}
 
-	tableContextWriter.StartFolderWriteChannel(writer, writeContext, writeLimit)
+	tableContextWriter.TableContextWriteCallback <- btreeOnHeapWrittenSize
 
-	return tableContextWriter
+	return nil
 }
 
-// StartFolderWriteChannel listens for folders to write to the Table Context.
-func (tableContextWriter *TableContextWriter) StartFolderWriteChannel(writer io.Writer, writeContext context.Context, writeLimit int) (*errgroup.Group, context.Context) {
-	errGroup, folderWriteContext := errgroup.WithContext(writeContext)
+// StartChannels starts the channels for writing.
+//
+// Forwards PropertyWriteCallbackChannel to the HeaderWriteChannel and RowMatrixWriteChannel.
+// HeaderWriteChannel writes ColumnDescriptor to the Header.
+// RowMatrixWriteChannel writes Property to the Row Matrix.
+func (tableContextWriter *TableContextWriter) StartChannels() {
+	go tableContextWriter.StartPropertyWriteCallbackChannel()
+	go tableContextWriter.StartHeaderWriteChannel()
+	go tableContextWriter.StartRowMatrixWriteChannel()
+}
 
-	errGroup.SetLimit(writeLimit)
-	errGroup.Go(func() error {
-		for folder := range tableContextWriter.FolderWriteChannel {
-			folderWrittenSize, err := folder.WriteTo(writer)
+// Add the properties to the PropertyWriter write queue.
+// Each Property is sent back to the PropertyWriteCallbackChannel (see StartPropertyWriteCallbackChannel).
+func (tableContextWriter *TableContextWriter) Add(protoMessages ...proto.Message) {
+	tableContextWriter.PropertyWriter.Add(protoMessages...)
+}
 
-			if err != nil {
-				return eris.Wrap(err, "failed to write folder")
-			}
+// StartPropertyWriteCallbackChannel forwards the Property to the HeaderWriteChannel and RowMatrixWriteChannel.
+func (tableContextWriter *TableContextWriter) StartPropertyWriteCallbackChannel() {
+	propertyIndex := 0
 
-			// Total size is used by the PST header to indicate the total size of the PST file.
-			tableContextWriter.TotalSize.Add(folderWrittenSize)
+	for writableProperty := range tableContextWriter.PropertyWriteCallbackChannel {
+		// Create ColumnDescriptor of the Property.
+		// Send ColumnDescriptor to the HeaderWriteChannel (see StartHeaderWriteChannel).
+		tableContextWriter.HeaderWriteChannel <- tableContextWriter.GetColumnDescriptor(writableProperty, propertyIndex)
+
+		// Send Property to the RowMatrixWriteChannel (see StartRowMatrixWriteChannel).
+		tableContextWriter.RowMatrixWriteChannel <- writableProperty
+
+		// Used to calculate the ColumnDescriptor start offset of this property.
+		propertyIndex++
+	}
+}
+
+type RowMatrixOffsets struct {
+}
+
+// StartHeaderWriteChannel writes the header.
+// Waits for HeaderWriteChannel to write ColumnDescriptor.
+func (tableContextWriter *TableContextWriter) StartHeaderWriteChannel() error {
+	// Skip past the header until we have received all Column Descriptors.
+	if _, err := tableContextWriter.Writer.Seek(22, io.SeekCurrent); err != nil {
+		return eris.Wrap(err, "failed to seek")
+	}
+
+	// Write Column Descriptors (references to properties).
+	for columnDescriptor := range tableContextWriter.HeaderWriteChannel {
+		columnDescriptorWrittenSize, err := columnDescriptor.WriteTo(tableContextWriter.Writer)
+
+		if err != nil {
+			return eris.Wrap(err, "failed to write column descriptor")
 		}
 
-		return nil
-	})
-
-	return errGroup, folderWriteContext
-}
-
-// AddFolder sends the folder to a write channel.
-func (tableContextWriter *TableContextWriter) AddFolder(folder *FolderWriter) {
-	tableContextWriter.FolderWriteChannel <- folder
-}
-
-func (tableContextWriter *TableContextWriter) AddProperties(properties ...proto.Message) {
-	tableContextWriter.PropertyWriter.AddProperties(properties...)
-}
-
-// WriteTo writes the pst.TableContext.
-// References https://github.com/mooijtech/go-pst/blob/main/docs/README.md#creating-a-tc
-func (tableContextWriter *TableContextWriter) WriteTo(writer io.Writer) (int64, error) {
-	btreeOnHeapWrittenSize, err := tableContextWriter.BTreeOnHeapWriter.WriteTo(writer)
-
-	if err != nil {
-		return 0, eris.Wrap(err, "failed to write BTree-on-Heap")
+		tableContextWriter.TableContextWriteCallback <- int64(columnDescriptor.Len())
 	}
 
-	properties, err := tableContextWriter.PropertyWriter.GetProperties()
+	// Move back and write the header now that all properties have been written.
 
-	if err != nil {
-		return 0, eris.Wrap(err, "failed to get properties")
-	}
-
-	headerWrittenSize, err := tableContextWriter.WriteHeader(writer, properties)
-
-	if err != nil {
-		return 0, eris.Wrap(err, "failed to write Table Context header")
-	}
-
-	rowMatrixWrittenSize, err := tableContextWriter.WriteRowMatrix(writer, properties)
-
-	if err != nil {
-		return 0, eris.Wrap(err, "failed to write row matrix")
-	}
-
-	return btreeOnHeapWrittenSize + headerWrittenSize + rowMatrixWrittenSize, nil
-}
-
-// WriteHeader writes the pst.TableContext header.
-// References https://github.com/mooijtech/go-pst/blob/main/docs/README.md#tcinfo
-func (tableContextWriter *TableContextWriter) WriteHeader(writer io.Writer, properties []Property) (int64, error) {
-	columnDescriptors, err := tableContextWriter.GetColumnDescriptors(properties)
-
-	if err != nil {
-		return 0, eris.Wrap(err, "failed to get column descriptors")
-	}
+	propertyCount := tableContextWriter.PropertyWriter.PropertyCount
 
 	// 1+1+8+4+4+4+columnDescriptors
-	header := bytes.NewBuffer(make([]byte, 22+(8*len(columnDescriptors))))
+	header := bytes.NewBuffer(make([]byte, 22+(8*propertyCount)))
 
-	// MUST be set to bTypeTC.
+	// MUST be set to SignatureTypeTableContext.
 	header.Write([]byte{byte(SignatureTypeTableContext)})
 
 	// Column count.
-	header.WriteByte(byte(len(columnDescriptors)))
+	header.WriteByte(byte(propertyCount))
 
 	// TODO - Pass from row matrix
 	// This is an array of 4 16-bit values that specify the offsets of various groups of data in the actual row data.
@@ -170,56 +181,66 @@ func (tableContextWriter *TableContextWriter) WriteHeader(writer io.Writer, prop
 	header.Write(make([]byte, 4))
 
 	// Sort column descriptors by property ID (according to specification).
-	slices.SortFunc(columnDescriptors, func(a []byte, b []byte) int {
-		return cmp.Compare(binary.LittleEndian.Uint16(a[2:2+2]), binary.LittleEndian.Uint16(b[2:2+2]))
-	})
-
-	// Array of Column Descriptors.
-	for _, columnDescriptor := range columnDescriptors {
-		header.Write(columnDescriptor)
-	}
-
-	return header.WriteTo(writer)
+	// TODO-
+	//slices.SortFunc(columnDescriptors, func(a []byte, b []byte) int {
+	//	return cmp.Compare(binary.LittleEndian.Uint16(a[2:2+2]), binary.LittleEndian.Uint16(b[2:2+2]))
+	//})
 }
 
-// GetColumnDescriptors returns the Column Descriptors based on the properties.
+// StartRowMatrixWriteChannel writes the Property to the Row Matrix.
+// References https://github.com/mooijtech/go-pst/blob/main/docs/README.md#row-matrix
+func (tableContextWriter *TableContextWriter) StartRowMatrixWriteChannel() {
+	// Write the Row Matrix.
+
+	for writableProperty := range tableContextWriter.RowMatrixWriteChannel {
+		writableProperty.WriteTo(tableContextWriter.Writer, tableContextWriter.FormatType)
+	}
+}
+
+// GetColumnDescriptor returns the ColumnDescriptor of the Property.
 // References https://github.com/mooijtech/go-pst/blob/main/docs/README.md#tcoldesc
-func (tableContextWriter *TableContextWriter) GetColumnDescriptors(properties []Property) ([][]byte, error) {
-	var columnDescriptors [][]byte
+func (tableContextWriter *TableContextWriter) GetColumnDescriptor(property Property, propertyIndex int) *bytes.Buffer {
+	columnDescriptorBuffer := bytes.NewBuffer(make([]byte, 8))
 
-	for i, property := range properties {
-		columnDescriptorBuffer := bytes.NewBuffer(make([]byte, 8))
+	// Tag
+	columnDescriptorBuffer.Write(GetUint16(uint16(property.Identifier)))
+	columnDescriptorBuffer.Write(GetUint16(uint16(property.Type)))
 
-		// Tag
-		columnDescriptorBuffer.Write(GetUint16(uint16(property.ID)))
-		columnDescriptorBuffer.Write(GetUint16(uint16(property.Type)))
-		// Offset
-		columnDescriptorBuffer.Write(GetUint16(uint16(8 * i)))
+	// Offset
+	columnDescriptorBuffer.Write(GetUint16(uint16(8 * propertyIndex)))
 
-		// Data Size
-		if property.Value.Len() <= 8 {
-			columnDescriptorBuffer.WriteByte(byte(property.Value.Len()))
-		} else {
-			// Variable-sized data (size of a HNID)
-			columnDescriptorBuffer.WriteByte(byte(4))
-		}
-
-		// Cell Existence Bitmap Index
-		columnDescriptorBuffer.WriteByte(byte(2 + i)) // Skip 0 and 1
+	// Data Size
+	if property.Value.Len() <= 8 {
+		// Property value size.
+		columnDescriptorBuffer.WriteByte(byte(property.Value.Len()))
+	} else {
+		// Variable-sized data (size of an Identifier)
+		columnDescriptorBuffer.WriteByte(byte(4))
 	}
 
-	return columnDescriptors, nil
+	// Cell Existence Bitmap Index
+	columnDescriptorBuffer.WriteByte(byte(2 + propertyIndex)) // Skip 0 and 1
+
+	return columnDescriptorBuffer
 }
 
 // WriteRowMatrix writes the Row Matrix of the Table Context.
 // References https://github.com/mooijtech/go-pst/blob/main/docs/README.md#row-matrix
-func (tableContextWriter *TableContextWriter) WriteRowMatrix(writer io.Writer, properties []Property) (int64, error) {
-	rowMatrixBuffer := bytes.NewBuffer(make([]byte, tableContextWriter.GetRowMatrixSize(properties)))
+func (tableContextWriter *TableContextWriter) WriteRowMatrix(writer io.Writer) (int64, error) {
+	rowMatrixBuffer := bytes.NewBuffer(make([]byte, tableContextWriter.GetRowMatrixSize(tableContextWriter.PropertyWriter.PropertyCount)))
 
 	// Sort by byte-size so writes are aligned accordingly.
-	slices.SortFunc(properties, func(a, b Property) int {
-		return cmp.Compare(a.Value.Len(), b.Value.Len())
-	})
+	//slices.SortFunc(properties, func(a, b Property) int {
+	//	return cmp.Compare(a.Value.Len(), b.Value.Len())
+	//})
+
+	//propertyIndex := 0
+	//
+	//for writableProperty := range tableContextWriter.PropertyWriteCallbackChannel {
+	//	// Create a ColumnDescriptor for the header.
+	//	tableContextWriter.ColumnDescriptorCallbackChannel <- tableContextWriter.GetColumnDescriptor(writableProperty, propertyIndex)
+	//	propertyIndex++
+	//}
 
 	for _, property := range properties {
 		// The 32-bit value that corresponds to the dwRowID value in this row's corresponding TCROWID record.

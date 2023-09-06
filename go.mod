@@ -19,6 +19,7 @@ require (
 require (
 	github.com/emersion/go-textwrapper v0.0.0-20200911093747-65d896831594 // indirect
 	github.com/libp2p/go-sockaddr v0.1.1 // indirect
+	github.com/mooijtech/concurrent-writer v0.0.2
 	github.com/philhofer/fwd v1.1.2 // indirect
 	golang.org/x/sys v0.8.0 // indirect
 )

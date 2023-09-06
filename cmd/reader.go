@@ -14,13 +14,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package pst
+package main
 
-import (
-	"testing"
-)
-
-// TestWritePSTFile writes a new PST file.
-func TestWritePSTFile(t *testing.T) {
+func main() {
 
 }

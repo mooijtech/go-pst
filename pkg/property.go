@@ -16,21 +16,43 @@
 
 package pst
 
-// Property represents a property in the PropertyContext or TableContext.
-// See PropertyReader.
+import (
+	"bytes"
+	"io"
+)
+
+// Property represents a property in the TableContext or PropertyContext.
+// See PropertyReader, PropertyWriter.
 type Property struct {
-	ID   uint16
-	Type PropertyType
-	HNID Identifier
-	// Data is only used for small values.
+	Identifier Identifier
+	Type       PropertyType
+	HNID       Identifier
+	// Value is only used for small values.
 	// <= 8 bytes for the Table Context.
 	// <= 4 bytes for the Property Context.
 	// Other values will use the HNID.
-	Data []byte
+	Value bytes.Buffer
+}
+
+// WriteTo writes the byte representation of the Property.
+func (property *Property) WriteTo(writer io.Writer, formatType FormatType) (int64, error) {
+	identifierSize := int(GetIdentifierSize(formatType))
+	propertyBuffer := bytes.NewBuffer(make([]byte, identifierSize+2+identifierSize+property.Value.Len()))
+
+	propertyBuffer.Write(property.Identifier.Bytes(formatType))
+	propertyBuffer.Write(property.Type.Bytes())
+	propertyBuffer.Write(property.HNID.Bytes(formatType))
+	propertyBuffer.Write(property.Value.Bytes())
+
+	return propertyBuffer.WriteTo(writer)
 }
 
 // PropertyType represents the data type of the property.
 type PropertyType uint16
+
+func (propertyType PropertyType) Bytes() []byte {
+	return GetUint16(uint16(propertyType))
+}
 
 // Constants defining the property types.
 //

@@ -308,12 +308,14 @@ func NewIdentifier(formatType FormatType) (Identifier, error) {
 	var identifierSize int
 
 	switch formatType {
+	case FormatTypeUnicode4k:
+		// TODO - Check this
+		identifierSize = 8
 	case FormatTypeUnicode:
 		identifierSize = 8
 	case FormatTypeANSI:
 		identifierSize = 4
 	default:
-		// TODO - Support FormatTypeUnicode4k
 		return 0, ErrFormatTypeUnsupported
 	}
 
@@ -361,12 +363,11 @@ func (identifier Identifier) WriteTo(writer io.Writer, formatType FormatType) (i
 // Bytes returns the byte representation of the pst.Identifier.
 func (identifier Identifier) Bytes(formatType FormatType) []byte {
 	switch formatType {
-	case FormatTypeUnicode:
+	case FormatTypeUnicode4k, FormatTypeUnicode:
 		return GetUint64(uint64(identifier))
 	case FormatTypeANSI:
 		return GetUint32(uint32(identifier))
 	default:
-		// TODO - Support Unicode4k
 		panic(ErrFormatTypeUnsupported)
 	}
 }

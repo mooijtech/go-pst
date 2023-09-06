@@ -27,7 +27,6 @@ import (
 
 // Message represents a message.
 type Message struct {
-	File                   *File
 	Identifier             Identifier
 	PropertyContext        *PropertyContext
 	AttachmentTableContext *TableContext

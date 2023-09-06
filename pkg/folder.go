@@ -17,53 +17,74 @@
 package pst
 
 import (
+	"github.com/mooijtech/go-pst/v6/pkg/properties"
 	"github.com/rotisserie/eris"
 )
 
 // Folder represents a folder.
+// The folder is writable using a FolderWriter.
 type Folder struct {
-	Identifier      Identifier
-	Name            string
-	HasSubFolders   bool
-	MessageCount    int32
-	PropertyContext *PropertyContext
-	File            *File
+	Identifier Identifier
+	// Properties are populate by the PropertyContext.
+	// See GetPropertyContext.
+	Properties *properties.Folder
 }
 
-// GetRootFolder returns the root folder of the PST file.
-func (file *File) GetRootFolder() (Folder, error) {
+// NewFolder creates a new Folder with the properties for the FolderWriter.
+func NewFolder(properties *properties.Folder) *Folder {
+	return &Folder{
+		// Identifier is set by the FolderWriter, TODO move here?
+		//Identifier:
+		Properties: properties,
+	}
+}
+
+// NewFolderWithIdentifier creates a Folder with the specified identifier for the FolderWriter.
+func NewFolderWithIdentifier(identifier Identifier, properties *properties.Folder) *Folder {
+	return &Folder{
+		Identifier: identifier,
+		Properties: properties,
+	}
+}
+
+// GetPropertyContext returns the PropertyContext of the Folder.
+func (folder *Folder) GetPropertyContext(file *File) (*PropertyContext, error) {
 	rootFolderDataNode, err := file.GetDataBTreeNode(IdentifierRootFolder)
 
 	if err != nil {
-		return Folder{}, eris.Wrap(err, "failed to get data b-tree node")
+		return nil, eris.Wrap(err, "failed to get data b-tree node")
 	}
 
 	rootFolderHeapOnNode, err := file.GetHeapOnNode(rootFolderDataNode)
 
 	if err != nil {
-		return Folder{}, eris.Wrap(err, "failed to get Heap-on-Node")
+		return nil, eris.Wrap(err, "failed to get Heap-on-Node")
 	}
 
 	propertyContext, err := file.GetPropertyContext(rootFolderHeapOnNode)
 
 	if err != nil {
-		return Folder{}, eris.Wrap(err, "failed to get property context")
+		return nil, eris.Wrap(err, "failed to get property context")
 	}
 
-	return Folder{
-		Identifier:      IdentifierRootFolder,
-		Name:            "ROOT_FOLDER",
-		HasSubFolders:   true,
-		MessageCount:    0,
-		PropertyContext: propertyContext,
-		File:            file,
+	return propertyContext, nil
+}
+
+// GetRootFolder returns the root folder of the PST file.
+func (file *File) GetRootFolder() (*Folder, error) {
+	return &Folder{
+		Identifier: IdentifierRootFolder,
+		Properties: &properties.Folder{
+			// TODO - Extend
+			Name: "IdentifierRootFolder",
+		},
 	}, nil
 }
 
 // GetSubFoldersTableContext returns the TableContext for the sub-folders of this folder.
 // Note this limits the returned properties to the ones we use in the Folder struct.
-func (folder *Folder) GetSubFoldersTableContext() (TableContext, error) {
-	nodeBTreeNode, err := folder.File.GetNodeBTreeNode(folder.Identifier + 11) // +11 is the identifier of the sub-folders.
+func (folder *Folder) GetSubFoldersTableContext(file *File) (TableContext, error) {
+	nodeBTreeNode, err := file.GetNodeBTreeNode(folder.Identifier + 11) // +11 is the identifier of the sub-folders.
 
 	if err != nil {
 		return TableContext{}, eris.Wrap(err, "failed to get node b-tree node")
