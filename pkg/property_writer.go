@@ -1,3 +1,19 @@
+// go-pst is a library for reading Personal Storage Table (.pst) files (written in Go/Golang).
+//
+// Copyright 2023 Marten Mooij
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package pst
 
 import (
@@ -18,14 +34,8 @@ import (
 // PropertyWriter represents a writer for properties.
 // The PropertyContext should be used as a higher structure which manages this PropertyWriter.
 type PropertyWriter struct {
-	// Writer represents the concurrent writer used while writing.
-	Writer io.Writer
-	// WriteGroup represents the writers running in Goroutines.
-	WriteGroup *errgroup.Group
-	// PropertyWriteChannel represents the Go channel for writing properties.
-	PropertyWriteChannel chan proto.Message
-	// PropertyWriteCallbackChannel is called when a property has been written.
-	PropertyWriteCallbackChannel chan Property
+	// StreamWriter is used to send write requests to a write channel and receive the results via a callback channel.
+	StreamWriter *StreamWriter
 	// FormatType represents the FormatType used while writing.
 	FormatType FormatType
 	// PropertyCount represents the amount of properties this PropertyWriter will write.
@@ -33,57 +43,92 @@ type PropertyWriter struct {
 }
 
 // NewPropertyWriter creates a new PropertyWriter.
-// propertyWriteCallbackChannel is started by the caller.
-func NewPropertyWriter(writer io.Writer, writeGroup *errgroup.Group, propertyWriteCallbackChannel chan Property, formatType FormatType) *PropertyWriter {
+func NewPropertyWriter(writer io.WriteSeeker, writeGroup *errgroup.Group, formatType FormatType) *PropertyWriter {
 	propertyWriter := &PropertyWriter{
-		Writer:                       writer,
-		WriteGroup:                   writeGroup,
-		PropertyWriteChannel:         make(chan proto.Message),
-		PropertyWriteCallbackChannel: propertyWriteCallbackChannel,
-		FormatType:                   formatType,
+		FormatType:    formatType,
+		PropertyCount: 0,
 	}
 
+	streamWriter := NewStreamWriter(writer, writeGroup).WithTransform(propertyWriter.PropertyTransform)
+
+	propertyWriter.StreamWriter = streamWriter
+
+	// Start the stream writer.
+	streamWriter.StartWriteChannel()
+
 	// Start the property write channel.
-	go propertyWriter.StartPropertyWriteChannel()
+	propertyWriter.StartPropertyWriteChannel()
 
 	return propertyWriter
 }
 
-// Add sends the properties to the write queue, picked up by Goroutines.
+// WritableProperty for the StreamWriter.
+type WritableProperty struct {
+	Value proto.Message
+}
+
+func (writableProperty *WritableProperty) WriteTo(writer io.Writer) (int64, error) {
+
+}
+
+// AddProperties sends the properties to the write queue, picked up by Goroutines.
 // Properties will be written to the PropertyWriteCallbackChannel (see StartPropertyWriteChannel).
-func (propertyWriter *PropertyWriter) Add(properties ...proto.Message) {
+func (propertyWriter *PropertyWriter) AddProperties(properties ...*WritableProperty) {
 	for _, property := range properties {
-		propertyWriter.PropertyWriteChannel <- property
+		propertyWriter.StreamWriter.WriteChannel <- property
 		propertyWriter.PropertyCount++
 	}
 }
 
-// StartPropertyWriteChannel starts the Go channel for writing properties.
-func (propertyWriter *PropertyWriter) StartPropertyWriteChannel() {
-	// The caller is already in a Goroutine.
-	for receivedProperties := range propertyWriter.PropertyWriteChannel {
-		propertyWriter.WriteGroup.Go(func() error {
-			// Create writable byte representation of the properties.
-			writableProperties, err := propertyWriter.GetProperties(receivedProperties)
+// PropertyTransform sends the byte representation of the properties to a write channel and returns the writable properties.
+func (propertyWriter *PropertyWriter) PropertyTransform(receivedProperties ...StreamRequest) ([]StreamResponse, error) {
+	writableProperties, err := propertyWriter.GetProperties(receivedProperties...)
 
-			if err != nil {
-				return eris.Wrap(err, "failed to get writable properties")
-			}
-
-			// Callback, the PropertyContext handles writing this to the correct place.
-			for _, writableProperty := range writableProperties {
-				propertyWriter.PropertyWriteCallbackChannel <- writableProperty
-			}
-
-			return nil
-		})
+	if err != nil {
+		return nil, eris.Wrap(err, "failed to get writable properties")
 	}
+
+	return writableProperties, nil
 }
+
+//// StartPropertyWriteChannel starts the Go channel for writing properties.
+//func (propertyWriter *PropertyWriter) StartPropertyWriteChannel() error {
+//	propertyWriter.StreamWriter.WriteChannel <-
+//
+//	// Create writable byte representation of the properties.
+//	writableProperties, err := propertyWriter.GetProperties(receivedProperties)
+//
+//	if err != nil {
+//		return eris.Wrap(err, "failed to get writable properties")
+//	}
+//
+//
+//	propertyWriter.StreamWriter
+//
+//	// The caller is already in a Goroutine.
+//	for receivedProperties := range propertyWriter.PropertyWriteChannel {
+//		propertyWriter.WriteGroup.Go(func() error {
+//			// Create writable byte representation of the properties.
+//			writableProperties, err := propertyWriter.GetProperties(receivedProperties)
+//
+//			if err != nil {
+//				return eris.Wrap(err, "failed to get writable properties")
+//			}
+//
+//			// Callback, the PropertyContext handles writing this to the correct place.
+//			for _, writableProperty := range writableProperties {
+//				propertyWriter.PropertyWriteCallbackChannel <- writableProperty
+//			}
+//
+//			return nil
+//		})
+//	}
+//}
 
 // GetProperties returns the writable properties.
 // This code is a hot-path, do not use reflection here.
 // Instead, we use code-generated setters thanks to https://github.com/tinylib/msgp (deserialize into structs).
-func (propertyWriter *PropertyWriter) GetProperties(protoMessage proto.Message) ([]Property, error) {
+func (propertyWriter *PropertyWriter) GetProperties(protoMessage ...StreamRequest) ([]StreamResponse, error) {
 	var totalSize int
 
 	totalSize += int(GetIdentifierSize(propertyWriter.FormatType))

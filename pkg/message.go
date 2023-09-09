@@ -87,7 +87,7 @@ func NewMessage(file *File, identifier Identifier, localDescriptors []LocalDescr
 
 // GetMessageTableContext returns the message table context of this folder which contains references to all messages.
 // Note this only returns the identifier of each message.
-func (folder *Folder) GetMessageTableContext() (TableContext, error) {
+func (folder *Folder) GetMessageTableContext(file *File) (TableContext, error) {
 	emailsIdentifier := folder.Identifier + 12
 
 	emailsNode, err := folder.File.GetNodeBTreeNode(emailsIdentifier)
@@ -115,7 +115,7 @@ func (folder *Folder) GetMessageTableContext() (TableContext, error) {
 	}
 
 	// 26610 is a message property HNID.
-	tableContext, err := folder.File.GetTableContext(emailsHeapOnNode, localDescriptors, 26610)
+	tableContext, err := file.GetTableContext(emailsHeapOnNode, localDescriptors, 26610)
 
 	if err != nil {
 		return TableContext{}, eris.Wrap(err, "failed to get table context")

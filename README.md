@@ -36,6 +36,10 @@ The PFF (Personal Folder File) and OFF (Offline Folder File) format is used to s
 $ go install github.com/mooijtech/go-pst/v6
 ```
 
+See the [cmd/reader.go]() and [cmd/writer.go]():
+
+### Reader
+
 ```go
 package main
 
@@ -171,6 +175,12 @@ func main() {
 
   fmt.Printf("Time: %s\n", time.Since(startTime).String())
 }
+```
+
+### Writer
+
+```go
+
 ```
 
 ## License 

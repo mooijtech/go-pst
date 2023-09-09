@@ -31,7 +31,7 @@ type Property struct {
 	// <= 8 bytes for the Table Context.
 	// <= 4 bytes for the Property Context.
 	// Other values will use the HNID.
-	Value bytes.Buffer
+	Value *bytes.Buffer
 }
 
 // WriteTo writes the byte representation of the Property.

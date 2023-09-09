@@ -50,7 +50,7 @@ type TableContextWriter struct {
 }
 
 // NewTableContextWriter creates a new TableContextWriter.
-func NewTableContextWriter(writer io.WriteSeeker, writeGroup *errgroup.Group, formatType FormatType) (*TableContextWriter, error) {
+func NewTableContextWriter(writer io.WriteSeeker, writeGroup *errgroup.Group, parentIdentifier Identifier, formatType FormatType) (*TableContextWriter, error) {
 	// Create PropertyWriter (see StartChannels).
 	propertyWriteCallbackChannel := make(chan Property)
 	propertyWriter := NewPropertyWriter(writer, writeGroup, propertyWriteCallbackChannel, formatType)
@@ -75,6 +75,17 @@ func NewTableContextWriter(writer io.WriteSeeker, writeGroup *errgroup.Group, fo
 	tableContextWriter.StartChannels()
 
 	return tableContextWriter, nil
+}
+
+// AddIdentifier adds a reference to a folder or message to the TableContext.
+func (tableContextWriter *TableContextWriter) AddIdentifier(identifier Identifier) {
+	identifierProperty := Property{
+		Identifier: 26610, // 26610 is always used for identifiers TODO reference actual PropertyName
+		Type:       PropertyTypeInteger32,
+		Value:      bytes.NewBuffer(identifier.Bytes(tableContextWriter.FormatType)),
+	}
+
+	tableContextWriter.PropertyWriteCallbackChannel <- identifierProperty
 }
 
 // WriteBTreeOnHeap writes the BTreeOnHeap of the TableContext.
@@ -131,7 +142,13 @@ type RowMatrixOffsets struct {
 
 // StartHeaderWriteChannel writes the header.
 // Waits for HeaderWriteChannel to write ColumnDescriptor.
-func (tableContextWriter *TableContextWriter) StartHeaderWriteChannel() error {
+func (tableContextWriter *TableContextWriter) StartHeaderWriteChannel() {
+	tableContextWriter.WriteGroup.Go(func() error {
+		// TODO - Move everything here.
+		
+		return nil
+	})
+
 	// Skip past the header until we have received all Column Descriptors.
 	if _, err := tableContextWriter.Writer.Seek(22, io.SeekCurrent); err != nil {
 		return eris.Wrap(err, "failed to seek")

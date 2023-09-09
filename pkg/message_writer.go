@@ -23,48 +23,55 @@ import (
 	"io"
 )
 
-// MessageWriter represents a message that can be written to a PST file.
+// MessageWriter represents a writer for messages.
 type MessageWriter struct {
 	// Writer represents the io.Writer used while writing.
-	Writer io.Writer
+	Writer io.WriteSeeker
+	// WriteGroup represents the writers running in Goroutines.
+	WriteGroup *errgroup.Group
 	// FormatType represents the FormatType used while writing.
 	FormatType FormatType
+	// MessageWriteChannel represents the Go channel used to process writing messages.
+	MessageWriteChannel chan *WritableMessage
+	// MessageWriteCallback represents the callback called for each written message.
+	MessageWriteCallback chan int64
 	// AttachmentWriter represents a writer for attachments.
 	AttachmentWriter *AttachmentWriter
 	// PropertyContextWriter writes the pst.PropertyContext of a pst.Message.
 	PropertyContextWriter *PropertyContextWriter
-	// MessageWriteChannel represents the Go channel used to process writing messages.
-	MessageWriteChannel chan *WritableMessage
-	// MessageWriteCallback represents the callback called for each written message.
-	MessageWriteCallback chan WriteCallbackResponse
 	// Identifier represents the identifier of this message, which is used in the B-Tree.
 	Identifier Identifier
 }
 
 // NewMessageWriter creates a new MessageWriter.
-func NewMessageWriter(writer io.Writer, writeGroup *errgroup.Group, messageWriteCallback chan WriteCallbackResponse, formatType FormatType) *MessageWriter {
-	// propertyWriteCallbackChannel is used to wait for the PropertyContextWriter to be finished (in WriteTo).
-	propertyWriteCallbackChannel := make(chan WriteCallbackResponse)
-
+func NewMessageWriter(writer io.WriteSeeker, writeGroup *errgroup.Group, messageWriteCallback chan int64, formatType FormatType) *MessageWriter {
 	messageWriter := &MessageWriter{
 		Writer:                writer,
+		WriteGroup:            writeGroup,
 		FormatType:            formatType,
 		AttachmentWriter:      NewAttachmentWriter(writer, writeGroup, formatType),
-		PropertyContextWriter: NewPropertyContextWriter(writer, writeGroup, propertyWriteCallbackChannel, formatType, BTreeTypeBlock),
+		PropertyContextWriter: NewPropertyContextWriter(writer, writeGroup, formatType),
 		MessageWriteCallback:  messageWriteCallback,
 	}
 
-	// Attached the folder.
-	messageWriter.Identifier = folderIdentifier + 12
-
 	// Start the message write channel which processes writing messages.
-	go messageWriter.StartMessageWriteChannel(writeGroup)
+	messageWriter.StartMessageWriteChannel()
 
 	return messageWriter
 }
 
+// AddMessages adds the WritableMessage to the write queue.
+func (messageWriter *MessageWriter) AddMessages(folderIdentifier Identifier, messages ...proto.Message) {
+	// TODO - identifier = folderIdentifier + 12
+	for _, message := range messages {
+		messageWriter.MessageWriteChannel <- message
+	}
+}
+
 // StartMessageWriteChannel receives messages to write.
-func (messageWriter *MessageWriter) StartMessageWriteChannel(writeGroup *errgroup.Group) {
+func (messageWriter *MessageWriter) StartMessageWriteChannel() {
+	messageWriter.WriteGroup
+
 	// The caller already starts a Goroutine.
 	for receivedMessage := range messageWriter.MessageWriteChannel {
 		writeGroup.Go(func() error {
@@ -83,23 +90,16 @@ func (messageWriter *MessageWriter) StartMessageWriteChannel(writeGroup *errgrou
 	}
 }
 
+// AddAttachments adds AttachmentWriter to the write queue.
+func (messageWriter *MessageWriter) AddAttachments(attachments ...*AttachmentWriter) {
+	messageWriter.AttachmentWriter.AddAttachments(attachments...)
+}
+
 // WritableMessage represents a writable message.
 // TODO - Maybe merge to Message.
 type WritableMessage struct {
 	Identifier Identifier
 	Properties proto.Message
-}
-
-// Add adds the WritableMessage to the write queue.
-func (messageWriter *MessageWriter) Add(messages ...*WritableMessage) {
-	for _, message := range messages {
-		messageWriter.MessageWriteChannel <- message
-	}
-}
-
-// AddAttachments adds WritableAttachment to the write queue.
-func (messageWriter *MessageWriter) AddAttachments(attachments ...*WritableAttachment) {
-	messageWriter.AttachmentWriter.Add(attachments...)
 }
 
 func (messageWriter *MessageWriter) UpdateIdentifier() error {

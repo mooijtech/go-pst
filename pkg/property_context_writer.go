@@ -20,42 +20,38 @@ import (
 	"bytes"
 	"github.com/rotisserie/eris"
 	"golang.org/x/sync/errgroup"
-	"google.golang.org/protobuf/proto"
 	"io"
 )
 
 // PropertyContextWriter represents a writer for a pst.PropertyContext.
 type PropertyContextWriter struct {
-	// Writer represents the io.Writer used when writing.
-	Writer io.Writer
-	// FormatType represents the FormatType used while writing.
-	FormatType FormatType
-	// WriteGroup represents Goroutines running writers.
-	WriteGroup *errgroup.Group
+	// StreamWriter represents the writer for the PropertyContextWriter.
+	StreamWriter *StreamWriter
 	// BTreeOnHeapWriter represents the BTreeOnHeapWriter.
 	BTreeOnHeapWriter *BTreeOnHeapWriter
 	// PropertyWriter represents the PropertyWriter.
 	PropertyWriter *PropertyWriter
 	// PropertyWriteCallbackChannel represents the callback channel for writable properties.
+	// TODO - Move to PropertyWriter?
 	PropertyWriteCallbackChannel chan int64
 	// LocalDescriptorsWriter represents the LocalDescriptorsWriter.
 	LocalDescriptorsWriter *LocalDescriptorsWriter
 }
 
 // NewPropertyContextWriter creates a new PropertyContextWriter.
-func NewPropertyContextWriter(writer io.Writer, writeGroup *errgroup.Group, formatType FormatType) *PropertyContextWriter {
+func NewPropertyContextWriter(writer io.WriteSeeker, writeGroup *errgroup.Group, formatType FormatType) *PropertyContextWriter {
+	streamWriter := NewStreamWriter(writer, writeGroup)
+
 	heapOnNodeWriter := NewHeapOnNodeWriter(SignatureTypePropertyContext)
 	btreeOnHeapWriter := NewBTreeOnHeapWriter(heapOnNodeWriter)
 	// propertyWriteCallbackChannel returns the written byte size, used to wait for properties to be written.
 	propertyWriteCallbackChannel := make(chan int64)
 	// propertyWriter starts a Go channel for writing properties.
-	propertyWriter := NewPropertyWriter(writer, writeGroup, propertyWriteCallbackChannel, formatType)
-	localDescriptorsWriter := NewLocalDescriptorsWriter(writer, writeGroup, formatType)
+	propertyWriter := NewPropertyWriter(writer, writeGroup, formatType)
+	localDescriptorsWriter := NewLocalDescriptorsWriter(writer, writeGroup, formatType, BTreeTypeBlock)
 
 	propertyContextWriter := &PropertyContextWriter{
-		Writer:                       writer,
-		FormatType:                   formatType,
-		WriteGroup:                   writeGroup,
+		StreamWriter:                 streamWriter,
 		BTreeOnHeapWriter:            btreeOnHeapWriter,
 		PropertyWriter:               propertyWriter,
 		PropertyWriteCallbackChannel: propertyWriteCallbackChannel,
@@ -65,10 +61,10 @@ func NewPropertyContextWriter(writer io.Writer, writeGroup *errgroup.Group, form
 	return propertyContextWriter
 }
 
-// Add adds the properties (properties.Message, properties.Attachment, etc.) to the write queue.
-// Writable properties (Property) are returned to the PropertyWriteCallbackChannel.
-func (propertyContextWriter *PropertyContextWriter) Add(properties ...proto.Message) {
-	propertyContextWriter.PropertyWriter.Add(properties...)
+// AddProperties adds the properties (properties.Message, properties.Attachment, etc.) to the write queue.
+// Sends WritableProperty to StreamWriter and returns []Property (see PropertyWriteCallbackChannel).
+func (propertyContextWriter *PropertyContextWriter) AddProperties(properties ...*WritableProperty) {
+	propertyContextWriter.PropertyWriter.AddProperties(properties...)
 }
 
 // WriteTo writes the pst.PropertyContext.

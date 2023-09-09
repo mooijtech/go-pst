@@ -23,9 +23,8 @@ import (
 	"github.com/dustin/go-humanize"
 	"github.com/mooijtech/concurrent-writer/concurrent"
 	pst "github.com/mooijtech/go-pst/v6/pkg"
-	"github.com/mooijtech/go-pst/v6/pkg/properties"
+	"github.com/pkg/errors"
 	"golang.org/x/sync/errgroup"
-	"google.golang.org/protobuf/proto"
 	"log/slog"
 	"os"
 	"time"
@@ -73,67 +72,36 @@ func main() {
 	}
 
 	// Write folders.
+	rootFolder := writer.GetRootFolder()
 
-	rootFolder := writer.AddRootFolder()
+	for i := 0; i < 3; i++ {
+		subFolderWriter := pst.NewFolderWriter()
+		//subFolder := pst.NewFolder(&properties.Folder{Name: fmt.Sprintf("Sub-folder #%d", i)})
 
-	// Create sub-folders.
-	writer.Add
+		// Add messages
+		for i := 0; i < 6; i++ {
+			message := pst.NewMessageWriter()
 
-	folderWriteCallback := make(chan int64)
-	folderWriter, err := pst.NewFolderWriter(concurrentWriter, writeGroup, formatType, folderWriteCallback)
+			// Add attachments
+			for i := 0; i < 9; i++ {
+				attachmentWriter := pst.NewAttachmentWriter()
 
-	if err != nil {
-		panic(fmt.Sprintf("Failed to create FolderWriter: %+v", err))
+				message.AddAttachments(attachmentWriter)
+			}
+
+			subFolderWriter.AddMessages()
+		}
+
+		rootFolder.AddSubFolders(subFolderWriter)
 	}
 
-	rootFolder := writer.AddRootFolder()
-
-	// Add sub-folders.
-	for i := 0; i < 6; i++ {
-		subFolder, err := pst.NewFolderWriter(outputFile, writeGroup, formatType)
-
-		if err != nil {
-			panic(fmt.Sprintf("Failed to create FolderWriter: %+v", err))
-		}
-
-		subFolderProperties := &properties.Folder{
-			Name: fmt.Sprintf("Sub-folder #%d", i),
-		}
-
-		if err := subFolder.Add(subFolderProperties); err != nil {
-			panic(fmt.Sprintf("Failed to add folder: %+v", err))
-		}
-
-		// Add messages to the sub-folder.
-		message := NewMessageWriter(formatType, writeGroup)
-
-		message.AddProperties(&properties.Message{
-			Subject: proto.String("Goodbye, world!"),
-		})
-
-		// Add attachments to message.
-		for x := 0; x < 9; x++ {
-			attachment := NewAttachmentWriter()
-
-			attachment.AddProperties(&properties.Attachment{
-				AttachFilename:     proto.String(fmt.Sprintf("nudes%d.png", x)),
-				AttachLongFilename: proto.String(fmt.Sprintf("nudes%d.png", x)),
-			})
-
-			message.AddAttachments(attachment)
-		}
-
-		// Add sub-folders with messages containing attachments to root folder.
-		rootFolder.(subFolder)
-	}
-
-	// Writer which starts everything (has the PST file header).
-	writer.AddFolders(rootFolder)
-
-	// See the documentation of WriteTo for the path followed.
+	// See the documentation of WriteTo.
 	bytesWritten, err := writer.WriteTo(outputFile)
 
-	if err != nil {
+	if errors.Is(err, pst.ErrSizeLimit) {
+		// Handle edge case where the PST file is >= 50GB.
+
+	} else if err != nil {
 		panic(fmt.Sprintf("Failed to write PST file: %+v", err))
 	}
 

@@ -40,6 +40,11 @@ type Writer struct {
 
 // NewWriter returns a writer for PST files.
 func NewWriter(writer io.WriteSeeker, writeGroup *errgroup.Group, writeOptions WriteOptions) (*Writer, error) {
+	// TODO - Make stateless
+
+	// StreamWriter is a stateless generic writer which writes in Goroutines and returns callback values.
+	streamWriter := NewStreamWriter(writer, writeGroup)
+
 	folderWriteCallback := make(chan int64)
 	folderWriter, err := NewFolderWriter(writer, writeGroup, writeOptions.FormatType, folderWriteCallback)
 
@@ -74,11 +79,24 @@ func NewWriteOptions(formatType FormatType, encryptionType EncryptionType) Write
 	}
 }
 
-// AddFolders adds the folders to the FolderWriter write queue.
-// See AddRootFolder.
-func (pstWriter *Writer) AddFolders(folders ...*Folder) {
-	pstWriter.FolderWriter.AddFolders(folders...)
+// GetRootFolder returns the root folder.
+// Automatically written to the FolderWriteChannel.
+func (pstWriter *Writer) GetRootFolder() *FolderWriter {
+
 }
+
+// AddSubFolders adds the sub-folders to the FolderWriter write queue.
+func (pstWriter *Writer) AddSubFolders(subFolders ...*FolderWriter) {
+	pstWriter.FolderWriter.AddSubFolders(subFolders...)
+}
+
+//func (pstWriter *Writer) AddSubFolders(parentFolder Identifier, subFolders ...*Folder) {
+//	// TODO - Add to FolderTableContext.
+//	// TODO - Write folder.
+//}
+
+// ErrSizeLimit is an edge case for writing PST files >= 50GB.
+var ErrSizeLimit = eris.New("maximum PST file size (50GB) reached, overflowing")
 
 // WriteTo writes the PST file.
 // WriteTo follows the path to root folder (fixed pst.Identifier, pst.IdentifierRootFolder) then to the pst.TableContext of the root folder.
@@ -108,7 +126,14 @@ func (pstWriter *Writer) WriteTo(writer io.Writer) (int64, error) {
 
 	// Wait for all folders to be written.
 	// "Share memory by communicating; don't communicate by sharing memory."
-	for folderWrittenSize := range pstWriter.FolderWriter.FolderWriteCallback {
+	for folderWrittenSize := range pstWriter.FolderWriter.FolderWriteCallbackChannel {
+		// Handle edge case where the PST file is above 50GB, the limit for PST files.
+		// We just overflow.
+		if totalSize >= 5e+10 {
+			// TODO - Handle, pass callback channel to new output.
+			return 0, ErrSizeLimit
+		}
+
 		totalSize += folderWrittenSize
 	}
 

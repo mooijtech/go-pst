@@ -43,12 +43,8 @@ func NewAttachmentWriter(writer io.Writer, writeGroup *errgroup.Group, formatTyp
 	}
 }
 
-// TODO - Maybe merge to Attachment
-type WritableAttachment struct {
-}
-
 // AddAttachments adds the properties of the attachment (properties.Attachment).
-func (attachmentWriter *AttachmentWriter) Add(attachments ...*WritableAttachment) {
+func (attachmentWriter *AttachmentWriter) AddAttachments(attachments ...*AttachmentWriter) {
 	attachmentWriter.PropertyContextWriter.AddProperties(attachments...)
 }
 
