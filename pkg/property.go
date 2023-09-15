@@ -24,22 +24,22 @@ import (
 // Property represents a property in the TableContext or PropertyContext.
 // See PropertyReader, PropertyWriter.
 type Property struct {
-	Identifier Identifier
+	Identifier uint16
 	Type       PropertyType
 	HNID       Identifier
 	// Value is only used for small values.
 	// <= 8 bytes for the Table Context.
 	// <= 4 bytes for the Property Context.
 	// Other values will use the HNID.
-	Value *bytes.Buffer
+	Value []byte
 }
 
 // WriteTo writes the byte representation of the Property.
-func (property *Property) WriteTo(writer io.Writer, formatType FormatType) (int64, error) {
-	identifierSize := int(GetIdentifierSize(formatType))
-	propertyBuffer := bytes.NewBuffer(make([]byte, identifierSize+2+identifierSize+property.Value.Len()))
+func (property *Property) WriteTo(writer io.Writer) (int64, error) {
+	// TODO - We can't pass formatType because io.WriterTo signature doesn't allow it.
+	propertyBuffer := bytes.NewBuffer(make([]byte, 2+2+identifierSize+property.Value.Len()))
 
-	propertyBuffer.Write(property.Identifier.Bytes(formatType))
+	propertyBuffer.Write(GetUint16(property.Identifier))
 	propertyBuffer.Write(property.Type.Bytes())
 	propertyBuffer.Write(property.HNID.Bytes(formatType))
 	propertyBuffer.Write(property.Value.Bytes())

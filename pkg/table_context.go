@@ -197,20 +197,20 @@ func (file *File) GetTableContext(heapOnNode *HeapOnNode, localDescriptors []Loc
 func (file *File) GetTableContextProperty(tableRowMatrixReader io.ReaderAt, rowOffset int64, column ColumnDescriptor) (Property, error) {
 	var property Property
 
-	property.ID = column.PropertyID
+	property.Identifier = column.PropertyID
 	property.Type = column.PropertyType
 
 	// Table Context uses a HNID for any data (PropertyType) exceeding 8 bytes.
 	// Otherwise, the data is small enough to fit in the Property directly.
 	if property.Type.GetDataSize() != -1 && column.DataSize <= 8 {
 		// Single value.
-		data := make([]byte, column.DataSize)
+		value := make([]byte, column.DataSize)
 
-		if _, err := tableRowMatrixReader.ReadAt(data, rowOffset+int64(column.DataOffset)); err != nil {
+		if _, err := tableRowMatrixReader.ReadAt(value, rowOffset+int64(column.DataOffset)); err != nil {
 			return Property{}, eris.Wrap(err, "failed to read table context data")
 		}
 
-		property.Data = data
+		property.Value = value
 	} else {
 		// Variable size.
 		hnid := make([]byte, 4)

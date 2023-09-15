@@ -28,32 +28,28 @@ import (
 // TableContextWriter represents a writer for a pst.TableContext.
 // The TableContext is used to store identifiers pointing to folders and messages.
 type TableContextWriter struct {
-	// Writer represents the io.Writer used while writing.
-	Writer io.WriteSeeker
-	// WriteGroup represents writers running in Goroutines.
-	WriteGroup *errgroup.Group
-	// FormatType represents the FormatType.
-	FormatType FormatType
-	// PropertyWriter represents the PropertyWriter.
-	PropertyWriter *PropertyWriter
-	// PropertyWriteCallbackChannel represents the callback for writable properties.
-	// These writable properties are sent to the ColumnDescriptorsWriteChannel and RowMatrixWriterChannel.
-	PropertyWriteCallbackChannel chan Property
-	// HeaderWriteChannel represents the Go channel used for writing ColumnDescriptor to the header.
-	// See StartHeaderWriteChannel.
-	HeaderWriteChannel chan *bytes.Buffer
-	// RowMatrixWriteChannel represents the channel used for writing to the Row Matrix.
-	// See StartRowMatrixWriteChannel.
-	RowMatrixWriteChannel chan Property
-	// TableContextWriteCallback represents the callback used when the TableContextWriter is done writing.
-	TableContextWriteCallback chan int64
+	// streamWriter is used to write the Table Context.
+	streamWriter *StreamWriter
+	// formatType represents the FormatType used during writing.
+	formatType FormatType
+	// propertyWriter represents the PropertyWriter.
+	// Used to write properties to the Table Context.
+	propertyWriter *PropertyWriter
+	// TODO - Where is this used?
+	parentIdentifier Identifier
 }
 
 // NewTableContextWriter creates a new TableContextWriter.
-func NewTableContextWriter(writer io.WriteSeeker, writeGroup *errgroup.Group, parentIdentifier Identifier, formatType FormatType) (*TableContextWriter, error) {
+// TODO -  parentIdentifier Identifier -> NewTableContextWriterWithParentIdentifier
+func NewTableContextWriter(writer io.WriteSeeker, writeGroup *errgroup.Group, formatType FormatType) (*TableContextWriter, error) {
 	// Create PropertyWriter (see StartChannels).
 	propertyWriteCallbackChannel := make(chan Property)
 	propertyWriter := NewPropertyWriter(writer, writeGroup, propertyWriteCallbackChannel, formatType)
+
+	// TODO - Merge into TableContextCallbackChannel response
+	propertyWriter.PropertyWriteCallback
+
+	propertyWriter.RegisterCallback()
 
 	// Create TableContextWriter
 	tableContextWriteCallback := make(chan int64)
@@ -77,15 +73,13 @@ func NewTableContextWriter(writer io.WriteSeeker, writeGroup *errgroup.Group, pa
 	return tableContextWriter, nil
 }
 
+func (tableContextWriter *TableContextWriter) WithParentIdentifier(parentIdentifier Identifier) {
+	tableContextWriter.parentIdentifier = parentIdentifier
+}
+
 // AddIdentifier adds a reference to a folder or message to the TableContext.
 func (tableContextWriter *TableContextWriter) AddIdentifier(identifier Identifier) {
-	identifierProperty := Property{
-		Identifier: 26610, // 26610 is always used for identifiers TODO reference actual PropertyName
-		Type:       PropertyTypeInteger32,
-		Value:      bytes.NewBuffer(identifier.Bytes(tableContextWriter.FormatType)),
-	}
-
-	tableContextWriter.PropertyWriteCallbackChannel <- identifierProperty
+	tableContextWriter.propertyWriter.AddIdentifier(identifier)
 }
 
 // WriteBTreeOnHeap writes the BTreeOnHeap of the TableContext.
@@ -145,7 +139,7 @@ type RowMatrixOffsets struct {
 func (tableContextWriter *TableContextWriter) StartHeaderWriteChannel() {
 	tableContextWriter.WriteGroup.Go(func() error {
 		// TODO - Move everything here.
-		
+
 		return nil
 	})
 

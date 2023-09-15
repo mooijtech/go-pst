@@ -24,120 +24,110 @@ import (
 )
 
 // MessageWriter represents a writer for messages.
+// References
 type MessageWriter struct {
-	// Writer represents the io.Writer used while writing.
-	Writer io.WriteSeeker
-	// WriteGroup represents the writers running in Goroutines.
-	WriteGroup *errgroup.Group
-	// FormatType represents the FormatType used while writing.
-	FormatType FormatType
-	// MessageWriteChannel represents the Go channel used to process writing messages.
-	MessageWriteChannel chan *WritableMessage
-	// MessageWriteCallback represents the callback called for each written message.
-	MessageWriteCallback chan int64
-	// AttachmentWriter represents a writer for attachments.
-	AttachmentWriter *AttachmentWriter
-	// PropertyContextWriter writes the pst.PropertyContext of a pst.Message.
-	PropertyContextWriter *PropertyContextWriter
-	// Identifier represents the identifier of this message, which is used in the B-Tree.
-	Identifier Identifier
+	// streamWriter represents the Go channel used to process writing messages.
+	// Has a callback called for each written message.
+	streamWriter *StreamWriter
+	// formatType represents the FormatType used while writing.
+	formatType FormatType
+	// attachmentWriter represents a writer for attachments.
+	attachmentWriter *AttachmentWriter
+	// propertyContextWriter writes the pst.PropertyContext of a pst.Message.
+	propertyContextWriter *PropertyContextWriter
+	// identifier represents the identifier of this message, which is used in the B-Tree.
+	identifier Identifier
 }
 
 // NewMessageWriter creates a new MessageWriter.
-func NewMessageWriter(writer io.WriteSeeker, writeGroup *errgroup.Group, messageWriteCallback chan int64, formatType FormatType) *MessageWriter {
+func NewMessageWriter(outputFile io.WriteSeeker, writeGroup *errgroup.Group, parentFolderIdentifier Identifier, formatType FormatType) (*MessageWriter, error) {
+	streamWriter := NewStreamWriter(outputFile, writeGroup)
+
+	// Start the stream writer which is used by the MessageWriter.
+	streamWriter.StartWriteChannel()
+
+	//
+	attachmentWriter, err := NewAttachmentWriter(outputFile, writeGroup, formatType)
+
+	if err != nil {
+		return nil, eris.Wrap(err, "failed to create attachment writer")
+	}
+
+	propertyContextWriter, err := NewPropertyContextWriter(outputFile, writeGroup, propertyContextCallback, formatType)
+
+	if err != nil {
+		return nil, eris.Wrap(err, "failed to create property context writer")
+	}
+
 	messageWriter := &MessageWriter{
-		Writer:                writer,
-		WriteGroup:            writeGroup,
-		FormatType:            formatType,
-		AttachmentWriter:      NewAttachmentWriter(writer, writeGroup, formatType),
-		PropertyContextWriter: NewPropertyContextWriter(writer, writeGroup, formatType),
-		MessageWriteCallback:  messageWriteCallback,
+		formatType:            formatType,
+		streamWriter:          streamWriter,
+		attachmentWriter:      attachmentWriter,
+		propertyContextWriter: propertyContextWriter,
+		// Identifier is set below.
 	}
 
-	// Start the message write channel which processes writing messages.
-	messageWriter.StartMessageWriteChannel()
+	// Set the identifier so this message can be found in the B-Tree.
+	if err := messageWriter.UpdateIdentifier(parentFolderIdentifier); err != nil {
+		return nil, eris.Wrap(err, "failed to update identifier")
+	}
 
-	return messageWriter
+	return messageWriter, nil
 }
 
-// AddMessages adds the WritableMessage to the write queue.
-func (messageWriter *MessageWriter) AddMessages(folderIdentifier Identifier, messages ...proto.Message) {
-	// TODO - identifier = folderIdentifier + 12
+// AddMessages adds the MessageWriter to the write queue.
+func (messageWriter *MessageWriter) AddMessages(folderIdentifier Identifier, messages ...*MessageWriter) {
+	// TODO - identifier = folderIdentifier + 12 --- Identifier of what?
 	for _, message := range messages {
-		messageWriter.MessageWriteChannel <- message
-	}
-}
-
-// StartMessageWriteChannel receives messages to write.
-func (messageWriter *MessageWriter) StartMessageWriteChannel() {
-	messageWriter.WriteGroup
-
-	// The caller already starts a Goroutine.
-	for receivedMessage := range messageWriter.MessageWriteChannel {
-		writeGroup.Go(func() error {
-			// Write the message.
-			messageWrittenSize, err := receivedMessage.WriteTo(messageWriter.Writer)
-
-			if err != nil {
-				return eris.Wrap(err, "failed to write message")
-			}
-
-			// Callback to keep track of the total PST file size.
-			messageWriter.MessageWriteCallback <- NewWriteCallbackResponse(messageWrittenSize)
-
-			return nil
-		})
+		messageWriter.streamWriter.Send(message)
 	}
 }
 
 // AddAttachments adds AttachmentWriter to the write queue.
 func (messageWriter *MessageWriter) AddAttachments(attachments ...*AttachmentWriter) {
-	messageWriter.AttachmentWriter.AddAttachments(attachments...)
+	// TODO -
+	//messageWriter.attachmentWriter.AddAttachments(attachments...)
 }
 
-// WritableMessage represents a writable message.
-// TODO - Maybe merge to Message.
-type WritableMessage struct {
-	Identifier Identifier
-	Properties proto.Message
+func (messageWriter *MessageWriter) AddProperties(properties ...proto.Message) {
+	//messageWriter.propertyContextWriter.AddProperties(properties)
 }
 
-func (messageWriter *MessageWriter) UpdateIdentifier() error {
-	identifier, err := NewIdentifier(messageWriter.FormatType)
-
-	if err != nil {
-		return eris.Wrap(err, "failed to create identifier")
-	}
-
-	messageWriter.Identifier = identifier
+// UpdateIdentifier
+// References
+func (messageWriter *MessageWriter) UpdateIdentifier(parentFolderIdentifier Identifier) error {
+	messageWriter.identifier = parentFolderIdentifier + 12
+	//identifier, err := NewIdentifier(messageWriter.FormatType)
+	//
+	//if err != nil {
+	//	return eris.Wrap(err, "failed to create identifier")
+	//}
+	//
+	//messageWriter.Identifier = identifier
 }
 
 // WriteTo writes the message property context.
 func (messageWriter *MessageWriter) WriteTo(writer io.Writer) (int64, error) {
 	// Write Property Context.
-	propertyContextWrittenSize, err := messageWriter.PropertyContextWriter.WriteTo(writer)
+	propertyContextWrittenSize, err := messageWriter.propertyContextWriter.WriteTo(writer)
 
 	if err != nil {
 		return 0, eris.Wrap(err, "failed to write Property Context")
 	}
 
 	// Wait for attachments to write.
+	messageWriter.attachmentWriter.Wait()
+
+	// TODO - Wait for StreamWriter here?
+
 	var attachmentsWrittenSize int64
 
-	for _, attachmentWriter := range messageWriter.Attachments {
-		written, err := attachmentWriter.WriteTo(writer)
+	// TODO - Receive total written size from the callback.
 
-		if err != nil {
-			return 0, eris.Wrap(err, "failed to write attachment")
-		}
-
-		attachmentsWrittenSize += written
-	}
-
-	// Make this message findable in the B-Tree.
-	if err := messageWriter.UpdateIdentifier(); err != nil {
-		return 0, eris.Wrap(err, "failed to update identifier")
-	}
+	// TODO - Moved to New? Make this message findable in the B-Tree.
+	//if err := messageWriter.UpdateIdentifier(); err != nil {
+	//	return 0, eris.Wrap(err, "failed to update identifier")
+	//}
 
 	return propertyContextWrittenSize + attachmentsWrittenSize, nil
 }

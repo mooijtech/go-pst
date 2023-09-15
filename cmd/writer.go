@@ -18,15 +18,21 @@ package main
 
 import (
 	"context"
+	"crypto/rand"
+	"encoding/hex"
 	"flag"
 	"fmt"
-	"github.com/dustin/go-humanize"
 	"github.com/mooijtech/concurrent-writer/concurrent"
 	pst "github.com/mooijtech/go-pst/v6/pkg"
+	"github.com/mooijtech/go-pst/v6/pkg/properties"
 	"github.com/pkg/errors"
+	"github.com/rotisserie/eris"
 	"golang.org/x/sync/errgroup"
+	"google.golang.org/protobuf/proto"
 	"log/slog"
 	"os"
+	"path/filepath"
+	"strings"
 	"time"
 )
 
@@ -40,11 +46,23 @@ func main() {
 
 	startTime := time.Now()
 
+	// Write PST file.
+	written, err := WritePSTFile(outputName)
+
+	if err != nil {
+		panic(fmt.Sprintf("Failed to write PST file: %+v", err))
+	}
+
+	fmt.Printf("Wrote %d bytes in %s.", written, time.Since(startTime).String())
+}
+
+// WritePSTFile writes a PST file containing folders, messages and attachments.
+func WritePSTFile(outputName string) (int64, error) {
 	// Output PST file.
 	outputFile, err := os.Create(outputName)
 
 	if err != nil {
-		panic(fmt.Sprintf("Failed to create output file: %+v", err))
+		return 0, eris.Wrap(err, "failed to create output file")
 	}
 
 	// 4KiB is the default I/O buffer size on Linux.
@@ -58,7 +76,7 @@ func main() {
 	encryptionType := pst.EncryptionTypePermute
 	writeOptions := pst.NewWriteOptions(formatType, encryptionType)
 
-	// Write group for Goroutines.
+	// Write group for Goroutines (all writers run here).
 	writeCancelContext, writeCancelFunc := context.WithCancel(context.Background())
 	writeGroup, _ := errgroup.WithContext(writeCancelContext)
 
@@ -68,48 +86,109 @@ func main() {
 	writer, err := pst.NewWriter(concurrentWriter, writeGroup, writeOptions)
 
 	if err != nil {
-		panic(fmt.Sprintf("Failed to create writer: %+v", err))
+		return 0, eris.Wrap(err, "failed to create writer")
 	}
 
-	// Write folders.
-	rootFolder := writer.GetRootFolder()
+	// Let's write some folders with messages containing attachments.
+	rootFolder, err := writer.GetRootFolder()
 
+	if err != nil {
+		return 0, eris.Wrap(err, "failed to get root folder writer")
+	}
+
+	// Callbacks are used to calculate the total size of the PST file.
+	// As soon as this becomes larger than 50GB, we overflow by creating a new PST file.
+	folderWriteCallback := make(chan int64)
+
+	// Add sub-folders to the root folder.
 	for i := 0; i < 3; i++ {
-		subFolderWriter := pst.NewFolderWriter()
-		//subFolder := pst.NewFolder(&properties.Folder{Name: fmt.Sprintf("Sub-folder #%d", i)})
+		// Create folder writer.
+		folderWriter, err := pst.NewFolderWriter(concurrentWriter, writeGroup, formatType, folderWriteCallback, rootFolder.GetIdentifier())
 
-		// Add messages
+		if err != nil {
+			return 0, eris.Wrap(err, "failed to create folder writer")
+		}
+
+		// Add properties to the folder.
+		folderWriter.AddProperties(&properties.Folder{
+			Name: fmt.Sprintf("Sub folder #%d", i),
+			// TODO - Extend from generate.go new output.
+		})
+
+		// Add messages to the folder.
 		for i := 0; i < 6; i++ {
-			message := pst.NewMessageWriter()
+			// Create a message to write.
+			message, err := pst.NewMessageWriter(concurrentWriter, writeGroup, folderWriter.GetIdentifier(), formatType)
 
-			// Add attachments
+			if err != nil {
+				return 0, eris.Wrap(err, "failed to create message writer")
+			}
+
+			// Add properties to the message.
+			message.AddProperties(&properties.Message{
+				Subject: proto.String("[Go Forensics]: Goodbye, world!"),
+				From:    proto.String("info@mooijtech.com"),
+				Body:    proto.String("https://goforensics.io/"),
+				// See all other available properties.
+			})
+
+			// You can create many property types, for example, a contact:
+			message.AddProperties(&properties.Contact{
+				GivenName: proto.String("Marten Mooij"),
+			})
+
+			// See the properties package for more message types.
+
+			// Add attachments to the message.
 			for i := 0; i < 9; i++ {
-				attachmentWriter := pst.NewAttachmentWriter()
+				attachmentWriter, err := pst.NewAttachmentWriter(concurrentWriter, writeGroup, formatType)
+
+				if err != nil {
+					return 0, eris.Wrap(err, "failed to create attachment writer")
+				}
+
+				// Set attachment input buffer.
+				if err := attachmentWriter.AddFile("example-attachment.txt"); err != nil {
+					return 0, eris.Wrap(err, "failed to add attachment to message")
+				}
 
 				message.AddAttachments(attachmentWriter)
 			}
 
-			subFolderWriter.AddMessages()
+			// Add the message to the folder.
+			folderWriter.AddMessages(message)
 		}
 
-		rootFolder.AddSubFolders(subFolderWriter)
+		// Add sub-folder to the root folder.
+		rootFolder.AddSubFolders(folderWriter)
 	}
 
 	// See the documentation of WriteTo.
-	bytesWritten, err := writer.WriteTo(outputFile)
+	written, err := writer.WriteTo(outputFile)
 
-	if errors.Is(err, pst.ErrSizeLimit) {
+	if errors.Is(err, pst.ErrOverflow) {
 		// Handle edge case where the PST file is >= 50GB.
+		// Redirect the channels to a new output file.
+		randomBytes := make([]byte, 8)
 
+		if _, err := rand.Read(randomBytes); err != nil {
+			return 0, eris.Wrap(err, "failed to read random bytes from crypto/rand")
+		}
+
+		outputExtension := filepath.Ext(outputName)
+		outputNameWithoutExtension := strings.ReplaceAll(outputName, outputExtension, "")
+		newOutputName := fmt.Sprintf("%s-%s%s", outputNameWithoutExtension, hex.EncodeToString(randomBytes), outputExtension)
+		newOutputFile, err := os.Create(newOutputName)
+
+		if err != nil {
+			return 0, eris.Wrap(err, "failed to create new output file for overflow")
+		}
+
+		// Redirect output.
+		writer.OverflowTo(newOutputFile)
 	} else if err != nil {
-		panic(fmt.Sprintf("Failed to write PST file: %+v", err))
+		return 0, eris.Wrap(err, "failed to write PST file")
 	}
 
-	// Wait for writers to finish.
-	if err := writeGroup.Wait(); err != nil {
-		panic(fmt.Sprintf("Failed to write PST file: %+v", err))
-	}
-
-	// humanize doesn't currently support Duration.
-	fmt.Printf("Done! Wrote %s in %s.", humanize.Bytes(uint64(bytesWritten)), humanize.Time(time.Now().Add(-time.Since(startTime))))
+	return written, nil
 }

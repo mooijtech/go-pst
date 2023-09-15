@@ -20,72 +20,93 @@ import (
 	"bytes"
 	"github.com/rotisserie/eris"
 	"golang.org/x/sync/errgroup"
+	"google.golang.org/protobuf/proto"
 	"io"
 )
 
 // PropertyContextWriter represents a writer for a pst.PropertyContext.
 type PropertyContextWriter struct {
-	// StreamWriter represents the writer for the PropertyContextWriter.
-	StreamWriter *StreamWriter
-	// BTreeOnHeapWriter represents the BTreeOnHeapWriter.
-	BTreeOnHeapWriter *BTreeOnHeapWriter
-	// PropertyWriter represents the PropertyWriter.
-	PropertyWriter *PropertyWriter
-	// PropertyWriteCallbackChannel represents the callback channel for writable properties.
-	// TODO - Move to PropertyWriter?
-	PropertyWriteCallbackChannel chan int64
+	// streamWriter represents the writer for the PropertyContextWriter.
+	streamWriter *StreamWriter
+	// formatType represents the FormatType used while writing.
+	formatType FormatType
+	// btreeOnHeapWriter represents the BTreeOnHeapWriter.
+	btreeOnHeapWriter *BTreeOnHeapWriter
+	// propertyWriter represents the PropertyWriter.
+	propertyWriter *PropertyWriter
+	// propertyWriteCallbackChannel represents the callback channel for writable properties.
+	propertyWriteCallbackChannel chan *bytes.Buffer
 	// LocalDescriptorsWriter represents the LocalDescriptorsWriter.
-	LocalDescriptorsWriter *LocalDescriptorsWriter
+	localDescriptorsWriter *LocalDescriptorsWriter
 }
 
 // NewPropertyContextWriter creates a new PropertyContextWriter.
-func NewPropertyContextWriter(writer io.WriteSeeker, writeGroup *errgroup.Group, formatType FormatType) *PropertyContextWriter {
-	streamWriter := NewStreamWriter(writer, writeGroup)
+func NewPropertyContextWriter(writer io.WriteSeeker, writeGroup *errgroup.Group, propertyContextWriteCallback chan int64, formatType FormatType) (*PropertyContextWriter, error) {
+	// Stream writer is used to write the property context.
+	streamWriter := NewStreamWriter[io.WriterTo, int64](writer, writeGroup)
 
+	// Start the write channel.
+	streamWriter.StartWriteChannel()
+	// Send the write responses to the parent for calculating the total size.
+	streamWriter.RegisterCallback(propertyContextWriteCallback)
+
+	// Structures below the PropertyContext.
 	heapOnNodeWriter := NewHeapOnNodeWriter(SignatureTypePropertyContext)
 	btreeOnHeapWriter := NewBTreeOnHeapWriter(heapOnNodeWriter)
-	// propertyWriteCallbackChannel returns the written byte size, used to wait for properties to be written.
-	propertyWriteCallbackChannel := make(chan int64)
-	// propertyWriter starts a Go channel for writing properties.
-	propertyWriter := NewPropertyWriter(writer, writeGroup, formatType)
 	localDescriptorsWriter := NewLocalDescriptorsWriter(writer, writeGroup, formatType, BTreeTypeBlock)
 
-	propertyContextWriter := &PropertyContextWriter{
-		StreamWriter:                 streamWriter,
-		BTreeOnHeapWriter:            btreeOnHeapWriter,
-		PropertyWriter:               propertyWriter,
-		PropertyWriteCallbackChannel: propertyWriteCallbackChannel,
-		LocalDescriptorsWriter:       localDescriptorsWriter,
+	// Property writer.
+	// TODO - Fix callbacks.
+	propertyWriteCallbackChannel := make(chan *bytes.Buffer)
+	propertyWriter := NewPropertyWriter(writer, writeGroup, formatType, propertyWriteCallbackChannel)
+
+	// Registers the property write callback.
+	if err := propertyWriter.RegisterPropertyWriteCallback(propertyWriteCallbackChannel); err != nil {
+		return nil, eris.Wrap(err, "failed to register property write callback")
 	}
 
-	return propertyContextWriter
+	// PropertyContext writer.
+	return &PropertyContextWriter{
+		streamWriter:                 streamWriter,
+		formatType:                   formatType,
+		btreeOnHeapWriter:            btreeOnHeapWriter,
+		propertyWriter:               propertyWriter,
+		propertyWriteCallbackChannel: propertyWriteCallbackChannel,
+		localDescriptorsWriter:       localDescriptorsWriter,
+	}, nil
 }
 
 // AddProperties adds the properties (properties.Message, properties.Attachment, etc.) to the write queue.
-// Sends WritableProperty to StreamWriter and returns []Property (see PropertyWriteCallbackChannel).
-func (propertyContextWriter *PropertyContextWriter) AddProperties(properties ...*WritableProperty) {
-	propertyContextWriter.PropertyWriter.AddProperties(properties...)
+// Sends WritableProperties to StreamWriter and returns []Property (see PropertyWriteCallbackChannel).
+// Once we have []Property we convert to a byte representation to be written.
+func (propertyContextWriter *PropertyContextWriter) AddProperties(properties ...proto.Message) error {
+	return propertyContextWriter.propertyWriter.AddProperties(properties...)
 }
 
 // WriteTo writes the pst.PropertyContext.
 // References https://github.com/mooijtech/go-pst/blob/main/docs/README.md#property-context-pc
 func (propertyContextWriter *PropertyContextWriter) WriteTo(writer io.Writer) (int64, error) {
-	btreeOnHeapWrittenSize, err := propertyContextWriter.BTreeOnHeapWriter.WriteTo(writer)
+	// Write the BTree-on-Heap.
+	btreeOnHeapWrittenSize, err := propertyContextWriter.btreeOnHeapWriter.WriteTo(writer)
 
 	if err != nil {
 		return 0, eris.Wrap(err, "failed to write Heap-on-Node")
 	}
 
-	// Wait for the properties to be written.
-	// TODO - Wait
-	// TODO - Write to the structures directly, remove WriteTo altogether.
-	var totalSize int64
+	// Write the properties.
+	var propertiesWrittenSize int64
 
-	for writtenSize := range propertyContextWriter.PropertyWriteCallbackChannel {
-		totalSize += writtenSize
+	for streamResponse := range propertyContextWriter.propertyWriteCallbackChannel {
+		written, err := streamResponse.WriteTo(writer)
+
+		if err != nil {
+			return 0, eris.Wrap(err, "failed to write property")
+		}
+
+		propertiesWrittenSize += written
 	}
 
-	return btreeOnHeapWrittenSize + totalSize, nil
+	return btreeOnHeapWrittenSize + propertiesWrittenSize, nil
 }
 
 // WriteProperty writes the property.
@@ -104,11 +125,13 @@ func (propertyContextWriter *PropertyContextWriter) WriteProperty(writer io.Writ
 		}
 	} else if property.Value.Len() <= 3580 {
 		// HID
+		// TODO -
 	} else {
-		// NID Local Descriptor
-		localDescriptorIdentifier := propertyContextWriter.LocalDescriptorsWriter.AddProperty(property)
+		// NID (Local Descriptor)
+		// Reference the identifier of the created Local Descriptor.
+		localDescriptorIdentifier := propertyContextWriter.localDescriptorsWriter.AddProperty(property)
 
-		propertyBuffer.Write(localDescriptorIdentifier.Bytes(propertyContextWriter.FormatType))
+		propertyBuffer.Write(localDescriptorIdentifier.Bytes(propertyContextWriter.formatType))
 	}
 
 	return propertyBuffer.WriteTo(writer)

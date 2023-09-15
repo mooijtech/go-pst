@@ -26,77 +26,87 @@ import (
 
 // Writer writes PST files.
 type Writer struct {
-	// Writer represents the writer.
-	Writer io.WriteSeeker
-	// WriteGroup represents the writers running in Goroutines.
-	WriteGroup *errgroup.Group
-	// WriteOptions represents options used while writing.
-	WriteOptions WriteOptions
-	// FolderWriter represents the writer for folders.
-	FolderWriter *FolderWriter
-	// FolderWriteCallback represents the callback which is called after a folder is written.
-	FolderWriteCallback chan int64
+	// writer represents the io.WriteSeeker.
+	writer io.WriteSeeker
+	// writeGroup represents the writers running in Goroutines.
+	writeGroup *errgroup.Group
+	// writeOptions represents options used while writing.
+	writeOptions WriteOptions
+	// folderWriter represents the writer for folders.
+	folderWriter *FolderWriter
+	// folderWriteCallback represents the callback which is called after a folder is written.
+	folderWriteCallback chan int64
 }
 
 // NewWriter returns a writer for PST files.
-func NewWriter(writer io.WriteSeeker, writeGroup *errgroup.Group, writeOptions WriteOptions) (*Writer, error) {
-	// TODO - Make stateless
+// io.WriteSeeker must be a pointer so output can be redirected on overflow.
+func NewWriter(outputFile io.WriteSeeker, writeGroup *errgroup.Group, writeOptions WriteOptions) (*Writer, error) {
+	// Stream writer.
+	streamWriter := NewStreamWriter[io.WriterTo, int64](outputFile, writeGroup)
 
-	// StreamWriter is a stateless generic writer which writes in Goroutines and returns callback values.
-	streamWriter := NewStreamWriter(writer, writeGroup)
+	streamWriter.StartWriteChannel()
 
+	// Folder writer.
 	folderWriteCallback := make(chan int64)
-	folderWriter, err := NewFolderWriter(writer, writeGroup, writeOptions.FormatType, folderWriteCallback)
+	folderWriter, err := NewFolderWriter(outputFile, writeGroup, writeOptions.formatType, folderWriteCallback, IdentifierRootFolder)
 
 	if err != nil {
 		return nil, eris.Wrap(err, "failed to create folder writer")
 	}
 
-	pstWriter := &Writer{
-		Writer:              writer,
-		WriteGroup:          writeGroup,
-		WriteOptions:        writeOptions,
-		FolderWriter:        folderWriter,
-		FolderWriteCallback: folderWriteCallback,
-	}
-
-	return pstWriter, nil
+	return &Writer{
+		writer:              outputFile,
+		writeGroup:          writeGroup,
+		writeOptions:        writeOptions,
+		folderWriter:        folderWriter,
+		folderWriteCallback: folderWriteCallback,
+	}, nil
 }
 
 // WriteOptions defines the options used during writing.
 type WriteOptions struct {
-	// FormatType represents ANSI or Unicode.
-	FormatType FormatType
-	// EncryptionType represents the encryption type.
-	EncryptionType EncryptionType
+	// formatType represents the FormatType (Unicode or ANSI).
+	formatType FormatType
+	// encryptionType represents the EncryptionType.
+	encryptionType EncryptionType
 }
 
 // NewWriteOptions creates a new WriteOptions used during writing PST files.
 func NewWriteOptions(formatType FormatType, encryptionType EncryptionType) WriteOptions {
 	return WriteOptions{
-		FormatType:     formatType,
-		EncryptionType: encryptionType,
+		formatType:     formatType,
+		encryptionType: encryptionType,
 	}
 }
 
-// GetRootFolder returns the root folder.
-// Automatically written to the FolderWriteChannel.
-func (pstWriter *Writer) GetRootFolder() *FolderWriter {
+// IsANSI returns true if the FormatType is ANSI.
+func (pstWriter *Writer) IsANSI() bool {
+	return pstWriter.writeOptions.formatType == FormatTypeANSI
+}
 
+// IsUnicode returns true if the FormatType is Unicode.
+func (pstWriter *Writer) IsUnicode() bool {
+	return pstWriter.writeOptions.formatType == FormatTypeUnicode || pstWriter.writeOptions.formatType == FormatTypeUnicode4k
+}
+
+// GetRootFolder creates a writable root folder.
+func (pstWriter *Writer) GetRootFolder() (*FolderWriter, error) {
+	rootFolderWriter, err := NewRootFolderWriter(pstWriter.writer, pstWriter.writeGroup, pstWriter.writeOptions.formatType, pstWriter.folderWriteCallback)
+
+	if err != nil {
+		return nil, eris.Wrap(err, "failed to create root folder writer")
+	}
+
+	return rootFolderWriter, nil
 }
 
 // AddSubFolders adds the sub-folders to the FolderWriter write queue.
 func (pstWriter *Writer) AddSubFolders(subFolders ...*FolderWriter) {
-	pstWriter.FolderWriter.AddSubFolders(subFolders...)
+	pstWriter.folderWriter.AddSubFolders(subFolders...)
 }
 
-//func (pstWriter *Writer) AddSubFolders(parentFolder Identifier, subFolders ...*Folder) {
-//	// TODO - Add to FolderTableContext.
-//	// TODO - Write folder.
-//}
-
-// ErrSizeLimit is an edge case for writing PST files >= 50GB.
-var ErrSizeLimit = eris.New("maximum PST file size (50GB) reached, overflowing")
+// ErrOverflow is an edge case for writing PST files >= 50GB.
+var ErrOverflow = eris.New("maximum PST file size (50GB) reached, overflowing")
 
 // WriteTo writes the PST file.
 // WriteTo follows the path to root folder (fixed pst.Identifier, pst.IdentifierRootFolder) then to the pst.TableContext of the root folder.
@@ -108,38 +118,36 @@ var ErrSizeLimit = eris.New("maximum PST file size (50GB) reached, overflowing")
 // These local descriptors also have the pst.HeapOnNode structure which can be built upon (explained below).
 // Local Descriptors are used to store more data in the pst.HeapOnNode structure (B-Tree with the nodes containing the data).
 // XBlocks and XXBlocks include an array of []pst.Identifier pointing to B-Tree nodes, it is the format used to store data (see BlockWriter).
-// This structure is used by the Local Descriptors.
+// Blocks are used by Local Descriptors.
 //
 // Each pst.HeapOnNode can contain either a pst.TableContext or pst.PropertyContext:
 // pst.TableContext (see TableContextWriter):
-// The pst.TableContext contains a Row Matrix structure to store data, used by folders (to find data such as the folder identifiers ([]pst.Identifier)).
+// The pst.TableContext contains a Row Matrix structure to store data, used to find data such as identifiers ([]pst.Identifier).
 // The pst.TableContext is column structured with data exceeding 8 bytes moving to different B-Tree nodes:
 // pst.HeapOnNode which is <= 3580 bytes.
 // pst.LocalDescriptor which is > 3580 bytes.
 // pst.PropertyContext (see PropertyContextWriter):
-// The pst.PropertyContext contains a list of properties ([]pst.Property) of the message, we can write this with PropertyWriter.
+// The pst.PropertyContext contains a list of properties ([]pst.Property) of the message (see PropertyWriter).
 //
 // Combining these structures we make up a PST file to write.
 // Each writer communicates with Go channels and Goroutines.
 func (pstWriter *Writer) WriteTo(writer io.Writer) (int64, error) {
-	var totalSize int64
-
-	// Wait for all folders to be written.
-	// "Share memory by communicating; don't communicate by sharing memory."
-	for folderWrittenSize := range pstWriter.FolderWriter.FolderWriteCallbackChannel {
-		// Handle edge case where the PST file is above 50GB, the limit for PST files.
-		// We just overflow.
-		if totalSize >= 5e+10 {
-			// TODO - Handle, pass callback channel to new output.
-			return 0, ErrSizeLimit
-		}
-
-		totalSize += folderWrittenSize
+	// Wait for channels to finish.
+	if err := pstWriter.writeGroup.Wait(); err != nil {
+		return 0, eris.Wrap(err, "failed to wait for writers")
 	}
 
-	// Wait for channels to finish.
-	if err := pstWriter.WriteGroup.Wait(); err != nil {
-		return 0, eris.Wrap(err, "writer failed")
+	// We are now listening to write responses.
+	// Catch case where overflow happens (>50GB).
+	var totalSize int64
+
+	for streamResponse := range pstWriter.folderWriteCallback {
+		totalSize += streamResponse
+
+		if totalSize >= 5e+10 {
+			// 50GB is the maximum file size of a PST file.
+			return totalSize, ErrOverflow
+		}
 	}
 
 	// Write PST header.
@@ -152,23 +160,27 @@ func (pstWriter *Writer) WriteTo(writer io.Writer) (int64, error) {
 	return headerWrittenSize + totalSize, nil
 }
 
+// OverflowTo catches an edge case where the PST file is larger than 50GB.
+func (pstWriter *Writer) OverflowTo(writer io.WriteSeeker) {
+	// Redirect channels to new writer.
+	// TODO - Test this works by creating 50GB overflow :)
+	pstWriter.writer = writer
+}
+
 // WriteHeader writes the PST header.
 // References https://github.com/mooijtech/go-pst/blob/main/docs/README.md#header-1
 func (pstWriter *Writer) WriteHeader(writer io.Writer, totalSize int64, rootNodeBTree Identifier, rootBlockBTree Identifier) (int64, error) {
 	var headerSize int
 
-	switch pstWriter.WriteOptions.FormatType {
-	case FormatTypeUnicode4k, FormatTypeUnicode:
+	if pstWriter.IsUnicode() {
 		// TODO - Where is the documentation for Unicode4k?
 		// 4+4+2+2+2+1+1+4+4+8+8+4+128+8+ROOT+4+128+128+1+1+2+8+4+3+1+32
 		// Header + header root
 		headerSize = 492 + 72
-	case FormatTypeANSI:
+	} else if pstWriter.IsANSI() {
 		// 4+4+2+2+2+1+1+4+4+4+4+4+128+ROOT+128+128+1+1+2+8+4+3+1+32
 		// Header + header root
 		headerSize = 472 + 40
-	default:
-		return 0, ErrFormatTypeUnsupported
 	}
 
 	header := bytes.NewBuffer(make([]byte, headerSize))
@@ -178,16 +190,13 @@ func (pstWriter *Writer) WriteHeader(writer io.Writer, totalSize int64, rootNode
 	header.Write([]byte{0x53, 0x4D}) // Magic client
 
 	// File format version
-	switch pstWriter.WriteOptions.FormatType {
-	case FormatTypeUnicode4k, FormatTypeUnicode:
+	if pstWriter.IsUnicode() {
 		// TODO - Where is the documentation for Unicode4k?
 		// MUST be greater than 23 if the file is a Unicode PST file.
 		header.Write([]byte{30})
-	case FormatTypeANSI:
+	} else if pstWriter.IsANSI() {
 		// This value MUST be 14 or 15 if the file is an ANSI PST file.
 		header.Write([]byte{15})
-	default:
-		return 0, ErrFormatTypeUnsupported
 	}
 
 	// Client file format version.
@@ -202,13 +211,13 @@ func (pstWriter *Writer) WriteHeader(writer io.Writer, totalSize int64, rootNode
 	header.Write(make([]byte, 4))
 
 	// Padding (bidUnused) for Unicode.
-	if pstWriter.WriteOptions.FormatType == FormatTypeUnicode || pstWriter.WriteOptions.FormatType == FormatTypeUnicode4k {
+	if pstWriter.IsUnicode() {
 		header.Write(make([]byte, 8))
 	}
 
 	// Next BID (bidNextB) for ANSI only.
 	// go-pst does not read this.
-	if pstWriter.WriteOptions.FormatType == FormatTypeANSI {
+	if pstWriter.IsANSI() {
 		header.Write(make([]byte, 4))
 	}
 
@@ -216,9 +225,9 @@ func (pstWriter *Writer) WriteHeader(writer io.Writer, totalSize int64, rootNode
 	// This can be used to increment a value for generating identifiers used by B-Tree nodes.
 	// I assume it's faster to generate an identifier with crypto/rand instead of having to read and update this value.
 	// go-pst does not read this.
-	if pstWriter.WriteOptions.FormatType == FormatTypeUnicode4k || pstWriter.WriteOptions.FormatType == FormatTypeUnicode {
+	if pstWriter.IsUnicode() {
 		header.Write(make([]byte, 8))
-	} else if pstWriter.WriteOptions.FormatType == FormatTypeANSI {
+	} else if pstWriter.IsANSI() {
 		header.Write(make([]byte, 4))
 	}
 
@@ -234,7 +243,7 @@ func (pstWriter *Writer) WriteHeader(writer io.Writer, totalSize int64, rootNode
 
 	// Unused space; MUST be set to zero. Unicode PST file format only.
 	// (qwUnused)
-	if pstWriter.WriteOptions.FormatType == FormatTypeUnicode4k || pstWriter.WriteOptions.FormatType == FormatTypeUnicode {
+	if pstWriter.IsUnicode() {
 		header.Write(make([]byte, 8))
 	}
 
@@ -245,7 +254,7 @@ func (pstWriter *Writer) WriteHeader(writer io.Writer, totalSize int64, rootNode
 
 	// Unused alignment bytes; MUST be set to zero.
 	// Unicode PST file format only.
-	if pstWriter.WriteOptions.FormatType == FormatTypeUnicode4k || pstWriter.WriteOptions.FormatType == FormatTypeUnicode {
+	if pstWriter.IsUnicode() {
 		header.Write(make([]byte, 4))
 	}
 
@@ -257,11 +266,11 @@ func (pstWriter *Writer) WriteHeader(writer io.Writer, totalSize int64, rootNode
 	// bSentinel
 	header.Write([]byte{128})
 	// Encryption. Indicates how the data within the PST file is encoded. (bCryptMethod)
-	header.WriteByte(byte(pstWriter.WriteOptions.EncryptionType))
+	header.WriteByte(byte(pstWriter.writeOptions.encryptionType))
 	// rgbReserved
 	header.Write(make([]byte, 2))
 
-	if pstWriter.WriteOptions.FormatType == FormatTypeUnicode4k || pstWriter.WriteOptions.FormatType == FormatTypeUnicode {
+	if pstWriter.IsUnicode() {
 		// Next BID.
 		// go-pst does not read this value (bidNextB)
 		header.Write(make([]byte, 8))
@@ -272,7 +281,7 @@ func (pstWriter *Writer) WriteHeader(writer io.Writer, totalSize int64, rootNode
 		header.Write([]byte{byte(crc32.ChecksumIEEE(header.Bytes()[4 : 4+516]))})
 	}
 
-	if pstWriter.WriteOptions.FormatType == FormatTypeANSI {
+	if pstWriter.IsANSI() {
 		header.Write(make([]byte, 8)) // ullReserved
 		header.Write(make([]byte, 4)) // dwReserved
 	}
@@ -295,7 +304,7 @@ func (pstWriter *Writer) WriteHeader(writer io.Writer, totalSize int64, rootNode
 // References https://github.com/mooijtech/go-pst/blob/main/docs/README.md#special-internal-nids
 func (pstWriter *Writer) WriteInternalBTreeNodes(writer io.Writer) (int64, error) {
 	internalIdentifiersBuffer := bytes.NewBuffer(make([]byte, 128))
-	formatType := pstWriter.WriteOptions.FormatType
+	formatType := pstWriter.writeOptions.formatType
 
 	internalIdentifiersBuffer.Write(IdentifierMessageStore.Bytes(formatType))
 	internalIdentifiersBuffer.Write(IdentifierNameToIDMap.Bytes(formatType))
@@ -320,23 +329,19 @@ func (pstWriter *Writer) WriteInternalBTreeNodes(writer io.Writer) (int64, error
 func (pstWriter *Writer) WriteHeaderRoot(writer io.Writer, totalSize int64, rootNodeBTree Identifier, rootBlockBTree Identifier) (int64, error) {
 	var headerSize int
 
-	switch pstWriter.WriteOptions.FormatType {
-	case FormatTypeUnicode:
+	if pstWriter.IsUnicode() {
 		// 4+8+8+8+8+16+16+1+1+2
 		headerSize = 72
-	case FormatTypeANSI:
+	} else if pstWriter.IsANSI() {
 		// 4+4+4+4+4+8+8+1+1+2
 		headerSize = 40
-	default:
-		return 0, ErrFormatTypeUnsupported
 	}
 
 	header := bytes.NewBuffer(make([]byte, headerSize))
 
 	header.Write(make([]byte, 4)) // dwReserved
 
-	switch pstWriter.WriteOptions.FormatType {
-	case FormatTypeUnicode:
+	if pstWriter.IsUnicode() {
 		// The size of the PST file, in bytes. (ibFileEof)
 		header.Write(GetUint64(uint64(totalSize)))
 		// An IB structure (section 2.2.2.3) that contains the absolute file offset to the last AMap page of the PST file.
@@ -351,7 +356,7 @@ func (pstWriter *Writer) WriteHeaderRoot(writer io.Writer, totalSize int64, root
 		header.Write(append(GetUint64(uint64(rootBlockBTree)), make([]byte, 8)...))
 		// Indicates whether the AMaps in this PST file are valid (0 = INVALID_AMAP).
 		header.Write([]byte{0})
-	case FormatTypeANSI:
+	} else if pstWriter.IsANSI() {
 		// The size of the PST file, in bytes. (ibFileEof)
 		header.Write(GetUint32(uint32(totalSize)))
 		// An IB structure (section 2.2.2.3) that contains the absolute file offset to the last AMap page of the PST file.
@@ -366,8 +371,6 @@ func (pstWriter *Writer) WriteHeaderRoot(writer io.Writer, totalSize int64, root
 		header.Write(GetUint64(uint64(rootBlockBTree)))
 		// Indicates whether the AMaps in this PST file are valid (0 = INVALID_AMAP).
 		header.Write([]byte{0})
-	default:
-		return 0, ErrFormatTypeUnsupported
 	}
 
 	header.Write(make([]byte, 1)) // bReserved

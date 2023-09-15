@@ -18,185 +18,137 @@ package pst
 
 import (
 	"bytes"
-	"encoding/binary"
-	"fmt"
-	"github.com/mooijtech/go-pst/v6/pkg/properties"
-	"github.com/rotisserie/eris"
-	"github.com/tinylib/msgp/msgp"
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/protobuf/proto"
 	"io"
-	"reflect"
-	"strconv"
-	"strings"
 )
 
 // PropertyWriter represents a writer for properties.
 // The PropertyContext should be used as a higher structure which manages this PropertyWriter.
 type PropertyWriter struct {
-	// StreamWriter is used to send write requests to a write channel and receive the results via a callback channel.
-	StreamWriter *StreamWriter
-	// FormatType represents the FormatType used while writing.
-	FormatType FormatType
-	// PropertyCount represents the amount of properties this PropertyWriter will write.
-	PropertyCount int
+	// streamWriter is used to send write requests to a write channel and receive the results via a callback channel.
+	// See GetProperties for converting to a byte representation.
+	streamWriter *StreamWriter
+	// propertyWriteCallback sends property write responses to the parent writer to calculate the total size of the PST file.
+	propertyWriteCallback chan int64
+	// formatType represents the FormatType used while writing.
+	formatType FormatType
+	// propertyCount represents the amount of properties this PropertyWriter will write (AddProperties).
+	// Used to calculate offsets.
+	propertyCount int
 }
 
 // NewPropertyWriter creates a new PropertyWriter.
-func NewPropertyWriter(writer io.WriteSeeker, writeGroup *errgroup.Group, formatType FormatType) *PropertyWriter {
+func NewPropertyWriter(writer io.WriteSeeker, writeGroup *errgroup.Group, formatType FormatType, propertyWriteCallback chan int64) *PropertyWriter {
+	// Stream writer used to write properties.
+	streamWriter := NewStreamWriter[io.WriterTo, int64](writer, writeGroup)
+
+	// Create property writer.
 	propertyWriter := &PropertyWriter{
-		FormatType:    formatType,
-		PropertyCount: 0,
+		streamWriter:          streamWriter,
+		propertyWriteCallback: propertyWriteCallback,
+		formatType:            formatType,
+		propertyCount:         0,
 	}
 
-	streamWriter := NewStreamWriter(writer, writeGroup).WithTransform(propertyWriter.PropertyTransform)
-
-	propertyWriter.StreamWriter = streamWriter
-
-	// Start the stream writer.
+	// Start the stream writer for writing properties.
 	streamWriter.StartWriteChannel()
-
-	// Start the property write channel.
-	propertyWriter.StartPropertyWriteChannel()
+	// Send the write results to the parent callback channel.
+	streamWriter.RegisterCallback(propertyWriteCallback)
 
 	return propertyWriter
 }
 
-// WritableProperty for the StreamWriter.
-type WritableProperty struct {
-	Value proto.Message
-}
-
-func (writableProperty *WritableProperty) WriteTo(writer io.Writer) (int64, error) {
-
-}
-
 // AddProperties sends the properties to the write queue, picked up by Goroutines.
 // Properties will be written to the PropertyWriteCallbackChannel (see StartPropertyWriteChannel).
-func (propertyWriter *PropertyWriter) AddProperties(properties ...*WritableProperty) {
+func (propertyWriter *PropertyWriter) AddProperties(properties ...proto.Message) error {
+	propertyWriter.propertyCount += len(properties)
+
+	// Send WritableProperties, receive the byte representation.
 	for _, property := range properties {
-		propertyWriter.StreamWriter.WriteChannel <- property
-		propertyWriter.PropertyCount++
+		// TODO - Send each property separately instead or batch for memory?
+		writableProperties, err := propertyWriter.GetProperties(property)
+
+		if err != nil {
+
+		}
+
+		for _, p := range writableProperties {
+			propertyWriter.streamWriter.Send(p)
+		}
 	}
+
+	return nil
 }
 
-// PropertyTransform sends the byte representation of the properties to a write channel and returns the writable properties.
-func (propertyWriter *PropertyWriter) PropertyTransform(receivedProperties ...StreamRequest) ([]StreamResponse, error) {
-	writableProperties, err := propertyWriter.GetProperties(receivedProperties...)
-
-	if err != nil {
-		return nil, eris.Wrap(err, "failed to get writable properties")
+// AddIdentifier creates an identifier property and writes it.
+func (propertyWriter *PropertyWriter) AddIdentifier(identifier Identifier) {
+	identifierProperty := &Property{
+		Identifier: 26610, // 26610 is always used for identifiers TODO reference actual PropertyName
+		Type:       PropertyTypeInteger32,
+		Value:      identifier.Bytes(propertyWriter.formatType),
 	}
 
-	return writableProperties, nil
+	propertyWriter.streamWriter.Send(identifierProperty)
 }
-
-//// StartPropertyWriteChannel starts the Go channel for writing properties.
-//func (propertyWriter *PropertyWriter) StartPropertyWriteChannel() error {
-//	propertyWriter.StreamWriter.WriteChannel <-
-//
-//	// Create writable byte representation of the properties.
-//	writableProperties, err := propertyWriter.GetProperties(receivedProperties)
-//
-//	if err != nil {
-//		return eris.Wrap(err, "failed to get writable properties")
-//	}
-//
-//
-//	propertyWriter.StreamWriter
-//
-//	// The caller is already in a Goroutine.
-//	for receivedProperties := range propertyWriter.PropertyWriteChannel {
-//		propertyWriter.WriteGroup.Go(func() error {
-//			// Create writable byte representation of the properties.
-//			writableProperties, err := propertyWriter.GetProperties(receivedProperties)
-//
-//			if err != nil {
-//				return eris.Wrap(err, "failed to get writable properties")
-//			}
-//
-//			// Callback, the PropertyContext handles writing this to the correct place.
-//			for _, writableProperty := range writableProperties {
-//				propertyWriter.PropertyWriteCallbackChannel <- writableProperty
-//			}
-//
-//			return nil
-//		})
-//	}
-//}
 
 // GetProperties returns the writable properties.
 // This code is a hot-path, do not use reflection here.
 // Instead, we use code-generated setters thanks to https://github.com/tinylib/msgp (deserialize into structs).
-func (propertyWriter *PropertyWriter) GetProperties(protoMessage ...StreamRequest) ([]StreamResponse, error) {
-	var totalSize int
-
-	totalSize += int(GetIdentifierSize(propertyWriter.FormatType))
-	// TODO -
-
-	messagePackBuffer := bytes.NewBuffer(make([]byte, totalSize))
-	messagePackWriter := msgp.NewWriterSize(messagePackBuffer, totalSize)
-
-	switch property := protoMessage.(type) {
-	case *properties.Message:
-		// TODO - Skip nil!
-		property.MarshalMsg()
-	case *properties.Attachment:
-
-	}
-
-	var properties []Property
-
-	propertyTypes := reflect.TypeOf(protoMessage).Elem()
-	propertyValues := reflect.ValueOf(protoMessage).Elem()
-
-	for i := 0; i < propertyTypes.NumField(); i++ {
-		if !propertyTypes.Field(i).IsExported() || propertyValues.Field(i).IsNil() {
-			continue
-		}
-
-		// Get the struct tag which we use to get the property ID and property type.
-		// These struct tags are generated by cmd/properties/generate.go.
-		tag := strings.ReplaceAll(propertyTypes.Field(i).Tag.Get("msg"), ",omitempty", "")
-
-		if tag == "" {
-			fmt.Printf("Skipping property without tag: %s\n", propertyTypes.Field(i).Name)
-			continue
-		}
-
-		propertyID, err := strconv.Atoi(strings.Split(tag, "-")[0])
-
-		if err != nil {
-			return nil, eris.Wrap(err, "failed to convert propertyID to int")
-		}
-
-		propertyType, err := strconv.Atoi(strings.Split(tag, "-")[1])
-
-		if err != nil {
-			return nil, eris.Wrap(err, "failed to convert propertyType to int")
-		}
-
-		var propertyBuffer bytes.Buffer
-
-		switch propertyValue := propertyValues.Field(i).Elem().Interface().(type) {
-		case string:
-			// Binary is intended for fixed-size structures with obvious encodings.
-			// Strings are not fixed size and do not have an obvious encoding.
-			if _, err := io.WriteString(&propertyBuffer, propertyValue); err != nil {
-				return nil, eris.Wrap(err, "failed to write string")
-			}
-		default:
-			if err := binary.Write(&propertyBuffer, binary.LittleEndian, propertyValue); err != nil {
-				return nil, eris.Wrap(err, "failed to write property")
-			}
-		}
-
-		properties = append(properties, Property{
-			Identifier: Identifier(propertyID),
-			Type:       PropertyType(propertyType),
-			Value:      propertyBuffer,
-		})
-	}
-
-	return properties, nil
+func (propertyWriter *PropertyWriter) GetProperties(writableProperties proto.Message) ([]*bytes.Buffer, error) {
+	return nil, nil
+	//var properties []Property
+	//
+	//propertyTypes := reflect.TypeOf(protoMessage).Elem()
+	//propertyValues := reflect.ValueOf(protoMessage).Elem()
+	//
+	//for i := 0; i < propertyTypes.NumField(); i++ {
+	//	if !propertyTypes.Field(i).IsExported() || propertyValues.Field(i).IsNil() {
+	//		continue
+	//	}
+	//
+	//	// Get the struct tag which we use to get the property ID and property type.
+	//	// These struct tags are generated by cmd/properties/generate.go.
+	//	tag := strings.ReplaceAll(propertyTypes.Field(i).Tag.Get("msg"), ",omitempty", "")
+	//
+	//	if tag == "" {
+	//		fmt.Printf("Skipping property without tag: %s\n", propertyTypes.Field(i).Name)
+	//		continue
+	//	}
+	//
+	//	propertyID, err := strconv.Atoi(strings.Split(tag, "-")[0])
+	//
+	//	if err != nil {
+	//		return nil, eris.Wrap(err, "failed to convert propertyID to int")
+	//	}
+	//
+	//	propertyType, err := strconv.Atoi(strings.Split(tag, "-")[1])
+	//
+	//	if err != nil {
+	//		return nil, eris.Wrap(err, "failed to convert propertyType to int")
+	//	}
+	//
+	//	var propertyBuffer bytes.Buffer
+	//
+	//	switch propertyValue := propertyValues.Field(i).Elem().Interface().(type) {
+	//	case string:
+	//		// Binary is intended for fixed-size structures with obvious encodings.
+	//		// Strings are not fixed size and do not have an obvious encoding.
+	//		if _, err := io.WriteString(&propertyBuffer, propertyValue); err != nil {
+	//			return nil, eris.Wrap(err, "failed to write string")
+	//		}
+	//	default:
+	//		if err := binary.Write(&propertyBuffer, binary.LittleEndian, propertyValue); err != nil {
+	//			return nil, eris.Wrap(err, "failed to write property")
+	//		}
+	//	}
+	//
+	//	properties = append(properties, Property{
+	//		Identifier: Identifier(propertyID),
+	//		Type:       PropertyType(propertyType),
+	//		Value:      propertyBuffer,
+	//	})
+	//}
+	//
+	//return properties, nil
 }

@@ -6,7 +6,7 @@
   <br>
 </h1>
 
-<h4 align="center">A library for reading PST files (written in Go/Golang)</h4>
+<h4 align="center">A library for reading and writing PST files (written in Go/Golang)</h4>
 
 <p align="center">
   <a href="https://github.com/mooijtech/go-pst/blob/master/LICENSE.txt">
@@ -30,13 +30,13 @@
 
 The PFF (Personal Folder File) and OFF (Offline Folder File) format is used to store Microsoft Outlook e-mails, appointments and contacts. The PST (Personal Storage Table), OST (Offline Storage Table) and PAB (Personal Address Book) file format consist of the PFF format.
 
+Created for [Go Forensics](https://goforensics.io/) by [Marten Mooij](#contact).
+
 ## Usage
 
 ```bash
 $ go install github.com/mooijtech/go-pst/v6
 ```
-
-See the [cmd/reader.go]() and [cmd/writer.go]():
 
 ### Reader
 
@@ -185,7 +185,7 @@ func main() {
 
 ## License 
 
-This project is licensed under the [Apache License 2.0]().
+This project is licensed under the [Apache License 2.0](https://github.com/mooijtech/go-pst/blob/master/LICENSE.txt).
 
 ## Documentation
 
@@ -194,10 +194,14 @@ This project is licensed under the [Apache License 2.0]().
 
 ## Implementations
 
-- [java-libpst](https://github.com/rjohnsondev/java-libpst)
-- [pstreader](https://github.com/Jmcleodfoss/pstreader)
-  - Special thanks to [James McLeod](https://github.com/Jmcleodfoss)
-- [libpff](https://github.com/libyal/libpff)
+- [java-libpst](https://github.com/rjohnsondev/java-libpst) (Richard Johnson)
+  - Inspired me to write go-pst
+- [pstreader](https://github.com/Jmcleodfoss/pstreader) (James McLeod)
+  - Kindly replied to my questions
+  - Inspired go-pst property generation
+- [libpff](https://github.com/libyal/libpff) (Joachim Metz)
+  - Original Gangster
+  - Inspired java-libpst
 - [XstReader](https://github.com/Dijji/XstReader)
 - [PANhunt](https://github.com/Dionach/PANhunt/blob/master/pst.py)
 
