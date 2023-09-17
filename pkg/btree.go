@@ -17,7 +17,6 @@
 package pst
 
 import (
-	"bytes"
 	"crypto/rand"
 	"encoding/binary"
 	"github.com/pkg/errors"
@@ -26,6 +25,7 @@ import (
 )
 
 // GetNodeBTreeOffset returns the file offset to the node b-tree.
+// References TODO
 func (file *File) GetNodeBTreeOffset() (int64, error) {
 	var outputBuffer []byte
 	var offset int64
@@ -57,15 +57,16 @@ func (file *File) GetNodeBTreeOffset() (int64, error) {
 }
 
 // GetBlockBTreeOffset returns the file offset to the block b-tree.
+// References TODO
 func (file *File) GetBlockBTreeOffset() (int64, error) {
 	var outputBuffer []byte
 	var offset int64
 
 	switch file.FormatType {
-	case FormatTypeUnicode:
+	case FormatTypeUnicode4k:
 		outputBuffer = make([]byte, 8)
 		offset = 240
-	case FormatTypeUnicode4k:
+	case FormatTypeUnicode:
 		outputBuffer = make([]byte, 8)
 		offset = 240
 	case FormatTypeANSI:
@@ -88,12 +89,14 @@ func (file *File) GetBlockBTreeOffset() (int64, error) {
 }
 
 // GetBTreeNodeEntryCount returns the amount of entries in the b-tree.
+// References TODO
 func (file *File) GetBTreeNodeEntryCount(btreeNode []byte) uint16 {
 	switch file.FormatType {
+	case FormatTypeUnicode4k:
+		// References https://web.archive.org/web/20160528150307/https://blog.mythicsoft.com/2015/07/10/ost-2013-file-format-the-missing-documentation/
+		return binary.LittleEndian.Uint16(btreeNode[4056:4058])
 	case FormatTypeUnicode:
 		return uint16(btreeNode[488])
-	case FormatTypeUnicode4k:
-		return binary.LittleEndian.Uint16(btreeNode[4056:4058]) // TODO - CHeck
 	case FormatTypeANSI:
 		return uint16(btreeNode[496])
 	default:
@@ -102,12 +105,14 @@ func (file *File) GetBTreeNodeEntryCount(btreeNode []byte) uint16 {
 }
 
 // GetBTreeNodeEntrySize returns the size of an entry in the b-tree.
+// References TODO
 func (file *File) GetBTreeNodeEntrySize(btreeNode []byte) uint8 {
 	switch file.FormatType {
+	case FormatTypeUnicode4k:
+		// References TODO
+		return btreeNode[4060]
 	case FormatTypeUnicode:
 		return btreeNode[490]
-	case FormatTypeUnicode4k:
-		return btreeNode[4060]
 	case FormatTypeANSI:
 		return btreeNode[498]
 	default:
@@ -116,13 +121,14 @@ func (file *File) GetBTreeNodeEntrySize(btreeNode []byte) uint8 {
 }
 
 // GetBTreeNodeLevel returns the level of the b-tree node.
-// References "The node and block b-tree".
+// References "The node and block b-tree" (TODO).
 func (file *File) GetBTreeNodeLevel(btreeNode []byte) uint8 {
 	switch file.FormatType {
+	case FormatTypeUnicode4k:
+		// References TODO
+		return btreeNode[4062]
 	case FormatTypeUnicode:
 		return btreeNode[491]
-	case FormatTypeUnicode4k:
-		return btreeNode[4062] // TODO - Check
 	case FormatTypeANSI:
 		return btreeNode[499]
 	default:
@@ -132,6 +138,7 @@ func (file *File) GetBTreeNodeLevel(btreeNode []byte) uint8 {
 
 // BTreeNode represents an entry in a b-tree node.
 // Fields are set depending on the NodeLevel (branch or leaf).
+// TODO - See NewBTreeNodeBranch and NewBTreeNodeLeaf.
 type BTreeNode struct {
 	// Identifier is only unique to the node level.
 	Identifier                 Identifier `json:"identifier"`
@@ -140,43 +147,31 @@ type BTreeNode struct {
 	LocalDescriptorsIdentifier Identifier `json:"localDescriptorsIdentifier"`
 	Size                       uint16     `json:"size"`
 	NodeLevel                  uint8      `json:"nodeLevel"`
+
+	// These variables are from the new OST format which uses ZLib.
+	// References https://web.archive.org/web/20160528150307/https://blog.mythicsoft.com/2015/07/10/ost-2013-file-format-the-missing-documentation/
+	CompressedSize   uint16 `json:"compressedSize"`
+	DecompressedSize uint16 `json:"decompressedSize"`
 }
 
 // NewBTreeNodeBranch creates a new BTreeNode with a NodeLevel > 0
-func NewBTreeNodeBranch(identifier Identifier) BTreeNode {
-	return BTreeNode{
-		Identifier: identifier,
-	}
-}
+// References
+//func NewBTreeNodeBranch(identifier Identifier) BTreeNode {
+//	return BTreeNode{
+//		Identifier: identifier,
+//	}
+//}
+//
+//// NewBTreeNodeLeaf creates a new BTreeNode leaf with a NodeLevel == 0
+//// References
+//func NewBTreeNodeLeaf(identifier Identifier) BTreeNode {
+//	return BTreeNode{
+//		Identifier: identifier,
+//		NodeLevel:  0,
+//	}
+//}
 
-// NewBTreeNodeLeaf creates a new BTreeNode leaf with a NodeLevel == 0
-func NewBTreeNodeLeaf(identifier Identifier) BTreeNode {
-	return BTreeNode{
-		Identifier: identifier,
-		NodeLevel:  0,
-	}
-}
-
-// WriteTo writes the byte representation of the B-Tree node.
-func (btreeNode *BTreeNode) WriteTo(writer io.Writer) (int64, error) {
-	if btreeNode.NodeLevel > 0 {
-		// Branch
-		btreeNodeBuffer := bytes.NewBuffer(make([]byte, 0))
-
-		//
-
-		return btreeNodeBuffer.WriteTo(writer)
-	} else {
-		// Leaf
-		btreeNodeBuffer := bytes.NewBuffer(make([]byte, 0))
-
-		//
-
-		return btreeNodeBuffer.WriteTo(writer)
-	}
-}
-
-// NewBTreeNodeReader is used by the Heap-on-Node.
+// NewBTreeNodeReader is used by the HeapOnNode.
 func NewBTreeNodeReader(btreeNode BTreeNode, reader Reader) *io.SectionReader {
 	return io.NewSectionReader(reader, btreeNode.FileOffset, int64(btreeNode.Size))
 }
@@ -202,10 +197,11 @@ func (file *File) GetBTreeNodeRawEntries(btreeNodeOffset int64, callback func([]
 	var outputBuffer []byte
 
 	switch file.FormatType {
+	case FormatTypeUnicode4k:
+		// References https://web.archive.org/web/20160528150307/https://blog.mythicsoft.com/2015/07/10/ost-2013-file-format-the-missing-documentation/
+		outputBuffer = make([]byte, 4056)
 	case FormatTypeUnicode:
 		outputBuffer = make([]byte, 512)
-	case FormatTypeUnicode4k:
-		outputBuffer = make([]byte, 4056) // TODO - Check
 	case FormatTypeANSI:
 		outputBuffer = make([]byte, 512)
 	default:
@@ -219,7 +215,18 @@ func (file *File) GetBTreeNodeRawEntries(btreeNodeOffset int64, callback func([]
 	}
 }
 
+// GetBTreeNodeEntryCompressedSize is only used for Unicode 4k.
+func GetBTreeNodeEntryCompressedSize(btreeNodeEntryData []byte) uint16 {
+	return binary.LittleEndian.Uint16(btreeNodeEntryData[16 : 16+2])
+}
+
+// GetBTreeNodeEntryDecompressedSize is only used for Unicode 4k.
+func GetBTreeNodeEntryDecompressedSize(btreeNodeEntryData []byte) uint16 {
+	return binary.LittleEndian.Uint16(btreeNodeEntryData[18 : 18+2])
+}
+
 // GetBTreeNodeEntries returns the entries in the b-tree node.
+// References TODO
 func (file *File) GetBTreeNodeEntries(btreeNodeOffset int64, btreeType BTreeType, callback func(btreeNodeEntries []BTreeNode, nodeLevel uint8, err error)) {
 	parentBTreeNodeLevel, err := file.GetParentBTreeNodeLevel(btreeNodeOffset)
 
@@ -265,27 +272,29 @@ func (file *File) GetBTreeNodeEntries(btreeNodeOffset int64, btreeType BTreeType
 					NodeLevel:  parentBTreeNodeLevel,
 				}
 			}
+
+			// Unicode 4k is used by OST and is the new format which supports ZLib.
+			// ZLib support is handled by ZLibDecompressor which is used by the HeapOnNodeReader.
+			if file.FormatType == FormatTypeUnicode4k {
+				btreeNodeEntries[i].CompressedSize = GetBTreeNodeEntryCompressedSize(btreeNodeEntryData)
+				btreeNodeEntries[i].DecompressedSize = GetBTreeNodeEntryDecompressedSize(btreeNodeEntryData)
+			}
 		}
 
+		// TODO - Use channels.
 		callback(btreeNodeEntries, parentBTreeNodeLevel, nil)
 	})
 }
 
 // GetBTreeNodeEntryIdentifier returns the Identifier of this b-tree node entry.
-// References "The b-tree entries".
+// References "The b-tree entries" (TODO).
 func GetBTreeNodeEntryIdentifier(btreeNodeEntryData []byte, formatType FormatType) Identifier {
-	return GetIdentifierFromBytes(btreeNodeEntryData[:GetIdentifierSize(formatType)], formatType)
+	return GetIdentifierFromBytes(btreeNodeEntryData[:GetIdentifierSize(formatType)])
 }
 
 // GetIdentifierFromBytes returns the Identifier type from bytes.
-func GetIdentifierFromBytes(identifierBytes []byte, formatType FormatType) Identifier {
-	switch formatType {
-	case FormatTypeANSI:
-		return Identifier(binary.LittleEndian.Uint32(identifierBytes))
-	default:
-		// TODO - Reference [MS-PDF] that this is actually 32-bit
-		return Identifier(binary.LittleEndian.Uint32(identifierBytes))
-	}
+func GetIdentifierFromBytes(identifierBytes []byte) Identifier {
+	return Identifier(binary.LittleEndian.Uint32(identifierBytes))
 }
 
 // GetIdentifierSize returns the size of an Identifier.
@@ -300,16 +309,16 @@ func GetIdentifierSize(formatType FormatType) uint8 {
 
 // Identifier represents a b-tree node identifier.
 // TODO - Document the int types per use case and use separate types.
+// Used by B-Tree nodes.
 type Identifier int64
 
-// NewIdentifier creates a new identifier.
-// Used by the writer so the B-Tree node can be identified.
+// NewIdentifier creates a new Identifier.
+// Used by the writer so the BTreeNode can be identified.
 func NewIdentifier(formatType FormatType) (Identifier, error) {
 	var identifierSize int
 
 	switch formatType {
 	case FormatTypeUnicode4k:
-		// TODO - Check this
 		identifierSize = 8
 	case FormatTypeUnicode:
 		identifierSize = 8
@@ -376,7 +385,7 @@ func (identifier Identifier) Bytes(formatType FormatType) []byte {
 type IdentifierType uint8
 
 // Constants defining the identifier types.
-// References "Identifier types".
+// References "Identifier types" (TODO).
 const (
 	IdentifierTypeHID                     IdentifierType = 0
 	IdentifierTypeInternal                IdentifierType = 1
@@ -401,7 +410,7 @@ const (
 )
 
 // GetBTreeNodeEntryFileOffset returns the file offset for this b-tree branch or leaf node.
-// References "The b-tree entries".
+// References "The b-tree entries" (TODO).
 func GetBTreeNodeEntryFileOffset(btreeNodeEntryData []byte, isBranchNode bool, formatType FormatType) int64 {
 	if isBranchNode {
 		switch formatType {
@@ -421,28 +430,28 @@ func GetBTreeNodeEntryFileOffset(btreeNodeEntryData []byte, isBranchNode bool, f
 }
 
 // GetBTreeNodeEntryDataIdentifier returns the node identifier of the data (in the block b-tree).
-// References "The b-tree entries".
+// References "The b-tree entries" (TODO).
 func GetBTreeNodeEntryDataIdentifier(btreeNodeEntryData []byte, formatType FormatType) Identifier {
 	switch formatType {
 	case FormatTypeANSI:
-		return GetIdentifierFromBytes(btreeNodeEntryData[4:4+GetIdentifierSize(formatType)], formatType)
+		return GetIdentifierFromBytes(btreeNodeEntryData[4 : 4+GetIdentifierSize(formatType)])
 	default:
-		return GetIdentifierFromBytes(btreeNodeEntryData[8:8+GetIdentifierSize(formatType)], formatType)
+		return GetIdentifierFromBytes(btreeNodeEntryData[8 : 8+GetIdentifierSize(formatType)])
 	}
 }
 
-// GetBTreeNodeEntryLocalDescriptorsIdentifier returns the identifier to the local descriptors in the block b-tree.
+// GetBTreeNodeEntryLocalDescriptorsIdentifier returns the Identifier to the local descriptors in the block b-tree.
 func GetBTreeNodeEntryLocalDescriptorsIdentifier(btreeNodeEntryData []byte, formatType FormatType) Identifier {
 	switch formatType {
 	case FormatTypeANSI:
-		return GetIdentifierFromBytes(btreeNodeEntryData[8:8+GetIdentifierSize(formatType)], formatType)
+		return GetIdentifierFromBytes(btreeNodeEntryData[8 : 8+GetIdentifierSize(formatType)])
 	default:
-		return GetIdentifierFromBytes(btreeNodeEntryData[16:16+GetIdentifierSize(formatType)], formatType)
+		return GetIdentifierFromBytes(btreeNodeEntryData[16 : 16+GetIdentifierSize(formatType)])
 	}
 }
 
 // GetBTreeNodeEntrySize returns the size of the data in the block b-tree leaf node entry.
-// References "The b-tree entries".
+// References "The b-tree entries" TODO References
 func GetBTreeNodeEntrySize(btreeNodeEntryData []byte, formatType FormatType) uint16 {
 	switch formatType {
 	case FormatTypeANSI:
@@ -490,10 +499,14 @@ func (file *File) WalkAndCreateBTree(btreeOffset int64, btreeType BTreeType, btr
 	file.GetBTreeNodeEntries(btreeOffset, btreeType, func(nodeEntries []BTreeNode, nodeLevel uint8, err error) {
 		if nodeLevel > 0 {
 			// Branch node entries.
+			// TODO - Use channels and Goroutines per walk route branch.
+			// TODO - Linux I/O URing
+			// TODO - Align to Linux 4096 bytes.
 			for i := 0; i < len(nodeEntries); i++ {
 				nodeEntry := nodeEntries[i]
 
 				if _, exists := btreeStore.Load(nodeEntry); exists {
+					// TODO - *errgroup.Group so we can use errors properly.
 					panic(errors.WithStack(ErrBTreeNodeConflict))
 				}
 
@@ -503,6 +516,7 @@ func (file *File) WalkAndCreateBTree(btreeOffset int64, btreeType BTreeType, btr
 			// Leaf node entries
 			for i := 0; i < len(nodeEntries); i++ {
 				if _, exists := btreeStore.Load(nodeEntries[i]); exists {
+					// TODO - *errgroup.Group so we can use errors properly.
 					panic(errors.WithStack(ErrBTreeNodeConflict))
 				}
 			}

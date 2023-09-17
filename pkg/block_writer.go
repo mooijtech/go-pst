@@ -17,8 +17,6 @@
 package pst
 
 import (
-	"bytes"
-	"github.com/rotisserie/eris"
 	"io"
 )
 
@@ -49,39 +47,40 @@ func (blockWriter *BlockWriter) WriteTo(writer io.Writer) (int64, error) {
 // WriteXBlock writes the XBlock.
 // References https://github.com/mooijtech/go-pst/blob/main/docs/README.md#xblock
 func (blockWriter *BlockWriter) WriteXBlock(writer io.Writer) (int64, error) {
-	// 1+1+2+4+identifiers+padding+blockTrailer
-	xBlockBuffer := bytes.NewBuffer(make([]byte, 0))
-
-	// Block type; MUST be set to 0x01 to indicate an XBLOCK or XXBLOCK.
-	xBlockBuffer.WriteByte(byte(1))
-	// MUST be set to 0x01 to indicate an XBLOCK.
-	xBlockBuffer.WriteByte(byte(1))
-	// The count of identifiers in the XBLOCK.
-	xBlockBuffer.Write(GetUint16(uint16(len(blockWriter.Identifiers))))
-	// Total count of bytes of all the external data stored in the data blocks referenced by XBLOCK.
-	// TODO
-	// Array of identifiers that reference data blocks.
-	// The size is equal to the number of entries indicated by cEnt multiplied by the size of a BID
-	// (8 bytes for Unicode PST files, 4 bytes for ANSI PST files).
-	for _, identifier := range blockWriter.Identifiers {
-		switch blockWriter.FormatType {
-		case FormatTypeUnicode:
-			xBlockBuffer.Write(GetUint64(uint64(identifier)))
-		case FormatTypeANSI:
-			xBlockBuffer.Write(GetUint32(uint32(identifier)))
-		default:
-			return 0, ErrFormatTypeUnsupported
-		}
-	}
-	// This field is present if the total size of all the other fields is not a multiple of 64.
-	// The size of this field is the smallest number of bytes required to make the size of the XBLOCK a multiple of 64.
-	// TODO -
-	// A BLOCKTRAILER structure
-	if _, err := blockWriter.WriteBlockTrailer(xBlockBuffer); err != nil {
-		return 0, eris.Wrap(err, "failed to write block trailer")
-	}
-
-	return xBlockBuffer.WriteTo(writer)
+	return 0, nil
+	//// 1+1+2+4+identifiers+padding+blockTrailer
+	//xBlockBuffer := bytes.NewBuffer(make([]byte, 0))
+	//
+	//// Block type; MUST be set to 0x01 to indicate an XBLOCK or XXBLOCK.
+	//xBlockBuffer.WriteByte(byte(1))
+	//// MUST be set to 0x01 to indicate an XBLOCK.
+	//xBlockBuffer.WriteByte(byte(1))
+	//// The count of identifiers in the XBLOCK.
+	//xBlockBuffer.Write(GetUint16(uint16(len(blockWriter.Identifiers))))
+	//// Total count of bytes of all the external data stored in the data blocks referenced by XBLOCK.
+	//// TODO
+	//// Array of identifiers that reference data blocks.
+	//// The size is equal to the number of entries indicated by cEnt multiplied by the size of a BID
+	//// (8 bytes for Unicode PST files, 4 bytes for ANSI PST files).
+	//for _, identifier := range blockWriter.Identifiers {
+	//	switch blockWriter.FormatType {
+	//	case FormatTypeUnicode:
+	//		xBlockBuffer.Write(GetUint64(uint64(identifier)))
+	//	case FormatTypeANSI:
+	//		xBlockBuffer.Write(GetUint32(uint32(identifier)))
+	//	default:
+	//		return 0, ErrFormatTypeUnsupported
+	//	}
+	//}
+	//// This field is present if the total size of all the other fields is not a multiple of 64.
+	//// The size of this field is the smallest number of bytes required to make the size of the XBLOCK a multiple of 64.
+	//// TODO -
+	//// A BLOCKTRAILER structure
+	//if _, err := blockWriter.WriteBlockTrailer(xBlockBuffer); err != nil {
+	//	return 0, eris.Wrap(err, "failed to write block trailer")
+	//}
+	//
+	//return xBlockBuffer.WriteTo(writer)
 }
 
 // WriteBlockTrailer writes the block trailer.

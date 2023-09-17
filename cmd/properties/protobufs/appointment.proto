@@ -244,20 +244,22 @@ message Appointment {
   optional int64 i_calendar_end_time = 122; // @gotags: msg:"4292-64,omitempty"
   // Contains the date and time, in UTC, for the activation of the next reminder.
   optional int64 i_calendar_reminder_next_time = 123; // @gotags: msg:"4298-64,omitempty"
+  // Specifies a quasi-unique value among all of the Calendar objects in a user's mailbox.
+  optional int32 owner_appointment_id = 124; // @gotags: msg:"98-3,omitempty"
   // Indicates whether a client has already processed a received task communication.
-  optional bool processed = 124; // @gotags: msg:"32001-11,omitempty"
+  optional bool processed = 125; // @gotags: msg:"32001-11,omitempty"
   // Indicates whether a client or server is to automatically respond to all meeting requests for the attendee or resource.
-  optional bool schedule_info_auto_accept_appointments = 126; // @gotags: msg:"26733-11,omitempty"
+  optional bool schedule_info_auto_accept_appointments = 127; // @gotags: msg:"26733-11,omitempty"
   // Indicates whether the delegator wants to receive copies of the meeting-related objects that are sent to the delegate.
-  optional bool schedule_info_delegator_wants_copy = 130; // @gotags: msg:"26690-11,omitempty"
+  optional bool schedule_info_delegator_wants_copy = 131; // @gotags: msg:"26690-11,omitempty"
   // Indicates whether the delegator wants to receive informational updates.
-  optional bool schedule_info_delegator_wants_info = 131; // @gotags: msg:"26699-11,omitempty"
+  optional bool schedule_info_delegator_wants_info = 132; // @gotags: msg:"26699-11,omitempty"
   // Indicates whether a client or server, when automatically responding to meeting requests, is to decline Meeting Request objects that overlap with previously scheduled events.
-  optional bool schedule_info_disallow_overlapping_appts = 132; // @gotags: msg:"26735-11,omitempty"
+  optional bool schedule_info_disallow_overlapping_appts = 133; // @gotags: msg:"26735-11,omitempty"
   // Indicates whether a client or server, when automatically responding to meeting requests, is to decline Meeting Request objects that represent a recurring series.
-  optional bool schedule_info_disallow_recurring_appts = 133; // @gotags: msg:"26734-11,omitempty"
+  optional bool schedule_info_disallow_recurring_appts = 134; // @gotags: msg:"26734-11,omitempty"
   // Contains a value set to TRUE by the client, regardless of user input.
-  optional bool schedule_info_dont_mail_delegates = 134; // @gotags: msg:"26691-11,omitempty"
+  optional bool schedule_info_dont_mail_delegates = 135; // @gotags: msg:"26691-11,omitempty"
   // Set to 0x00000000 when sending and is ignored on receipt.
-  optional int32 schedule_info_resource_type = 144; // @gotags: msg:"26689-3,omitempty"
+  optional int32 schedule_info_resource_type = 145; // @gotags: msg:"26689-3,omitempty"
 }

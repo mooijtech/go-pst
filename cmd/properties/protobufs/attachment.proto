@@ -64,6 +64,8 @@ message Attachment {
   optional int32 attach_size = 27; // @gotags: msg:"3616-3,omitempty"
   // Contains the name of an attachment file, modified so that it can be correlated with TNEF messages.
   optional string attach_transport_name = 29; // @gotags: msg:"14092-31,omitempty"
+  // Represents an offset, in rendered characters, to use when rendering an attachment  within the main message text.
+  optional int32 rendering_position = 31; // @gotags: msg:"14091-3,omitempty"
   // Specifies the character set of an attachment received via MIME with the content-type of text.
-  optional string text_attachment_charset = 31; // @gotags: msg:"14107-31,omitempty"
+  optional string text_attachment_charset = 32; // @gotags: msg:"14107-31,omitempty"
 }

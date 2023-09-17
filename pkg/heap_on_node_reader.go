@@ -17,12 +17,24 @@
 package pst
 
 import (
+	"bytes"
+	"fmt"
+	"github.com/rotisserie/eris"
 	"io"
 	"sort"
 )
 
+// HeapOnNodeReader implements io.SectionReader.
+type HeapOnNodeReader struct {
+	zLibDecompressor ZLibDecompressor
+	blocks           []io.SectionReader
+	blockOffsets     []int64
+	totalBlockSize   int64
+	options          Options
+}
+
 // NewHeapOnNodeReader creates a new Heap-on-Node reader.
-func NewHeapOnNodeReader(encryptionType EncryptionType, blocks ...io.SectionReader) *HeapOnNodeReader {
+func NewHeapOnNodeReader(options Options, blocks ...io.SectionReader) *HeapOnNodeReader {
 	blockOffsets := make([]int64, len(blocks))
 	blockOffset := int64(0)
 
@@ -33,60 +45,71 @@ func NewHeapOnNodeReader(encryptionType EncryptionType, blocks ...io.SectionRead
 	}
 
 	return &HeapOnNodeReader{
-		Blocks:         blocks,
-		BlockOffsets:   blockOffsets,
-		TotalBlockSize: blockOffset,
-		EncryptionType: encryptionType,
+		blocks:         blocks,
+		blockOffsets:   blockOffsets,
+		totalBlockSize: blockOffset,
+		options:        options,
 	}
-}
-
-// HeapOnNodeReader implements io.SectionReader.
-type HeapOnNodeReader struct {
-	Blocks         []io.SectionReader
-	BlockOffsets   []int64
-	TotalBlockSize int64
-	EncryptionType EncryptionType
 }
 
 // Size is the total byte size.
 func (heapOnNodeReader *HeapOnNodeReader) Size() int64 {
-	return heapOnNodeReader.TotalBlockSize
+	return heapOnNodeReader.totalBlockSize
 }
 
 // ReadAt is adapted from Brad Fitz (http://talks.golang.org/2013/oscon-dl/sizereaderat.go).
-func (heapOnNodeReader *HeapOnNodeReader) ReadAt(p []byte, off int64) (n int, err error) {
-	wantN := len(p)
+func (heapOnNodeReader *HeapOnNodeReader) ReadAt(p []byte, requestedOffset int64) (n int, err error) {
+	wantSize := len(p)
 
 	// Skip past the requested offset.
-	skipParts := sort.Search(len(heapOnNodeReader.Blocks), func(i int) bool {
-		// This function returns whether parts[i] will
+	skipParts := sort.Search(len(heapOnNodeReader.blocks), func(i int) bool {
+		// This function returns whether blocks[i] will
 		// contribute any bytes to our output.
-		part := heapOnNodeReader.Blocks[i]
-		return heapOnNodeReader.BlockOffsets[i]+part.Size() > off
+		part := heapOnNodeReader.blocks[i]
+		return heapOnNodeReader.blockOffsets[i]+part.Size() > requestedOffset
 	})
-	parts := heapOnNodeReader.Blocks[skipParts:]
+	blocks := heapOnNodeReader.blocks[skipParts:]
 
 	// How far to skip in the first part.
-	needSkip := off
-	if len(parts) > 0 {
-		needSkip -= heapOnNodeReader.BlockOffsets[skipParts]
+	blockStartOffset := requestedOffset
+	if len(blocks) > 0 {
+		blockStartOffset -= heapOnNodeReader.blockOffsets[skipParts]
 	}
 
-	for len(parts) > 0 && len(p) > 0 {
+	for len(blocks) > 0 && len(p) > 0 {
 		readP := p
-		partSize := parts[0].Size()
+		partSize := blocks[0].Size()
 
-		if int64(len(readP)) > partSize-needSkip {
-			readP = readP[:partSize-needSkip]
+		if int64(len(readP)) > partSize-blockStartOffset {
+			readP = readP[:partSize-blockStartOffset]
 		}
 
-		pn, err := parts[0].ReadAt(readP, needSkip)
+		pn, err := blocks[0].ReadAt(readP, blockStartOffset)
 
 		if err != nil {
 			return n, err
 		}
 
-		switch heapOnNodeReader.EncryptionType {
+		// Detect ZLib used by BTreeNode in the Unicode 4k format (OST).
+		if heapOnNodeReader.options.formatType == FormatTypeUnicode4k {
+			zlibDecompressor, err := NewZLibDecompressor(&blocks[0])
+
+			if err != nil {
+				return 0, eris.Wrap(err, "failed to ZLib decompress, possibly not compressed")
+			}
+
+			decompressedZLib := &bytes.Buffer{}
+
+			// TODO - Which order in combination with Encryption?
+			if _, err := zlibDecompressor.Decompress(readP, decompressedZLib); err != nil {
+				return 0, eris.Wrap(err, "failed to decompress ZLib")
+			}
+
+			fmt.Printf("Got decompressed ZLib: %s\n", decompressedZLib)
+		}
+
+		// See DecodeCompressibleEncryption.
+		switch heapOnNodeReader.options.encryptionType {
 		case EncryptionTypeNone:
 		case EncryptionTypePermute:
 			copy(readP, heapOnNodeReader.DecodeCompressibleEncryption(readP))
@@ -97,14 +120,14 @@ func (heapOnNodeReader *HeapOnNodeReader) ReadAt(p []byte, off int64) (n int, er
 		n += pn
 		p = p[pn:]
 
-		if int64(pn)+needSkip == partSize {
-			parts = parts[1:]
+		if int64(pn)+blockStartOffset == partSize {
+			blocks = blocks[1:]
 		}
 
-		needSkip = 0
+		blockStartOffset = 0
 	}
 
-	if n != wantN {
+	if n != wantSize {
 		return n, io.ErrUnexpectedEOF
 	}
 	return n, nil
@@ -138,3 +161,5 @@ func (heapOnNodeReader *HeapOnNodeReader) DecodeCompressibleEncryption(data []by
 
 	return data
 }
+
+// TODO - EncodeCompressibleEncryption

@@ -1,0 +1,48 @@
+From: https://web.archive.org/web/20160528150307/https://blog.mythicsoft.com/2015/07/10/ost-2013-file-format-the-missing-documentation/
+
+OST 2013 File Format – The missing documentation
+
+With the release of Outlook 2013 the format of the OST file changed significantly enough to break FileLocator Pro’s OST reading code and for some reason Microsoft refused to divulge the changes (I’ve personally spoken to or emailed several different Microsoft employees on this issue, at least half with ‘Senior’ in their job title, and while they all initially seemed responsive they ultimately said it would not be possible to share the information). So eventually we decided to roll-up our sleeves and dig down into the binary content and figure it out for ourselves. Here’s what we found…
+OST 2013 format differences with Unicode PST Format
+
+Important: This information has not been verified by Microsoft and could be wrong and almost certainly is incomplete. Since FileLocator Pro only reads PST/OST files we haven’t looked into changes required to create OST files. The core PST documentation can be downloaded here: Outlook Personal Folders (.pst) File Format
+HEADER
+
+MS-PST: 2.2.2.6 HEADER
+
+wVer - should be 0x24 for OST 2013
+
+Unless specifically mentioned the data sizes are the sames as for Unicode PST.
+BTPAGE
+
+MS-PST: 2.2.2.7.7.1 BTPAGE OST 2013 pages increased in size from 512 bytes to 4096 bytes. To accommodate a larger number of entries the counts have increased to two bytes instead of one.
+
+rgentries (4056 bytes)
+cEnt (2 bytes) - number of entries
+cEntMax (2 bytes) - max number of entries
+cbEnt (1 byte) - size of entries
+
+BBTENTRY
+
+MS-PST: 2.2.2.7.7.3 BBTENTRY (Leaf BBT Entry) Since blocks can now be compressed there is an additional ‘uncompressed/inflated size’ stored in the BBTENTRY. If the stored size is the same as the inflated size then the data has not been compressed.
+
+BREF (16 bytes)
+cbStored (2 bytes) - stored size
+cbInflated (2 bytes) - uncompressed/inflated size
+cRef (2 bytes)
+
+Blocks
+
+MS-PST: 2.2.2.8 Blocks OST 2013 block sizes increased in size from 8192 bytes to 65536 (max data is actually 0xffe8 since 16 bytes is reserved for the block trailer). Blocks, both internal and external, can be compressed. The BBTENTRY indicates compression by having an inflated size larger then the stored size. The compression is handled through zlib deflate and can therefore be uncompressed using zlib inflate. Most languages have an open source implementation of inflate (.NET 4.5 has a new DeflateStream class that should work).
+HID
+
+MS-PST: 2.3.1.1 HID This one’s a little hard to pin down. It appears that the first 3 bits of the PST hidBlockIndex are now used as flags and so the OST 2013 hidBlockIndex is actually just the top 13 bits, ie it needs to be RORed another 3 places.
+
+hidType (5 bits) - HID Type
+hidIndex (11 bits) - HID Index
+hidBlockFlags (3 bits) - Unknown. Bit 1 possible indicates 'No Value'.
+hidBlockIndex (13 bits) - zero based data block index.
+
+Conclusion
+
+And that appears to be it, at least for OST 2013 searching in our product FileLocator Pro. If you come across any mistakes or other changes please let me know and I’ll update this page with the correct information.

@@ -37,6 +37,11 @@ func NewAsync(name string) (*File, error) {
 	return New(asyncReader)
 }
 
+// AsyncReader is an async reader using Linux I/O URing.
+// TODO - This isn't properly used and is experimental.
+// TODO - Note that there is a reference to Linux I/O URing in the standard libray:
+// TODO - https://github.com/golang/go/issues/31908
+// TODO - We are currently using https://github.com/godzie44/go-uring switch to https://github.com/pawelgaczynski/giouring
 type AsyncReader struct {
 	ring             *uring.Ring
 	eventLoop        *reactor.Reactor

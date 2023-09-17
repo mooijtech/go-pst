@@ -32,6 +32,9 @@ type Message struct {
 	AttachmentTableContext *TableContext
 	LocalDescriptors       []LocalDescriptor // Used by the PropertyContext and TableContext.
 	Properties             msgp.Decodable    // Type properties.Message, properties.Appointment, properties.Contact
+
+	// TODO - Remove pointer so this can be used by the writer separately?
+	File *File
 }
 
 // NewMessage constructs a new Message.

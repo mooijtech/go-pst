@@ -21,4 +21,5 @@ option go_package = "github.com/mooijtech/go-pst;properties";
 
 message Folder {
   string name = 1;
+  string has_subfolders = 2;
 }

@@ -1,0 +1,35 @@
+// go-pst is a library for reading Personal Storage Table (.pst) files (written in Go/Golang).
+//
+// Copyright 2023 Marten Mooij
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+//go:generate msgp -tests=false
+
+syntax = "proto3";
+option go_package = "github.com/mooijtech/go-pst;properties";
+
+message Folder {
+  // Specifies the number of rows under the header row.
+  optional int32 content_count = 1; // @gotags: msg:"13826-3,omitempty"
+  // Specifies the number of rows under the header row that have the PidTagRead property (section 2.878) set to FALSE.
+  optional int32 content_unread_count = 2; // @gotags: msg:"13827-3,omitempty"
+  // Specifies the time, in UTC, when the item or folder was soft deleted.
+  optional int64 deleted_on = 3; // @gotags: msg:"26255-64,omitempty"
+  // Indicates whether a Folder object has rules.
+  optional bool has_rules = 4; // @gotags: msg:"26170-11,omitempty"
+  // Contains a number that monotonically increases every time a subfolder is added to, or deleted from, this folder.
+  optional int32 hierarchy_change_number = 5; // @gotags: msg:"26174-3,omitempty"
+  // Specifies a user's folder permissions.
+  optional int32 rights = 12; // @gotags: msg:"26169-3,omitempty"
+}

@@ -31,7 +31,7 @@ type Writer struct {
 	// writeGroup represents the writers running in Goroutines.
 	writeGroup *errgroup.Group
 	// writeOptions represents options used while writing.
-	writeOptions WriteOptions
+	writeOptions Options
 	// folderWriter represents the writer for folders.
 	folderWriter *FolderWriter
 	// folderWriteCallback represents the callback which is called after a folder is written.
@@ -40,7 +40,7 @@ type Writer struct {
 
 // NewWriter returns a writer for PST files.
 // io.WriteSeeker must be a pointer so output can be redirected on overflow.
-func NewWriter(outputFile io.WriteSeeker, writeGroup *errgroup.Group, writeOptions WriteOptions) (*Writer, error) {
+func NewWriter(outputFile io.WriteSeeker, writeGroup *errgroup.Group, writeOptions Options) (*Writer, error) {
 	// Stream writer.
 	streamWriter := NewStreamWriter[io.WriterTo, int64](outputFile, writeGroup)
 
@@ -63,29 +63,13 @@ func NewWriter(outputFile io.WriteSeeker, writeGroup *errgroup.Group, writeOptio
 	}, nil
 }
 
-// WriteOptions defines the options used during writing.
-type WriteOptions struct {
-	// formatType represents the FormatType (Unicode or ANSI).
-	formatType FormatType
-	// encryptionType represents the EncryptionType.
-	encryptionType EncryptionType
-}
-
-// NewWriteOptions creates a new WriteOptions used during writing PST files.
-func NewWriteOptions(formatType FormatType, encryptionType EncryptionType) WriteOptions {
-	return WriteOptions{
-		formatType:     formatType,
-		encryptionType: encryptionType,
-	}
-}
-
 // IsANSI returns true if the FormatType is ANSI.
 func (pstWriter *Writer) IsANSI() bool {
 	return pstWriter.writeOptions.formatType == FormatTypeANSI
 }
 
-// IsUnicode returns true if the FormatType is Unicode.
-func (pstWriter *Writer) IsUnicode() bool {
+// IsUnicode4kOrUnicode returns true if the FormatType is Unicode.
+func (pstWriter *Writer) IsUnicode4kOrUnicode() bool {
 	return pstWriter.writeOptions.formatType == FormatTypeUnicode || pstWriter.writeOptions.formatType == FormatTypeUnicode4k
 }
 
@@ -172,7 +156,7 @@ func (pstWriter *Writer) OverflowTo(writer io.WriteSeeker) {
 func (pstWriter *Writer) WriteHeader(writer io.Writer, totalSize int64, rootNodeBTree Identifier, rootBlockBTree Identifier) (int64, error) {
 	var headerSize int
 
-	if pstWriter.IsUnicode() {
+	if pstWriter.IsUnicode4kOrUnicode() {
 		// TODO - Where is the documentation for Unicode4k?
 		// 4+4+2+2+2+1+1+4+4+8+8+4+128+8+ROOT+4+128+128+1+1+2+8+4+3+1+32
 		// Header + header root
@@ -190,7 +174,7 @@ func (pstWriter *Writer) WriteHeader(writer io.Writer, totalSize int64, rootNode
 	header.Write([]byte{0x53, 0x4D}) // Magic client
 
 	// File format version
-	if pstWriter.IsUnicode() {
+	if pstWriter.IsUnicode4kOrUnicode() {
 		// TODO - Where is the documentation for Unicode4k?
 		// MUST be greater than 23 if the file is a Unicode PST file.
 		header.Write([]byte{30})
@@ -211,7 +195,7 @@ func (pstWriter *Writer) WriteHeader(writer io.Writer, totalSize int64, rootNode
 	header.Write(make([]byte, 4))
 
 	// Padding (bidUnused) for Unicode.
-	if pstWriter.IsUnicode() {
+	if pstWriter.IsUnicode4kOrUnicode() {
 		header.Write(make([]byte, 8))
 	}
 
@@ -225,7 +209,7 @@ func (pstWriter *Writer) WriteHeader(writer io.Writer, totalSize int64, rootNode
 	// This can be used to increment a value for generating identifiers used by B-Tree nodes.
 	// I assume it's faster to generate an identifier with crypto/rand instead of having to read and update this value.
 	// go-pst does not read this.
-	if pstWriter.IsUnicode() {
+	if pstWriter.IsUnicode4kOrUnicode() {
 		header.Write(make([]byte, 8))
 	} else if pstWriter.IsANSI() {
 		header.Write(make([]byte, 4))
@@ -243,7 +227,7 @@ func (pstWriter *Writer) WriteHeader(writer io.Writer, totalSize int64, rootNode
 
 	// Unused space; MUST be set to zero. Unicode PST file format only.
 	// (qwUnused)
-	if pstWriter.IsUnicode() {
+	if pstWriter.IsUnicode4kOrUnicode() {
 		header.Write(make([]byte, 8))
 	}
 
@@ -254,7 +238,7 @@ func (pstWriter *Writer) WriteHeader(writer io.Writer, totalSize int64, rootNode
 
 	// Unused alignment bytes; MUST be set to zero.
 	// Unicode PST file format only.
-	if pstWriter.IsUnicode() {
+	if pstWriter.IsUnicode4kOrUnicode() {
 		header.Write(make([]byte, 4))
 	}
 
@@ -270,7 +254,7 @@ func (pstWriter *Writer) WriteHeader(writer io.Writer, totalSize int64, rootNode
 	// rgbReserved
 	header.Write(make([]byte, 2))
 
-	if pstWriter.IsUnicode() {
+	if pstWriter.IsUnicode4kOrUnicode() {
 		// Next BID.
 		// go-pst does not read this value (bidNextB)
 		header.Write(make([]byte, 8))
@@ -329,7 +313,7 @@ func (pstWriter *Writer) WriteInternalBTreeNodes(writer io.Writer) (int64, error
 func (pstWriter *Writer) WriteHeaderRoot(writer io.Writer, totalSize int64, rootNodeBTree Identifier, rootBlockBTree Identifier) (int64, error) {
 	var headerSize int
 
-	if pstWriter.IsUnicode() {
+	if pstWriter.IsUnicode4kOrUnicode() {
 		// 4+8+8+8+8+16+16+1+1+2
 		headerSize = 72
 	} else if pstWriter.IsANSI() {
@@ -341,7 +325,7 @@ func (pstWriter *Writer) WriteHeaderRoot(writer io.Writer, totalSize int64, root
 
 	header.Write(make([]byte, 4)) // dwReserved
 
-	if pstWriter.IsUnicode() {
+	if pstWriter.IsUnicode4kOrUnicode() {
 		// The size of the PST file, in bytes. (ibFileEof)
 		header.Write(GetUint64(uint64(totalSize)))
 		// An IB structure (section 2.2.2.3) that contains the absolute file offset to the last AMap page of the PST file.

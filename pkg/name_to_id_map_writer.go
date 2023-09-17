@@ -16,7 +16,11 @@
 
 package pst
 
-import "io"
+import (
+	"github.com/rotisserie/eris"
+	"golang.org/x/sync/errgroup"
+	"io"
+)
 
 // NameToIDMapWriter defines a writer for the Name-to-ID-Map.
 // References https://github.com/mooijtech/go-pst/blob/main/docs/README.md#name-to-id-map
@@ -25,13 +29,20 @@ type NameToIDMapWriter struct {
 }
 
 // NewNameToIDMapWriter creates a new NameToIDMapWriter.
-func NewNameToIDMapWriter() *NameToIDMapWriter {
-	return &NameToIDMapWriter{
-		PropertyContextWriter: NewPropertyContextWriter(),
+func NewNameToIDMapWriter(writer io.WriteSeeker, writeGroup *errgroup.Group, propertyContextWriteCallback chan int64, formatType FormatType) (*NameToIDMapWriter, error) {
+	propertyContextWriter, err := NewPropertyContextWriter(writer, writeGroup, propertyContextWriteCallback, formatType)
+
+	if err != nil {
+		return nil, eris.Wrap(err, "failed to create Property Context writer")
 	}
+
+	return &NameToIDMapWriter{
+		PropertyContextWriter: propertyContextWriter,
+	}, nil
 }
 
 func (nameToIDMapWriter *NameToIDMapWriter) WriteTo(writer io.Writer) (int64, error) {
 	// The minimum requirement for the Name-to-ID Map is a PC node with a single property PidTagNameidBucketCount set to a value of 251 (0xFB)
-	return nameToIDMapWriter.PropertyContextWriter.
+	//return nameToIDMapWriter.PropertyContextWriter.
+	return 0, nil
 }

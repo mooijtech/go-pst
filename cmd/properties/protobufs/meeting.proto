@@ -14,8 +14,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package main
+//go:generate msgp -tests=false
 
-func main() {
+syntax = "proto3";
+option go_package = "github.com/mooijtech/go-pst;properties";
 
+message Meeting {
+  // Indicates that the Meeting Response object was out-of-date when it was received.
+  optional bool prompt_send_update = 1; // @gotags: msg:"262277-11,omitempty"
 }

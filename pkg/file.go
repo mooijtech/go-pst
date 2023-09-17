@@ -28,6 +28,7 @@ import (
 // File represents a PST file.
 type File struct {
 	Reader         Reader
+	Options        Options
 	FormatType     FormatType
 	EncryptionType EncryptionType
 	NodeBTree      BTreeStore
@@ -35,9 +36,17 @@ type File struct {
 	NameToIDMap    *NameToIDMap
 }
 
+// Options defines the options used during reading and writing.
+type Options struct {
+	// formatType represents the FormatType (Unicode or ANSI).
+	formatType FormatType
+	// encryptionType represents the EncryptionType.
+	encryptionType EncryptionType
+}
+
 // Reader defines the file reader used by go-pst to support asynchronous I/O.
 // Non-linux systems will fall back to DefaultReader.
-// See AsyncReader.
+// See AsyncReader TODO.
 type Reader interface {
 	ReadAtAsync(outputBuffer []byte, offset uint64, callback func(err error)) (uint64, error)
 	io.ReaderAt // Blocking call.
@@ -305,4 +314,9 @@ func (defaultReader *DefaultReader) ReadAtAsync(outputBuffer []byte, offset uint
 	callback(err)
 
 	return 0, err
+}
+
+// NewOptions represents the options used during reading and writing.
+func NewOptions(formatType FormatType, encryptionType EncryptionType) Options {
+	return Options{formatType: formatType, encryptionType: encryptionType}
 }

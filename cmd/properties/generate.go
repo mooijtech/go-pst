@@ -37,48 +37,52 @@ import (
 
 // main starts the Protocol Buffers generation.
 func main() {
+	// Download [MS-OXPROPS].
 	downloadedFile, err := download()
 
 	if err != nil {
-		panic(fmt.Sprintf("Failed to download [MS-OXPROPS].docx: %+v", errors.WithStack(err)))
+		panic(fmt.Sprintf("Failed to download [MS-OXPROPS].docx: %+v", err))
 	}
 
 	defer func() {
 		if err = os.Remove(downloadedFile); err != nil {
-			panic(fmt.Sprintf("Failed to remove [MS-OXPROPS].docx: %+v", errors.WithStack(err)))
+			panic(fmt.Sprintf("Failed to remove [MS-OXPROPS].docx: %+v", err))
 		}
 	}()
 
 	// TODO - Verify hash.
 
+	// Unzip as .DOCX is actually just zipped XML.
 	unzippedFile, err := unzip(downloadedFile)
 
 	if err != nil {
-		panic(fmt.Sprintf("Failed to unzip [MS-OXPROPS].docx: %+v", errors.WithStack(err)))
+		panic(fmt.Sprintf("Failed to unzip [MS-OXPROPS].docx: %+v", err))
 	}
 
 	defer func() {
 		if err = os.Remove(unzippedFile); err != nil {
-			panic(fmt.Sprintf("Failed to remove unzipped file [MS-OXPROPS].xml: %+v", errors.WithStack(err)))
+			panic(fmt.Sprintf("Failed to remove unzipped file [MS-OXPROPS].xml: %+v", err))
 		}
 	}()
 
+	// Get all defined properties.
 	properties, err := getPropertiesFromXML(unzippedFile)
 
 	if err != nil {
 		panic(fmt.Sprintf("Failed to create properties: %+v", errors.WithStack(err)))
 	}
 
+	// Create .proto files from the defined properties.
 	if err = generateProtocolBuffers(properties); err != nil {
 		panic(fmt.Sprintf("Failed to generate Protocol Buffers: %+v", errors.WithStack(err)))
 	}
 
-	// TODO - Check if exists.
+	// Create a property map used by go-pst to map values from the Property Context to their Property Type.
 	// Write property map.
 	propertyMap, err := os.Create("properties.csv")
 
 	if err != nil {
-		panic(errors.WithStack(err))
+		panic(fmt.Sprintf("Failed to create output file: %+v", err))
 	}
 
 	propertyMapWriter := csv.NewWriter(propertyMap)
@@ -103,15 +107,19 @@ func main() {
 	propertyMapWriter.Flush() // Important since writes are buffered.
 
 	if propertyMapWriter.Error() != nil {
-		panic(errors.WithStack(propertyMapWriter.Error()))
+		panic(fmt.Sprintf("Failed to write property map: %+v", propertyMapWriter.Error()))
 	} else if err := propertyMap.Close(); err != nil {
-		panic(errors.WithStack(err))
+		panic(fmt.Sprintf("Failed to close property map: %+v", err))
 	}
 
 	// TODO - Validate properties exist, parse DOCX in the same way:
 	// TODO - [MS-OXCMSG]: Message and Attachment Object Protocol
 	// TODO - [MS-OXCFOLD]: Folder Object Protocol and
+	// TODO - See referenceToProtocolBufferMessageType for mappings.
 	// TODO - Extend properties.Folder to include everything in [MS-OXCFOLD]: Folder Object Protocol.
+	//for downloadName, downloadURL := referenceToProtocolBufferMessageType {
+	// TODO - Download and apply same parser logic.
+	//}
 }
 
 // download the latest version of [MS-OXPROPS].docx and returns the downloaded file.
@@ -459,42 +467,106 @@ var propertyTypeToProtocolBufferFieldType = map[uint16]string{
 // areaNameToProtocolBufferMessageType defines the mapping from area names to Protocol Buffer Message Types.
 // TODO - Layer on top of "Common" area name, check the defining reference then sort accordingly.
 var areaNameToProtocolBufferMessageType = map[string]string{
-	"Sharing":                       "Sharing",
-	"Extracted Entities":            "Extracted Entity",
-	"Unified Messaging":             "Voicemail",
-	"Email":                         "Message",
-	"Journal":                       "Journal",
-	"Tasks":                         "Task",
-	"RSS":                           "RSS",
-	"Meetings":                      "Appointment",
-	"Calendar":                      "Appointment",
-	"Conferencing":                  "Appointment",
-	"Spam":                          "Spam",
-	"Reminders":                     "Appointment",
-	"General Message Properties":    "Message",
-	"Message Properties":            "Message",
-	"Message Time Properties":       "Message",
-	"Message Attachment Properties": "Attachment",
-	"Sticky Notes":                  "Note",
-	"Secure Messaging Properties":   "Message", // [MS-OXORMMS]: Rights-Managed Email Object Protocol.
-	"SMS":                           "SMS",     // [MS-OXOSMMS]: Short Message Service (SMS) and Multimedia Messaging Service (MMS) Object Protocol.
-	"Contact Properties":            "Contact",
-	"MapiMailUser":                  "Contact",
-	"Address Book":                  "Address Book", // [MS-OXOABK]: Address Book Object Protocol.
-	"MapiAddressBook":               "Address Book",
-	"Free/Busy Properties":          "Appointment",
-	"Archive":                       "Message",
-	"MapiRecipient":                 "Message",
-	"MIME Properties":               "Message",
-	"Address Properties":            "Message",
+	"Sharing":                             "Sharing",
+	"Extracted Entities":                  "Extracted Entity",
+	"Unified Messaging":                   "Voicemail",
+	"Email":                               "Message",
+	"Journal":                             "Journal",
+	"Tasks":                               "Task",
+	"RSS":                                 "RSS",
+	"Meetings":                            "Appointment",
+	"Calendar":                            "Appointment",
+	"Conferencing":                        "Appointment",
+	"Spam":                                "Spam",
+	"Reminders":                           "Appointment",
+	"General Message Properties":          "Message",
+	"Message Properties":                  "Message",
+	"Message Time Properties":             "Message",
+	"Message Attachment Properties":       "Attachment",
+	"Sticky Notes":                        "Note",
+	"Secure Messaging Properties":         "Message", // [MS-OXORMMS]: Rights-Managed Email Object Protocol.
+	"SMS":                                 "SMS",     // [MS-OXOSMMS]: Short Message Service (SMS) and Multimedia Messaging Service (MMS) Object Protocol.
+	"Contact Properties":                  "Contact",
+	"MapiMailUser":                        "Contact",
+	"Address Book":                        "Address Book", // [MS-OXOABK]: Address Book Object Protocol.
+	"MapiAddressBook":                     "Address Book",
+	"Free/Busy Properties":                "Appointment",
+	"Archive":                             "Message",
+	"MapiRecipient":                       "Message",
+	"MIME Properties":                     "Message",
+	"Address Properties":                  "Message",
+	"Common":                              "Message",
+	"Access Control Properties":           "Message",
+	"Outlook Application":                 "Message",
+	"Address book":                        "Address Book",
+	"History Properties":                  "Message",
+	"Sync":                                "Message",
+	"ICS":                                 "Message",
+	"Folder Properties":                   "Folder",
+	"Conversations":                       "Message",
+	"Configuration":                       "Message",
+	"Miscellaneous Properties":            "Message",
+	"MapiNonTransmittable":                "Message",
+	"Logon Properties":                    "Message",
+	"Mail":                                "Message",
+	"MessageClassDefinedTransmittable":    "Message",
+	"MapiMessageStore":                    "Message", // TODO - Message Store?
+	"ExchangeMessageStore":                "Message", // TODO - Message Store?
+	"Message Store Properties":            "Message",
+	"Appointment":                         "Appointment",
+	"MapiEnvelope":                        "Message",
+	"ExchangeNonTransmittableReserved":    "Message",
+	"Exchange Administrative":             "Message",
+	"TransportEnvelope":                   "Message",
+	"MapiNonTransmittable Property set":   "Message",
+	"MapiContainer":                       "Message",
+	"MapiAttachment":                      "Attachment",
+	"Rules":                               "Message",
+	"MapiStatus":                          "Message",
+	"Server-Side Rules Properties":        "Message",
+	"ID Properties":                       "Message",
+	"AB Container":                        "Message",
+	"Search":                              "Message",
+	"MapiEnvelope Property set":           "Message",
+	"Transport Envelope":                  "Message",
+	"Common Property set":                 "Message",
+	"Conflict Note":                       "Message",
+	"Table Properties":                    "Message",
+	"MAPI Display Tables":                 "Message",
+	"Server":                              "Message",
+	"General Report Properties":           "Message",
+	"Run-time configuration":              "Message",
+	"Meeting Response":                    "Meeting", // TODO - Meeting?
+	"Calendar Property set":               "Message", // TODO - Calendar?
+	"Site Mailbox":                        "Message",
+	"Flagging":                            "Message",
+	"Offline Address Book Properties":     "Address Book",
+	"MIME properties":                     "Message",
+	"BestBody":                            "Message",
+	"TransportRecipient":                  "Message",
+	"ExchangeAdministrative":              "Message",
+	"ProviderDefinedNonTransmittable":     "Message",
+	"MapiMessage":                         "Message",
+	"MapiCommon":                          "Message",
+	"ExchangeFolder":                      "Folder",
+	"ExchangeMessageReadOnly":             "Message",
+	"Message Class Defined Transmittable": "Message",
 }
 
 // referenceToProtocolBufferMessageType maps the defining reference prefix to the message type.
 // Preferred over area name mapping.
+// TODO - Use these documents directly :)
 var referenceToProtocolBufferMessageType = map[string]string{
-	"[MS-OXOMSG]":  "Message",
+	// References https://learn.microsoft.com/en-us/openspecs/exchange_server_protocols/ms-oxomsg/daa9120f-f325-4afb-a738-28f91049ab3c
+	"[MS-OXOMSG]": "Message",
+	// References https://learn.microsoft.com/en-us/openspecs/exchange_server_protocols/ms-oxocntc/9b636532-9150-4836-9635-9c9b756c9ccf
 	"[MS-OXOCNTC]": "Contact",
-	"[MS-OXOCAL]":  "Appointment",
+	// References https://learn.microsoft.com/en-us/openspecs/exchange_server_protocols/ms-oxocal/09861fde-c8e4-4028-9346-e7c214cfdba1
+	"[MS-OXOCAL]": "Appointment",
+	// References https://learn.microsoft.com/en-us/openspecs/exchange_server_protocols/ms-oxcfold/c0f31b95-c07f-486c-98d9-535ed9705fbf
+	"[MS-OXCFOLD]": "Folder",
+	// References
+	"[MS-OXOABK]": "Address Book Object Protocol",
 }
 
 //go:embed header.txt
@@ -517,6 +589,7 @@ func generateProtocolBuffers(properties []xmlProperty) error {
 		if protocolBufferMessageType == "" {
 			// We need to map this.
 			fmt.Printf("Unmapped area name \"%s\", defining reference: %s\n", property.AreaName, property.DefiningReference)
+			fmt.Println("Writing to unknown...")
 		} else {
 			protocolBufferBuilder := protocolBufferMessageTypeToBuilder[protocolBufferMessageType]
 

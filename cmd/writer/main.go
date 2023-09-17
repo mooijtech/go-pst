@@ -69,12 +69,13 @@ func WritePSTFile(outputName string) (int64, error) {
 	// Ideally all writes should be aligned on this boundary (FormatTypeUnicode4k).
 	// We could also add support for Linux I/O URing (https://en.wikipedia.org/wiki/Io_uring).
 	// You can use your own io.WriteSeeker.
+	// At the end of the day the bottleneck is still being limited by disk I/O.
 	concurrentWriter := concurrent.NewWriterAutoFlush(outputFile, 4096, 0.75)
 
 	// Write options.
 	formatType := pst.FormatTypeUnicode4k
 	encryptionType := pst.EncryptionTypePermute
-	writeOptions := pst.NewWriteOptions(formatType, encryptionType)
+	options := pst.NewOptions(formatType, encryptionType)
 
 	// Write group for Goroutines (all writers run here).
 	writeCancelContext, writeCancelFunc := context.WithCancel(context.Background())
@@ -83,7 +84,7 @@ func WritePSTFile(outputName string) (int64, error) {
 	defer writeCancelFunc()
 
 	// Writer.
-	writer, err := pst.NewWriter(concurrentWriter, writeGroup, writeOptions)
+	writer, err := pst.NewWriter(concurrentWriter, writeGroup, options)
 
 	if err != nil {
 		return 0, eris.Wrap(err, "failed to create writer")

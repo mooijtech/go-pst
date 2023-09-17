@@ -28,40 +28,43 @@ type Folder struct {
 	// Properties are populate by the PropertyContext.
 	// See GetPropertyContext.
 	Properties *properties.Folder
+
+	// TODO - Remove pointer so this can be used by the writer separately?
+	File *File
 }
 
 // NewFolder creates a new Folder with the properties for the FolderWriter.
-func NewFolder(properties *properties.Folder) *Folder {
-	return &Folder{
-		// Identifier is set by the FolderWriter, TODO move here?
-		//Identifier:
-		Properties: properties,
-	}
-}
+//func NewFolder(properties *properties.Folder) *Folder {
+//	return &Folder{
+//		// Identifier is set by the FolderWriter, TODO move here?
+//		//Identifier:
+//		Properties: properties,
+//	}
+//}
 
 // NewFolderWithIdentifier creates a Folder with the specified identifier for the FolderWriter.
-func NewFolderWithIdentifier(identifier Identifier, properties *properties.Folder) *Folder {
-	return &Folder{
-		Identifier: identifier,
-		Properties: properties,
-	}
-}
+//func NewFolderWithIdentifier(identifier Identifier, properties *properties.Folder) *Folder {
+//	return &Folder{
+//		Identifier: identifier,
+//		Properties: properties,
+//	}
+//}
 
 // GetPropertyContext returns the PropertyContext of the Folder.
-func (folder *Folder) GetPropertyContext(file *File) (*PropertyContext, error) {
-	rootFolderDataNode, err := file.GetDataBTreeNode(IdentifierRootFolder)
+func (folder *Folder) GetPropertyContext() (*PropertyContext, error) {
+	rootFolderDataNode, err := folder.File.GetDataBTreeNode(IdentifierRootFolder)
 
 	if err != nil {
 		return nil, eris.Wrap(err, "failed to get data b-tree node")
 	}
 
-	rootFolderHeapOnNode, err := file.GetHeapOnNode(rootFolderDataNode)
+	rootFolderHeapOnNode, err := folder.File.GetHeapOnNode(rootFolderDataNode)
 
 	if err != nil {
 		return nil, eris.Wrap(err, "failed to get Heap-on-Node")
 	}
 
-	propertyContext, err := file.GetPropertyContext(rootFolderHeapOnNode)
+	propertyContext, err := folder.File.GetPropertyContext(rootFolderHeapOnNode)
 
 	if err != nil {
 		return nil, eris.Wrap(err, "failed to get property context")
@@ -75,16 +78,16 @@ func (file *File) GetRootFolder() (*Folder, error) {
 	return &Folder{
 		Identifier: IdentifierRootFolder,
 		Properties: &properties.Folder{
-			// TODO - Extend
 			Name: "IdentifierRootFolder",
+			// TODO - Extend
 		},
 	}, nil
 }
 
 // GetSubFoldersTableContext returns the TableContext for the sub-folders of this folder.
 // Note this limits the returned properties to the ones we use in the Folder struct.
-func (folder *Folder) GetSubFoldersTableContext(file *File) (TableContext, error) {
-	nodeBTreeNode, err := file.GetNodeBTreeNode(folder.Identifier + 11) // +11 is the identifier of the sub-folders.
+func (folder *Folder) GetSubFoldersTableContext() (TableContext, error) {
+	nodeBTreeNode, err := folder.File.GetNodeBTreeNode(folder.Identifier + 11) // +11 is the identifier of the sub-folders.
 
 	if err != nil {
 		return TableContext{}, eris.Wrap(err, "failed to get node b-tree node")
@@ -119,9 +122,9 @@ func (folder *Folder) GetSubFoldersTableContext(file *File) (TableContext, error
 
 // GetSubFolders returns the sub-folders of this folder.
 func (folder *Folder) GetSubFolders() ([]Folder, error) {
-	if !folder.HasSubFolders {
+	if !folder.Properties.HasSubFolders { // TODO - Update from new properties.Folder
 		// If there are actually no sub-folders this references a folder that doesn't exist.
-		// java-libpst doesn't perform this check so I assumed property ID 26610 always indicated there is a sub-folder.
+		// java-libpst doesn't perform this check, so I assumed property ID 26610 always indicated there is a sub-folder.
 		// Special thanks to James McLeod (https://github.com/Jmcleodfoss/pstreader) for telling me to check if there are actually sub-folders.
 		return nil, nil
 	}
@@ -147,7 +150,7 @@ func (folder *Folder) GetSubFolders() ([]Folder, error) {
 			}
 
 			switch {
-			case property.ID == 12289:
+			case property.Identifier == 12289:
 				// TODO - Check if this is String8 on ANSI FormatType.
 				folderName, err := propertyReader.GetString()
 
@@ -155,8 +158,8 @@ func (folder *Folder) GetSubFolders() ([]Folder, error) {
 					return nil, eris.Wrap(err, "failed to get folder name")
 				}
 
-				subFolder.Name = folderName
-			case property.ID == 26610:
+				subFolder.Properties.Name = folderName
+			case property.Identifier == 26610:
 				identifier, err := propertyReader.GetInteger32()
 
 				if err != nil {
@@ -164,22 +167,24 @@ func (folder *Folder) GetSubFolders() ([]Folder, error) {
 				}
 
 				subFolder.Identifier = Identifier(identifier)
-			case property.ID == 13826:
+			case property.Identifier == 13826:
 				messageCount, err := propertyReader.GetInteger32()
 
 				if err != nil {
 					return nil, eris.Wrap(err, "failed to get message count")
 				}
 
-				subFolder.MessageCount = messageCount
-			case property.ID == 13834:
+				// TODO - Extend properties.Folder
+				subFolder.Properties.MessageCount = messageCount
+			case property.Identifier == 13834:
 				hasSubFolders, err := propertyReader.GetBoolean()
 
 				if err != nil {
 					return nil, eris.Wrap(err, "failed to get has sub folders")
 				}
 
-				subFolder.HasSubFolders = hasSubFolders
+				// TODO - Extend properties.Folder
+				subFolder.Properties.HasSubFolders = hasSubFolders
 			}
 		}
 
