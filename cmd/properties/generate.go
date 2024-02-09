@@ -393,7 +393,7 @@ func getPropertyIDFromLine(line []byte, propertyName string) (uint32, error) {
 		return 0, errors.WithStack(fmt.Errorf("failed to find property ID prefix for: %s", propertyName))
 	}
 
-	propertyID, err := strconv.ParseUint(string(propertyIDHex), propertyIDBitSize, propertyIDBitSize)
+	propertyID, err := strconv.ParseUint(string(propertyIDHex), 16, propertyIDBitSize)
 
 	if err != nil {
 		return 0, errors.WithStack(fmt.Errorf("failed to parse property ID hex to int: %w", err))
