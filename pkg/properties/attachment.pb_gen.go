@@ -454,6 +454,7 @@ func (z *Attachment) EncodeMsg(en *msgp.Writer) (err error) {
 	// omitempty: check for empty values
 	zb0001Len := uint32(23)
 	var zb0001Mask uint32 /* 23 bits */
+	_ = zb0001Mask
 	if z.AttachContentBase == nil {
 		zb0001Len--
 		zb0001Mask |= 0x10
@@ -976,6 +977,7 @@ func (z *Attachment) MarshalMsg(b []byte) (o []byte, err error) {
 	// omitempty: check for empty values
 	zb0001Len := uint32(23)
 	var zb0001Mask uint32 /* 23 bits */
+	_ = zb0001Mask
 	if z.AttachContentBase == nil {
 		zb0001Len--
 		zb0001Mask |= 0x10
