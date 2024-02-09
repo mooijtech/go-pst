@@ -21,35 +21,35 @@ option go_package = "github.com/mooijtech/go-pst;properties";
 
 message Message {
   // Specifies the options used in the automatic processing of email messages.
-  optional int32 auto_process_state = 1; // @gotags: msg:"2673063,omitempty"
+  optional int32 auto_process_state = 1; // @gotags: msg:"340743,omitempty"
   // Specifies billing information for the contact.
-  optional string billing = 2; // @gotags: msg:"26736531,omitempty"
+  optional string billing = 2; // @gotags: msg:"3410131,omitempty"
   // Contains a list of the classification categories to which the associated Message object has been assigned.
-  optional string classification = 3; // @gotags: msg:"26762231,omitempty"
+  optional string classification = 3; // @gotags: msg:"3423031,omitempty"
   // Contains a human-readable summary of each of the classification categories included in the PidLidClassification property (section 2.53).
-  optional string classification_description = 4; // @gotags: msg:"26762331,omitempty"
+  optional string classification_description = 4; // @gotags: msg:"3423131,omitempty"
   // Contains the GUID that identifies the list of email classification categories used by a Message object.
-  optional string classification_guid = 5; // @gotags: msg:"26762431,omitempty"
+  optional string classification_guid = 5; // @gotags: msg:"3423231,omitempty"
   // Indicates whether the message uses any classification categories.
-  optional bool classification_keep = 6; // @gotags: msg:"26762611,omitempty"
+  optional bool classification_keep = 6; // @gotags: msg:"3423411,omitempty"
   // Indicates whether the contents of this message are regarded as classified information.
-  optional bool classified = 7; // @gotags: msg:"26762111,omitempty"
+  optional bool classified = 7; // @gotags: msg:"3422911,omitempty"
   // Indicates the end time for the Message object.
-  optional int64 common_end = 8; // @gotags: msg:"26730364,omitempty"
+  optional int64 common_end = 8; // @gotags: msg:"3407164,omitempty"
   // Indicates the start time for the Message object.
-  optional int64 common_start = 9; // @gotags: msg:"26730264,omitempty"
+  optional int64 common_start = 9; // @gotags: msg:"3407064,omitempty"
   // Specifies the build number of the client application that sent the message.
-  optional int32 current_version = 12; // @gotags: msg:"2674263,omitempty"
+  optional int32 current_version = 12; // @gotags: msg:"341303,omitempty"
   // Specifies the name of the client application that sent the message.
-  optional string current_version_name = 13; // @gotags: msg:"26742831,omitempty"
+  optional string current_version_name = 13; // @gotags: msg:"3413231,omitempty"
   // Specifies the user-visible email account name through which the email message is sent.
-  optional string internet_account_name = 14; // @gotags: msg:"26752031,omitempty"
+  optional string internet_account_name = 14; // @gotags: msg:"3417631,omitempty"
   // Specifies the email account ID through which the email message is sent.
-  optional string internet_account_stamp = 15; // @gotags: msg:"26752131,omitempty"
+  optional string internet_account_stamp = 15; // @gotags: msg:"3417731,omitempty"
   // Indicates whether the end user wishes for this Message object to be hidden from other users who have access to the Message object.
-  optional bool private = 19; // @gotags: msg:"26727011,omitempty"
+  optional bool private = 19; // @gotags: msg:"3405411,omitempty"
   // Specifies the voting option that a respondent has selected.
-  optional string verb_response = 20; // @gotags: msg:"26733231,omitempty"
+  optional string verb_response = 20; // @gotags: msg:"3408431,omitempty"
   // Contains the value of the MIME Accept-Language header.
   optional string accept_language = 21; 
   // Specifies the value of the MIME Content-Base header, which defines the base URI for resolving relative URLs contained within the message body.
