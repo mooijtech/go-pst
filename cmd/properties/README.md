@@ -18,7 +18,7 @@ There are **1078 properties**, I want to be able to:
 
 [Protocol Buffers](https://developers.google.com/protocol-buffers/docs/proto3) is a language-neutral, platform-neutral, extensible mechanism for serializing structured data. The protocol buffer language is a language for specifying the schema for structured data. This schema is compiled into language specific bindings.
 
-![Explanation](https://developers.google.com/static/protocol-buffers/docs/images/protocol-buffers-concepts.png)
+![Explanation](https://protobuf.dev/images/protocol-buffers-concepts.png)
 
 ## Implementation
 
