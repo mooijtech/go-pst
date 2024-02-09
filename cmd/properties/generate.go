@@ -118,7 +118,7 @@ func download() (destinationFilename string, err error) {
 		Timeout: 60 * time.Second,
 	}
 
-	response, err := httpClientWithTimeout.Get("https://interoperability.blob.core.windows.net/files/MS-OXPROPS/%5bMS-OXPROPS%5d-210817.docx")
+	response, err := httpClientWithTimeout.Get("https://msopenspecs.azureedge.net/files/MS-OXPROPS/%5bMS-OXPROPS%5d-210817.docx")
 
 	if err != nil {
 		return "", errors.WithStack(err)
