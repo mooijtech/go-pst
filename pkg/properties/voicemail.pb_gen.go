@@ -292,6 +292,7 @@ func (z *Voicemail) EncodeMsg(en *msgp.Writer) (err error) {
 	// omitempty: check for empty values
 	zb0001Len := uint32(14)
 	var zb0001Mask uint16 /* 14 bits */
+	_ = zb0001Mask
 	if z.CallId == nil {
 		zb0001Len--
 		zb0001Mask |= 0x100
@@ -583,6 +584,7 @@ func (z *Voicemail) MarshalMsg(b []byte) (o []byte, err error) {
 	// omitempty: check for empty values
 	zb0001Len := uint32(14)
 	var zb0001Mask uint16 /* 14 bits */
+	_ = zb0001Mask
 	if z.CallId == nil {
 		zb0001Len--
 		zb0001Mask |= 0x100

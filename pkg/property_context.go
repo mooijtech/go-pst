@@ -188,6 +188,9 @@ func (propertyContext *PropertyContext) Populate(decodable msgp.Decodable, local
 		// TODO - Map using JSON name instead of propertyID.
 		propertyReader, err := propertyContext.GetPropertyReader(propertyID, localDescriptors)
 
+		if mappedID, ok := propertyContext.File.NameToIDMap.IDToName[int(propertyID)]; ok {
+			propertyReader.Property.ID = uint16(mappedID)
+		}
 		if err != nil && !eris.Is(err, ErrPropertyNoData) {
 			return eris.Wrap(err, "failed to get property reader")
 		}

@@ -130,6 +130,7 @@ func (z *Spam) EncodeMsg(en *msgp.Writer) (err error) {
 	// omitempty: check for empty values
 	zb0001Len := uint32(5)
 	var zb0001Mask uint8 /* 5 bits */
+	_ = zb0001Mask
 	if z.JunkAddRecipientsToSafeSendersList == nil {
 		zb0001Len--
 		zb0001Mask |= 0x1
@@ -262,6 +263,7 @@ func (z *Spam) MarshalMsg(b []byte) (o []byte, err error) {
 	// omitempty: check for empty values
 	zb0001Len := uint32(5)
 	var zb0001Mask uint8 /* 5 bits */
+	_ = zb0001Mask
 	if z.JunkAddRecipientsToSafeSendersList == nil {
 		zb0001Len--
 		zb0001Mask |= 0x1
