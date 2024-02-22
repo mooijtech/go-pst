@@ -20,6 +20,8 @@ syntax = "proto3";
 option go_package = "github.com/mooijtech/go-pst;properties";
 
 message Spam {
+  // Specifies which folder a message was in before it was filtered into the Junk Email folder.
+  optional bytes spam_original_folder = 1; // @gotags: msg:"34204258,omitempty"
   // Indicates whether email recipients are to be added to the safe senders list.
   optional int32 junk_add_recipients_to_safe_senders_list = 2; // @gotags: msg:"248353,omitempty"
   // Indicates whether email addresses of the contacts in the Contacts folder are treated in a special way with respect to the spam filter.

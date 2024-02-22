@@ -65,7 +65,6 @@ func main() {
 	}()
 
 	properties, err := getPropertiesFromXML(unzippedFile)
-
 	if err != nil {
 		panic(fmt.Sprintf("Failed to create properties: %+v", errors.WithStack(err)))
 	}
@@ -118,7 +117,7 @@ func download() (destinationFilename string, err error) {
 		Timeout: 60 * time.Second,
 	}
 
-	response, err := httpClientWithTimeout.Get("https://interoperability.blob.core.windows.net/files/MS-OXPROPS/%5bMS-OXPROPS%5d-210817.docx")
+	response, err := httpClientWithTimeout.Get("https://msopenspecs.azureedge.net/files/MS-OXPROPS/%5bMS-OXPROPS%5d-210817.docx")
 
 	if err != nil {
 		return "", errors.WithStack(err)
@@ -393,7 +392,7 @@ func getPropertyIDFromLine(line []byte, propertyName string) (uint32, error) {
 		return 0, errors.WithStack(fmt.Errorf("failed to find property ID prefix for: %s", propertyName))
 	}
 
-	propertyID, err := strconv.ParseUint(string(propertyIDHex), propertyIDBitSize, propertyIDBitSize)
+	propertyID, err := strconv.ParseUint(string(propertyIDHex), 16, propertyIDBitSize)
 
 	if err != nil {
 		return 0, errors.WithStack(fmt.Errorf("failed to parse property ID hex to int: %w", err))
@@ -449,6 +448,7 @@ var propertyTypeToProtocolBufferFieldType = map[uint16]string{
 	64:  "int64", // Time
 	72:  "uint64",
 	251: "uint32",
+	258: "bytes",
 	// The rest are variable size.
 }
 
@@ -483,6 +483,7 @@ var areaNameToProtocolBufferMessageType = map[string]string{
 	"MapiRecipient":                 "Message",
 	"MIME Properties":               "Message",
 	"Address Properties":            "Message",
+	"Miscellaneous Properties":      "Message",
 }
 
 // referenceToProtocolBufferMessageType maps the defining reference prefix to the message type.
@@ -551,7 +552,6 @@ func generateProtocolBuffers(properties []xmlProperty) error {
 // createProtoFileField returns the Protocol Buffer field for this property.
 func createProtoFileField(property xmlProperty, protocolBufferFieldType string, uniqueFieldID int) string {
 	var fieldBuilder strings.Builder
-
 	if protocolBufferFieldType != "" {
 		// Format property name.
 		formattedPropertyName := getFormattedPropertyName(property.Name)

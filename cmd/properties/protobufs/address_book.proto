@@ -34,6 +34,8 @@ message AddressBook {
   optional int32 address_book_distribution_list_external_member_count = 7; // @gotags: msg:"360673,omitempty"
   // Contains the total number of recipients in the distribution list.
   optional int32 address_book_distribution_list_member_count = 8; // @gotags: msg:"360663,omitempty"
+  // Contains the name-service EntryID of a directory object that refers to a public folder.
+  optional bytes address_book_entry_id = 11; // @gotags: msg:"26171258,omitempty"
   // Contains custom values defined and populated by the organization that modified the display templates.
   optional string address_book_extension_attribute1 = 12; // @gotags: msg:"3281331,omitempty"
   // Contains custom values defined and populated by the organization that modified the display templates.
@@ -82,8 +84,12 @@ message AddressBook {
   optional bool address_book_moderation_enabled = 41; // @gotags: msg:"3602111,omitempty"
   // Contains the DN of the Address Book object.
   optional string address_book_object_distinguished_name = 43; // @gotags: msg:"3282831,omitempty"
+  // Contains a GUID that identifies an Address Book object.
+  optional bytes address_book_object_guid = 44; // @gotags: msg:"35949258,omitempty"
   // Contains the DN of the Organization object of the mail user's organization.
   optional string address_book_organizational_unit_root_distinguished_name = 45; // @gotags: msg:"3600831,omitempty"
+  // Contains the EntryID of the parent container in a hierarchy of address book containers.
+  optional bytes address_book_parent_entry_id = 48; // @gotags: msg:"65532258,omitempty"
   // Contains the phonetic representation of the PidTagCompanyName property (section 2.639).
   optional string address_book_phonetic_company_name = 49; // @gotags: msg:"3598531,omitempty"
   // Contains the phonetic representation of the PidTagDepartmentName property (section 2.672).
@@ -110,4 +116,14 @@ message AddressBook {
   optional int32 display_type = 67; // @gotags: msg:"145923,omitempty"
   // Contains an integer value that indicates how to display an Address Book object in a table or as a recipient on a message.
   optional int32 display_type_ex = 68; // @gotags: msg:"145973,omitempty"
+  // Contains a series of instructions that can be executed to format an address and the data that is needed to execute those instructions.
+  optional bytes script_data = 69; // @gotags: msg:"4258,omitempty"
+  // Contains a recording of the mail user's name pronunciation.
+  optional bytes spoken_name = 70; // @gotags: msg:"36034258,omitempty"
+  // Describes the controls used in the template that is used to retrieve address book information.
+  optional bytes template_data = 71; // @gotags: msg:"1258,omitempty"
+  // Contains the value of the PidTagEntryId property (section 2.683), expressed as a Permanent Entry ID format.
+  optional bytes templateid = 72; // @gotags: msg:"14594258,omitempty"
+  // Contains the mail user's photo in .jpg format.
+  optional bytes thumbnail_photo = 73; // @gotags: msg:"35998258,omitempty"
 }

@@ -24,6 +24,12 @@ func (z *Spam) DecodeMsg(dc *msgp.Reader) (err error) {
 			return
 		}
 		switch msgp.UnsafeString(field) {
+		case "34204258":
+			z.SpamOriginalFolder, err = dc.ReadBytes(z.SpamOriginalFolder)
+			if err != nil {
+				err = msgp.WrapError(err, "SpamOriginalFolder")
+				return
+			}
 		case "248353":
 			if dc.IsNil() {
 				err = dc.ReadNil()
@@ -128,27 +134,32 @@ func (z *Spam) DecodeMsg(dc *msgp.Reader) (err error) {
 // EncodeMsg implements msgp.Encodable
 func (z *Spam) EncodeMsg(en *msgp.Writer) (err error) {
 	// omitempty: check for empty values
-	zb0001Len := uint32(5)
-	var zb0001Mask uint8 /* 5 bits */
-	if z.JunkAddRecipientsToSafeSendersList == nil {
+	zb0001Len := uint32(6)
+	var zb0001Mask uint8 /* 6 bits */
+	_ = zb0001Mask
+	if z.SpamOriginalFolder == nil {
 		zb0001Len--
 		zb0001Mask |= 0x1
 	}
-	if z.JunkIncludeContacts == nil {
+	if z.JunkAddRecipientsToSafeSendersList == nil {
 		zb0001Len--
 		zb0001Mask |= 0x2
 	}
-	if z.JunkPermanentlyDelete == nil {
+	if z.JunkIncludeContacts == nil {
 		zb0001Len--
 		zb0001Mask |= 0x4
 	}
-	if z.JunkPhishingEnableLinks == nil {
+	if z.JunkPermanentlyDelete == nil {
 		zb0001Len--
 		zb0001Mask |= 0x8
 	}
-	if z.JunkThreshold == nil {
+	if z.JunkPhishingEnableLinks == nil {
 		zb0001Len--
 		zb0001Mask |= 0x10
+	}
+	if z.JunkThreshold == nil {
+		zb0001Len--
+		zb0001Mask |= 0x20
 	}
 	// variable map header, size zb0001Len
 	err = en.Append(0x80 | uint8(zb0001Len))
@@ -159,6 +170,18 @@ func (z *Spam) EncodeMsg(en *msgp.Writer) (err error) {
 		return
 	}
 	if (zb0001Mask & 0x1) == 0 { // if not empty
+		// write "34204258"
+		err = en.Append(0xa8, 0x33, 0x34, 0x32, 0x30, 0x34, 0x32, 0x35, 0x38)
+		if err != nil {
+			return
+		}
+		err = en.WriteBytes(z.SpamOriginalFolder)
+		if err != nil {
+			err = msgp.WrapError(err, "SpamOriginalFolder")
+			return
+		}
+	}
+	if (zb0001Mask & 0x2) == 0 { // if not empty
 		// write "248353"
 		err = en.Append(0xa6, 0x32, 0x34, 0x38, 0x33, 0x35, 0x33)
 		if err != nil {
@@ -177,7 +200,7 @@ func (z *Spam) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask & 0x2) == 0 { // if not empty
+	if (zb0001Mask & 0x4) == 0 { // if not empty
 		// write "248323"
 		err = en.Append(0xa6, 0x32, 0x34, 0x38, 0x33, 0x32, 0x33)
 		if err != nil {
@@ -196,7 +219,7 @@ func (z *Spam) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask & 0x4) == 0 { // if not empty
+	if (zb0001Mask & 0x8) == 0 { // if not empty
 		// write "248343"
 		err = en.Append(0xa6, 0x32, 0x34, 0x38, 0x33, 0x34, 0x33)
 		if err != nil {
@@ -215,7 +238,7 @@ func (z *Spam) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask & 0x8) == 0 { // if not empty
+	if (zb0001Mask & 0x10) == 0 { // if not empty
 		// write "2483911"
 		err = en.Append(0xa7, 0x32, 0x34, 0x38, 0x33, 0x39, 0x31, 0x31)
 		if err != nil {
@@ -234,7 +257,7 @@ func (z *Spam) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask & 0x10) == 0 { // if not empty
+	if (zb0001Mask & 0x20) == 0 { // if not empty
 		// write "248333"
 		err = en.Append(0xa6, 0x32, 0x34, 0x38, 0x33, 0x33, 0x33)
 		if err != nil {
@@ -260,27 +283,32 @@ func (z *Spam) EncodeMsg(en *msgp.Writer) (err error) {
 func (z *Spam) MarshalMsg(b []byte) (o []byte, err error) {
 	o = msgp.Require(b, z.Msgsize())
 	// omitempty: check for empty values
-	zb0001Len := uint32(5)
-	var zb0001Mask uint8 /* 5 bits */
-	if z.JunkAddRecipientsToSafeSendersList == nil {
+	zb0001Len := uint32(6)
+	var zb0001Mask uint8 /* 6 bits */
+	_ = zb0001Mask
+	if z.SpamOriginalFolder == nil {
 		zb0001Len--
 		zb0001Mask |= 0x1
 	}
-	if z.JunkIncludeContacts == nil {
+	if z.JunkAddRecipientsToSafeSendersList == nil {
 		zb0001Len--
 		zb0001Mask |= 0x2
 	}
-	if z.JunkPermanentlyDelete == nil {
+	if z.JunkIncludeContacts == nil {
 		zb0001Len--
 		zb0001Mask |= 0x4
 	}
-	if z.JunkPhishingEnableLinks == nil {
+	if z.JunkPermanentlyDelete == nil {
 		zb0001Len--
 		zb0001Mask |= 0x8
 	}
-	if z.JunkThreshold == nil {
+	if z.JunkPhishingEnableLinks == nil {
 		zb0001Len--
 		zb0001Mask |= 0x10
+	}
+	if z.JunkThreshold == nil {
+		zb0001Len--
+		zb0001Mask |= 0x20
 	}
 	// variable map header, size zb0001Len
 	o = append(o, 0x80|uint8(zb0001Len))
@@ -288,6 +316,11 @@ func (z *Spam) MarshalMsg(b []byte) (o []byte, err error) {
 		return
 	}
 	if (zb0001Mask & 0x1) == 0 { // if not empty
+		// string "34204258"
+		o = append(o, 0xa8, 0x33, 0x34, 0x32, 0x30, 0x34, 0x32, 0x35, 0x38)
+		o = msgp.AppendBytes(o, z.SpamOriginalFolder)
+	}
+	if (zb0001Mask & 0x2) == 0 { // if not empty
 		// string "248353"
 		o = append(o, 0xa6, 0x32, 0x34, 0x38, 0x33, 0x35, 0x33)
 		if z.JunkAddRecipientsToSafeSendersList == nil {
@@ -296,7 +329,7 @@ func (z *Spam) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt32(o, *z.JunkAddRecipientsToSafeSendersList)
 		}
 	}
-	if (zb0001Mask & 0x2) == 0 { // if not empty
+	if (zb0001Mask & 0x4) == 0 { // if not empty
 		// string "248323"
 		o = append(o, 0xa6, 0x32, 0x34, 0x38, 0x33, 0x32, 0x33)
 		if z.JunkIncludeContacts == nil {
@@ -305,7 +338,7 @@ func (z *Spam) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt32(o, *z.JunkIncludeContacts)
 		}
 	}
-	if (zb0001Mask & 0x4) == 0 { // if not empty
+	if (zb0001Mask & 0x8) == 0 { // if not empty
 		// string "248343"
 		o = append(o, 0xa6, 0x32, 0x34, 0x38, 0x33, 0x34, 0x33)
 		if z.JunkPermanentlyDelete == nil {
@@ -314,7 +347,7 @@ func (z *Spam) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt32(o, *z.JunkPermanentlyDelete)
 		}
 	}
-	if (zb0001Mask & 0x8) == 0 { // if not empty
+	if (zb0001Mask & 0x10) == 0 { // if not empty
 		// string "2483911"
 		o = append(o, 0xa7, 0x32, 0x34, 0x38, 0x33, 0x39, 0x31, 0x31)
 		if z.JunkPhishingEnableLinks == nil {
@@ -323,7 +356,7 @@ func (z *Spam) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendBool(o, *z.JunkPhishingEnableLinks)
 		}
 	}
-	if (zb0001Mask & 0x10) == 0 { // if not empty
+	if (zb0001Mask & 0x20) == 0 { // if not empty
 		// string "248333"
 		o = append(o, 0xa6, 0x32, 0x34, 0x38, 0x33, 0x33, 0x33)
 		if z.JunkThreshold == nil {
@@ -353,6 +386,12 @@ func (z *Spam) UnmarshalMsg(bts []byte) (o []byte, err error) {
 			return
 		}
 		switch msgp.UnsafeString(field) {
+		case "34204258":
+			z.SpamOriginalFolder, bts, err = msgp.ReadBytesBytes(bts, z.SpamOriginalFolder)
+			if err != nil {
+				err = msgp.WrapError(err, "SpamOriginalFolder")
+				return
+			}
 		case "248353":
 			if msgp.IsNil(bts) {
 				bts, err = msgp.ReadNilBytes(bts)
@@ -452,7 +491,7 @@ func (z *Spam) UnmarshalMsg(bts []byte) (o []byte, err error) {
 
 // Msgsize returns an upper bound estimate of the number of bytes occupied by the serialized message
 func (z *Spam) Msgsize() (s int) {
-	s = 1 + 7
+	s = 1 + 9 + msgp.BytesPrefixSize + len(z.SpamOriginalFolder) + 7
 	if z.JunkAddRecipientsToSafeSendersList == nil {
 		s += msgp.NilSize
 	} else {
