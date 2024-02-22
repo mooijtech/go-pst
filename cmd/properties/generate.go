@@ -65,7 +65,6 @@ func main() {
 	}()
 
 	properties, err := getPropertiesFromXML(unzippedFile)
-
 	if err != nil {
 		panic(fmt.Sprintf("Failed to create properties: %+v", errors.WithStack(err)))
 	}
@@ -484,6 +483,7 @@ var areaNameToProtocolBufferMessageType = map[string]string{
 	"MapiRecipient":                 "Message",
 	"MIME Properties":               "Message",
 	"Address Properties":            "Message",
+	"Miscellaneous Properties":      "Message",
 }
 
 // referenceToProtocolBufferMessageType maps the defining reference prefix to the message type.
@@ -552,7 +552,6 @@ func generateProtocolBuffers(properties []xmlProperty) error {
 // createProtoFileField returns the Protocol Buffer field for this property.
 func createProtoFileField(property xmlProperty, protocolBufferFieldType string, uniqueFieldID int) string {
 	var fieldBuilder strings.Builder
-
 	if protocolBufferFieldType != "" {
 		// Format property name.
 		formattedPropertyName := getFormattedPropertyName(property.Name)
