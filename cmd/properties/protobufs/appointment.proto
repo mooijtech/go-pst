@@ -52,6 +52,8 @@ message Appointment {
   optional int64 appointment_proposed_end_whole = 15; // @gotags: msg:"3336164,omitempty"
   // Specifies the proposed value for the PidLidAppointmentStartWhole property (section 2.29) for a counter proposal.
   optional int64 appointment_proposed_start_whole = 16; // @gotags: msg:"3336064,omitempty"
+  // Specifies the dates and times when a recurring series occurs.
+  optional bytes appointment_recur = 17; // @gotags: msg:"33302258,omitempty"
   // Specifies the user who last replied to the meeting request or meeting update.
   optional string appointment_reply_name = 18; // @gotags: msg:"3332831,omitempty"
   // Specifies the date and time at which the attendee responded to a received meeting request or Meeting Update object.
@@ -70,6 +72,14 @@ message Appointment {
   optional int32 appointment_state_flags = 25; // @gotags: msg:"333033,omitempty"
   // Specifies whether the event is an all-day event.
   optional bool appointment_sub_type = 26; // @gotags: msg:"3330111,omitempty"
+  // Specifies time zone information that indicates the time zone of the PidLidAppointmentEndWhole property (section 2.14).
+  optional bytes appointment_time_zone_definition_end_display = 27; // @gotags: msg:"33375258,omitempty"
+  // Specifies time zone information that describes how to convert the meeting date and time on a recurring series to and from UTC.
+  optional bytes appointment_time_zone_definition_recur = 28; // @gotags: msg:"33376258,omitempty"
+  // Specifies time zone information that indicates the time zone of the PidLidAppointmentStartWhole property (section 2.29).
+  optional bytes appointment_time_zone_definition_start_display = 29; // @gotags: msg:"33374258,omitempty"
+  // Contains a list of unsendable attendees.
+  optional bytes appointment_unsendable_recipients = 30; // @gotags: msg:"33373258,omitempty"
   // Indicates the time at which the appointment was last updated.
   optional int64 appointment_update_time = 31; // @gotags: msg:"3331864,omitempty"
   // Specifies the date and time at which the meeting-related object was sent.
@@ -86,6 +96,8 @@ message Appointment {
   optional string cc_attendees_string = 37; // @gotags: msg:"3334031,omitempty"
   // Specifies a bit field that indicates how the Meeting object has changed.
   optional int32 change_highlight = 38; // @gotags: msg:"332843,omitempty"
+  // Contains the value of the PidLidGlobalObjectId property (section 2.142) for an object that represents an Exception object to a recurring series, where the Year, Month, and Day fields are all zero.
+  optional bytes clean_global_object_id = 39; // @gotags: msg:"35258,omitempty"
   //  Indicates what actions the user has taken on this Meeting object.
   optional int32 client_intent = 40; // @gotags: msg:"213,omitempty"
   // Specifies the end date and time of the event in UTC.
@@ -120,10 +132,16 @@ message Appointment {
   optional bool f_invited = 55; // @gotags: msg:"3332111,omitempty"
   // Indicates whether the Meeting Request object represents an exception to a recurring series, and whether it was forwarded (even when forwarded by the organizer) rather than being an invitation sent by the organizer.
   optional bool forward_instance = 56; // @gotags: msg:"3329011,omitempty"
+  // Contains a list of RecipientRow structures, as described in [MS-OXCDATA] section 2.8.3, that indicate the recipients of a meeting forward.
+  optional bytes forward_notification_recipients = 57; // @gotags: msg:"33377258,omitempty"
   // Indicates whether the Calendar folder from which the meeting was opened is another user's calendar.
   optional bool f_others_appointment = 58; // @gotags: msg:"3332711,omitempty"
+  // Contains an ID for an object that represents an exception to a recurring series.
+  optional bytes global_object_id = 59; // @gotags: msg:"3258,omitempty"
   // Identifies the day of the week for the appointment or meeting.
   optional int32 i_calendar_day_of_week_mask = 60; // @gotags: msg:"40973,omitempty"
+  // Contains the contents of the iCalendar MIME part of the original MIME message.
+  optional bytes inboundi_cal_stream = 61; // @gotags: msg:"33402258,omitempty"
   // Contains the value of the PidLidBusyStatus property (section 2.47) on the Meeting object in the organizer's calendar at the time that the Meeting Request object or Meeting Update object was sent.
   optional int32 intended_busy_status = 62; // @gotags: msg:"333163,omitempty"
   // Indicates whether the object represents an exception (including an orphan instance).
@@ -170,6 +188,8 @@ message Appointment {
   optional string optional_attendees = 83; // @gotags: msg:"731,omitempty"
   // Specifies the email address of the organizer.
   optional string organizer_alias = 84; // @gotags: msg:"3334731,omitempty"
+  // Specifies the EntryID of the delegator’s message store.
+  optional bytes original_store_entry_id = 85; // @gotags: msg:"33335258,omitempty"
   // Specifies the date and time at which a Meeting Request object was sent by the organizer.
   optional int64 owner_critical_change = 86; // @gotags: msg:"2664,omitempty"
   // Indicates the name of the owner of the mailbox.
@@ -222,6 +242,8 @@ message Appointment {
   optional int32 time_zone = 110; // @gotags: msg:"123,omitempty"
   // Specifies a human-readable description of the time zone that is represented by the data in the PidLidTimeZoneStruct property (section 2.342).
   optional string time_zone_description = 111; // @gotags: msg:"3333231,omitempty"
+  // Specifies time zone information for a recurring meeting.
+  optional bytes time_zone_struct = 112; // @gotags: msg:"33331258,omitempty"
   // Contains a list of all of the sendable attendees who are also required attendees.
   optional string to_attendees_string = 113; // @gotags: msg:"3333931,omitempty"
   // Identifies the number of weeks that occur between each meeting.
@@ -246,6 +268,8 @@ message Appointment {
   optional int64 i_calendar_reminder_next_time = 123; // @gotags: msg:"429864,omitempty"
   // Indicates whether a client has already processed a received task communication.
   optional bool processed = 124; // @gotags: msg:"3200111,omitempty"
+  // Contains a list of tombstones, where each tombstone represents a Meeting object that has been declined.
+  optional bytes schedule_info_appointment_tombstone = 125; // @gotags: msg:"26730258,omitempty"
   // Indicates whether a client or server is to automatically respond to all meeting requests for the attendee or resource.
   optional bool schedule_info_auto_accept_appointments = 126; // @gotags: msg:"2673311,omitempty"
   // Indicates whether the delegator wants to receive copies of the meeting-related objects that are sent to the delegate.
@@ -258,6 +282,8 @@ message Appointment {
   optional bool schedule_info_disallow_recurring_appts = 133; // @gotags: msg:"2673411,omitempty"
   // Contains a value set to TRUE by the client, regardless of user input.
   optional bool schedule_info_dont_mail_delegates = 134; // @gotags: msg:"2669111,omitempty"
+  // This property is deprecated and is not to be used.
+  optional bytes schedule_info_free_busy = 135; // @gotags: msg:"26732258,omitempty"
   // Set to 0x00000000 when sending and is ignored on receipt.
   optional int32 schedule_info_resource_type = 144; // @gotags: msg:"266893,omitempty"
 }

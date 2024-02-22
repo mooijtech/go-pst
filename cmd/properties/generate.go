@@ -449,6 +449,7 @@ var propertyTypeToProtocolBufferFieldType = map[uint16]string{
 	64:  "int64", // Time
 	72:  "uint64",
 	251: "uint32",
+	258: "bytes",
 	// The rest are variable size.
 }
 

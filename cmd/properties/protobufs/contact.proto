@@ -24,18 +24,32 @@ message Contact {
   optional int32 address_book_provider_array_type = 1; // @gotags: msg:"328093,omitempty"
   // Specifies the country code portion of the mailing address of the contact.
   optional string address_country_code = 3; // @gotags: msg:"3298931,omitempty"
+  // Specifies the EntryID of the Appointment object that represents an anniversary of the contact.
+  optional bytes anniversary_event_entry_id = 4; // @gotags: msg:"32846258,omitempty"
   // Specifies to the application whether to create a Journal object for each action associated with this Contact object.
   optional bool auto_log = 5; // @gotags: msg:"3280511,omitempty"
+  // Specifies the EntryID of an optional Appointment object that represents the birthday of the contact.
+  optional bytes birthday_event_entry_id = 6; // @gotags: msg:"32845258,omitempty"
   // Specifies the birthday of a contact.
   optional int64 birthday_local = 7; // @gotags: msg:"3299064,omitempty"
+  // Contains the image to be used on a business card.
+  optional bytes business_card_card_picture = 8; // @gotags: msg:"32833258,omitempty"
+  // Contains user customization details for displaying a contact as a business card.
+  optional bytes business_card_display_definition = 9; // @gotags: msg:"32832258,omitempty"
   // Specifies the character set used for a Contact object.
   optional int32 contact_character_set = 10; // @gotags: msg:"328033,omitempty"
+  // Specifies the EntryID of the GAL contact to which the duplicate contact is linked.
+  optional bytes contact_linked_global_address_list_entry_id = 12; // @gotags: msg:"32994258,omitempty"
+  // Contains the elements of the PidLidContacts property (section 2.77).
+  optional bytes contact_link_entry = 13; // @gotags: msg:"34181258,omitempty"
   // Specifies the GUID of the GAL contact to which the duplicate contact is linked.
   optional uint64 contact_link_global_address_list_link_id = 14; // @gotags: msg:"3300072,omitempty"
   // Specifies the state of the linking between the GAL contact and the duplicate contact.
   optional int32 contact_link_global_address_list_link_state = 15; // @gotags: msg:"329983,omitempty"
   // 
   optional string contact_link_name = 17; // @gotags: msg:"3418231,omitempty"
+  // Contains the list of SearchKeys for a Contact object linked to by the Message object.
+  optional bytes contact_link_search_key = 18; // @gotags: msg:"34180258,omitempty"
   // Contains text used to add custom text to a business card representation of a Contact object.
   optional string contact_user_field1 = 20; // @gotags: msg:"3284731,omitempty"
   // Contains text used to add custom text to a business card representation of a Contact object.
@@ -50,6 +64,8 @@ message Contact {
   optional int32 distribution_list_checksum = 25; // @gotags: msg:"328443,omitempty"
   // Specifies the name of the personal distribution list.
   optional string distribution_list_name = 27; // @gotags: msg:"3285131,omitempty"
+  // Specifies the list of EntryIDs and one-off EntryIDs corresponding to the members of the personal distribution list.
+  optional bytes distribution_list_stream = 29; // @gotags: msg:"32868258,omitempty"
   // Specifies the address type of an electronic address.
   optional string email1_address_type = 30; // @gotags: msg:"3289831,omitempty"
   // Specifies the user-readable display name for the email address.
@@ -58,6 +74,8 @@ message Contact {
   optional string email1_email_address = 32; // @gotags: msg:"3289931,omitempty"
   // Specifies the SMTP email address that corresponds to the email address for the Contact object.
   optional string email1_original_display_name = 33; // @gotags: msg:"3290031,omitempty"
+  // Specifies the EntryID of the object corresponding to this electronic address.
+  optional bytes email1_original_entry_id = 34; // @gotags: msg:"32901258,omitempty"
   // Specifies the address type of the electronic address.
   optional string email2_address_type = 35; // @gotags: msg:"3291431,omitempty"
   // Specifies the user-readable display name for the email address.
@@ -66,6 +84,8 @@ message Contact {
   optional string email2_email_address = 37; // @gotags: msg:"3291531,omitempty"
   // Specifies the SMTP email address that corresponds to the email address for the Contact object.
   optional string email2_original_display_name = 38; // @gotags: msg:"3291631,omitempty"
+  // Specifies the EntryID of the object that corresponds to this electronic address.
+  optional bytes email2_original_entry_id = 39; // @gotags: msg:"32917258,omitempty"
   // Specifies the address type of the electronic address.
   optional string email3_address_type = 40; // @gotags: msg:"3293031,omitempty"
   // Specifies the user-readable display name for the email address.
@@ -74,24 +94,32 @@ message Contact {
   optional string email3_email_address = 42; // @gotags: msg:"3293131,omitempty"
   // Specifies the SMTP email address that corresponds to the email address for the Contact object.
   optional string email3_original_display_name = 43; // @gotags: msg:"3293231,omitempty"
+  // Specifies the EntryID of the object that corresponds to this electronic address.
+  optional bytes email3_original_entry_id = 44; // @gotags: msg:"32933258,omitempty"
   // Contains the string value "FAX".
   optional string fax1_address_type = 45; // @gotags: msg:"3294631,omitempty"
   // Contains a user-readable display name, followed by the "@" character, followed by a fax number.
   optional string fax1_email_address = 46; // @gotags: msg:"3294731,omitempty"
   // Contains the same value as the PidTagNormalizedSubject property (section 2.812).
   optional string fax1_original_display_name = 47; // @gotags: msg:"3294831,omitempty"
+  // Specifies a one-off EntryID that corresponds to this fax address.
+  optional bytes fax1_original_entry_id = 48; // @gotags: msg:"32949258,omitempty"
   // Contains the string value "FAX".
   optional string fax2_address_type = 49; // @gotags: msg:"3296231,omitempty"
   // Contains a user-readable display name, followed by the "@" character, followed by a fax number.
   optional string fax2_email_address = 50; // @gotags: msg:"3296331,omitempty"
   // Contains the same value as the PidTagNormalizedSubject property (section 2.812).
   optional string fax2_original_display_name = 51; // @gotags: msg:"3296431,omitempty"
+  // Specifies a one-off EntryID corresponding to this fax address.
+  optional bytes fax2_original_entry_id = 52; // @gotags: msg:"32965258,omitempty"
   // Contains the string value "FAX".
   optional string fax3_address_type = 53; // @gotags: msg:"3297831,omitempty"
   // Contains a user-readable display name, followed by the "@" character, followed by a fax number.
   optional string fax3_email_address = 54; // @gotags: msg:"3297931,omitempty"
   // Contains the same value as the PidTagNormalizedSubject property (section 2.812).
   optional string fax3_original_display_name = 55; // @gotags: msg:"3298031,omitempty"
+  // Specifies a one-off EntryID that corresponds to this fax address.
+  optional bytes fax3_original_entry_id = 56; // @gotags: msg:"32981258,omitempty"
   // Specifies the name under which to file a contact when displaying a list of contacts.
   optional string file_under = 57; // @gotags: msg:"3277331,omitempty"
   // Specifies how to generate and recompute the value of the PidLidFileUnder property (section 2.132) when other contact name properties change.
@@ -116,6 +144,8 @@ message Contact {
   optional string other_address_country_code = 68; // @gotags: msg:"3298831,omitempty"
   // Specifies which physical address is the mailing address for this contact.
   optional int32 postal_address_id = 69; // @gotags: msg:"328023,omitempty"
+  // Specifies the value of the EntryID of the Contact object unless the Contact object is a copy of an earlier original.
+  optional bytes reference_entry_id = 70; // @gotags: msg:"34237258,omitempty"
   // Specifies the wedding anniversary of the contact, at midnight in the client's local time zone, and is saved without any time zone conversions.
   optional int64 wedding_anniversary_local = 71; // @gotags: msg:"3299164,omitempty"
   // Specifies the complete address of the work address of the contact.
@@ -142,6 +172,10 @@ message Contact {
   optional string yomi_last_name = 82; // @gotags: msg:"3281331,omitempty"
   // Indicates the name of the contact associated with the birthday event.
   optional string birthday_contact_attribution_display_name = 83; 
+  // Indicate the EntryID of the contact associated with the birthday event.
+  optional bytes birthday_contact_entry_id = 84; 
+  // Indicates the person ID's GUID of the contact associated with the birthday event.
+  optional bytes birthday_contact_person_guid = 85; 
   // Indicates whether the contact associated with the birthday event is writable.
   optional bool is_birthday_contact_writable = 86; 
   // Contains the date of the mail user's birthday at midnight.
@@ -236,6 +270,8 @@ message Contact {
   optional string telex_number = 134; // @gotags: msg:"1489231,omitempty"
   // Contains the mail user's job title.
   optional string title = 135; // @gotags: msg:"1487131,omitempty"
+  // Contains an ASN.1 authentication certificate for a messaging user.
+  optional bytes user_certificate = 136; // @gotags: msg:"14882258,omitempty"
   // Contains the date of the mail user's wedding anniversary.
   optional int64 wedding_anniversary = 138; // @gotags: msg:"1491364,omitempty"
 }

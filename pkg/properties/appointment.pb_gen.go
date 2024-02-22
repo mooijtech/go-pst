@@ -312,6 +312,12 @@ func (z *Appointment) DecodeMsg(dc *msgp.Reader) (err error) {
 					return
 				}
 			}
+		case "33302258":
+			z.AppointmentRecur, err = dc.ReadBytes(z.AppointmentRecur)
+			if err != nil {
+				err = msgp.WrapError(err, "AppointmentRecur")
+				return
+			}
 		case "3332831":
 			if dc.IsNil() {
 				err = dc.ReadNil()
@@ -474,6 +480,30 @@ func (z *Appointment) DecodeMsg(dc *msgp.Reader) (err error) {
 					return
 				}
 			}
+		case "33375258":
+			z.AppointmentTimeZoneDefinitionEndDisplay, err = dc.ReadBytes(z.AppointmentTimeZoneDefinitionEndDisplay)
+			if err != nil {
+				err = msgp.WrapError(err, "AppointmentTimeZoneDefinitionEndDisplay")
+				return
+			}
+		case "33376258":
+			z.AppointmentTimeZoneDefinitionRecur, err = dc.ReadBytes(z.AppointmentTimeZoneDefinitionRecur)
+			if err != nil {
+				err = msgp.WrapError(err, "AppointmentTimeZoneDefinitionRecur")
+				return
+			}
+		case "33374258":
+			z.AppointmentTimeZoneDefinitionStartDisplay, err = dc.ReadBytes(z.AppointmentTimeZoneDefinitionStartDisplay)
+			if err != nil {
+				err = msgp.WrapError(err, "AppointmentTimeZoneDefinitionStartDisplay")
+				return
+			}
+		case "33373258":
+			z.AppointmentUnsendableRecipients, err = dc.ReadBytes(z.AppointmentUnsendableRecipients)
+			if err != nil {
+				err = msgp.WrapError(err, "AppointmentUnsendableRecipients")
+				return
+			}
 		case "3331864":
 			if dc.IsNil() {
 				err = dc.ReadNil()
@@ -617,6 +647,12 @@ func (z *Appointment) DecodeMsg(dc *msgp.Reader) (err error) {
 					err = msgp.WrapError(err, "ChangeHighlight")
 					return
 				}
+			}
+		case "35258":
+			z.CleanGlobalObjectId, err = dc.ReadBytes(z.CleanGlobalObjectId)
+			if err != nil {
+				err = msgp.WrapError(err, "CleanGlobalObjectId")
+				return
 			}
 		case "213":
 			if dc.IsNil() {
@@ -924,6 +960,12 @@ func (z *Appointment) DecodeMsg(dc *msgp.Reader) (err error) {
 					return
 				}
 			}
+		case "33377258":
+			z.ForwardNotificationRecipients, err = dc.ReadBytes(z.ForwardNotificationRecipients)
+			if err != nil {
+				err = msgp.WrapError(err, "ForwardNotificationRecipients")
+				return
+			}
 		case "3332711":
 			if dc.IsNil() {
 				err = dc.ReadNil()
@@ -942,6 +984,12 @@ func (z *Appointment) DecodeMsg(dc *msgp.Reader) (err error) {
 					return
 				}
 			}
+		case "3258":
+			z.GlobalObjectId, err = dc.ReadBytes(z.GlobalObjectId)
+			if err != nil {
+				err = msgp.WrapError(err, "GlobalObjectId")
+				return
+			}
 		case "40973":
 			if dc.IsNil() {
 				err = dc.ReadNil()
@@ -959,6 +1007,12 @@ func (z *Appointment) DecodeMsg(dc *msgp.Reader) (err error) {
 					err = msgp.WrapError(err, "ICalendarDayOfWeekMask")
 					return
 				}
+			}
+		case "33402258":
+			z.InboundiCalStream, err = dc.ReadBytes(z.InboundiCalStream)
+			if err != nil {
+				err = msgp.WrapError(err, "InboundiCalStream")
+				return
 			}
 		case "333163":
 			if dc.IsNil() {
@@ -1373,6 +1427,12 @@ func (z *Appointment) DecodeMsg(dc *msgp.Reader) (err error) {
 					err = msgp.WrapError(err, "OrganizerAlias")
 					return
 				}
+			}
+		case "33335258":
+			z.OriginalStoreEntryId, err = dc.ReadBytes(z.OriginalStoreEntryId)
+			if err != nil {
+				err = msgp.WrapError(err, "OriginalStoreEntryId")
+				return
 			}
 		case "2664":
 			if dc.IsNil() {
@@ -1842,6 +1902,12 @@ func (z *Appointment) DecodeMsg(dc *msgp.Reader) (err error) {
 					return
 				}
 			}
+		case "33331258":
+			z.TimeZoneStruct, err = dc.ReadBytes(z.TimeZoneStruct)
+			if err != nil {
+				err = msgp.WrapError(err, "TimeZoneStruct")
+				return
+			}
 		case "3333931":
 			if dc.IsNil() {
 				err = dc.ReadNil()
@@ -2058,6 +2124,12 @@ func (z *Appointment) DecodeMsg(dc *msgp.Reader) (err error) {
 					return
 				}
 			}
+		case "26730258":
+			z.ScheduleInfoAppointmentTombstone, err = dc.ReadBytes(z.ScheduleInfoAppointmentTombstone)
+			if err != nil {
+				err = msgp.WrapError(err, "ScheduleInfoAppointmentTombstone")
+				return
+			}
 		case "2673311":
 			if dc.IsNil() {
 				err = dc.ReadNil()
@@ -2166,6 +2238,12 @@ func (z *Appointment) DecodeMsg(dc *msgp.Reader) (err error) {
 					return
 				}
 			}
+		case "26732258":
+			z.ScheduleInfoFreeBusy, err = dc.ReadBytes(z.ScheduleInfoFreeBusy)
+			if err != nil {
+				err = msgp.WrapError(err, "ScheduleInfoFreeBusy")
+				return
+			}
 		case "266893":
 			if dc.IsNil() {
 				err = dc.ReadNil()
@@ -2198,8 +2276,8 @@ func (z *Appointment) DecodeMsg(dc *msgp.Reader) (err error) {
 // EncodeMsg implements msgp.Encodable
 func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 	// omitempty: check for empty values
-	zb0001Len := uint32(120)
-	var zb0001Mask [2]uint64 /* 120 bits */
+	zb0001Len := uint32(133)
+	var zb0001Mask [3]uint64 /* 133 bits */
 	_ = zb0001Mask
 	if z.AllAttendeesString == nil {
 		zb0001Len--
@@ -2265,413 +2343,465 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 		zb0001Len--
 		zb0001Mask[0] |= 0x8000
 	}
-	if z.AppointmentReplyName == nil {
+	if z.AppointmentRecur == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x10000
 	}
-	if z.AppointmentReplyTime == nil {
+	if z.AppointmentReplyName == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x20000
 	}
-	if z.AppointmentSequence == nil {
+	if z.AppointmentReplyTime == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x40000
 	}
-	if z.AppointmentSequenceTime == nil {
+	if z.AppointmentSequence == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x80000
 	}
-	if z.AppointmentStartDate == nil {
+	if z.AppointmentSequenceTime == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x100000
 	}
-	if z.AppointmentStartTime == nil {
+	if z.AppointmentStartDate == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x200000
 	}
-	if z.AppointmentStartWhole == nil {
+	if z.AppointmentStartTime == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x400000
 	}
-	if z.AppointmentStateFlags == nil {
+	if z.AppointmentStartWhole == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x800000
 	}
-	if z.AppointmentSubType == nil {
+	if z.AppointmentStateFlags == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x1000000
 	}
-	if z.AppointmentUpdateTime == nil {
+	if z.AppointmentSubType == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x2000000
 	}
-	if z.AttendeeCriticalChange == nil {
+	if z.AppointmentTimeZoneDefinitionEndDisplay == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x4000000
 	}
-	if z.AutoFillLocation == nil {
+	if z.AppointmentTimeZoneDefinitionRecur == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x8000000
 	}
-	if z.AutoStartCheck == nil {
+	if z.AppointmentTimeZoneDefinitionStartDisplay == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x10000000
 	}
-	if z.BusyStatus == nil {
+	if z.AppointmentUnsendableRecipients == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x20000000
 	}
-	if z.CalendarType == nil {
+	if z.AppointmentUpdateTime == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x40000000
 	}
-	if z.CcAttendeesString == nil {
+	if z.AttendeeCriticalChange == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x80000000
 	}
-	if z.ChangeHighlight == nil {
+	if z.AutoFillLocation == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x100000000
 	}
-	if z.ClientIntent == nil {
+	if z.AutoStartCheck == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x200000000
 	}
-	if z.ClipEnd == nil {
+	if z.BusyStatus == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x400000000
 	}
-	if z.ClipStart == nil {
+	if z.CalendarType == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x800000000
 	}
-	if z.CollaborateDoc == nil {
+	if z.CcAttendeesString == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x1000000000
 	}
-	if z.ConferencingCheck == nil {
+	if z.ChangeHighlight == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x2000000000
 	}
-	if z.ConferencingType == nil {
+	if z.CleanGlobalObjectId == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x4000000000
 	}
-	if z.DayInterval == nil {
+	if z.ClientIntent == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x8000000000
 	}
-	if z.DayOfMonth == nil {
+	if z.ClipEnd == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x10000000000
 	}
-	if z.DelegateMail == nil {
+	if z.ClipStart == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x20000000000
 	}
-	if z.Directory == nil {
+	if z.CollaborateDoc == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x40000000000
 	}
-	if z.EndRecurrenceDate == nil {
+	if z.ConferencingCheck == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x80000000000
 	}
-	if z.EndRecurrenceTime == nil {
+	if z.ConferencingType == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x100000000000
 	}
-	if z.ExceptionReplaceTime == nil {
+	if z.DayInterval == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x200000000000
 	}
-	if z.FExceptionalAttendees == nil {
+	if z.DayOfMonth == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x400000000000
 	}
-	if z.FExceptionalBody == nil {
+	if z.DelegateMail == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x800000000000
 	}
-	if z.FInvited == nil {
+	if z.Directory == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x1000000000000
 	}
-	if z.ForwardInstance == nil {
+	if z.EndRecurrenceDate == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x2000000000000
 	}
-	if z.FOthersAppointment == nil {
+	if z.EndRecurrenceTime == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x4000000000000
 	}
-	if z.ICalendarDayOfWeekMask == nil {
+	if z.ExceptionReplaceTime == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x8000000000000
 	}
-	if z.IntendedBusyStatus == nil {
+	if z.FExceptionalAttendees == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x10000000000000
 	}
-	if z.IsException == nil {
+	if z.FExceptionalBody == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x20000000000000
 	}
-	if z.IsRecurring == nil {
+	if z.FInvited == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x40000000000000
 	}
-	if z.IsSilent == nil {
+	if z.ForwardInstance == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x80000000000000
 	}
-	if z.Location == nil {
+	if z.ForwardNotificationRecipients == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x100000000000000
 	}
-	if z.MeetingType == nil {
+	if z.FOthersAppointment == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x200000000000000
 	}
-	if z.MeetingWorkspaceUrl == nil {
+	if z.GlobalObjectId == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x400000000000000
 	}
-	if z.MonthInterval == nil {
+	if z.ICalendarDayOfWeekMask == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x800000000000000
 	}
-	if z.MonthOfYear == nil {
+	if z.InboundiCalStream == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x1000000000000000
 	}
-	if z.MonthOfYearMask == nil {
+	if z.IntendedBusyStatus == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x2000000000000000
 	}
-	if z.NetShowUrl == nil {
+	if z.IsException == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x4000000000000000
 	}
-	if z.NoEndDateFlag == nil {
+	if z.IsRecurring == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x8000000000000000
 	}
-	if z.NonSendableBcc == nil {
+	if z.IsSilent == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x1
 	}
-	if z.NonSendableCc == nil {
+	if z.Location == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x2
 	}
-	if z.NonSendableTo == nil {
+	if z.MeetingType == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x4
 	}
-	if z.Occurrences == nil {
+	if z.MeetingWorkspaceUrl == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x8
 	}
-	if z.OldLocation == nil {
+	if z.MonthInterval == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x10
 	}
-	if z.OldRecurrenceType == nil {
+	if z.MonthOfYear == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x20
 	}
-	if z.OldWhenEndWhole == nil {
+	if z.MonthOfYearMask == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x40
 	}
-	if z.OldWhenStartWhole == nil {
+	if z.NetShowUrl == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x80
 	}
-	if z.OnlinePassword == nil {
+	if z.NoEndDateFlag == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x100
 	}
-	if z.OptionalAttendees == nil {
+	if z.NonSendableBcc == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x200
 	}
-	if z.OrganizerAlias == nil {
+	if z.NonSendableCc == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x400
 	}
-	if z.OwnerCriticalChange == nil {
+	if z.NonSendableTo == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x800
 	}
-	if z.OwnerName == nil {
+	if z.Occurrences == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x1000
 	}
-	if z.RecurrenceDuration == nil {
+	if z.OldLocation == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x2000
 	}
-	if z.RecurrencePattern == nil {
+	if z.OldRecurrenceType == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x4000
 	}
-	if z.RecurrenceType == nil {
+	if z.OldWhenEndWhole == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x8000
 	}
-	if z.Recurring == nil {
+	if z.OldWhenStartWhole == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x10000
 	}
-	if z.ReminderDelta == nil {
+	if z.OnlinePassword == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x20000
 	}
-	if z.ReminderFileParameter == nil {
+	if z.OptionalAttendees == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x40000
 	}
-	if z.ReminderOverride == nil {
+	if z.OrganizerAlias == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x80000
 	}
-	if z.ReminderPlaySound == nil {
+	if z.OriginalStoreEntryId == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x100000
 	}
-	if z.ReminderSet == nil {
+	if z.OwnerCriticalChange == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x200000
 	}
-	if z.ReminderSignalTime == nil {
+	if z.OwnerName == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x400000
 	}
-	if z.ReminderTime == nil {
+	if z.RecurrenceDuration == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x800000
 	}
-	if z.ReminderTimeDate == nil {
+	if z.RecurrencePattern == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x1000000
 	}
-	if z.ReminderTimeTime == nil {
+	if z.RecurrenceType == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x2000000
 	}
-	if z.ReminderType == nil {
+	if z.Recurring == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x4000000
 	}
-	if z.RequiredAttendees == nil {
+	if z.ReminderDelta == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x8000000
 	}
-	if z.ResourceAttendees == nil {
+	if z.ReminderFileParameter == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x10000000
 	}
-	if z.ResponseStatus == nil {
+	if z.ReminderOverride == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x20000000
 	}
-	if z.ServerProcessed == nil {
+	if z.ReminderPlaySound == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x40000000
 	}
-	if z.ServerProcessingActions == nil {
+	if z.ReminderSet == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x80000000
 	}
-	if z.SingleBodyiCal == nil {
+	if z.ReminderSignalTime == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x100000000
 	}
-	if z.StartRecurrenceDate == nil {
+	if z.ReminderTime == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x200000000
 	}
-	if z.StartRecurrenceTime == nil {
+	if z.ReminderTimeDate == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x400000000
 	}
-	if z.TimeZone == nil {
+	if z.ReminderTimeTime == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x800000000
 	}
-	if z.TimeZoneDescription == nil {
+	if z.ReminderType == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x1000000000
 	}
-	if z.ToAttendeesString == nil {
+	if z.RequiredAttendees == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x2000000000
 	}
-	if z.WeekInterval == nil {
+	if z.ResourceAttendees == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x4000000000
 	}
-	if z.Where == nil {
+	if z.ResponseStatus == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x8000000000
 	}
-	if z.YearInterval == nil {
+	if z.ServerProcessed == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x10000000000
 	}
-	if z.FreeBusyPublishEnd == nil {
+	if z.ServerProcessingActions == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x20000000000
+	}
+	if z.SingleBodyiCal == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x40000000000
+	}
+	if z.StartRecurrenceDate == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x80000000000
 	}
-	if z.FreeBusyPublishStart == nil {
+	if z.StartRecurrenceTime == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x100000000000
 	}
-	if z.FreeBusyRangeTimestamp == nil {
+	if z.TimeZone == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x200000000000
 	}
-	if z.ICalendarEndTime == nil {
+	if z.TimeZoneDescription == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x400000000000
 	}
-	if z.ICalendarReminderNextTime == nil {
+	if z.TimeZoneStruct == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x800000000000
 	}
-	if z.Processed == nil {
+	if z.ToAttendeesString == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x1000000000000
 	}
-	if z.ScheduleInfoAutoAcceptAppointments == nil {
+	if z.WeekInterval == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x2000000000000
 	}
-	if z.ScheduleInfoDelegatorWantsCopy == nil {
+	if z.Where == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x4000000000000
 	}
-	if z.ScheduleInfoDelegatorWantsInfo == nil {
+	if z.YearInterval == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x8000000000000
 	}
-	if z.ScheduleInfoDisallowOverlappingAppts == nil {
-		zb0001Len--
-		zb0001Mask[1] |= 0x10000000000000
-	}
-	if z.ScheduleInfoDisallowRecurringAppts == nil {
-		zb0001Len--
-		zb0001Mask[1] |= 0x20000000000000
-	}
-	if z.ScheduleInfoDontMailDelegates == nil {
+	if z.FreeBusyPublishEnd == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x40000000000000
 	}
-	if z.ScheduleInfoResourceType == nil {
+	if z.FreeBusyPublishStart == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x80000000000000
+	}
+	if z.FreeBusyRangeTimestamp == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x100000000000000
+	}
+	if z.ICalendarEndTime == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x200000000000000
+	}
+	if z.ICalendarReminderNextTime == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x400000000000000
+	}
+	if z.Processed == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x800000000000000
+	}
+	if z.ScheduleInfoAppointmentTombstone == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x1000000000000000
+	}
+	if z.ScheduleInfoAutoAcceptAppointments == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x2000000000000000
+	}
+	if z.ScheduleInfoDelegatorWantsCopy == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x4000000000000000
+	}
+	if z.ScheduleInfoDelegatorWantsInfo == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x8000000000000000
+	}
+	if z.ScheduleInfoDisallowOverlappingAppts == nil {
+		zb0001Len--
+		zb0001Mask[2] |= 0x1
+	}
+	if z.ScheduleInfoDisallowRecurringAppts == nil {
+		zb0001Len--
+		zb0001Mask[2] |= 0x2
+	}
+	if z.ScheduleInfoDontMailDelegates == nil {
+		zb0001Len--
+		zb0001Mask[2] |= 0x4
+	}
+	if z.ScheduleInfoFreeBusy == nil {
+		zb0001Len--
+		zb0001Mask[2] |= 0x8
+	}
+	if z.ScheduleInfoResourceType == nil {
+		zb0001Len--
+		zb0001Mask[2] |= 0x10
 	}
 	// variable map header, size zb0001Len
 	err = en.WriteMapHeader(zb0001Len)
@@ -2986,6 +3116,18 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 		}
 	}
 	if (zb0001Mask[0] & 0x10000) == 0 { // if not empty
+		// write "33302258"
+		err = en.Append(0xa8, 0x33, 0x33, 0x33, 0x30, 0x32, 0x32, 0x35, 0x38)
+		if err != nil {
+			return
+		}
+		err = en.WriteBytes(z.AppointmentRecur)
+		if err != nil {
+			err = msgp.WrapError(err, "AppointmentRecur")
+			return
+		}
+	}
+	if (zb0001Mask[0] & 0x20000) == 0 { // if not empty
 		// write "3332831"
 		err = en.Append(0xa7, 0x33, 0x33, 0x33, 0x32, 0x38, 0x33, 0x31)
 		if err != nil {
@@ -3004,7 +3146,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x20000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x40000) == 0 { // if not empty
 		// write "3331264"
 		err = en.Append(0xa7, 0x33, 0x33, 0x33, 0x31, 0x32, 0x36, 0x34)
 		if err != nil {
@@ -3023,7 +3165,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x40000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x80000) == 0 { // if not empty
 		// write "332813"
 		err = en.Append(0xa6, 0x33, 0x33, 0x32, 0x38, 0x31, 0x33)
 		if err != nil {
@@ -3042,7 +3184,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x80000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x100000) == 0 { // if not empty
 		// write "3328264"
 		err = en.Append(0xa7, 0x33, 0x33, 0x32, 0x38, 0x32, 0x36, 0x34)
 		if err != nil {
@@ -3061,7 +3203,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x100000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x200000) == 0 { // if not empty
 		// write "3329864"
 		err = en.Append(0xa7, 0x33, 0x33, 0x32, 0x39, 0x38, 0x36, 0x34)
 		if err != nil {
@@ -3080,7 +3222,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x200000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x400000) == 0 { // if not empty
 		// write "3329564"
 		err = en.Append(0xa7, 0x33, 0x33, 0x32, 0x39, 0x35, 0x36, 0x34)
 		if err != nil {
@@ -3099,7 +3241,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x400000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x800000) == 0 { // if not empty
 		// write "3329364"
 		err = en.Append(0xa7, 0x33, 0x33, 0x32, 0x39, 0x33, 0x36, 0x34)
 		if err != nil {
@@ -3118,7 +3260,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x800000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x1000000) == 0 { // if not empty
 		// write "333033"
 		err = en.Append(0xa6, 0x33, 0x33, 0x33, 0x30, 0x33, 0x33)
 		if err != nil {
@@ -3137,7 +3279,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x1000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x2000000) == 0 { // if not empty
 		// write "3330111"
 		err = en.Append(0xa7, 0x33, 0x33, 0x33, 0x30, 0x31, 0x31, 0x31)
 		if err != nil {
@@ -3156,7 +3298,55 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x2000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x4000000) == 0 { // if not empty
+		// write "33375258"
+		err = en.Append(0xa8, 0x33, 0x33, 0x33, 0x37, 0x35, 0x32, 0x35, 0x38)
+		if err != nil {
+			return
+		}
+		err = en.WriteBytes(z.AppointmentTimeZoneDefinitionEndDisplay)
+		if err != nil {
+			err = msgp.WrapError(err, "AppointmentTimeZoneDefinitionEndDisplay")
+			return
+		}
+	}
+	if (zb0001Mask[0] & 0x8000000) == 0 { // if not empty
+		// write "33376258"
+		err = en.Append(0xa8, 0x33, 0x33, 0x33, 0x37, 0x36, 0x32, 0x35, 0x38)
+		if err != nil {
+			return
+		}
+		err = en.WriteBytes(z.AppointmentTimeZoneDefinitionRecur)
+		if err != nil {
+			err = msgp.WrapError(err, "AppointmentTimeZoneDefinitionRecur")
+			return
+		}
+	}
+	if (zb0001Mask[0] & 0x10000000) == 0 { // if not empty
+		// write "33374258"
+		err = en.Append(0xa8, 0x33, 0x33, 0x33, 0x37, 0x34, 0x32, 0x35, 0x38)
+		if err != nil {
+			return
+		}
+		err = en.WriteBytes(z.AppointmentTimeZoneDefinitionStartDisplay)
+		if err != nil {
+			err = msgp.WrapError(err, "AppointmentTimeZoneDefinitionStartDisplay")
+			return
+		}
+	}
+	if (zb0001Mask[0] & 0x20000000) == 0 { // if not empty
+		// write "33373258"
+		err = en.Append(0xa8, 0x33, 0x33, 0x33, 0x37, 0x33, 0x32, 0x35, 0x38)
+		if err != nil {
+			return
+		}
+		err = en.WriteBytes(z.AppointmentUnsendableRecipients)
+		if err != nil {
+			err = msgp.WrapError(err, "AppointmentUnsendableRecipients")
+			return
+		}
+	}
+	if (zb0001Mask[0] & 0x40000000) == 0 { // if not empty
 		// write "3331864"
 		err = en.Append(0xa7, 0x33, 0x33, 0x33, 0x31, 0x38, 0x36, 0x34)
 		if err != nil {
@@ -3175,7 +3365,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x4000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x80000000) == 0 { // if not empty
 		// write "164"
 		err = en.Append(0xa3, 0x31, 0x36, 0x34)
 		if err != nil {
@@ -3194,7 +3384,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x8000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x100000000) == 0 { // if not empty
 		// write "3333811"
 		err = en.Append(0xa7, 0x33, 0x33, 0x33, 0x33, 0x38, 0x31, 0x31)
 		if err != nil {
@@ -3213,7 +3403,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x10000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x200000000) == 0 { // if not empty
 		// write "3334811"
 		err = en.Append(0xa7, 0x33, 0x33, 0x33, 0x34, 0x38, 0x31, 0x31)
 		if err != nil {
@@ -3232,7 +3422,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x20000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x400000000) == 0 { // if not empty
 		// write "332853"
 		err = en.Append(0xa6, 0x33, 0x33, 0x32, 0x38, 0x35, 0x33)
 		if err != nil {
@@ -3251,7 +3441,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x40000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x800000000) == 0 { // if not empty
 		// write "283"
 		err = en.Append(0xa3, 0x32, 0x38, 0x33)
 		if err != nil {
@@ -3270,7 +3460,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x80000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x1000000000) == 0 { // if not empty
 		// write "3334031"
 		err = en.Append(0xa7, 0x33, 0x33, 0x33, 0x34, 0x30, 0x33, 0x31)
 		if err != nil {
@@ -3289,7 +3479,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x100000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x2000000000) == 0 { // if not empty
 		// write "332843"
 		err = en.Append(0xa6, 0x33, 0x33, 0x32, 0x38, 0x34, 0x33)
 		if err != nil {
@@ -3308,7 +3498,19 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x200000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x4000000000) == 0 { // if not empty
+		// write "35258"
+		err = en.Append(0xa5, 0x33, 0x35, 0x32, 0x35, 0x38)
+		if err != nil {
+			return
+		}
+		err = en.WriteBytes(z.CleanGlobalObjectId)
+		if err != nil {
+			err = msgp.WrapError(err, "CleanGlobalObjectId")
+			return
+		}
+	}
+	if (zb0001Mask[0] & 0x8000000000) == 0 { // if not empty
 		// write "213"
 		err = en.Append(0xa3, 0x32, 0x31, 0x33)
 		if err != nil {
@@ -3327,7 +3529,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x400000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x10000000000) == 0 { // if not empty
 		// write "3333464"
 		err = en.Append(0xa7, 0x33, 0x33, 0x33, 0x33, 0x34, 0x36, 0x34)
 		if err != nil {
@@ -3346,7 +3548,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x800000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x20000000000) == 0 { // if not empty
 		// write "3333364"
 		err = en.Append(0xa7, 0x33, 0x33, 0x33, 0x33, 0x33, 0x36, 0x34)
 		if err != nil {
@@ -3365,7 +3567,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x1000000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x40000000000) == 0 { // if not empty
 		// write "3335131"
 		err = en.Append(0xa7, 0x33, 0x33, 0x33, 0x35, 0x31, 0x33, 0x31)
 		if err != nil {
@@ -3384,7 +3586,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x2000000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x80000000000) == 0 { // if not empty
 		// write "3334411"
 		err = en.Append(0xa7, 0x33, 0x33, 0x33, 0x34, 0x34, 0x31, 0x31)
 		if err != nil {
@@ -3403,7 +3605,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x4000000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x100000000000) == 0 { // if not empty
 		// write "333453"
 		err = en.Append(0xa6, 0x33, 0x33, 0x33, 0x34, 0x35, 0x33)
 		if err != nil {
@@ -3422,7 +3624,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x8000000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x200000000000) == 0 { // if not empty
 		// write "172"
 		err = en.Append(0xa3, 0x31, 0x37, 0x32)
 		if err != nil {
@@ -3441,7 +3643,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x10000000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x400000000000) == 0 { // if not empty
 		// write "40963"
 		err = en.Append(0xa5, 0x34, 0x30, 0x39, 0x36, 0x33)
 		if err != nil {
@@ -3460,7 +3662,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x20000000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x800000000000) == 0 { // if not empty
 		// write "911"
 		err = en.Append(0xa3, 0x39, 0x31, 0x31)
 		if err != nil {
@@ -3479,7 +3681,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x40000000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x1000000000000) == 0 { // if not empty
 		// write "3334631"
 		err = en.Append(0xa7, 0x33, 0x33, 0x33, 0x34, 0x36, 0x33, 0x31)
 		if err != nil {
@@ -3498,7 +3700,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x80000000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x2000000000000) == 0 { // if not empty
 		// write "153"
 		err = en.Append(0xa3, 0x31, 0x35, 0x33)
 		if err != nil {
@@ -3517,7 +3719,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x100000000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x4000000000000) == 0 { // if not empty
 		// write "163"
 		err = en.Append(0xa3, 0x31, 0x36, 0x33)
 		if err != nil {
@@ -3536,7 +3738,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x200000000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x8000000000000) == 0 { // if not empty
 		// write "3332064"
 		err = en.Append(0xa7, 0x33, 0x33, 0x33, 0x32, 0x30, 0x36, 0x34)
 		if err != nil {
@@ -3555,7 +3757,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x400000000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x10000000000000) == 0 { // if not empty
 		// write "3332311"
 		err = en.Append(0xa7, 0x33, 0x33, 0x33, 0x32, 0x33, 0x31, 0x31)
 		if err != nil {
@@ -3574,7 +3776,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x800000000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x20000000000000) == 0 { // if not empty
 		// write "3328611"
 		err = en.Append(0xa7, 0x33, 0x33, 0x32, 0x38, 0x36, 0x31, 0x31)
 		if err != nil {
@@ -3593,7 +3795,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x1000000000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x40000000000000) == 0 { // if not empty
 		// write "3332111"
 		err = en.Append(0xa7, 0x33, 0x33, 0x33, 0x32, 0x31, 0x31, 0x31)
 		if err != nil {
@@ -3612,7 +3814,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x2000000000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x80000000000000) == 0 { // if not empty
 		// write "3329011"
 		err = en.Append(0xa7, 0x33, 0x33, 0x32, 0x39, 0x30, 0x31, 0x31)
 		if err != nil {
@@ -3631,7 +3833,19 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x4000000000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x100000000000000) == 0 { // if not empty
+		// write "33377258"
+		err = en.Append(0xa8, 0x33, 0x33, 0x33, 0x37, 0x37, 0x32, 0x35, 0x38)
+		if err != nil {
+			return
+		}
+		err = en.WriteBytes(z.ForwardNotificationRecipients)
+		if err != nil {
+			err = msgp.WrapError(err, "ForwardNotificationRecipients")
+			return
+		}
+	}
+	if (zb0001Mask[0] & 0x200000000000000) == 0 { // if not empty
 		// write "3332711"
 		err = en.Append(0xa7, 0x33, 0x33, 0x33, 0x32, 0x37, 0x31, 0x31)
 		if err != nil {
@@ -3650,7 +3864,19 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x8000000000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x400000000000000) == 0 { // if not empty
+		// write "3258"
+		err = en.Append(0xa4, 0x33, 0x32, 0x35, 0x38)
+		if err != nil {
+			return
+		}
+		err = en.WriteBytes(z.GlobalObjectId)
+		if err != nil {
+			err = msgp.WrapError(err, "GlobalObjectId")
+			return
+		}
+	}
+	if (zb0001Mask[0] & 0x800000000000000) == 0 { // if not empty
 		// write "40973"
 		err = en.Append(0xa5, 0x34, 0x30, 0x39, 0x37, 0x33)
 		if err != nil {
@@ -3669,7 +3895,19 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x10000000000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x1000000000000000) == 0 { // if not empty
+		// write "33402258"
+		err = en.Append(0xa8, 0x33, 0x33, 0x34, 0x30, 0x32, 0x32, 0x35, 0x38)
+		if err != nil {
+			return
+		}
+		err = en.WriteBytes(z.InboundiCalStream)
+		if err != nil {
+			err = msgp.WrapError(err, "InboundiCalStream")
+			return
+		}
+	}
+	if (zb0001Mask[0] & 0x2000000000000000) == 0 { // if not empty
 		// write "333163"
 		err = en.Append(0xa6, 0x33, 0x33, 0x33, 0x31, 0x36, 0x33)
 		if err != nil {
@@ -3688,7 +3926,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x20000000000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x4000000000000000) == 0 { // if not empty
 		// write "1011"
 		err = en.Append(0xa4, 0x31, 0x30, 0x31, 0x31)
 		if err != nil {
@@ -3707,7 +3945,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x40000000000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x8000000000000000) == 0 { // if not empty
 		// write "511"
 		err = en.Append(0xa3, 0x35, 0x31, 0x31)
 		if err != nil {
@@ -3726,7 +3964,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x80000000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x1) == 0 { // if not empty
 		// write "411"
 		err = en.Append(0xa3, 0x34, 0x31, 0x31)
 		if err != nil {
@@ -3745,7 +3983,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x100000000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x2) == 0 { // if not empty
 		// write "3328831"
 		err = en.Append(0xa7, 0x33, 0x33, 0x32, 0x38, 0x38, 0x33, 0x31)
 		if err != nil {
@@ -3764,7 +4002,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x200000000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x4) == 0 { // if not empty
 		// write "383"
 		err = en.Append(0xa3, 0x33, 0x38, 0x33)
 		if err != nil {
@@ -3783,7 +4021,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x400000000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x8) == 0 { // if not empty
 		// write "3328931"
 		err = en.Append(0xa7, 0x33, 0x33, 0x32, 0x38, 0x39, 0x33, 0x31)
 		if err != nil {
@@ -3802,7 +4040,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x800000000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x10) == 0 { // if not empty
 		// write "192"
 		err = en.Append(0xa3, 0x31, 0x39, 0x32)
 		if err != nil {
@@ -3821,7 +4059,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x1000000000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x20) == 0 { // if not empty
 		// write "41023"
 		err = en.Append(0xa5, 0x34, 0x31, 0x30, 0x32, 0x33)
 		if err != nil {
@@ -3840,7 +4078,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x2000000000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x40) == 0 { // if not empty
 		// write "233"
 		err = en.Append(0xa3, 0x32, 0x33, 0x33)
 		if err != nil {
@@ -3859,7 +4097,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x4000000000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x80) == 0 { // if not empty
 		// write "3335231"
 		err = en.Append(0xa7, 0x33, 0x33, 0x33, 0x35, 0x32, 0x33, 0x31)
 		if err != nil {
@@ -3878,7 +4116,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[0] & 0x8000000000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x100) == 0 { // if not empty
 		// write "410711"
 		err = en.Append(0xa6, 0x34, 0x31, 0x30, 0x37, 0x31, 0x31)
 		if err != nil {
@@ -3897,7 +4135,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x1) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x200) == 0 { // if not empty
 		// write "3410431"
 		err = en.Append(0xa7, 0x33, 0x34, 0x31, 0x30, 0x34, 0x33, 0x31)
 		if err != nil {
@@ -3916,7 +4154,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x2) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x400) == 0 { // if not empty
 		// write "3410331"
 		err = en.Append(0xa7, 0x33, 0x34, 0x31, 0x30, 0x33, 0x33, 0x31)
 		if err != nil {
@@ -3935,7 +4173,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x4) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x800) == 0 { // if not empty
 		// write "3410231"
 		err = en.Append(0xa7, 0x33, 0x34, 0x31, 0x30, 0x32, 0x33, 0x31)
 		if err != nil {
@@ -3954,7 +4192,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x8) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x1000) == 0 { // if not empty
 		// write "41013"
 		err = en.Append(0xa5, 0x34, 0x31, 0x30, 0x31, 0x33)
 		if err != nil {
@@ -3973,7 +4211,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x10) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x2000) == 0 { // if not empty
 		// write "4031"
 		err = en.Append(0xa4, 0x34, 0x30, 0x33, 0x31)
 		if err != nil {
@@ -3992,7 +4230,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x20) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x4000) == 0 { // if not empty
 		// write "242"
 		err = en.Append(0xa3, 0x32, 0x34, 0x32)
 		if err != nil {
@@ -4011,7 +4249,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x40) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x8000) == 0 { // if not empty
 		// write "4264"
 		err = en.Append(0xa4, 0x34, 0x32, 0x36, 0x34)
 		if err != nil {
@@ -4030,7 +4268,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x80) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x10000) == 0 { // if not empty
 		// write "4164"
 		err = en.Append(0xa4, 0x34, 0x31, 0x36, 0x34)
 		if err != nil {
@@ -4049,7 +4287,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x100) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x20000) == 0 { // if not empty
 		// write "3335331"
 		err = en.Append(0xa7, 0x33, 0x33, 0x33, 0x35, 0x33, 0x33, 0x31)
 		if err != nil {
@@ -4068,7 +4306,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x200) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x40000) == 0 { // if not empty
 		// write "731"
 		err = en.Append(0xa3, 0x37, 0x33, 0x31)
 		if err != nil {
@@ -4087,7 +4325,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x400) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x80000) == 0 { // if not empty
 		// write "3334731"
 		err = en.Append(0xa7, 0x33, 0x33, 0x33, 0x34, 0x37, 0x33, 0x31)
 		if err != nil {
@@ -4106,7 +4344,19 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x800) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x100000) == 0 { // if not empty
+		// write "33335258"
+		err = en.Append(0xa8, 0x33, 0x33, 0x33, 0x33, 0x35, 0x32, 0x35, 0x38)
+		if err != nil {
+			return
+		}
+		err = en.WriteBytes(z.OriginalStoreEntryId)
+		if err != nil {
+			err = msgp.WrapError(err, "OriginalStoreEntryId")
+			return
+		}
+	}
+	if (zb0001Mask[1] & 0x200000) == 0 { // if not empty
 		// write "2664"
 		err = en.Append(0xa4, 0x32, 0x36, 0x36, 0x34)
 		if err != nil {
@@ -4125,7 +4375,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x1000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x400000) == 0 { // if not empty
 		// write "3332631"
 		err = en.Append(0xa7, 0x33, 0x33, 0x33, 0x32, 0x36, 0x33, 0x31)
 		if err != nil {
@@ -4144,7 +4394,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x2000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x800000) == 0 { // if not empty
 		// write "41093"
 		err = en.Append(0xa5, 0x34, 0x31, 0x30, 0x39, 0x33)
 		if err != nil {
@@ -4163,7 +4413,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x4000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x1000000) == 0 { // if not empty
 		// write "3333031"
 		err = en.Append(0xa7, 0x33, 0x33, 0x33, 0x33, 0x30, 0x33, 0x31)
 		if err != nil {
@@ -4182,7 +4432,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x8000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x2000000) == 0 { // if not empty
 		// write "333293"
 		err = en.Append(0xa6, 0x33, 0x33, 0x33, 0x32, 0x39, 0x33)
 		if err != nil {
@@ -4201,7 +4451,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x10000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x4000000) == 0 { // if not empty
 		// write "3331511"
 		err = en.Append(0xa7, 0x33, 0x33, 0x33, 0x31, 0x35, 0x31, 0x31)
 		if err != nil {
@@ -4220,7 +4470,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x20000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x8000000) == 0 { // if not empty
 		// write "340493"
 		err = en.Append(0xa6, 0x33, 0x34, 0x30, 0x34, 0x39, 0x33)
 		if err != nil {
@@ -4239,7 +4489,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x40000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x10000000) == 0 { // if not empty
 		// write "3407931"
 		err = en.Append(0xa7, 0x33, 0x34, 0x30, 0x37, 0x39, 0x33, 0x31)
 		if err != nil {
@@ -4258,7 +4508,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x80000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x20000000) == 0 { // if not empty
 		// write "3407611"
 		err = en.Append(0xa7, 0x33, 0x34, 0x30, 0x37, 0x36, 0x31, 0x31)
 		if err != nil {
@@ -4277,7 +4527,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x100000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x40000000) == 0 { // if not empty
 		// write "3407811"
 		err = en.Append(0xa7, 0x33, 0x34, 0x30, 0x37, 0x38, 0x31, 0x31)
 		if err != nil {
@@ -4296,7 +4546,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x200000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x80000000) == 0 { // if not empty
 		// write "3405111"
 		err = en.Append(0xa7, 0x33, 0x34, 0x30, 0x35, 0x31, 0x31, 0x31)
 		if err != nil {
@@ -4315,7 +4565,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x400000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x100000000) == 0 { // if not empty
 		// write "3414464"
 		err = en.Append(0xa7, 0x33, 0x34, 0x31, 0x34, 0x34, 0x36, 0x34)
 		if err != nil {
@@ -4334,7 +4584,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x800000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x200000000) == 0 { // if not empty
 		// write "3405064"
 		err = en.Append(0xa7, 0x33, 0x34, 0x30, 0x35, 0x30, 0x36, 0x34)
 		if err != nil {
@@ -4353,7 +4603,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x1000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x400000000) == 0 { // if not empty
 		// write "3405364"
 		err = en.Append(0xa7, 0x33, 0x34, 0x30, 0x35, 0x33, 0x36, 0x34)
 		if err != nil {
@@ -4372,7 +4622,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x2000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x800000000) == 0 { // if not empty
 		// write "3405264"
 		err = en.Append(0xa7, 0x33, 0x34, 0x30, 0x35, 0x32, 0x36, 0x34)
 		if err != nil {
@@ -4391,7 +4641,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x4000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x1000000000) == 0 { // if not empty
 		// write "340773"
 		err = en.Append(0xa6, 0x33, 0x34, 0x30, 0x37, 0x37, 0x33)
 		if err != nil {
@@ -4410,7 +4660,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x8000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x2000000000) == 0 { // if not empty
 		// write "631"
 		err = en.Append(0xa3, 0x36, 0x33, 0x31)
 		if err != nil {
@@ -4429,7 +4679,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x10000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x4000000000) == 0 { // if not empty
 		// write "831"
 		err = en.Append(0xa3, 0x38, 0x33, 0x31)
 		if err != nil {
@@ -4448,7 +4698,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x20000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x8000000000) == 0 { // if not empty
 		// write "333043"
 		err = en.Append(0xa6, 0x33, 0x33, 0x33, 0x30, 0x34, 0x33)
 		if err != nil {
@@ -4467,7 +4717,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x40000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x10000000000) == 0 { // if not empty
 		// write "3425211"
 		err = en.Append(0xa7, 0x33, 0x34, 0x32, 0x35, 0x32, 0x31, 0x31)
 		if err != nil {
@@ -4486,7 +4736,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x80000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x20000000000) == 0 { // if not empty
 		// write "342533"
 		err = en.Append(0xa6, 0x33, 0x34, 0x32, 0x35, 0x33, 0x33)
 		if err != nil {
@@ -4505,7 +4755,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x100000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x40000000000) == 0 { // if not empty
 		// write "3340311"
 		err = en.Append(0xa7, 0x33, 0x33, 0x34, 0x30, 0x33, 0x31, 0x31)
 		if err != nil {
@@ -4524,7 +4774,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x200000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x80000000000) == 0 { // if not empty
 		// write "133"
 		err = en.Append(0xa3, 0x31, 0x33, 0x33)
 		if err != nil {
@@ -4543,7 +4793,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x400000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x100000000000) == 0 { // if not empty
 		// write "143"
 		err = en.Append(0xa3, 0x31, 0x34, 0x33)
 		if err != nil {
@@ -4562,7 +4812,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x800000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x200000000000) == 0 { // if not empty
 		// write "123"
 		err = en.Append(0xa3, 0x31, 0x32, 0x33)
 		if err != nil {
@@ -4581,7 +4831,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x1000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x400000000000) == 0 { // if not empty
 		// write "3333231"
 		err = en.Append(0xa7, 0x33, 0x33, 0x33, 0x33, 0x32, 0x33, 0x31)
 		if err != nil {
@@ -4600,7 +4850,19 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x2000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x800000000000) == 0 { // if not empty
+		// write "33331258"
+		err = en.Append(0xa8, 0x33, 0x33, 0x33, 0x33, 0x31, 0x32, 0x35, 0x38)
+		if err != nil {
+			return
+		}
+		err = en.WriteBytes(z.TimeZoneStruct)
+		if err != nil {
+			err = msgp.WrapError(err, "TimeZoneStruct")
+			return
+		}
+	}
+	if (zb0001Mask[1] & 0x1000000000000) == 0 { // if not empty
 		// write "3333931"
 		err = en.Append(0xa7, 0x33, 0x33, 0x33, 0x33, 0x39, 0x33, 0x31)
 		if err != nil {
@@ -4619,7 +4881,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x4000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x2000000000000) == 0 { // if not empty
 		// write "182"
 		err = en.Append(0xa3, 0x31, 0x38, 0x32)
 		if err != nil {
@@ -4638,7 +4900,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x8000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x4000000000000) == 0 { // if not empty
 		// write "231"
 		err = en.Append(0xa3, 0x32, 0x33, 0x31)
 		if err != nil {
@@ -4657,7 +4919,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x10000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x8000000000000) == 0 { // if not empty
 		// write "202"
 		err = en.Append(0xa3, 0x32, 0x30, 0x32)
 		if err != nil {
@@ -4710,7 +4972,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			return
 		}
 	}
-	if (zb0001Mask[1] & 0x80000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x40000000000000) == 0 { // if not empty
 		// write "266963"
 		err = en.Append(0xa6, 0x32, 0x36, 0x36, 0x39, 0x36, 0x33)
 		if err != nil {
@@ -4729,7 +4991,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x100000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x80000000000000) == 0 { // if not empty
 		// write "266953"
 		err = en.Append(0xa6, 0x32, 0x36, 0x36, 0x39, 0x35, 0x33)
 		if err != nil {
@@ -4748,7 +5010,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x200000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x100000000000000) == 0 { // if not empty
 		// write "2672864"
 		err = en.Append(0xa7, 0x32, 0x36, 0x37, 0x32, 0x38, 0x36, 0x34)
 		if err != nil {
@@ -4767,7 +5029,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x400000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x200000000000000) == 0 { // if not empty
 		// write "429264"
 		err = en.Append(0xa6, 0x34, 0x32, 0x39, 0x32, 0x36, 0x34)
 		if err != nil {
@@ -4786,7 +5048,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x800000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x400000000000000) == 0 { // if not empty
 		// write "429864"
 		err = en.Append(0xa6, 0x34, 0x32, 0x39, 0x38, 0x36, 0x34)
 		if err != nil {
@@ -4805,7 +5067,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x1000000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x800000000000000) == 0 { // if not empty
 		// write "3200111"
 		err = en.Append(0xa7, 0x33, 0x32, 0x30, 0x30, 0x31, 0x31, 0x31)
 		if err != nil {
@@ -4824,7 +5086,19 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x2000000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x1000000000000000) == 0 { // if not empty
+		// write "26730258"
+		err = en.Append(0xa8, 0x32, 0x36, 0x37, 0x33, 0x30, 0x32, 0x35, 0x38)
+		if err != nil {
+			return
+		}
+		err = en.WriteBytes(z.ScheduleInfoAppointmentTombstone)
+		if err != nil {
+			err = msgp.WrapError(err, "ScheduleInfoAppointmentTombstone")
+			return
+		}
+	}
+	if (zb0001Mask[1] & 0x2000000000000000) == 0 { // if not empty
 		// write "2673311"
 		err = en.Append(0xa7, 0x32, 0x36, 0x37, 0x33, 0x33, 0x31, 0x31)
 		if err != nil {
@@ -4843,7 +5117,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x4000000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x4000000000000000) == 0 { // if not empty
 		// write "2669011"
 		err = en.Append(0xa7, 0x32, 0x36, 0x36, 0x39, 0x30, 0x31, 0x31)
 		if err != nil {
@@ -4862,7 +5136,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x8000000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x8000000000000000) == 0 { // if not empty
 		// write "2669911"
 		err = en.Append(0xa7, 0x32, 0x36, 0x36, 0x39, 0x39, 0x31, 0x31)
 		if err != nil {
@@ -4881,7 +5155,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x10000000000000) == 0 { // if not empty
+	if (zb0001Mask[2] & 0x1) == 0 { // if not empty
 		// write "2673511"
 		err = en.Append(0xa7, 0x32, 0x36, 0x37, 0x33, 0x35, 0x31, 0x31)
 		if err != nil {
@@ -4900,7 +5174,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x20000000000000) == 0 { // if not empty
+	if (zb0001Mask[2] & 0x2) == 0 { // if not empty
 		// write "2673411"
 		err = en.Append(0xa7, 0x32, 0x36, 0x37, 0x33, 0x34, 0x31, 0x31)
 		if err != nil {
@@ -4919,7 +5193,7 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x40000000000000) == 0 { // if not empty
+	if (zb0001Mask[2] & 0x4) == 0 { // if not empty
 		// write "2669111"
 		err = en.Append(0xa7, 0x32, 0x36, 0x36, 0x39, 0x31, 0x31, 0x31)
 		if err != nil {
@@ -4938,7 +5212,19 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 			}
 		}
 	}
-	if (zb0001Mask[1] & 0x80000000000000) == 0 { // if not empty
+	if (zb0001Mask[2] & 0x8) == 0 { // if not empty
+		// write "26732258"
+		err = en.Append(0xa8, 0x32, 0x36, 0x37, 0x33, 0x32, 0x32, 0x35, 0x38)
+		if err != nil {
+			return
+		}
+		err = en.WriteBytes(z.ScheduleInfoFreeBusy)
+		if err != nil {
+			err = msgp.WrapError(err, "ScheduleInfoFreeBusy")
+			return
+		}
+	}
+	if (zb0001Mask[2] & 0x10) == 0 { // if not empty
 		// write "266893"
 		err = en.Append(0xa6, 0x32, 0x36, 0x36, 0x38, 0x39, 0x33)
 		if err != nil {
@@ -4964,8 +5250,8 @@ func (z *Appointment) EncodeMsg(en *msgp.Writer) (err error) {
 func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 	o = msgp.Require(b, z.Msgsize())
 	// omitempty: check for empty values
-	zb0001Len := uint32(120)
-	var zb0001Mask [2]uint64 /* 120 bits */
+	zb0001Len := uint32(133)
+	var zb0001Mask [3]uint64 /* 133 bits */
 	_ = zb0001Mask
 	if z.AllAttendeesString == nil {
 		zb0001Len--
@@ -5031,413 +5317,465 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 		zb0001Len--
 		zb0001Mask[0] |= 0x8000
 	}
-	if z.AppointmentReplyName == nil {
+	if z.AppointmentRecur == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x10000
 	}
-	if z.AppointmentReplyTime == nil {
+	if z.AppointmentReplyName == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x20000
 	}
-	if z.AppointmentSequence == nil {
+	if z.AppointmentReplyTime == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x40000
 	}
-	if z.AppointmentSequenceTime == nil {
+	if z.AppointmentSequence == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x80000
 	}
-	if z.AppointmentStartDate == nil {
+	if z.AppointmentSequenceTime == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x100000
 	}
-	if z.AppointmentStartTime == nil {
+	if z.AppointmentStartDate == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x200000
 	}
-	if z.AppointmentStartWhole == nil {
+	if z.AppointmentStartTime == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x400000
 	}
-	if z.AppointmentStateFlags == nil {
+	if z.AppointmentStartWhole == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x800000
 	}
-	if z.AppointmentSubType == nil {
+	if z.AppointmentStateFlags == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x1000000
 	}
-	if z.AppointmentUpdateTime == nil {
+	if z.AppointmentSubType == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x2000000
 	}
-	if z.AttendeeCriticalChange == nil {
+	if z.AppointmentTimeZoneDefinitionEndDisplay == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x4000000
 	}
-	if z.AutoFillLocation == nil {
+	if z.AppointmentTimeZoneDefinitionRecur == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x8000000
 	}
-	if z.AutoStartCheck == nil {
+	if z.AppointmentTimeZoneDefinitionStartDisplay == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x10000000
 	}
-	if z.BusyStatus == nil {
+	if z.AppointmentUnsendableRecipients == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x20000000
 	}
-	if z.CalendarType == nil {
+	if z.AppointmentUpdateTime == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x40000000
 	}
-	if z.CcAttendeesString == nil {
+	if z.AttendeeCriticalChange == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x80000000
 	}
-	if z.ChangeHighlight == nil {
+	if z.AutoFillLocation == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x100000000
 	}
-	if z.ClientIntent == nil {
+	if z.AutoStartCheck == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x200000000
 	}
-	if z.ClipEnd == nil {
+	if z.BusyStatus == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x400000000
 	}
-	if z.ClipStart == nil {
+	if z.CalendarType == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x800000000
 	}
-	if z.CollaborateDoc == nil {
+	if z.CcAttendeesString == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x1000000000
 	}
-	if z.ConferencingCheck == nil {
+	if z.ChangeHighlight == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x2000000000
 	}
-	if z.ConferencingType == nil {
+	if z.CleanGlobalObjectId == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x4000000000
 	}
-	if z.DayInterval == nil {
+	if z.ClientIntent == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x8000000000
 	}
-	if z.DayOfMonth == nil {
+	if z.ClipEnd == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x10000000000
 	}
-	if z.DelegateMail == nil {
+	if z.ClipStart == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x20000000000
 	}
-	if z.Directory == nil {
+	if z.CollaborateDoc == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x40000000000
 	}
-	if z.EndRecurrenceDate == nil {
+	if z.ConferencingCheck == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x80000000000
 	}
-	if z.EndRecurrenceTime == nil {
+	if z.ConferencingType == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x100000000000
 	}
-	if z.ExceptionReplaceTime == nil {
+	if z.DayInterval == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x200000000000
 	}
-	if z.FExceptionalAttendees == nil {
+	if z.DayOfMonth == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x400000000000
 	}
-	if z.FExceptionalBody == nil {
+	if z.DelegateMail == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x800000000000
 	}
-	if z.FInvited == nil {
+	if z.Directory == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x1000000000000
 	}
-	if z.ForwardInstance == nil {
+	if z.EndRecurrenceDate == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x2000000000000
 	}
-	if z.FOthersAppointment == nil {
+	if z.EndRecurrenceTime == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x4000000000000
 	}
-	if z.ICalendarDayOfWeekMask == nil {
+	if z.ExceptionReplaceTime == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x8000000000000
 	}
-	if z.IntendedBusyStatus == nil {
+	if z.FExceptionalAttendees == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x10000000000000
 	}
-	if z.IsException == nil {
+	if z.FExceptionalBody == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x20000000000000
 	}
-	if z.IsRecurring == nil {
+	if z.FInvited == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x40000000000000
 	}
-	if z.IsSilent == nil {
+	if z.ForwardInstance == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x80000000000000
 	}
-	if z.Location == nil {
+	if z.ForwardNotificationRecipients == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x100000000000000
 	}
-	if z.MeetingType == nil {
+	if z.FOthersAppointment == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x200000000000000
 	}
-	if z.MeetingWorkspaceUrl == nil {
+	if z.GlobalObjectId == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x400000000000000
 	}
-	if z.MonthInterval == nil {
+	if z.ICalendarDayOfWeekMask == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x800000000000000
 	}
-	if z.MonthOfYear == nil {
+	if z.InboundiCalStream == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x1000000000000000
 	}
-	if z.MonthOfYearMask == nil {
+	if z.IntendedBusyStatus == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x2000000000000000
 	}
-	if z.NetShowUrl == nil {
+	if z.IsException == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x4000000000000000
 	}
-	if z.NoEndDateFlag == nil {
+	if z.IsRecurring == nil {
 		zb0001Len--
 		zb0001Mask[0] |= 0x8000000000000000
 	}
-	if z.NonSendableBcc == nil {
+	if z.IsSilent == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x1
 	}
-	if z.NonSendableCc == nil {
+	if z.Location == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x2
 	}
-	if z.NonSendableTo == nil {
+	if z.MeetingType == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x4
 	}
-	if z.Occurrences == nil {
+	if z.MeetingWorkspaceUrl == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x8
 	}
-	if z.OldLocation == nil {
+	if z.MonthInterval == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x10
 	}
-	if z.OldRecurrenceType == nil {
+	if z.MonthOfYear == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x20
 	}
-	if z.OldWhenEndWhole == nil {
+	if z.MonthOfYearMask == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x40
 	}
-	if z.OldWhenStartWhole == nil {
+	if z.NetShowUrl == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x80
 	}
-	if z.OnlinePassword == nil {
+	if z.NoEndDateFlag == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x100
 	}
-	if z.OptionalAttendees == nil {
+	if z.NonSendableBcc == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x200
 	}
-	if z.OrganizerAlias == nil {
+	if z.NonSendableCc == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x400
 	}
-	if z.OwnerCriticalChange == nil {
+	if z.NonSendableTo == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x800
 	}
-	if z.OwnerName == nil {
+	if z.Occurrences == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x1000
 	}
-	if z.RecurrenceDuration == nil {
+	if z.OldLocation == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x2000
 	}
-	if z.RecurrencePattern == nil {
+	if z.OldRecurrenceType == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x4000
 	}
-	if z.RecurrenceType == nil {
+	if z.OldWhenEndWhole == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x8000
 	}
-	if z.Recurring == nil {
+	if z.OldWhenStartWhole == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x10000
 	}
-	if z.ReminderDelta == nil {
+	if z.OnlinePassword == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x20000
 	}
-	if z.ReminderFileParameter == nil {
+	if z.OptionalAttendees == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x40000
 	}
-	if z.ReminderOverride == nil {
+	if z.OrganizerAlias == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x80000
 	}
-	if z.ReminderPlaySound == nil {
+	if z.OriginalStoreEntryId == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x100000
 	}
-	if z.ReminderSet == nil {
+	if z.OwnerCriticalChange == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x200000
 	}
-	if z.ReminderSignalTime == nil {
+	if z.OwnerName == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x400000
 	}
-	if z.ReminderTime == nil {
+	if z.RecurrenceDuration == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x800000
 	}
-	if z.ReminderTimeDate == nil {
+	if z.RecurrencePattern == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x1000000
 	}
-	if z.ReminderTimeTime == nil {
+	if z.RecurrenceType == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x2000000
 	}
-	if z.ReminderType == nil {
+	if z.Recurring == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x4000000
 	}
-	if z.RequiredAttendees == nil {
+	if z.ReminderDelta == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x8000000
 	}
-	if z.ResourceAttendees == nil {
+	if z.ReminderFileParameter == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x10000000
 	}
-	if z.ResponseStatus == nil {
+	if z.ReminderOverride == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x20000000
 	}
-	if z.ServerProcessed == nil {
+	if z.ReminderPlaySound == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x40000000
 	}
-	if z.ServerProcessingActions == nil {
+	if z.ReminderSet == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x80000000
 	}
-	if z.SingleBodyiCal == nil {
+	if z.ReminderSignalTime == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x100000000
 	}
-	if z.StartRecurrenceDate == nil {
+	if z.ReminderTime == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x200000000
 	}
-	if z.StartRecurrenceTime == nil {
+	if z.ReminderTimeDate == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x400000000
 	}
-	if z.TimeZone == nil {
+	if z.ReminderTimeTime == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x800000000
 	}
-	if z.TimeZoneDescription == nil {
+	if z.ReminderType == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x1000000000
 	}
-	if z.ToAttendeesString == nil {
+	if z.RequiredAttendees == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x2000000000
 	}
-	if z.WeekInterval == nil {
+	if z.ResourceAttendees == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x4000000000
 	}
-	if z.Where == nil {
+	if z.ResponseStatus == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x8000000000
 	}
-	if z.YearInterval == nil {
+	if z.ServerProcessed == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x10000000000
 	}
-	if z.FreeBusyPublishEnd == nil {
+	if z.ServerProcessingActions == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x20000000000
+	}
+	if z.SingleBodyiCal == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x40000000000
+	}
+	if z.StartRecurrenceDate == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x80000000000
 	}
-	if z.FreeBusyPublishStart == nil {
+	if z.StartRecurrenceTime == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x100000000000
 	}
-	if z.FreeBusyRangeTimestamp == nil {
+	if z.TimeZone == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x200000000000
 	}
-	if z.ICalendarEndTime == nil {
+	if z.TimeZoneDescription == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x400000000000
 	}
-	if z.ICalendarReminderNextTime == nil {
+	if z.TimeZoneStruct == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x800000000000
 	}
-	if z.Processed == nil {
+	if z.ToAttendeesString == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x1000000000000
 	}
-	if z.ScheduleInfoAutoAcceptAppointments == nil {
+	if z.WeekInterval == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x2000000000000
 	}
-	if z.ScheduleInfoDelegatorWantsCopy == nil {
+	if z.Where == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x4000000000000
 	}
-	if z.ScheduleInfoDelegatorWantsInfo == nil {
+	if z.YearInterval == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x8000000000000
 	}
-	if z.ScheduleInfoDisallowOverlappingAppts == nil {
-		zb0001Len--
-		zb0001Mask[1] |= 0x10000000000000
-	}
-	if z.ScheduleInfoDisallowRecurringAppts == nil {
-		zb0001Len--
-		zb0001Mask[1] |= 0x20000000000000
-	}
-	if z.ScheduleInfoDontMailDelegates == nil {
+	if z.FreeBusyPublishEnd == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x40000000000000
 	}
-	if z.ScheduleInfoResourceType == nil {
+	if z.FreeBusyPublishStart == nil {
 		zb0001Len--
 		zb0001Mask[1] |= 0x80000000000000
+	}
+	if z.FreeBusyRangeTimestamp == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x100000000000000
+	}
+	if z.ICalendarEndTime == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x200000000000000
+	}
+	if z.ICalendarReminderNextTime == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x400000000000000
+	}
+	if z.Processed == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x800000000000000
+	}
+	if z.ScheduleInfoAppointmentTombstone == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x1000000000000000
+	}
+	if z.ScheduleInfoAutoAcceptAppointments == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x2000000000000000
+	}
+	if z.ScheduleInfoDelegatorWantsCopy == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x4000000000000000
+	}
+	if z.ScheduleInfoDelegatorWantsInfo == nil {
+		zb0001Len--
+		zb0001Mask[1] |= 0x8000000000000000
+	}
+	if z.ScheduleInfoDisallowOverlappingAppts == nil {
+		zb0001Len--
+		zb0001Mask[2] |= 0x1
+	}
+	if z.ScheduleInfoDisallowRecurringAppts == nil {
+		zb0001Len--
+		zb0001Mask[2] |= 0x2
+	}
+	if z.ScheduleInfoDontMailDelegates == nil {
+		zb0001Len--
+		zb0001Mask[2] |= 0x4
+	}
+	if z.ScheduleInfoFreeBusy == nil {
+		zb0001Len--
+		zb0001Mask[2] |= 0x8
+	}
+	if z.ScheduleInfoResourceType == nil {
+		zb0001Len--
+		zb0001Mask[2] |= 0x10
 	}
 	// variable map header, size zb0001Len
 	o = msgp.AppendMapHeader(o, zb0001Len)
@@ -5589,6 +5927,11 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 		}
 	}
 	if (zb0001Mask[0] & 0x10000) == 0 { // if not empty
+		// string "33302258"
+		o = append(o, 0xa8, 0x33, 0x33, 0x33, 0x30, 0x32, 0x32, 0x35, 0x38)
+		o = msgp.AppendBytes(o, z.AppointmentRecur)
+	}
+	if (zb0001Mask[0] & 0x20000) == 0 { // if not empty
 		// string "3332831"
 		o = append(o, 0xa7, 0x33, 0x33, 0x33, 0x32, 0x38, 0x33, 0x31)
 		if z.AppointmentReplyName == nil {
@@ -5597,7 +5940,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendString(o, *z.AppointmentReplyName)
 		}
 	}
-	if (zb0001Mask[0] & 0x20000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x40000) == 0 { // if not empty
 		// string "3331264"
 		o = append(o, 0xa7, 0x33, 0x33, 0x33, 0x31, 0x32, 0x36, 0x34)
 		if z.AppointmentReplyTime == nil {
@@ -5606,7 +5949,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt64(o, *z.AppointmentReplyTime)
 		}
 	}
-	if (zb0001Mask[0] & 0x40000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x80000) == 0 { // if not empty
 		// string "332813"
 		o = append(o, 0xa6, 0x33, 0x33, 0x32, 0x38, 0x31, 0x33)
 		if z.AppointmentSequence == nil {
@@ -5615,7 +5958,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt32(o, *z.AppointmentSequence)
 		}
 	}
-	if (zb0001Mask[0] & 0x80000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x100000) == 0 { // if not empty
 		// string "3328264"
 		o = append(o, 0xa7, 0x33, 0x33, 0x32, 0x38, 0x32, 0x36, 0x34)
 		if z.AppointmentSequenceTime == nil {
@@ -5624,7 +5967,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt64(o, *z.AppointmentSequenceTime)
 		}
 	}
-	if (zb0001Mask[0] & 0x100000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x200000) == 0 { // if not empty
 		// string "3329864"
 		o = append(o, 0xa7, 0x33, 0x33, 0x32, 0x39, 0x38, 0x36, 0x34)
 		if z.AppointmentStartDate == nil {
@@ -5633,7 +5976,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt64(o, *z.AppointmentStartDate)
 		}
 	}
-	if (zb0001Mask[0] & 0x200000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x400000) == 0 { // if not empty
 		// string "3329564"
 		o = append(o, 0xa7, 0x33, 0x33, 0x32, 0x39, 0x35, 0x36, 0x34)
 		if z.AppointmentStartTime == nil {
@@ -5642,7 +5985,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt64(o, *z.AppointmentStartTime)
 		}
 	}
-	if (zb0001Mask[0] & 0x400000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x800000) == 0 { // if not empty
 		// string "3329364"
 		o = append(o, 0xa7, 0x33, 0x33, 0x32, 0x39, 0x33, 0x36, 0x34)
 		if z.AppointmentStartWhole == nil {
@@ -5651,7 +5994,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt64(o, *z.AppointmentStartWhole)
 		}
 	}
-	if (zb0001Mask[0] & 0x800000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x1000000) == 0 { // if not empty
 		// string "333033"
 		o = append(o, 0xa6, 0x33, 0x33, 0x33, 0x30, 0x33, 0x33)
 		if z.AppointmentStateFlags == nil {
@@ -5660,7 +6003,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt32(o, *z.AppointmentStateFlags)
 		}
 	}
-	if (zb0001Mask[0] & 0x1000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x2000000) == 0 { // if not empty
 		// string "3330111"
 		o = append(o, 0xa7, 0x33, 0x33, 0x33, 0x30, 0x31, 0x31, 0x31)
 		if z.AppointmentSubType == nil {
@@ -5669,7 +6012,27 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendBool(o, *z.AppointmentSubType)
 		}
 	}
-	if (zb0001Mask[0] & 0x2000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x4000000) == 0 { // if not empty
+		// string "33375258"
+		o = append(o, 0xa8, 0x33, 0x33, 0x33, 0x37, 0x35, 0x32, 0x35, 0x38)
+		o = msgp.AppendBytes(o, z.AppointmentTimeZoneDefinitionEndDisplay)
+	}
+	if (zb0001Mask[0] & 0x8000000) == 0 { // if not empty
+		// string "33376258"
+		o = append(o, 0xa8, 0x33, 0x33, 0x33, 0x37, 0x36, 0x32, 0x35, 0x38)
+		o = msgp.AppendBytes(o, z.AppointmentTimeZoneDefinitionRecur)
+	}
+	if (zb0001Mask[0] & 0x10000000) == 0 { // if not empty
+		// string "33374258"
+		o = append(o, 0xa8, 0x33, 0x33, 0x33, 0x37, 0x34, 0x32, 0x35, 0x38)
+		o = msgp.AppendBytes(o, z.AppointmentTimeZoneDefinitionStartDisplay)
+	}
+	if (zb0001Mask[0] & 0x20000000) == 0 { // if not empty
+		// string "33373258"
+		o = append(o, 0xa8, 0x33, 0x33, 0x33, 0x37, 0x33, 0x32, 0x35, 0x38)
+		o = msgp.AppendBytes(o, z.AppointmentUnsendableRecipients)
+	}
+	if (zb0001Mask[0] & 0x40000000) == 0 { // if not empty
 		// string "3331864"
 		o = append(o, 0xa7, 0x33, 0x33, 0x33, 0x31, 0x38, 0x36, 0x34)
 		if z.AppointmentUpdateTime == nil {
@@ -5678,7 +6041,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt64(o, *z.AppointmentUpdateTime)
 		}
 	}
-	if (zb0001Mask[0] & 0x4000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x80000000) == 0 { // if not empty
 		// string "164"
 		o = append(o, 0xa3, 0x31, 0x36, 0x34)
 		if z.AttendeeCriticalChange == nil {
@@ -5687,7 +6050,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt64(o, *z.AttendeeCriticalChange)
 		}
 	}
-	if (zb0001Mask[0] & 0x8000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x100000000) == 0 { // if not empty
 		// string "3333811"
 		o = append(o, 0xa7, 0x33, 0x33, 0x33, 0x33, 0x38, 0x31, 0x31)
 		if z.AutoFillLocation == nil {
@@ -5696,7 +6059,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendBool(o, *z.AutoFillLocation)
 		}
 	}
-	if (zb0001Mask[0] & 0x10000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x200000000) == 0 { // if not empty
 		// string "3334811"
 		o = append(o, 0xa7, 0x33, 0x33, 0x33, 0x34, 0x38, 0x31, 0x31)
 		if z.AutoStartCheck == nil {
@@ -5705,7 +6068,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendBool(o, *z.AutoStartCheck)
 		}
 	}
-	if (zb0001Mask[0] & 0x20000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x400000000) == 0 { // if not empty
 		// string "332853"
 		o = append(o, 0xa6, 0x33, 0x33, 0x32, 0x38, 0x35, 0x33)
 		if z.BusyStatus == nil {
@@ -5714,7 +6077,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt32(o, *z.BusyStatus)
 		}
 	}
-	if (zb0001Mask[0] & 0x40000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x800000000) == 0 { // if not empty
 		// string "283"
 		o = append(o, 0xa3, 0x32, 0x38, 0x33)
 		if z.CalendarType == nil {
@@ -5723,7 +6086,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt32(o, *z.CalendarType)
 		}
 	}
-	if (zb0001Mask[0] & 0x80000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x1000000000) == 0 { // if not empty
 		// string "3334031"
 		o = append(o, 0xa7, 0x33, 0x33, 0x33, 0x34, 0x30, 0x33, 0x31)
 		if z.CcAttendeesString == nil {
@@ -5732,7 +6095,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendString(o, *z.CcAttendeesString)
 		}
 	}
-	if (zb0001Mask[0] & 0x100000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x2000000000) == 0 { // if not empty
 		// string "332843"
 		o = append(o, 0xa6, 0x33, 0x33, 0x32, 0x38, 0x34, 0x33)
 		if z.ChangeHighlight == nil {
@@ -5741,7 +6104,12 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt32(o, *z.ChangeHighlight)
 		}
 	}
-	if (zb0001Mask[0] & 0x200000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x4000000000) == 0 { // if not empty
+		// string "35258"
+		o = append(o, 0xa5, 0x33, 0x35, 0x32, 0x35, 0x38)
+		o = msgp.AppendBytes(o, z.CleanGlobalObjectId)
+	}
+	if (zb0001Mask[0] & 0x8000000000) == 0 { // if not empty
 		// string "213"
 		o = append(o, 0xa3, 0x32, 0x31, 0x33)
 		if z.ClientIntent == nil {
@@ -5750,7 +6118,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt32(o, *z.ClientIntent)
 		}
 	}
-	if (zb0001Mask[0] & 0x400000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x10000000000) == 0 { // if not empty
 		// string "3333464"
 		o = append(o, 0xa7, 0x33, 0x33, 0x33, 0x33, 0x34, 0x36, 0x34)
 		if z.ClipEnd == nil {
@@ -5759,7 +6127,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt64(o, *z.ClipEnd)
 		}
 	}
-	if (zb0001Mask[0] & 0x800000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x20000000000) == 0 { // if not empty
 		// string "3333364"
 		o = append(o, 0xa7, 0x33, 0x33, 0x33, 0x33, 0x33, 0x36, 0x34)
 		if z.ClipStart == nil {
@@ -5768,7 +6136,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt64(o, *z.ClipStart)
 		}
 	}
-	if (zb0001Mask[0] & 0x1000000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x40000000000) == 0 { // if not empty
 		// string "3335131"
 		o = append(o, 0xa7, 0x33, 0x33, 0x33, 0x35, 0x31, 0x33, 0x31)
 		if z.CollaborateDoc == nil {
@@ -5777,7 +6145,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendString(o, *z.CollaborateDoc)
 		}
 	}
-	if (zb0001Mask[0] & 0x2000000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x80000000000) == 0 { // if not empty
 		// string "3334411"
 		o = append(o, 0xa7, 0x33, 0x33, 0x33, 0x34, 0x34, 0x31, 0x31)
 		if z.ConferencingCheck == nil {
@@ -5786,7 +6154,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendBool(o, *z.ConferencingCheck)
 		}
 	}
-	if (zb0001Mask[0] & 0x4000000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x100000000000) == 0 { // if not empty
 		// string "333453"
 		o = append(o, 0xa6, 0x33, 0x33, 0x33, 0x34, 0x35, 0x33)
 		if z.ConferencingType == nil {
@@ -5795,7 +6163,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt32(o, *z.ConferencingType)
 		}
 	}
-	if (zb0001Mask[0] & 0x8000000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x200000000000) == 0 { // if not empty
 		// string "172"
 		o = append(o, 0xa3, 0x31, 0x37, 0x32)
 		if z.DayInterval == nil {
@@ -5804,7 +6172,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt32(o, *z.DayInterval)
 		}
 	}
-	if (zb0001Mask[0] & 0x10000000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x400000000000) == 0 { // if not empty
 		// string "40963"
 		o = append(o, 0xa5, 0x34, 0x30, 0x39, 0x36, 0x33)
 		if z.DayOfMonth == nil {
@@ -5813,7 +6181,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt32(o, *z.DayOfMonth)
 		}
 	}
-	if (zb0001Mask[0] & 0x20000000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x800000000000) == 0 { // if not empty
 		// string "911"
 		o = append(o, 0xa3, 0x39, 0x31, 0x31)
 		if z.DelegateMail == nil {
@@ -5822,7 +6190,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendBool(o, *z.DelegateMail)
 		}
 	}
-	if (zb0001Mask[0] & 0x40000000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x1000000000000) == 0 { // if not empty
 		// string "3334631"
 		o = append(o, 0xa7, 0x33, 0x33, 0x33, 0x34, 0x36, 0x33, 0x31)
 		if z.Directory == nil {
@@ -5831,7 +6199,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendString(o, *z.Directory)
 		}
 	}
-	if (zb0001Mask[0] & 0x80000000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x2000000000000) == 0 { // if not empty
 		// string "153"
 		o = append(o, 0xa3, 0x31, 0x35, 0x33)
 		if z.EndRecurrenceDate == nil {
@@ -5840,7 +6208,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt32(o, *z.EndRecurrenceDate)
 		}
 	}
-	if (zb0001Mask[0] & 0x100000000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x4000000000000) == 0 { // if not empty
 		// string "163"
 		o = append(o, 0xa3, 0x31, 0x36, 0x33)
 		if z.EndRecurrenceTime == nil {
@@ -5849,7 +6217,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt32(o, *z.EndRecurrenceTime)
 		}
 	}
-	if (zb0001Mask[0] & 0x200000000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x8000000000000) == 0 { // if not empty
 		// string "3332064"
 		o = append(o, 0xa7, 0x33, 0x33, 0x33, 0x32, 0x30, 0x36, 0x34)
 		if z.ExceptionReplaceTime == nil {
@@ -5858,7 +6226,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt64(o, *z.ExceptionReplaceTime)
 		}
 	}
-	if (zb0001Mask[0] & 0x400000000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x10000000000000) == 0 { // if not empty
 		// string "3332311"
 		o = append(o, 0xa7, 0x33, 0x33, 0x33, 0x32, 0x33, 0x31, 0x31)
 		if z.FExceptionalAttendees == nil {
@@ -5867,7 +6235,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendBool(o, *z.FExceptionalAttendees)
 		}
 	}
-	if (zb0001Mask[0] & 0x800000000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x20000000000000) == 0 { // if not empty
 		// string "3328611"
 		o = append(o, 0xa7, 0x33, 0x33, 0x32, 0x38, 0x36, 0x31, 0x31)
 		if z.FExceptionalBody == nil {
@@ -5876,7 +6244,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendBool(o, *z.FExceptionalBody)
 		}
 	}
-	if (zb0001Mask[0] & 0x1000000000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x40000000000000) == 0 { // if not empty
 		// string "3332111"
 		o = append(o, 0xa7, 0x33, 0x33, 0x33, 0x32, 0x31, 0x31, 0x31)
 		if z.FInvited == nil {
@@ -5885,7 +6253,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendBool(o, *z.FInvited)
 		}
 	}
-	if (zb0001Mask[0] & 0x2000000000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x80000000000000) == 0 { // if not empty
 		// string "3329011"
 		o = append(o, 0xa7, 0x33, 0x33, 0x32, 0x39, 0x30, 0x31, 0x31)
 		if z.ForwardInstance == nil {
@@ -5894,7 +6262,12 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendBool(o, *z.ForwardInstance)
 		}
 	}
-	if (zb0001Mask[0] & 0x4000000000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x100000000000000) == 0 { // if not empty
+		// string "33377258"
+		o = append(o, 0xa8, 0x33, 0x33, 0x33, 0x37, 0x37, 0x32, 0x35, 0x38)
+		o = msgp.AppendBytes(o, z.ForwardNotificationRecipients)
+	}
+	if (zb0001Mask[0] & 0x200000000000000) == 0 { // if not empty
 		// string "3332711"
 		o = append(o, 0xa7, 0x33, 0x33, 0x33, 0x32, 0x37, 0x31, 0x31)
 		if z.FOthersAppointment == nil {
@@ -5903,7 +6276,12 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendBool(o, *z.FOthersAppointment)
 		}
 	}
-	if (zb0001Mask[0] & 0x8000000000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x400000000000000) == 0 { // if not empty
+		// string "3258"
+		o = append(o, 0xa4, 0x33, 0x32, 0x35, 0x38)
+		o = msgp.AppendBytes(o, z.GlobalObjectId)
+	}
+	if (zb0001Mask[0] & 0x800000000000000) == 0 { // if not empty
 		// string "40973"
 		o = append(o, 0xa5, 0x34, 0x30, 0x39, 0x37, 0x33)
 		if z.ICalendarDayOfWeekMask == nil {
@@ -5912,7 +6290,12 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt32(o, *z.ICalendarDayOfWeekMask)
 		}
 	}
-	if (zb0001Mask[0] & 0x10000000000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x1000000000000000) == 0 { // if not empty
+		// string "33402258"
+		o = append(o, 0xa8, 0x33, 0x33, 0x34, 0x30, 0x32, 0x32, 0x35, 0x38)
+		o = msgp.AppendBytes(o, z.InboundiCalStream)
+	}
+	if (zb0001Mask[0] & 0x2000000000000000) == 0 { // if not empty
 		// string "333163"
 		o = append(o, 0xa6, 0x33, 0x33, 0x33, 0x31, 0x36, 0x33)
 		if z.IntendedBusyStatus == nil {
@@ -5921,7 +6304,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt32(o, *z.IntendedBusyStatus)
 		}
 	}
-	if (zb0001Mask[0] & 0x20000000000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x4000000000000000) == 0 { // if not empty
 		// string "1011"
 		o = append(o, 0xa4, 0x31, 0x30, 0x31, 0x31)
 		if z.IsException == nil {
@@ -5930,7 +6313,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendBool(o, *z.IsException)
 		}
 	}
-	if (zb0001Mask[0] & 0x40000000000000) == 0 { // if not empty
+	if (zb0001Mask[0] & 0x8000000000000000) == 0 { // if not empty
 		// string "511"
 		o = append(o, 0xa3, 0x35, 0x31, 0x31)
 		if z.IsRecurring == nil {
@@ -5939,7 +6322,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendBool(o, *z.IsRecurring)
 		}
 	}
-	if (zb0001Mask[0] & 0x80000000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x1) == 0 { // if not empty
 		// string "411"
 		o = append(o, 0xa3, 0x34, 0x31, 0x31)
 		if z.IsSilent == nil {
@@ -5948,7 +6331,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendBool(o, *z.IsSilent)
 		}
 	}
-	if (zb0001Mask[0] & 0x100000000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x2) == 0 { // if not empty
 		// string "3328831"
 		o = append(o, 0xa7, 0x33, 0x33, 0x32, 0x38, 0x38, 0x33, 0x31)
 		if z.Location == nil {
@@ -5957,7 +6340,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendString(o, *z.Location)
 		}
 	}
-	if (zb0001Mask[0] & 0x200000000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x4) == 0 { // if not empty
 		// string "383"
 		o = append(o, 0xa3, 0x33, 0x38, 0x33)
 		if z.MeetingType == nil {
@@ -5966,7 +6349,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt32(o, *z.MeetingType)
 		}
 	}
-	if (zb0001Mask[0] & 0x400000000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x8) == 0 { // if not empty
 		// string "3328931"
 		o = append(o, 0xa7, 0x33, 0x33, 0x32, 0x38, 0x39, 0x33, 0x31)
 		if z.MeetingWorkspaceUrl == nil {
@@ -5975,7 +6358,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendString(o, *z.MeetingWorkspaceUrl)
 		}
 	}
-	if (zb0001Mask[0] & 0x800000000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x10) == 0 { // if not empty
 		// string "192"
 		o = append(o, 0xa3, 0x31, 0x39, 0x32)
 		if z.MonthInterval == nil {
@@ -5984,7 +6367,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt32(o, *z.MonthInterval)
 		}
 	}
-	if (zb0001Mask[0] & 0x1000000000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x20) == 0 { // if not empty
 		// string "41023"
 		o = append(o, 0xa5, 0x34, 0x31, 0x30, 0x32, 0x33)
 		if z.MonthOfYear == nil {
@@ -5993,7 +6376,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt32(o, *z.MonthOfYear)
 		}
 	}
-	if (zb0001Mask[0] & 0x2000000000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x40) == 0 { // if not empty
 		// string "233"
 		o = append(o, 0xa3, 0x32, 0x33, 0x33)
 		if z.MonthOfYearMask == nil {
@@ -6002,7 +6385,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt32(o, *z.MonthOfYearMask)
 		}
 	}
-	if (zb0001Mask[0] & 0x4000000000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x80) == 0 { // if not empty
 		// string "3335231"
 		o = append(o, 0xa7, 0x33, 0x33, 0x33, 0x35, 0x32, 0x33, 0x31)
 		if z.NetShowUrl == nil {
@@ -6011,7 +6394,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendString(o, *z.NetShowUrl)
 		}
 	}
-	if (zb0001Mask[0] & 0x8000000000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x100) == 0 { // if not empty
 		// string "410711"
 		o = append(o, 0xa6, 0x34, 0x31, 0x30, 0x37, 0x31, 0x31)
 		if z.NoEndDateFlag == nil {
@@ -6020,7 +6403,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendBool(o, *z.NoEndDateFlag)
 		}
 	}
-	if (zb0001Mask[1] & 0x1) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x200) == 0 { // if not empty
 		// string "3410431"
 		o = append(o, 0xa7, 0x33, 0x34, 0x31, 0x30, 0x34, 0x33, 0x31)
 		if z.NonSendableBcc == nil {
@@ -6029,7 +6412,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendString(o, *z.NonSendableBcc)
 		}
 	}
-	if (zb0001Mask[1] & 0x2) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x400) == 0 { // if not empty
 		// string "3410331"
 		o = append(o, 0xa7, 0x33, 0x34, 0x31, 0x30, 0x33, 0x33, 0x31)
 		if z.NonSendableCc == nil {
@@ -6038,7 +6421,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendString(o, *z.NonSendableCc)
 		}
 	}
-	if (zb0001Mask[1] & 0x4) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x800) == 0 { // if not empty
 		// string "3410231"
 		o = append(o, 0xa7, 0x33, 0x34, 0x31, 0x30, 0x32, 0x33, 0x31)
 		if z.NonSendableTo == nil {
@@ -6047,7 +6430,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendString(o, *z.NonSendableTo)
 		}
 	}
-	if (zb0001Mask[1] & 0x8) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x1000) == 0 { // if not empty
 		// string "41013"
 		o = append(o, 0xa5, 0x34, 0x31, 0x30, 0x31, 0x33)
 		if z.Occurrences == nil {
@@ -6056,7 +6439,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt32(o, *z.Occurrences)
 		}
 	}
-	if (zb0001Mask[1] & 0x10) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x2000) == 0 { // if not empty
 		// string "4031"
 		o = append(o, 0xa4, 0x34, 0x30, 0x33, 0x31)
 		if z.OldLocation == nil {
@@ -6065,7 +6448,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendString(o, *z.OldLocation)
 		}
 	}
-	if (zb0001Mask[1] & 0x20) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x4000) == 0 { // if not empty
 		// string "242"
 		o = append(o, 0xa3, 0x32, 0x34, 0x32)
 		if z.OldRecurrenceType == nil {
@@ -6074,7 +6457,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt32(o, *z.OldRecurrenceType)
 		}
 	}
-	if (zb0001Mask[1] & 0x40) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x8000) == 0 { // if not empty
 		// string "4264"
 		o = append(o, 0xa4, 0x34, 0x32, 0x36, 0x34)
 		if z.OldWhenEndWhole == nil {
@@ -6083,7 +6466,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt64(o, *z.OldWhenEndWhole)
 		}
 	}
-	if (zb0001Mask[1] & 0x80) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x10000) == 0 { // if not empty
 		// string "4164"
 		o = append(o, 0xa4, 0x34, 0x31, 0x36, 0x34)
 		if z.OldWhenStartWhole == nil {
@@ -6092,7 +6475,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt64(o, *z.OldWhenStartWhole)
 		}
 	}
-	if (zb0001Mask[1] & 0x100) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x20000) == 0 { // if not empty
 		// string "3335331"
 		o = append(o, 0xa7, 0x33, 0x33, 0x33, 0x35, 0x33, 0x33, 0x31)
 		if z.OnlinePassword == nil {
@@ -6101,7 +6484,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendString(o, *z.OnlinePassword)
 		}
 	}
-	if (zb0001Mask[1] & 0x200) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x40000) == 0 { // if not empty
 		// string "731"
 		o = append(o, 0xa3, 0x37, 0x33, 0x31)
 		if z.OptionalAttendees == nil {
@@ -6110,7 +6493,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendString(o, *z.OptionalAttendees)
 		}
 	}
-	if (zb0001Mask[1] & 0x400) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x80000) == 0 { // if not empty
 		// string "3334731"
 		o = append(o, 0xa7, 0x33, 0x33, 0x33, 0x34, 0x37, 0x33, 0x31)
 		if z.OrganizerAlias == nil {
@@ -6119,7 +6502,12 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendString(o, *z.OrganizerAlias)
 		}
 	}
-	if (zb0001Mask[1] & 0x800) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x100000) == 0 { // if not empty
+		// string "33335258"
+		o = append(o, 0xa8, 0x33, 0x33, 0x33, 0x33, 0x35, 0x32, 0x35, 0x38)
+		o = msgp.AppendBytes(o, z.OriginalStoreEntryId)
+	}
+	if (zb0001Mask[1] & 0x200000) == 0 { // if not empty
 		// string "2664"
 		o = append(o, 0xa4, 0x32, 0x36, 0x36, 0x34)
 		if z.OwnerCriticalChange == nil {
@@ -6128,7 +6516,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt64(o, *z.OwnerCriticalChange)
 		}
 	}
-	if (zb0001Mask[1] & 0x1000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x400000) == 0 { // if not empty
 		// string "3332631"
 		o = append(o, 0xa7, 0x33, 0x33, 0x33, 0x32, 0x36, 0x33, 0x31)
 		if z.OwnerName == nil {
@@ -6137,7 +6525,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendString(o, *z.OwnerName)
 		}
 	}
-	if (zb0001Mask[1] & 0x2000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x800000) == 0 { // if not empty
 		// string "41093"
 		o = append(o, 0xa5, 0x34, 0x31, 0x30, 0x39, 0x33)
 		if z.RecurrenceDuration == nil {
@@ -6146,7 +6534,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt32(o, *z.RecurrenceDuration)
 		}
 	}
-	if (zb0001Mask[1] & 0x4000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x1000000) == 0 { // if not empty
 		// string "3333031"
 		o = append(o, 0xa7, 0x33, 0x33, 0x33, 0x33, 0x30, 0x33, 0x31)
 		if z.RecurrencePattern == nil {
@@ -6155,7 +6543,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendString(o, *z.RecurrencePattern)
 		}
 	}
-	if (zb0001Mask[1] & 0x8000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x2000000) == 0 { // if not empty
 		// string "333293"
 		o = append(o, 0xa6, 0x33, 0x33, 0x33, 0x32, 0x39, 0x33)
 		if z.RecurrenceType == nil {
@@ -6164,7 +6552,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt32(o, *z.RecurrenceType)
 		}
 	}
-	if (zb0001Mask[1] & 0x10000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x4000000) == 0 { // if not empty
 		// string "3331511"
 		o = append(o, 0xa7, 0x33, 0x33, 0x33, 0x31, 0x35, 0x31, 0x31)
 		if z.Recurring == nil {
@@ -6173,7 +6561,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendBool(o, *z.Recurring)
 		}
 	}
-	if (zb0001Mask[1] & 0x20000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x8000000) == 0 { // if not empty
 		// string "340493"
 		o = append(o, 0xa6, 0x33, 0x34, 0x30, 0x34, 0x39, 0x33)
 		if z.ReminderDelta == nil {
@@ -6182,7 +6570,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt32(o, *z.ReminderDelta)
 		}
 	}
-	if (zb0001Mask[1] & 0x40000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x10000000) == 0 { // if not empty
 		// string "3407931"
 		o = append(o, 0xa7, 0x33, 0x34, 0x30, 0x37, 0x39, 0x33, 0x31)
 		if z.ReminderFileParameter == nil {
@@ -6191,7 +6579,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendString(o, *z.ReminderFileParameter)
 		}
 	}
-	if (zb0001Mask[1] & 0x80000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x20000000) == 0 { // if not empty
 		// string "3407611"
 		o = append(o, 0xa7, 0x33, 0x34, 0x30, 0x37, 0x36, 0x31, 0x31)
 		if z.ReminderOverride == nil {
@@ -6200,7 +6588,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendBool(o, *z.ReminderOverride)
 		}
 	}
-	if (zb0001Mask[1] & 0x100000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x40000000) == 0 { // if not empty
 		// string "3407811"
 		o = append(o, 0xa7, 0x33, 0x34, 0x30, 0x37, 0x38, 0x31, 0x31)
 		if z.ReminderPlaySound == nil {
@@ -6209,7 +6597,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendBool(o, *z.ReminderPlaySound)
 		}
 	}
-	if (zb0001Mask[1] & 0x200000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x80000000) == 0 { // if not empty
 		// string "3405111"
 		o = append(o, 0xa7, 0x33, 0x34, 0x30, 0x35, 0x31, 0x31, 0x31)
 		if z.ReminderSet == nil {
@@ -6218,7 +6606,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendBool(o, *z.ReminderSet)
 		}
 	}
-	if (zb0001Mask[1] & 0x400000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x100000000) == 0 { // if not empty
 		// string "3414464"
 		o = append(o, 0xa7, 0x33, 0x34, 0x31, 0x34, 0x34, 0x36, 0x34)
 		if z.ReminderSignalTime == nil {
@@ -6227,7 +6615,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt64(o, *z.ReminderSignalTime)
 		}
 	}
-	if (zb0001Mask[1] & 0x800000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x200000000) == 0 { // if not empty
 		// string "3405064"
 		o = append(o, 0xa7, 0x33, 0x34, 0x30, 0x35, 0x30, 0x36, 0x34)
 		if z.ReminderTime == nil {
@@ -6236,7 +6624,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt64(o, *z.ReminderTime)
 		}
 	}
-	if (zb0001Mask[1] & 0x1000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x400000000) == 0 { // if not empty
 		// string "3405364"
 		o = append(o, 0xa7, 0x33, 0x34, 0x30, 0x35, 0x33, 0x36, 0x34)
 		if z.ReminderTimeDate == nil {
@@ -6245,7 +6633,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt64(o, *z.ReminderTimeDate)
 		}
 	}
-	if (zb0001Mask[1] & 0x2000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x800000000) == 0 { // if not empty
 		// string "3405264"
 		o = append(o, 0xa7, 0x33, 0x34, 0x30, 0x35, 0x32, 0x36, 0x34)
 		if z.ReminderTimeTime == nil {
@@ -6254,7 +6642,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt64(o, *z.ReminderTimeTime)
 		}
 	}
-	if (zb0001Mask[1] & 0x4000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x1000000000) == 0 { // if not empty
 		// string "340773"
 		o = append(o, 0xa6, 0x33, 0x34, 0x30, 0x37, 0x37, 0x33)
 		if z.ReminderType == nil {
@@ -6263,7 +6651,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt32(o, *z.ReminderType)
 		}
 	}
-	if (zb0001Mask[1] & 0x8000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x2000000000) == 0 { // if not empty
 		// string "631"
 		o = append(o, 0xa3, 0x36, 0x33, 0x31)
 		if z.RequiredAttendees == nil {
@@ -6272,7 +6660,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendString(o, *z.RequiredAttendees)
 		}
 	}
-	if (zb0001Mask[1] & 0x10000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x4000000000) == 0 { // if not empty
 		// string "831"
 		o = append(o, 0xa3, 0x38, 0x33, 0x31)
 		if z.ResourceAttendees == nil {
@@ -6281,7 +6669,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendString(o, *z.ResourceAttendees)
 		}
 	}
-	if (zb0001Mask[1] & 0x20000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x8000000000) == 0 { // if not empty
 		// string "333043"
 		o = append(o, 0xa6, 0x33, 0x33, 0x33, 0x30, 0x34, 0x33)
 		if z.ResponseStatus == nil {
@@ -6290,7 +6678,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt32(o, *z.ResponseStatus)
 		}
 	}
-	if (zb0001Mask[1] & 0x40000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x10000000000) == 0 { // if not empty
 		// string "3425211"
 		o = append(o, 0xa7, 0x33, 0x34, 0x32, 0x35, 0x32, 0x31, 0x31)
 		if z.ServerProcessed == nil {
@@ -6299,7 +6687,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendBool(o, *z.ServerProcessed)
 		}
 	}
-	if (zb0001Mask[1] & 0x80000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x20000000000) == 0 { // if not empty
 		// string "342533"
 		o = append(o, 0xa6, 0x33, 0x34, 0x32, 0x35, 0x33, 0x33)
 		if z.ServerProcessingActions == nil {
@@ -6308,7 +6696,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt32(o, *z.ServerProcessingActions)
 		}
 	}
-	if (zb0001Mask[1] & 0x100000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x40000000000) == 0 { // if not empty
 		// string "3340311"
 		o = append(o, 0xa7, 0x33, 0x33, 0x34, 0x30, 0x33, 0x31, 0x31)
 		if z.SingleBodyiCal == nil {
@@ -6317,7 +6705,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendBool(o, *z.SingleBodyiCal)
 		}
 	}
-	if (zb0001Mask[1] & 0x200000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x80000000000) == 0 { // if not empty
 		// string "133"
 		o = append(o, 0xa3, 0x31, 0x33, 0x33)
 		if z.StartRecurrenceDate == nil {
@@ -6326,7 +6714,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt32(o, *z.StartRecurrenceDate)
 		}
 	}
-	if (zb0001Mask[1] & 0x400000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x100000000000) == 0 { // if not empty
 		// string "143"
 		o = append(o, 0xa3, 0x31, 0x34, 0x33)
 		if z.StartRecurrenceTime == nil {
@@ -6335,7 +6723,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt32(o, *z.StartRecurrenceTime)
 		}
 	}
-	if (zb0001Mask[1] & 0x800000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x200000000000) == 0 { // if not empty
 		// string "123"
 		o = append(o, 0xa3, 0x31, 0x32, 0x33)
 		if z.TimeZone == nil {
@@ -6344,7 +6732,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt32(o, *z.TimeZone)
 		}
 	}
-	if (zb0001Mask[1] & 0x1000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x400000000000) == 0 { // if not empty
 		// string "3333231"
 		o = append(o, 0xa7, 0x33, 0x33, 0x33, 0x33, 0x32, 0x33, 0x31)
 		if z.TimeZoneDescription == nil {
@@ -6353,7 +6741,12 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendString(o, *z.TimeZoneDescription)
 		}
 	}
-	if (zb0001Mask[1] & 0x2000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x800000000000) == 0 { // if not empty
+		// string "33331258"
+		o = append(o, 0xa8, 0x33, 0x33, 0x33, 0x33, 0x31, 0x32, 0x35, 0x38)
+		o = msgp.AppendBytes(o, z.TimeZoneStruct)
+	}
+	if (zb0001Mask[1] & 0x1000000000000) == 0 { // if not empty
 		// string "3333931"
 		o = append(o, 0xa7, 0x33, 0x33, 0x33, 0x33, 0x39, 0x33, 0x31)
 		if z.ToAttendeesString == nil {
@@ -6362,7 +6755,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendString(o, *z.ToAttendeesString)
 		}
 	}
-	if (zb0001Mask[1] & 0x4000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x2000000000000) == 0 { // if not empty
 		// string "182"
 		o = append(o, 0xa3, 0x31, 0x38, 0x32)
 		if z.WeekInterval == nil {
@@ -6371,7 +6764,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt32(o, *z.WeekInterval)
 		}
 	}
-	if (zb0001Mask[1] & 0x8000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x4000000000000) == 0 { // if not empty
 		// string "231"
 		o = append(o, 0xa3, 0x32, 0x33, 0x31)
 		if z.Where == nil {
@@ -6380,7 +6773,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendString(o, *z.Where)
 		}
 	}
-	if (zb0001Mask[1] & 0x10000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x8000000000000) == 0 { // if not empty
 		// string "202"
 		o = append(o, 0xa3, 0x32, 0x30, 0x32)
 		if z.YearInterval == nil {
@@ -6403,7 +6796,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 	} else {
 		o = msgp.AppendBool(o, *z.MeetingDoNotForward)
 	}
-	if (zb0001Mask[1] & 0x80000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x40000000000000) == 0 { // if not empty
 		// string "266963"
 		o = append(o, 0xa6, 0x32, 0x36, 0x36, 0x39, 0x36, 0x33)
 		if z.FreeBusyPublishEnd == nil {
@@ -6412,7 +6805,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt32(o, *z.FreeBusyPublishEnd)
 		}
 	}
-	if (zb0001Mask[1] & 0x100000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x80000000000000) == 0 { // if not empty
 		// string "266953"
 		o = append(o, 0xa6, 0x32, 0x36, 0x36, 0x39, 0x35, 0x33)
 		if z.FreeBusyPublishStart == nil {
@@ -6421,7 +6814,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt32(o, *z.FreeBusyPublishStart)
 		}
 	}
-	if (zb0001Mask[1] & 0x200000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x100000000000000) == 0 { // if not empty
 		// string "2672864"
 		o = append(o, 0xa7, 0x32, 0x36, 0x37, 0x32, 0x38, 0x36, 0x34)
 		if z.FreeBusyRangeTimestamp == nil {
@@ -6430,7 +6823,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt64(o, *z.FreeBusyRangeTimestamp)
 		}
 	}
-	if (zb0001Mask[1] & 0x400000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x200000000000000) == 0 { // if not empty
 		// string "429264"
 		o = append(o, 0xa6, 0x34, 0x32, 0x39, 0x32, 0x36, 0x34)
 		if z.ICalendarEndTime == nil {
@@ -6439,7 +6832,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt64(o, *z.ICalendarEndTime)
 		}
 	}
-	if (zb0001Mask[1] & 0x800000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x400000000000000) == 0 { // if not empty
 		// string "429864"
 		o = append(o, 0xa6, 0x34, 0x32, 0x39, 0x38, 0x36, 0x34)
 		if z.ICalendarReminderNextTime == nil {
@@ -6448,7 +6841,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendInt64(o, *z.ICalendarReminderNextTime)
 		}
 	}
-	if (zb0001Mask[1] & 0x1000000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x800000000000000) == 0 { // if not empty
 		// string "3200111"
 		o = append(o, 0xa7, 0x33, 0x32, 0x30, 0x30, 0x31, 0x31, 0x31)
 		if z.Processed == nil {
@@ -6457,7 +6850,12 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendBool(o, *z.Processed)
 		}
 	}
-	if (zb0001Mask[1] & 0x2000000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x1000000000000000) == 0 { // if not empty
+		// string "26730258"
+		o = append(o, 0xa8, 0x32, 0x36, 0x37, 0x33, 0x30, 0x32, 0x35, 0x38)
+		o = msgp.AppendBytes(o, z.ScheduleInfoAppointmentTombstone)
+	}
+	if (zb0001Mask[1] & 0x2000000000000000) == 0 { // if not empty
 		// string "2673311"
 		o = append(o, 0xa7, 0x32, 0x36, 0x37, 0x33, 0x33, 0x31, 0x31)
 		if z.ScheduleInfoAutoAcceptAppointments == nil {
@@ -6466,7 +6864,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendBool(o, *z.ScheduleInfoAutoAcceptAppointments)
 		}
 	}
-	if (zb0001Mask[1] & 0x4000000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x4000000000000000) == 0 { // if not empty
 		// string "2669011"
 		o = append(o, 0xa7, 0x32, 0x36, 0x36, 0x39, 0x30, 0x31, 0x31)
 		if z.ScheduleInfoDelegatorWantsCopy == nil {
@@ -6475,7 +6873,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendBool(o, *z.ScheduleInfoDelegatorWantsCopy)
 		}
 	}
-	if (zb0001Mask[1] & 0x8000000000000) == 0 { // if not empty
+	if (zb0001Mask[1] & 0x8000000000000000) == 0 { // if not empty
 		// string "2669911"
 		o = append(o, 0xa7, 0x32, 0x36, 0x36, 0x39, 0x39, 0x31, 0x31)
 		if z.ScheduleInfoDelegatorWantsInfo == nil {
@@ -6484,7 +6882,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendBool(o, *z.ScheduleInfoDelegatorWantsInfo)
 		}
 	}
-	if (zb0001Mask[1] & 0x10000000000000) == 0 { // if not empty
+	if (zb0001Mask[2] & 0x1) == 0 { // if not empty
 		// string "2673511"
 		o = append(o, 0xa7, 0x32, 0x36, 0x37, 0x33, 0x35, 0x31, 0x31)
 		if z.ScheduleInfoDisallowOverlappingAppts == nil {
@@ -6493,7 +6891,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendBool(o, *z.ScheduleInfoDisallowOverlappingAppts)
 		}
 	}
-	if (zb0001Mask[1] & 0x20000000000000) == 0 { // if not empty
+	if (zb0001Mask[2] & 0x2) == 0 { // if not empty
 		// string "2673411"
 		o = append(o, 0xa7, 0x32, 0x36, 0x37, 0x33, 0x34, 0x31, 0x31)
 		if z.ScheduleInfoDisallowRecurringAppts == nil {
@@ -6502,7 +6900,7 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendBool(o, *z.ScheduleInfoDisallowRecurringAppts)
 		}
 	}
-	if (zb0001Mask[1] & 0x40000000000000) == 0 { // if not empty
+	if (zb0001Mask[2] & 0x4) == 0 { // if not empty
 		// string "2669111"
 		o = append(o, 0xa7, 0x32, 0x36, 0x36, 0x39, 0x31, 0x31, 0x31)
 		if z.ScheduleInfoDontMailDelegates == nil {
@@ -6511,7 +6909,12 @@ func (z *Appointment) MarshalMsg(b []byte) (o []byte, err error) {
 			o = msgp.AppendBool(o, *z.ScheduleInfoDontMailDelegates)
 		}
 	}
-	if (zb0001Mask[1] & 0x80000000000000) == 0 { // if not empty
+	if (zb0001Mask[2] & 0x8) == 0 { // if not empty
+		// string "26732258"
+		o = append(o, 0xa8, 0x32, 0x36, 0x37, 0x33, 0x32, 0x32, 0x35, 0x38)
+		o = msgp.AppendBytes(o, z.ScheduleInfoFreeBusy)
+	}
+	if (zb0001Mask[2] & 0x10) == 0 { // if not empty
 		// string "266893"
 		o = append(o, 0xa6, 0x32, 0x36, 0x36, 0x38, 0x39, 0x33)
 		if z.ScheduleInfoResourceType == nil {
@@ -6813,6 +7216,12 @@ func (z *Appointment) UnmarshalMsg(bts []byte) (o []byte, err error) {
 					return
 				}
 			}
+		case "33302258":
+			z.AppointmentRecur, bts, err = msgp.ReadBytesBytes(bts, z.AppointmentRecur)
+			if err != nil {
+				err = msgp.WrapError(err, "AppointmentRecur")
+				return
+			}
 		case "3332831":
 			if msgp.IsNil(bts) {
 				bts, err = msgp.ReadNilBytes(bts)
@@ -6966,6 +7375,30 @@ func (z *Appointment) UnmarshalMsg(bts []byte) (o []byte, err error) {
 					return
 				}
 			}
+		case "33375258":
+			z.AppointmentTimeZoneDefinitionEndDisplay, bts, err = msgp.ReadBytesBytes(bts, z.AppointmentTimeZoneDefinitionEndDisplay)
+			if err != nil {
+				err = msgp.WrapError(err, "AppointmentTimeZoneDefinitionEndDisplay")
+				return
+			}
+		case "33376258":
+			z.AppointmentTimeZoneDefinitionRecur, bts, err = msgp.ReadBytesBytes(bts, z.AppointmentTimeZoneDefinitionRecur)
+			if err != nil {
+				err = msgp.WrapError(err, "AppointmentTimeZoneDefinitionRecur")
+				return
+			}
+		case "33374258":
+			z.AppointmentTimeZoneDefinitionStartDisplay, bts, err = msgp.ReadBytesBytes(bts, z.AppointmentTimeZoneDefinitionStartDisplay)
+			if err != nil {
+				err = msgp.WrapError(err, "AppointmentTimeZoneDefinitionStartDisplay")
+				return
+			}
+		case "33373258":
+			z.AppointmentUnsendableRecipients, bts, err = msgp.ReadBytesBytes(bts, z.AppointmentUnsendableRecipients)
+			if err != nil {
+				err = msgp.WrapError(err, "AppointmentUnsendableRecipients")
+				return
+			}
 		case "3331864":
 			if msgp.IsNil(bts) {
 				bts, err = msgp.ReadNilBytes(bts)
@@ -7101,6 +7534,12 @@ func (z *Appointment) UnmarshalMsg(bts []byte) (o []byte, err error) {
 					err = msgp.WrapError(err, "ChangeHighlight")
 					return
 				}
+			}
+		case "35258":
+			z.CleanGlobalObjectId, bts, err = msgp.ReadBytesBytes(bts, z.CleanGlobalObjectId)
+			if err != nil {
+				err = msgp.WrapError(err, "CleanGlobalObjectId")
+				return
 			}
 		case "213":
 			if msgp.IsNil(bts) {
@@ -7391,6 +7830,12 @@ func (z *Appointment) UnmarshalMsg(bts []byte) (o []byte, err error) {
 					return
 				}
 			}
+		case "33377258":
+			z.ForwardNotificationRecipients, bts, err = msgp.ReadBytesBytes(bts, z.ForwardNotificationRecipients)
+			if err != nil {
+				err = msgp.WrapError(err, "ForwardNotificationRecipients")
+				return
+			}
 		case "3332711":
 			if msgp.IsNil(bts) {
 				bts, err = msgp.ReadNilBytes(bts)
@@ -7408,6 +7853,12 @@ func (z *Appointment) UnmarshalMsg(bts []byte) (o []byte, err error) {
 					return
 				}
 			}
+		case "3258":
+			z.GlobalObjectId, bts, err = msgp.ReadBytesBytes(bts, z.GlobalObjectId)
+			if err != nil {
+				err = msgp.WrapError(err, "GlobalObjectId")
+				return
+			}
 		case "40973":
 			if msgp.IsNil(bts) {
 				bts, err = msgp.ReadNilBytes(bts)
@@ -7424,6 +7875,12 @@ func (z *Appointment) UnmarshalMsg(bts []byte) (o []byte, err error) {
 					err = msgp.WrapError(err, "ICalendarDayOfWeekMask")
 					return
 				}
+			}
+		case "33402258":
+			z.InboundiCalStream, bts, err = msgp.ReadBytesBytes(bts, z.InboundiCalStream)
+			if err != nil {
+				err = msgp.WrapError(err, "InboundiCalStream")
+				return
 			}
 		case "333163":
 			if msgp.IsNil(bts) {
@@ -7815,6 +8272,12 @@ func (z *Appointment) UnmarshalMsg(bts []byte) (o []byte, err error) {
 					err = msgp.WrapError(err, "OrganizerAlias")
 					return
 				}
+			}
+		case "33335258":
+			z.OriginalStoreEntryId, bts, err = msgp.ReadBytesBytes(bts, z.OriginalStoreEntryId)
+			if err != nil {
+				err = msgp.WrapError(err, "OriginalStoreEntryId")
+				return
 			}
 		case "2664":
 			if msgp.IsNil(bts) {
@@ -8258,6 +8721,12 @@ func (z *Appointment) UnmarshalMsg(bts []byte) (o []byte, err error) {
 					return
 				}
 			}
+		case "33331258":
+			z.TimeZoneStruct, bts, err = msgp.ReadBytesBytes(bts, z.TimeZoneStruct)
+			if err != nil {
+				err = msgp.WrapError(err, "TimeZoneStruct")
+				return
+			}
 		case "3333931":
 			if msgp.IsNil(bts) {
 				bts, err = msgp.ReadNilBytes(bts)
@@ -8462,6 +8931,12 @@ func (z *Appointment) UnmarshalMsg(bts []byte) (o []byte, err error) {
 					return
 				}
 			}
+		case "26730258":
+			z.ScheduleInfoAppointmentTombstone, bts, err = msgp.ReadBytesBytes(bts, z.ScheduleInfoAppointmentTombstone)
+			if err != nil {
+				err = msgp.WrapError(err, "ScheduleInfoAppointmentTombstone")
+				return
+			}
 		case "2673311":
 			if msgp.IsNil(bts) {
 				bts, err = msgp.ReadNilBytes(bts)
@@ -8563,6 +9038,12 @@ func (z *Appointment) UnmarshalMsg(bts []byte) (o []byte, err error) {
 					err = msgp.WrapError(err, "ScheduleInfoDontMailDelegates")
 					return
 				}
+			}
+		case "26732258":
+			z.ScheduleInfoFreeBusy, bts, err = msgp.ReadBytesBytes(bts, z.ScheduleInfoFreeBusy)
+			if err != nil {
+				err = msgp.WrapError(err, "ScheduleInfoFreeBusy")
+				return
 			}
 		case "266893":
 			if msgp.IsNil(bts) {
@@ -8691,7 +9172,7 @@ func (z *Appointment) Msgsize() (s int) {
 	} else {
 		s += msgp.Int64Size
 	}
-	s += 8
+	s += 9 + msgp.BytesPrefixSize + len(z.AppointmentRecur) + 8
 	if z.AppointmentReplyName == nil {
 		s += msgp.NilSize
 	} else {
@@ -8745,7 +9226,7 @@ func (z *Appointment) Msgsize() (s int) {
 	} else {
 		s += msgp.BoolSize
 	}
-	s += 8
+	s += 9 + msgp.BytesPrefixSize + len(z.AppointmentTimeZoneDefinitionEndDisplay) + 9 + msgp.BytesPrefixSize + len(z.AppointmentTimeZoneDefinitionRecur) + 9 + msgp.BytesPrefixSize + len(z.AppointmentTimeZoneDefinitionStartDisplay) + 9 + msgp.BytesPrefixSize + len(z.AppointmentUnsendableRecipients) + 8
 	if z.AppointmentUpdateTime == nil {
 		s += msgp.NilSize
 	} else {
@@ -8793,7 +9274,7 @@ func (z *Appointment) Msgsize() (s int) {
 	} else {
 		s += msgp.Int32Size
 	}
-	s += 4
+	s += 6 + msgp.BytesPrefixSize + len(z.CleanGlobalObjectId) + 4
 	if z.ClientIntent == nil {
 		s += msgp.NilSize
 	} else {
@@ -8895,19 +9376,19 @@ func (z *Appointment) Msgsize() (s int) {
 	} else {
 		s += msgp.BoolSize
 	}
-	s += 8
+	s += 9 + msgp.BytesPrefixSize + len(z.ForwardNotificationRecipients) + 8
 	if z.FOthersAppointment == nil {
 		s += msgp.NilSize
 	} else {
 		s += msgp.BoolSize
 	}
-	s += 6
+	s += 5 + msgp.BytesPrefixSize + len(z.GlobalObjectId) + 6
 	if z.ICalendarDayOfWeekMask == nil {
 		s += msgp.NilSize
 	} else {
 		s += msgp.Int32Size
 	}
-	s += 7
+	s += 9 + msgp.BytesPrefixSize + len(z.InboundiCalStream) + 7
 	if z.IntendedBusyStatus == nil {
 		s += msgp.NilSize
 	} else {
@@ -9045,7 +9526,7 @@ func (z *Appointment) Msgsize() (s int) {
 	} else {
 		s += msgp.StringPrefixSize + len(*z.OrganizerAlias)
 	}
-	s += 5
+	s += 9 + msgp.BytesPrefixSize + len(z.OriginalStoreEntryId) + 5
 	if z.OwnerCriticalChange == nil {
 		s += msgp.NilSize
 	} else {
@@ -9201,7 +9682,7 @@ func (z *Appointment) Msgsize() (s int) {
 	} else {
 		s += msgp.StringPrefixSize + len(*z.TimeZoneDescription)
 	}
-	s += 8
+	s += 9 + msgp.BytesPrefixSize + len(z.TimeZoneStruct) + 8
 	if z.ToAttendeesString == nil {
 		s += msgp.NilSize
 	} else {
@@ -9273,7 +9754,7 @@ func (z *Appointment) Msgsize() (s int) {
 	} else {
 		s += msgp.BoolSize
 	}
-	s += 8
+	s += 9 + msgp.BytesPrefixSize + len(z.ScheduleInfoAppointmentTombstone) + 8
 	if z.ScheduleInfoAutoAcceptAppointments == nil {
 		s += msgp.NilSize
 	} else {
@@ -9309,7 +9790,7 @@ func (z *Appointment) Msgsize() (s int) {
 	} else {
 		s += msgp.BoolSize
 	}
-	s += 7
+	s += 9 + msgp.BytesPrefixSize + len(z.ScheduleInfoFreeBusy) + 7
 	if z.ScheduleInfoResourceType == nil {
 		s += msgp.NilSize
 	} else {

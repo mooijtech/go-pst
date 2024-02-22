@@ -22,6 +22,8 @@ option go_package = "github.com/mooijtech/go-pst;properties";
 message Voicemail {
   // Contains textual annotations to a voice message after it has been delivered to the user's mailbox.
   optional string audio_notes = 1; 
+  // Contains an unprotected voice message.
+  optional bytes automatic_speech_recognition_data = 2; 
   // Contains a unique identifier associated with the phone call.
   optional string x_call_id = 3; 
   // Specifies how many discrete pages are contained within an attachment representing a facsimile message.

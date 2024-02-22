@@ -32,6 +32,8 @@ message Task {
   optional int32 task_actual_effort = 6; // @gotags: msg:"330403,omitempty"
   // Specifies the name of the user that last assigned the task.
   optional string task_assigner = 7; // @gotags: msg:"3305731,omitempty"
+  // Contains a stack of entries, each of which represents a task assigner.
+  optional bytes task_assigners = 8; // @gotags: msg:"33047258,omitempty"
   // Indicates that the task is complete.
   optional bool task_complete = 9; // @gotags: msg:"3305211,omitempty"
   // The client can set this property, but it has no impact on the Task-Related Objects Protocol and is ignored by the server.
@@ -50,6 +52,8 @@ message Task {
   optional bool taskf_fix_offline = 16; // @gotags: msg:"3306811,omitempty"
   // Indicates whether the task includes a recurrence pattern.
   optional bool taskf_recurring = 17; // @gotags: msg:"3306211,omitempty"
+  // Contains a unique GUID for this task, which is used to locate an existing task upon receipt of a task response or task update.
+  optional bytes task_global_id = 18; // @gotags: msg:"34073258,omitempty"
   // Indicates the type of change that was last made to the Task object.
   optional int32 task_history = 19; // @gotags: msg:"330503,omitempty"
   // Contains the name of the user who most recently assigned the task, or the user to whom it was most recently assigned.
@@ -70,6 +74,8 @@ message Task {
   optional string task_owner = 27; // @gotags: msg:"3305531,omitempty"
   // Indicates the role of the current user relative to the Task object.
   optional int32 task_ownership = 28; // @gotags: msg:"330653,omitempty"
+  // Contains a RecurrencePattern structure that provides information about recurring tasks.
+  optional bytes task_recurrence = 29; // @gotags: msg:"33046258,omitempty"
   // Indicates whether future instances of recurring tasks need reminders, even though the value of the PidLidReminderSet property (section 2.222) is 0x00.
   optional bool task_reset_reminder = 30; // @gotags: msg:"3303111,omitempty"
   // Not used. The client can set this property, but it has no impact on the Task-Related Objects Protocol and is ignored by the server.

@@ -64,7 +64,6 @@ func (propertyReader *PropertyReader) WriteMessagePackValue(writer *msgp.Writer)
 	switch propertyReader.Property.Type {
 	case PropertyTypeString:
 		value, err := propertyReader.GetString()
-
 		if err != nil {
 			return eris.Wrap(err, "failed to get string")
 		}
@@ -138,7 +137,6 @@ func (propertyReader *PropertyReader) WriteMessagePackValue(writer *msgp.Writer)
 		if err != nil {
 			return eris.Wrap(err, "failed to get integer64")
 		}
-
 		if err := writer.WriteString(key); err != nil {
 			return eris.Wrap(err, "failed to write key")
 		} else if err := writer.WriteInt64(value); err != nil {
@@ -160,10 +158,37 @@ func (propertyReader *PropertyReader) WriteMessagePackValue(writer *msgp.Writer)
 		}
 
 		return nil
+	case PropertyTypeBinary:
+		value, err := propertyReader.GetBinary()
+		if err != nil {
+			return eris.Wrap(err, "failed to get binary")
+		}
+		if err := writer.WriteString(key); err != nil {
+			return eris.Wrap(err, "failed to write key")
+		} else if err := writer.WriteBytes(value); err != nil {
+			return eris.Wrap(err, "failed to write value")
+		}
+		return nil
 	default:
 		// TODO - Write Nil?
 		return ErrPropertyNoData
 	}
+}
+
+func (propertyReader *PropertyReader) GetBinary() ([]byte, error) {
+	if propertyReader.Property.Type != PropertyTypeBinary {
+		return []byte{}, ErrPropertyTypeMismatch
+	} else if propertyReader.HeapOnNodeReader == nil || propertyReader.Property.HNID == 0 {
+		return []byte{}, ErrPropertyNoData
+	}
+
+	data := make([]byte, propertyReader.Size())
+
+	if _, err := propertyReader.ReadAt(data, 0); err != nil {
+		return []byte{}, eris.Wrap(err, "failed to read data")
+	}
+
+	return data, nil
 }
 
 // GetString returns the string value of the property.
