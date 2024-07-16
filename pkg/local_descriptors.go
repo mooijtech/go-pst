@@ -34,18 +34,28 @@ type LocalDescriptor struct {
 func NewLocalDescriptor(data []byte, formatType FormatType) LocalDescriptor {
 	switch formatType {
 	case FormatTypeANSI:
-		return LocalDescriptor{
-			Identifier:                 Identifier(binary.LittleEndian.Uint32(data[:4])),
-			DataIdentifier:             Identifier(binary.LittleEndian.Uint32(data[4 : 4+4])),
-			LocalDescriptorsIdentifier: Identifier(binary.LittleEndian.Uint32(data[8 : 8+4])),
+		ld := LocalDescriptor{
+			Identifier:     Identifier(binary.LittleEndian.Uint32(data[:4])),
+			DataIdentifier: Identifier(binary.LittleEndian.Uint32(data[4 : 4+4])),
 		}
+
+		if len(data) > 8 {
+			ld.LocalDescriptorsIdentifier = Identifier(binary.LittleEndian.Uint32(data[8 : 8+4]))
+		}
+
+		return ld
 	default:
 		// TODO - Reference [MS-PDF] that this is actually 32-bit.
-		return LocalDescriptor{
-			Identifier:                 Identifier(binary.LittleEndian.Uint32(data[:8])),
-			DataIdentifier:             Identifier(binary.LittleEndian.Uint32(data[8 : 8+8])),
-			LocalDescriptorsIdentifier: Identifier(binary.LittleEndian.Uint32(data[16 : 16+8])),
+		ld := LocalDescriptor{
+			Identifier:     Identifier(binary.LittleEndian.Uint32(data[:8])),
+			DataIdentifier: Identifier(binary.LittleEndian.Uint32(data[8 : 8+8])),
 		}
+
+		if len(data) > 16 {
+			ld.LocalDescriptorsIdentifier = Identifier(binary.LittleEndian.Uint32(data[16 : 16+8]))
+		}
+
+		return ld
 	}
 }
 
@@ -53,6 +63,11 @@ func NewLocalDescriptor(data []byte, formatType FormatType) LocalDescriptor {
 func (file *File) GetLocalDescriptors(btreeNodeEntry BTreeNode) ([]LocalDescriptor, error) {
 	return file.GetLocalDescriptorsFromIdentifier(btreeNodeEntry.LocalDescriptorsIdentifier)
 }
+
+const (
+	SlBlockEntry = 0
+	SiBlockEntry = 1
+)
 
 // GetLocalDescriptorsFromIdentifier returns the local descriptors of the local descriptors identifier.
 // References "Local Descriptors".
@@ -81,25 +96,17 @@ func (file *File) GetLocalDescriptorsFromIdentifier(localDescriptorsIdentifier I
 
 	if _, err := file.Reader.ReadAt(localDescriptorsLevel, localDescriptorsNode.FileOffset+1); err != nil {
 		return nil, eris.Wrap(err, "failed to read local descriptors level")
-	} else if localDescriptorsLevel[0] > 0 {
-		// Haven't seen branch nodes yet.
-		return nil, ErrLocalDescriptorBranchNode
 	}
 
-	var localDescriptorEntrySize uint8
+	blockType := localDescriptorsLevel[0]
 
-	switch file.FormatType {
-	case FormatTypeANSI:
-		localDescriptorEntrySize = 12
-	default:
-		localDescriptorEntrySize = 24
-	}
+	localDescriptorsEntryCountBytes := make([]byte, 2)
 
-	localDescriptorsEntryCount := make([]byte, 2)
-
-	if _, err := file.Reader.ReadAt(localDescriptorsEntryCount, localDescriptorsNode.FileOffset+2); err != nil {
+	if _, err := file.Reader.ReadAt(localDescriptorsEntryCountBytes, localDescriptorsNode.FileOffset+2); err != nil {
 		return nil, eris.Wrap(err, "failed to get local descriptors entry count")
 	}
+
+	localDescriptorsEntryCount := binary.LittleEndian.Uint16(localDescriptorsEntryCountBytes)
 
 	var localDescriptorsEntriesOffset int64
 
@@ -110,18 +117,44 @@ func (file *File) GetLocalDescriptorsFromIdentifier(localDescriptorsIdentifier I
 		localDescriptorsEntriesOffset = localDescriptorsNode.FileOffset + 8
 	}
 
-	localDescriptorsEntries := make([]byte, binary.LittleEndian.Uint16(localDescriptorsEntryCount)*uint16(localDescriptorEntrySize))
+	localDescriptors := make([]LocalDescriptor, 0, localDescriptorsEntryCount)
 
-	if _, err := file.Reader.ReadAt(localDescriptorsEntries, localDescriptorsEntriesOffset); err != nil {
-		return nil, eris.Wrap(err, "failed to read local descriptors entries")
-	}
+	for i := 1; i <= int(localDescriptorsEntryCount); i++ {
+		var entryDataSize int64
+		if blockType == SlBlockEntry {
+			if file.FormatType == FormatTypeANSI {
+				entryDataSize = 12
+			} else {
+				entryDataSize = 24
+			}
+		} else {
+			if file.FormatType == FormatTypeANSI {
+				entryDataSize = 8
+			} else {
+				entryDataSize = 16
+			}
+		}
 
-	localDescriptors := make([]LocalDescriptor, binary.LittleEndian.Uint16(localDescriptorsEntryCount))
+		localDescriptorEntry := make([]byte, entryDataSize)
 
-	for i := 0; i < int(binary.LittleEndian.Uint16(localDescriptorsEntryCount)); i++ {
-		localDescriptorEntry := localDescriptorsEntries[i*int(localDescriptorEntrySize) : (i+1)*int(localDescriptorEntrySize)]
+		if _, err := file.Reader.ReadAt(localDescriptorEntry, localDescriptorsEntriesOffset); err != nil {
+			return nil, eris.Wrap(err, "failed to get local descriptors entry count")
+		}
 
-		localDescriptors[i] = NewLocalDescriptor(localDescriptorEntry, file.FormatType)
+		localDescriptor := NewLocalDescriptor(localDescriptorEntry, file.FormatType)
+		if blockType == SlBlockEntry {
+			localDescriptors = append(localDescriptors, localDescriptor)
+		} else {
+			descriptors, err := file.GetLocalDescriptorsFromIdentifier(localDescriptor.DataIdentifier)
+			if err != nil {
+				return nil, eris.Wrap(err, "failed to get descriptors from identifier")
+			}
+
+			localDescriptors = append(localDescriptors, descriptors...)
+		}
+
+		// Increase the offset so its at the start of the next entry
+		localDescriptorsEntriesOffset += entryDataSize
 	}
 
 	return localDescriptors, nil
