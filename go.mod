@@ -1,6 +1,6 @@
 module github.com/mooijtech/go-pst/v6
 
-go 1.20
+go 1.23
 
 require (
 	github.com/emersion/go-message v0.17.0
@@ -11,7 +11,7 @@ require (
 	github.com/tinylib/msgp v1.1.8
 	golang.org/x/net v0.15.0
 	golang.org/x/text v0.13.0
-	google.golang.org/protobuf v1.31.0
+	google.golang.org/protobuf v1.36.11
 )
 
 require (
