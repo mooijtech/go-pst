@@ -229,7 +229,7 @@ func (file *File) GetMessage(identifier Identifier) (*Message, error) {
 		fmt.Printf("Failed to get message class property reader, falling back to properties.Message: %+v\n", eris.New(err.Error()))
 		messageProperties = &properties.Message{}
 	} else {
-		messageClass, err := messageClassPropertyReader.GetString()
+		messageClass, err := messageClassPropertyReader.GetStringValue()
 
 		if err != nil {
 			fmt.Printf("Failed to get message class, falling back to properties.Message: %+v\n", eris.New(err.Error()))

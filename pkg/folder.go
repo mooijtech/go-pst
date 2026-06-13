@@ -127,8 +127,20 @@ func (folder *Folder) GetSubFolders() ([]Folder, error) {
 
 			switch {
 			case property.ID == 12289:
-				// TODO - Check if this is String8 on ANSI FormatType.
-				folderName, err := propertyReader.GetString()
+				// PidTagDisplayName (the folder name). ANSI PSTs store it as
+				// PropertyTypeString8 (a codepage string), Unicode PSTs as
+				// PropertyTypeString (UTF-16); branch on the actual type rather
+				// than assuming Unicode (which raised ErrPropertyTypeMismatch on
+				// every ANSI folder and aborted the whole walk). Folder names are
+				// typically ASCII, so the Windows-1252 default decodes them
+				// correctly regardless of the archive's exact codepage.
+				var folderName string
+				var err error
+				if propertyReader.Property.Type == PropertyTypeString8 {
+					folderName, err = propertyReader.GetString8(1252)
+				} else {
+					folderName, err = propertyReader.GetString()
+				}
 
 				if err != nil {
 					return nil, eris.Wrap(err, "failed to get folder name")

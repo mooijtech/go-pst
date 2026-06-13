@@ -77,13 +77,25 @@ func (propertyReader *PropertyReader) WriteMessagePackValue(writer *msgp.Writer)
 
 		return nil
 	case PropertyTypeString8:
-		value, err := propertyReader.GetString8(65001) // TODO - Get from called, this is UTF-8 for now.
+		// ANSI PSTs (and the occasional String8 property in a Unicode PST)
+		// store text as a code-page string rather than UTF-16. The generated
+		// property structs key every text field by "<ID><Type>" using the
+		// Unicode string type (31) — e.g. Subject is msg:"5531". A String8
+		// value carries type 30, so writing it under its own "<ID>30" key would
+		// never match the struct field and every string would decode empty.
+		// Normalize the key to the Unicode string type so the value lands in
+		// the same field the Unicode path populates. Windows-1252 is the
+		// pragmatic default (a superset of ASCII covering Western European
+		// text); it matches the folder-name decode path.
+		value, err := propertyReader.GetString8(1252)
 
 		if err != nil {
 			return eris.Wrap(err, "failed to get string8")
 		}
 
-		if err := writer.WriteString(key); err != nil {
+		string8Key := fmt.Sprintf("%d%d", propertyReader.Property.ID, PropertyTypeString)
+
+		if err := writer.WriteString(string8Key); err != nil {
 			return eris.Wrap(err, "failed to write key")
 		} else if err := writer.WriteString(value); err != nil {
 			return eris.Wrap(err, "failed to write value")
@@ -181,6 +193,19 @@ func (propertyReader *PropertyReader) GetString() (string, error) {
 	}
 
 	return propertyReader.DecodeString(data)
+}
+
+// GetStringValue returns the string value of the property regardless of whether
+// it is stored as PropertyTypeString (UTF-16, Unicode PSTs) or
+// PropertyTypeString8 (a code-page string, ANSI PSTs). Callers that need a
+// string but don't control the PST format (e.g. reading the message class)
+// should prefer this over GetString, which rejects String8 with
+// ErrPropertyTypeMismatch. String8 is decoded as Windows-1252.
+func (propertyReader *PropertyReader) GetStringValue() (string, error) {
+	if propertyReader.Property.Type == PropertyTypeString8 {
+		return propertyReader.GetString8(1252)
+	}
+	return propertyReader.GetString()
 }
 
 // GetString8 returns the string using the external encoding.
